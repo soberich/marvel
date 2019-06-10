@@ -1,0 +1,583 @@
+openapi: 3.0.2
+info:
+  title: EXAMPLE by Example
+  description: This is EXAMPLE by Example. You can find out more about EXAMPLE at
+    [https://example.com](https://example.com).
+  termsOfService: https://terms.example.com/
+  contact:
+    email: 25544967+soberich@users.noreply.github.com
+  version: 0.0.1-SNAPSHOT
+servers:
+- url: '{protocol}://{address}:{port}/{base}'
+  description: Remote or local server
+  variables:
+    protocol:
+      description: Protocol. Whether secure or not.
+      default: http
+      enum:
+      - http
+      - https
+    address:
+      default: localhost
+    port:
+      default: "8080"
+    base:
+      default: ""
+security:
+- BearerAuth: []
+tags:
+- name: operation-handler
+  description: Operation Handler
+- name: web-mvc-endpoint-handler-mapping
+  description: Web Mvc Endpoint Handler Mapping
+- name: prometheus-client
+  description: Prometheus Client
+paths:
+  /api/employee:
+    get:
+      operationId: getEmployees
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeDto'
+  /management/configprops:
+    get:
+      tags:
+      - operation-handler
+      summary: handleConfigProps
+      description: Handle Config Props
+      operationId: HandleConfigProps
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/env:
+    get:
+      tags:
+      - operation-handler
+      summary: handleEnv
+      description: Handle Env
+      operationId: HandleEnv
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/env/{toMatch}:
+    get:
+      tags:
+      - operation-handler
+      summary: handleEnvExact
+      description: Handle Particular Env
+      operationId: HandleEnvExact
+      parameters:
+      - name: toMatch
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/health:
+    get:
+      tags:
+      - operation-handler
+      summary: handleHealth
+      description: Handle Health
+      operationId: HandleHealth
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/info:
+    get:
+      tags:
+      - operation-handler
+      summary: handleInfo
+      description: Handle Info
+      operationId: HandleInfo
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/threaddump:
+    get:
+      tags:
+      - operation-handler
+      summary: handleThreaddump
+      description: Handle Threaddump
+      operationId: HandleThreaddump
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management:
+    get:
+      tags:
+      - web-mvc-endpoint-handler-mapping
+      summary: links
+      description: links
+      operationId: Links
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Link'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/jhimetrics:
+    get:
+      tags:
+      - operation-handler
+      summary: handleJHMetrics
+      description: metrics
+      operationId: metrics
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+      deprecated: false
+  /management/prometheus:
+    get:
+      tags:
+      - prometheus-client
+      summary: handleMonitoring
+      description: monitoring
+      operationId: monitoring
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+      deprecated: false
+  /api/employee/{id}/records:
+    get:
+      operationId: getForPeriod
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: year
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: month
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - JANUARY
+          - FEBRUARY
+          - MARCH
+          - APRIL
+          - MAY
+          - JUNE
+          - JULY
+          - AUGUST
+          - SEPTEMBER
+          - OCTOBER
+          - NOVEMBER
+          - DECEMBER
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecordDto'
+    put:
+      operationId: adjustWholePeriod_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordCollectionUpdateCommand'
+        required: true
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordCollectionDto'
+    post:
+      operationId: saveWholePeriod_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordCollectionCreateCommand'
+        required: true
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordCollectionDto'
+components:
+  schemas:
+    Link:
+      title: Link
+      type: object
+      properties:
+        href:
+          type: string
+        templated:
+          type: boolean
+    EmployeeDto:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+    RecordDto:
+      type: object
+      properties:
+        recordCollectionId:
+          type: integer
+          format: int64
+        type:
+          type: string
+          enum:
+          - HOURS_WORKED
+          - OVERTIME
+          - ILLNESS
+          - LEAVE
+          - HOLIDAY_AVAILABLE
+          - EDUCATION
+          - STAND_BY
+          - KILOMETRES
+        desc:
+          type: string
+        date:
+          type: string
+          format: date
+        hoursSubmitted:
+          type: number
+    RecordCollectionDto:
+      type: object
+      properties:
+        projectId:
+          type: string
+        employeeId:
+          type: integer
+          format: int64
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordDto'
+        id:
+          type: integer
+          format: int64
+        year:
+          pattern: '[0-9]{4}'
+          example: 2018
+          anyOf:
+          - type: string
+          - type: integer
+            format: int32
+        month:
+          type: string
+          enum:
+          - JANUARY
+          - FEBRUARY
+          - MARCH
+          - APRIL
+          - MAY
+          - JUNE
+          - JULY
+          - AUGUST
+          - SEPTEMBER
+          - OCTOBER
+          - NOVEMBER
+          - DECEMBER
+    RecordCollectionCreateCommand:
+      required:
+      - employeeId
+      - month
+      - projectId
+      - records
+      - year
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        year:
+          pattern: '[0-9]{4}'
+          example: 2018
+          anyOf:
+          - type: string
+          - type: integer
+            format: int32
+        month:
+          type: string
+          enum:
+          - JANUARY
+          - FEBRUARY
+          - MARCH
+          - APRIL
+          - MAY
+          - JUNE
+          - JULY
+          - AUGUST
+          - SEPTEMBER
+          - OCTOBER
+          - NOVEMBER
+          - DECEMBER
+        projectId:
+          type: string
+        employeeId:
+          type: integer
+          format: int64
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordCreateCommand'
+    RecordCreateCommand:
+      required:
+      - date
+      - hoursSubmitted
+      - recordCollectionId
+      - type
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        type:
+          type: string
+          enum:
+          - HOURS_WORKED
+          - OVERTIME
+          - ILLNESS
+          - LEAVE
+          - HOLIDAY_AVAILABLE
+          - EDUCATION
+          - STAND_BY
+          - KILOMETRES
+        hoursSubmitted:
+          type: number
+        desc:
+          type: string
+        recordCollectionId:
+          type: integer
+          format: int64
+    RecordCollectionUpdateCommand:
+      required:
+      - employeeId
+      - id
+      - month
+      - projectId
+      - records
+      - year
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        year:
+          pattern: '[0-9]{4}'
+          example: 2018
+          anyOf:
+          - type: string
+          - type: integer
+            format: int32
+        month:
+          type: string
+          enum:
+          - JANUARY
+          - FEBRUARY
+          - MARCH
+          - APRIL
+          - MAY
+          - JUNE
+          - JULY
+          - AUGUST
+          - SEPTEMBER
+          - OCTOBER
+          - NOVEMBER
+          - DECEMBER
+        projectId:
+          type: string
+        employeeId:
+          type: integer
+          format: int64
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordUpdateCommand'
+    RecordUpdateCommand:
+      required:
+      - date
+      - hoursSubmitted
+      - recordCollectionId
+      - type
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        type:
+          type: string
+          enum:
+          - HOURS_WORKED
+          - OVERTIME
+          - ILLNESS
+          - LEAVE
+          - HOLIDAY_AVAILABLE
+          - EDUCATION
+          - STAND_BY
+          - KILOMETRES
+        hoursSubmitted:
+          type: number
+        desc:
+          type: string
+        recordCollectionId:
+          type: integer
+          format: int64
+    Publisher:
+      type: object
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

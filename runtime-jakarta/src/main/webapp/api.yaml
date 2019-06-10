@@ -1,0 +1,266 @@
+openapi: 3.0.2
+info:
+  title: EXAMPLE by Example
+  description: This is EXAMPLE by Example. You
+    can find out more about EXAMPLE at [https://example.com](https://example.com).
+  termsOfService: https://terms.example.com/
+  contact:
+    email: 25544967+soberich@users.noreply.github.com
+  version: 0.0.1-SNAPSHOT
+servers:
+  - url: "{protocol}://{address}:{port}/{base}"
+    description: Remote or local server
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+        description: Protocol. Whether secure or not.
+      address:
+        default: localhost
+      port:
+        default: 8080
+      base:
+        default: ""
+paths:
+  /management/configprops:
+    get:
+      tags:
+        - operation-handler
+      summary: handleConfigProps
+      description: Handle Config Props
+      operationId: HandleConfigProps
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/env:
+    get:
+      tags:
+        - operation-handler
+      summary: handleEnv
+      description: Handle Env
+      operationId: HandleEnv
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/env/{toMatch}:
+    get:
+      tags:
+        - operation-handler
+      summary: handleEnvExact
+      description: Handle Particular Env
+      operationId: HandleEnvExact
+      parameters:
+        - name: toMatch
+          in: path
+          description: ''
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/health:
+    get:
+      tags:
+        - operation-handler
+      summary: handleHealth
+      description: Handle Health
+      operationId: HandleHealth
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/info:
+    get:
+      tags:
+        - operation-handler
+      summary: handleInfo
+      description: Handle Info
+      operationId: HandleInfo
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/threaddump:
+    get:
+      tags:
+        - operation-handler
+      summary: handleThreaddump
+      description: Handle Threaddump
+      operationId: HandleThreaddump
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management:
+    get:
+      tags:
+        - web-mvc-endpoint-handler-mapping
+      summary: links
+      description: links
+      operationId: Links
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Link'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+  /management/jhimetrics:
+    get:
+      tags:
+        - operation-handler
+      summary:     handleJHMetrics
+      description: metrics
+      operationId: metrics
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type:        object
+                description: OK
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+      deprecated:  false
+  /management/prometheus:
+    get:
+      tags:
+        - prometheus-client
+      summary:     handleMonitoring
+      description: monitoring
+      operationId: monitoring
+      parameters: []
+      responses:
+        200:
+          description: OK
+          headers: {}
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+      deprecated:  false
+components:
+  schemas:
+    Link:
+      title: Link
+      type: object
+      properties:
+        href:
+          type: string
+        templated:
+          type: boolean
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []
+tags:
+  - name: operation-handler
+    description: Operation Handler
+  - name: web-mvc-endpoint-handler-mapping
+    description: Web Mvc Endpoint Handler Mapping
+  - name: prometheus-client
+    description: Prometheus Client

@@ -1,0 +1,83 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
+package com.example.marvel.domain.model.api.recordcollection
+
+import com.example.marvel.domain.model.api.record.RecordCreateCommand
+import com.example.marvel.domain.model.api.record.RecordDto
+import com.example.marvel.domain.model.api.record.RecordModel
+import com.example.marvel.domain.model.api.record.RecordUpdateCommand
+import java.time.Month
+import java.time.Year
+import javax.validation.Valid
+import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Null
+
+interface RecordCollection {
+    var id                  : Long?
+    val year                : Year
+    val month               : Month
+}
+
+/**
+ * FIXME:  Some ISO for sealed classes =(
+ */
+/*@optics*/sealed class RecordCollectionModel : RecordCollection {
+
+    abstract val projectId                    : String
+    abstract val employeeId                   : Long
+    abstract val records                      : List/*K*/<@Valid RecordModel>
+
+    companion object {
+        /**
+         * Could use be default args
+         */
+        inline operator fun invoke(id: Long? = null, year: Year, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
+                RecordCollectionDto(RecordCollectionCreateCommand(id ?: 0, year, month, projectId, employeeId, emptyList()), projectId, employeeId, emptyList())
+        inline operator fun invoke(year: Year, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
+                RecordCollectionModel(null, year, month, projectId, employeeId, records)
+    }
+}
+
+data class RecordCollectionDto(
+    private val delegate             : RecordCollection,
+    override val projectId           : String,
+    override val employeeId          : Long,
+    override val records             : List/*K*/<RecordDto>
+) : RecordCollectionModel(), RecordCollection by delegate { companion object }
+
+/*@optics*/data class RecordCollectionCreateCommand(
+    @get:Null
+    override var id                  : Long?,
+    @get:NotNull
+    override val year                : Year,
+    @get:NotNull
+    override val month               : Month,
+    @get:NotNull
+    override val projectId           : String,
+    @get:NotNull
+    override val employeeId          : Long,
+    @get:NotEmpty
+    override val records             : List/*K*/<@Valid RecordCreateCommand>
+) : RecordCollectionModel() { companion object }
+
+/*@optics*/data class RecordCollectionUpdateCommand(
+    @get:NotNull
+    override var id                  : Long?,
+    @get:NotNull
+    override val year                : Year,
+    @get:NotNull
+    override val month               : Month,
+    @get:NotNull
+    override val projectId           : String,
+    @get:NotNull
+    override val employeeId          : Long,
+    @get:NotEmpty
+    override val records             : List/*K*/<@Valid RecordUpdateCommand>
+) : RecordCollectionModel() { companion object }
+
+/**
+ * no-op
+ */
+/*@optics*/data class RecordCollections(val reports: List/*K*/<RecordCollectionDto>) : List<RecordCollectionDto> by reports { companion object }
+
