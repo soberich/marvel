@@ -96,7 +96,7 @@ class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace,
             findById(id)?.run { records.toRecordCollection().also(em::persist).toRecordCollectionDto() }
 
     override fun updateWholePeriod(id: Long, records: RecordCollectionUpdateCommand): RecordCollectionDto? =
-            findById(id)?.run { records.toRecordCollection().also(em::merge).toRecordCollectionDto() }
+            findById(id)?.run { records.toRecordCollection().let(em::merge).toRecordCollectionDto() }
 
     companion object {
         private val GET_RECORDS_FOR_PERIOD =

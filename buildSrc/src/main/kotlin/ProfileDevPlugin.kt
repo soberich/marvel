@@ -43,7 +43,7 @@ class ProfileDevPlugin : Plugin<Project> {
 
 
             withType<ProcessResources>().configureEach {
-                filesMatching("**/application.yml") {
+                filesMatching("**/application.y*ml") {
                     filter {
                         it.replace("#project.version#", version.toString())
                     }

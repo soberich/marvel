@@ -20,7 +20,7 @@ dependencies {
             Deps.Jakarta.VALIDATION,
             Deps.Jakarta.CDI,
             "org.litote.kmongo:kmongo:3.10.2-SNAPSHOT",
-            "org.litote.kmongo:kmongo-coroutine:3.10.2-SNAPSHOT"
+            "org.litote.kmongo:kmongo-coroutine:3.10.2-SNAPSHOT",
     ).forEach(::implementation)
 
 //    implementation(kotlin("stdlib-jdk8"))

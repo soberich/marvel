@@ -45,12 +45,12 @@ class ProfileProdPlugin : Plugin<Project> {
                 args = mutableListOf<String>()
             }
             withType<ProcessResources>().configureEach {
-                filesMatching("**/application.yml") {
+                filesMatching("**/application.y*ml") {
                     filter {
                         it.replace("#project.version#", version.toString())
                     }
                 }
-                filesMatching("**/bootstrap.yml") {
+                filesMatching("**/bootstrap.y*ml") {
                     filter {
                         it.replace("#spring.profiles.active#", profiles)
                     }

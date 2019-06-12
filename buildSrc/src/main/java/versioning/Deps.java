@@ -50,8 +50,9 @@ public interface Deps {
         String LIQUIBASE_HIB5    = "3.6";
         String LOMBOK            = "1.18.2";
         String MONEY             = "1.3";
-        String OKHTTP = "4.0.0-rc1";
+        String OKHTTP            = "4.0.0-rc1";
         String OPENAPI           = "2.0.8";
+        String QUARKUS           = "999-SNAPSHOT";
         String RESTEASY          = "4.0.0.Final";
         String RESTEASY_BOOT     = "3.0.0.Final";
         String RETROFIT2         = "2.4.0";
@@ -66,6 +67,7 @@ public interface Deps {
         //val KOTLIN: Nothing = TODO("Scripts are PRE-compiled, can't these lines from script to apply '" + "org.jetbrains.kotlin:kotlin-bom"   + ':' + Versions.KOTLIN + '\'')
         String JACKSON   = "com.fasterxml.jackson:jackson-bom" + ':' + Versions.JACKSON;
         String RESTEASY  = "org.jboss.resteasy:resteasy-bom"   + ':' + Versions.RESTEASY;
+        String QUARKUS   = "io.quarkus:quarkus-bom"            + ':' + Versions.QUARKUS;
     }
 
     interface Jakarta {

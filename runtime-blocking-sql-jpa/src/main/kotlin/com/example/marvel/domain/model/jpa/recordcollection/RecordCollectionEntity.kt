@@ -74,8 +74,8 @@ inline fun RecordCollectionModel.toRecordCollection(): RecordCollectionEntity = 
 }
 
 inline fun RecordCollectionEntity.copyRelations(from: RecordCollectionModel): RecordCollectionEntity =
-        also {
-            it.project  = ProjectEntity .findById(from.projectId)
-            it.employee = EmployeeEntity.findById(from.employeeId)
-            it.records  = from.records.map(RecordModel::toRecord)
+        apply {
+            project  = ProjectEntity .findById(from.projectId)
+            employee = EmployeeEntity.findById(from.employeeId)
+            records  = from.records.map(RecordModel::toRecord)
         }

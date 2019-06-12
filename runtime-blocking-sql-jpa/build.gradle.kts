@@ -18,15 +18,14 @@ dependencies {
     implementation(project(":business", "default"))
 //    implementation(project(":convention", "default"))
 
+    implementation(enforcedPlatform(Deps.Platforms.QUARKUS))
 
     arrayOf(
             Deps.Javax.PERSISTENCE,
-            "io.quarkus:quarkus-jdbc-h2:999-SNAPSHOT",
-            "io.quarkus:quarkus-hibernate-orm-panache:999-SNAPSHOT"
+            "io.quarkus:quarkus-jdbc-h2",
+            "io.quarkus:quarkus-hibernate-orm-panache"
     ).forEach(::implementation)
 
-//    implementation(kotlin("stdlib-jdk8"))
-//    testCompile("junit", "junit", "4.12")
 }
 
 java.sourceCompatibility = VERSION_1_8

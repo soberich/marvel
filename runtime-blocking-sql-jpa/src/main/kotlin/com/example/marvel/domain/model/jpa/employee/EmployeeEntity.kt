@@ -33,7 +33,7 @@ data class EmployeeEntity(@Transient private val delegate: Employee) : SimpleGen
     override lateinit var email               : String
 
     @OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)
-    lateinit var records             : List<RecordCollectionEntity>
+    lateinit var records                      : List<RecordCollectionEntity>
 
     override fun equals(other: Any?) = super.equals(other)
     override fun hashCode() = super.hashCode()
