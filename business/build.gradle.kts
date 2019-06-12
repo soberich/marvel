@@ -3,7 +3,7 @@ import versioning.Deps
 
 plugins {
     java
-    kronshtadt
+    kronstadt
 //    `arrow-meta-convention-helper`
 //    id("com.google.protobuf") version "0.8.8"
 //    id("org.galaxx.gradle.jandex") version "1.0.2"
@@ -11,7 +11,7 @@ plugins {
 repositories.jcenter {
     content {
         includeGroup("io.arrow-kt")
-        includeGroupByRegex("jakarta.+")
+        includeGroupByRegex("(jakarta|sun|org\\.glassfish).+")
     }
 }
 

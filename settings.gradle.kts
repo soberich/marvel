@@ -6,6 +6,11 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
         maven("http://dl.bintray.com/kotlin/kotlin-eap")
+        maven("https://oss.sonatype.org/content/repositories/snapshots") {
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
     }
     resolutionStrategy {
         eachPlugin {

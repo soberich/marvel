@@ -1,7 +1,7 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
 
 plugins {
-    kronshtadt
+    kronstadt
 }
 
 version = "unspecified"

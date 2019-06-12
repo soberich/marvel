@@ -7,9 +7,11 @@ plugins {
     java
     `java-gradle-plugin`
     `kotlin-dsl`
-    `build-dashboard` // optional
-    `help-tasks`      // optional
-    `project-report`  // optional
+    `build-dashboard`                                             // optional
+    `help-tasks`                                                  // optional
+    `project-report`                                              // optional
+    id("se.patrikerdes.use-latest-versions") version "0.2.10" // optional
+    id("com.github.ben-manes.versions")      version "0.21.0" // optional
 }
 
 kotlinDslPluginOptions.experimentalWarning.set(false)
@@ -21,6 +23,12 @@ repositories {
     maven(url = "https://repo.spring.io/milestone") {
         content {
             includeGroupByRegex("org\\.springframework.*")
+            includeGroup("io.projectreactor")
+        }
+    }
+    maven("https://oss.sonatype.org/content/repositories/snapshots") {
+        mavenContent {
+            snapshotsOnly()
         }
     }
 }
@@ -53,16 +61,17 @@ val kotlinVersion = "1.3.4+"
     implementation(kotlin("noarg"            , kotlinVersion))
     implementation(kotlin("sam-with-receiver", kotlinVersion))
 //    implementation(kotlin("serialization", kotlinVersion))
-    implementation("com.bmuschko",                                      "gradle-docker-plugin",      "3.6.1")
-    implementation("com.github.ben-manes",                              "gradle-versions-plugin",    "0.21.0")
-    implementation("com.moowork.gradle",                                "gradle-node-plugin",        "+")
+    implementation("com.bmuschko",                                      "gradle-docker-plugin",                     "4.10.0")
+    implementation("com.github.ben-manes",                              "gradle-versions-plugin",                   "0.21.0")
+    implementation("com.moowork.gradle",                                "gradle-node-plugin",                       "+")
     implementation("com.vanniktech",                                    "gradle-dependency-graph-generator-plugin", "0.5.0")
-    implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",     "+")
-    implementation("io.ebean",                                          "ebean-gradle-plugin",       "+")
-    implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",     "2.0.8")
-    implementation("nu.studer",                                         "gradle-credentials-plugin", "1.0.4")
-    implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",   "2.6.2")
-    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin", "2.2.0.M2")
+    implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
+    implementation("io.ebean",                                          "ebean-gradle-plugin",                      "+")
+    implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "2.0.8")
+    implementation("nu.studer",                                         "gradle-credentials-plugin",                "1.0.7")
+    implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "2.7.1")
+    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.2.0.M3")
+    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "0.2.10")
 }
 
 gradlePlugin {

@@ -3,10 +3,10 @@ import versioning.Deps
 
 plugins {
 //    java
-    kronshtadt
+    kronstadt
 //    dependencies
     `jdk9plus-convention-helper`
-    id("io.quarkus") version "0.16.1"
+    id("io.quarkus") version "999-SNAPSHOT"
     `project-report`
 //    id("org.galaxx.gradle.jandex") version "1.0.2"
 }
@@ -20,7 +20,7 @@ quarkus {
 
 version = "0.0.1-SNAPSHOT"
 
-val quarkusVersion = "0.16.1"
+val quarkusVersion = "999-SNAPSHOT"
 
 dependencies {
     implementation(project(":business", "default"))
@@ -43,6 +43,7 @@ dependencies {
             "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT",
             "io.vertx:vertx-lang-kotlin-coroutines:4.0.0-SNAPSHOT",
             Deps.Libs.SLF4J_JBOSS,
+            "io.quarkus:quarkus-narayana-jta",
 //            "io.quarkus:quarkus-smallrye-openapi", FIXME: see README.md
             "io.quarkus:quarkus-smallrye-context-propagation",
             "io.smallrye:smallrye-context-propagation-propagators-rxjava2",
@@ -51,7 +52,7 @@ dependencies {
             "org.jboss.resteasy:resteasy-rxjava2",
 "org.jboss.logmanager:jboss-logmanager-embedded:1.0.3",
 "org.wildfly.common:wildfly-common:1.5.0.Final",
-            "io.quarkus:quarkus-kotlin:0.16.1"
+            "io.quarkus:quarkus-kotlin:999-SNAPSHOT"
             //            "org.jboss.resteasy:resteasy-jackson2-provider:4.0.0.Final",
     ).forEach(::implementation)
     arrayOf(

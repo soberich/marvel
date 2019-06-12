@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets.UTF_8
 check(current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${current()}" }
 
 plugins {
-    kronshtadt
+    kronstadt
     jpa
     `project-report`
 }
@@ -20,15 +20,15 @@ repositories {
         }
     }
     jcenter()
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
-    maven("https://dl.bintray.com/arrow-kt/arrow-kt/")
-    maven("https://oss.jfrog.org/artifactory/oss-snapshot-local/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
+    maven("https://dl.bintray.com/arrow-kt/arrow-kt")
+    maven("https://oss.jfrog.org/artifactory/oss-snapshot-local")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
 }
 
 java.sourceCompatibility = VERSION_1_8
 
-val quarkusVersion = "0.16.1"
+val quarkusVersion = "999-SNAPSHOT"
 
 subprojects {
     apply(plugin = "build-dashboard")

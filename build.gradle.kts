@@ -27,12 +27,12 @@ subprojects {
         }
         maven("http://dl.bintray.com/kotlin/kotlin-eap")
         jcenter()
-        maven("https://dl.bintray.com/arrow-kt/arrow-kt/") {
+        maven("https://dl.bintray.com/arrow-kt/arrow-kt") {
             content {
                 includeGroup("io.arrow-kt")
             }
         }
-        maven("https://oss.jfrog.org/artifactory/oss-snapshot-local/") {
+        maven("https://oss.jfrog.org/artifactory/oss-snapshot-local") {
             content {
                 includeGroup("io.arrow-kt")
             }

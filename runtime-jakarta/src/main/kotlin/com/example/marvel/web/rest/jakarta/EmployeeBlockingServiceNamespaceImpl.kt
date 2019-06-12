@@ -19,14 +19,34 @@ import java.util.stream.Stream
 import javax.enterprise.context.ApplicationScoped
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
-import javax.transaction.Transactional
 
 /**
  * All calls to (`withContext(this)`)[kotlinx.coroutines.withContext]
  * could be simply convenient overloaded operator (`Dispatchers.IO { ... }`)[kotlinx.coroutines.invoke]
+ *
+ * FIXME: Caused by: java.lang.NoSuchMethodError: io.quarkus.arc.ArcContainer.isCurrentRequestAsync()Z
+ *    at io.quarkus.narayana.jta.runtime.interceptor.TransactionalInterceptorBase.handleIfAsyncStarted(TransactionalInterceptorBase.java:114)
+ *    at io.quarkus.narayana.jta.runtime.interceptor.TransactionalInterceptorBase.invokeInOurTx(TransactionalInterceptorBase.java:105)
+ *    at io.quarkus.narayana.jta.runtime.interceptor.TransactionalInterceptorRequired.doIntercept(TransactionalInterceptorRequired.java:48)
+ *    at io.quarkus.narayana.jta.runtime.interceptor.TransactionalInterceptorBase.intercept(TransactionalInterceptorBase.java:62)
+ *    at io.quarkus.narayana.jta.runtime.interceptor.TransactionalInterceptorRequired.intercept(TransactionalInterceptorRequired.java:42)
+ *    at io.quarkus.narayana.jta.runtime.interceptor.TransactionalInterceptorRequired_Bean.intercept(Unknown Source)
+ *    at io.quarkus.arc.InvocationContextImpl$InterceptorInvocation.invoke(InvocationContextImpl.java:270)
+ *    at io.quarkus.arc.InvocationContextImpl.invokeNext(InvocationContextImpl.java:149)
+ *    at io.quarkus.arc.InvocationContextImpl.proceed(InvocationContextImpl.java:173)
+ *    at com.example.marvel.web.rest.jakarta.EmployeeBlockingServiceNamespaceImpl_Subclass.listEmployees(Unknown Source)
+ *    at com.example.marvel.web.rest.jakarta.EmployeeBlockingServiceNamespaceImpl_ClientProxy.listEmployees(Unknown Source)
+ *    at com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource.getEmployees(EmployeeOrchestrationResource.kt:60)
+ *    at com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource_ClientProxy.getEmployees(Unknown Source)
+ *    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+ *    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+ *    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+ *    at java.lang.reflect.Method.invoke(Method.java:498)
+ *    at org.jboss.resteasy.core.MethodInjectorImpl.invoke(MethodInjectorImpl.java:151)
+ *    ... 71 more
+ *    on Quarkus 999-SNAPSHOT by 2019-06-12
  */
-
-@Transactional
+//@Transactional
 @ApplicationScoped
 class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace, PanacheRepositoryBase<EmployeeEntity, Long> {
 

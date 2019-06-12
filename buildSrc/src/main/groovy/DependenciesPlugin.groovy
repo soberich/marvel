@@ -21,23 +21,38 @@ class DependenciesPlugin implements Plugin<Project> {
 
             def springGenerator = new Generator(
                 "spring", // Suffix for our Gradle task.
-                { ResolvedDependency dependency -> dependency.getModuleGroup().startsWith("org.springframework") }, // Only want Spring.
+                { ResolvedDependency dependency -> dependency.getModuleGroup().startsWith("org.springframework") },
                 { true }, // Include transitive dependencies.
-                { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#6CB23F")) }, // Give them some color.
+                { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#6CB23F")) },
             )
 
             def javaxGenerator = new Generator(
                 "javax", // Suffix for our Gradle task.
-                { ResolvedDependency dependency -> dependency.getModuleGroup().contains("javax") }, // Only want Java EE.
+                { ResolvedDependency dependency -> dependency.getModuleGroup().contains("javax") },
                 { true }, // Include transitive dependencies.
-                { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f35d45")) }, // Some color.
+                { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f35d45")) },
+            )
+
+            def jakartaGenerator = new Generator(
+                    "jakarta", // Suffix for our Gradle task.
+                    { ResolvedDependency dependency -> dependency.getModuleGroup().contains("jakarta") },
+                    { true }, // Include transitive dependencies.
+                    { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f35d45")) },
+            )
+
+            def javaxOrJakarta = ["javax", "jakarta", "glassfish", "sun"]
+            def javaxOrJakartaGenerator = new Generator(
+                    "javaxOrJakarta", // Suffix for our Gradle task.
+                    { ResolvedDependency dependency -> javaxOrJakarta.any {  dependency.getModuleGroup().contains(it) || dependency.getModuleName().contains(it) } },
+                    { true }, // Include transitive dependencies.
+                    { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f35d45")) },
             )
 
             def ebeanGenerator = new Generator(
                 "ebean", // Suffix for our Gradle task.
-                { ResolvedDependency dependency -> dependency.getModuleGroup().contains("ebean") || dependency.getModuleGroup().contains("avaje") }, // Only want Ebean.
+                { ResolvedDependency dependency -> dependency.getModuleGroup().contains("ebean") || dependency.getModuleGroup().contains("avaje") },
                 { true }, // Include transitive dependencies.
-                { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f57a1b")) }, // Give them some color.
+                { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f57a1b")) },
             )
 
             def metrics = ["metrics", "micrometer", "actuator", "dropwizzard"]
@@ -45,11 +60,11 @@ class DependenciesPlugin implements Plugin<Project> {
                 "metrics", // Suffix for our Gradle task.
                 { ResolvedDependency dependency -> metrics.any {  dependency.getModuleGroup().contains(it) || dependency.getModuleName().contains(it) } }, // Only want Metrics.
                 { true }, // Include transitive dependencies.
-                { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f57a1b")) }, // Give them some color.
+                { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f57a1b")) },
             )
 
             dependencyGraphGenerator {
-                generators = [ Generator.ALL, springGenerator, javaxGenerator, ebeanGenerator ]
+                generators = [ Generator.ALL, springGenerator, javaxGenerator, jakartaGenerator, javaxOrJakartaGenerator, ebeanGenerator ]
             }
 
             tasks.withType(DependencyUpdatesTask).configureEach {

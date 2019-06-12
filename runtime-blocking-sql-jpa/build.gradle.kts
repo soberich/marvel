@@ -2,7 +2,7 @@ import org.gradle.api.JavaVersion.VERSION_1_8
 import versioning.Deps
 
 plugins {
-    kronshtadt
+    kronstadt
 //    dependencies
 //    id("org.galaxx.gradle.jandex") version "1.0.2"
     `project-report`
@@ -21,8 +21,8 @@ dependencies {
 
     arrayOf(
             Deps.Javax.PERSISTENCE,
-            "io.quarkus:quarkus-jdbc-h2:0.16.1",
-            "io.quarkus:quarkus-hibernate-orm-panache:0.16.1"
+            "io.quarkus:quarkus-jdbc-h2:999-SNAPSHOT",
+            "io.quarkus:quarkus-hibernate-orm-panache:999-SNAPSHOT"
     ).forEach(::implementation)
 
 //    implementation(kotlin("stdlib-jdk8"))
