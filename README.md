@@ -59,6 +59,7 @@ we got
         ... 14 more
     
     ```
+15. !!! Method `EmployeeBlockingServiceNamespaceImpl::listForPeriodDemo` throws `MethodNotFound` upon call `EntityManager::createQuery().resultStream`
 
 #### Notes:
 

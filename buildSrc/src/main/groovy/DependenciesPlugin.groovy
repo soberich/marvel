@@ -40,7 +40,7 @@ class DependenciesPlugin implements Plugin<Project> {
                     { MutableNode node, ResolvedDependency dependency -> node.add(Style.FILLED, Color.rgb("#f35d45")) },
             )
 
-            def javaxOrJakarta = ["javax", "jakarta", "glassfish", "sun"]
+            def javaxOrJakarta = ["javax", "jakarta", "glassfish", "com.sun", "jvnet"]
             def javaxOrJakartaGenerator = new Generator(
                     "javaxOrJakarta", // Suffix for our Gradle task.
                     { ResolvedDependency dependency -> javaxOrJakarta.any {  dependency.getModuleGroup().contains(it) || dependency.getModuleName().contains(it) } },

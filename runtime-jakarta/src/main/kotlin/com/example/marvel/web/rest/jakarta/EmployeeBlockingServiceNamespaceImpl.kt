@@ -69,14 +69,25 @@ class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace,
 
 
     fun updateEmployee(employee: EmployeeUpdateCommand): EmployeeDto? =
-            findById(employee.id)
-                    ?.run { EmployeeEntity(employee.copy()) }
-                    ?.also(em::merge)
-                    ?.toEmployeeDto()
+            findById(employee.id)?.run { EmployeeEntity(employee.copy()) }?.let(em::merge)?.toEmployeeDto()
 
     override fun listEmployees(): Stream<EmployeeDto> = EmployeeEntity.streamAll().map(EmployeeEntity::toEmployeeDto)
 
     /**
+     * FIXME: Throws `resultStream` MethodNotFound !!??
+     * @note Below method works fine.
+     */
+    fun listForPeriodDemo(id: Long, year: Year, month: Month): Stream<RecordDto> =
+            em.createQuery(
+            GET_RECORDS_FOR_PERIOD,
+            RecordDto::class.java)
+            .setParameter(1, id)
+            .setParameter(2, month)
+            .setParameter(3, year)
+            .resultStream
+
+    /**
+     * !!Works fine.
      * @note In kotlin 1.3.40 trimming margins, indents, etc. would become intrinsics.
      * No string creation. Multiline for free. (E.g. can be used in annotations)
      * @see [https://youtrack.jetbrains.com/issue/KT-17755]
