@@ -13,7 +13,7 @@ tasks.withType<ResolveTask>().configureEach {
     classpath                  = project.sourceSets.main.get().runtimeClasspath
     modelConverterClasses      = linkedSetOf("com.example.marvel.openapi.OpenApiConfig")
     objectMapperProcessorClass = "com.example.marvel.openapi.OpenApiConfig"
-    openApiFile                = file("$rootDir/runtime-jakarta/src/main/webapp/api.yaml", FILE)
+    openApiFile                = file("$rootDir/runtime-jakarta/src/main/resources/META-INF/resources/api.yaml", FILE)
     outputFormat               = YAML
     outputPath                 =  "$rootDir/runtime-jakarta/src/main/webapp"
     prettyPrint                = true

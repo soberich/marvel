@@ -1,24 +1,16 @@
 
 import versioning.Deps
 
-
 plugins {
     java
     idea
     io.ebean
 }
 
-idea.module {
-//    files("$projectDir/generated") {
-//        sourceDirs        ?.addAll(files) ?: files.also(::setSourceDirs)
-//        generatedSourceDirs.addAll(files)
-//    }
-}
-
 ebean.debugLevel = 2
 
 tasks.withType<JavaCompile>().configureEach {
-    options.annotationProcessorGeneratedSourcesDirectory = file("generated")
+    options.annotationProcessorGeneratedSourcesDirectory = file("src/generated/java")
 }
 
 dependencies {

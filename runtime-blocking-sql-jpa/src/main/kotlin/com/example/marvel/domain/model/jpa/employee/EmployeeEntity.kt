@@ -9,7 +9,6 @@ import com.example.marvel.domain.model.api.employee.EmployeeModel
 import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
 import com.example.marvel.domain.model.jpa.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -39,13 +38,12 @@ data class EmployeeEntity(@Transient private val delegate: Employee) : SimpleGen
     override fun hashCode() = super.hashCode()
 
     /**
-     * FIXME: This does not work!
+     * FIXME:
      *    @see https://github.com/quarkusio/quarkus/issues/2196
      *    As a workaround we additionally extend `PanacheRepositoryBase` in our services
      *    @note this is NOT due to it is not managed bean! Any setup won't work from here
      *    e.g. Entities/Repositories wont be enhanced in external jar!
      */
-    companion object : PanacheRepositoryBase<EmployeeEntity, Long>
 }
 
 /**

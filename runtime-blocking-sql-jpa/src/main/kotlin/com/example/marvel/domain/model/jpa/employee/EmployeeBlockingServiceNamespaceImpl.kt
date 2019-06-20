@@ -1,24 +1,27 @@
-package com.example.marvel.web.rest.jakarta
+package com.example.marvel.domain.model.jpa.employee
 
+import com.example.marvel.domain.model.api.employee.EmployeeCreateCommand
 import com.example.marvel.domain.model.api.employee.EmployeeDto
+import com.example.marvel.domain.model.api.employee.EmployeeModel
 import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
 import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpdateCommand
-import com.example.marvel.domain.model.jpa.employee.EmployeeEntity
-import com.example.marvel.domain.model.jpa.employee.toEmployeeDto
+import com.example.marvel.domain.model.jpa.record.RecordEntity
+import com.example.marvel.domain.model.jpa.record.toRecordDto
+import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity_
 import com.example.marvel.domain.model.jpa.recordcollection.toRecordCollection
 import com.example.marvel.domain.model.jpa.recordcollection.toRecordCollectionDto
 import com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
-import org.hibernate.Session
 import java.time.Month
 import java.time.Year
 import java.util.stream.Stream
 import javax.enterprise.context.ApplicationScoped
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.transaction.Transactional
+
 
 /**
  * All calls to (`withContext(this)`)[kotlinx.coroutines.withContext]
@@ -45,16 +48,52 @@ import javax.persistence.PersistenceContext
  *    at org.jboss.resteasy.core.MethodInjectorImpl.invoke(MethodInjectorImpl.java:151)
  *    ... 71 more
  *    on Quarkus 999-SNAPSHOT by 2019-06-12
+ *
+ * FIXME: All these `/*EmployeeEntity.*/` is due to https://github.com/quarkusio/quarkus/issues/2196
  */
-//@Transactional
+@Transactional
 @ApplicationScoped
-class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace, PanacheRepositoryBase<EmployeeEntity, Long> {
+class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace {
 
     @PersistenceContext
     lateinit var em: EntityManager
 
-    override fun getAnyUserDemo(): EmployeeDto? =
-        findById(Math.random().toLong() % 5)?.toEmployeeDto()
+    /**
+     * TODO: Into interface.
+     */
+    fun updateEmployee(employee: EmployeeUpdateCommand): EmployeeDto? =
+            em.find(EmployeeEntity::class.java, employee.id)
+                    ?.run { EmployeeEntity(employee.copy()) }
+                    ?.let(em::merge)
+                    ?.toEmployeeDto()
+
+    override fun streamEmployees(): Stream<EmployeeDto> =
+            em.createQuery("SELECT e FROM EmployeeEntity e", EmployeeEntity::class.java)
+                    .resultStream
+                    .map(EmployeeEntity::toEmployeeDto)
+
+    /**
+     * @note In kotlin 1.3.40 trimming margins, indents, etc. would become intrinsics.
+     * No string creation. Multiline for free. (E.g. can be used in annotations)
+     * @see [link](https://youtrack.jetbrains.com/issue/KT-17755)
+     * @implNote more an experiment to use JPQL - not an optimal solution.
+     */
+    override fun listForPeriod(id: Long, year: Year, month: Month): Stream<RecordDto> =
+            em.createNamedQuery("Record.findForPeriod", RecordEntity::class.java)
+                    .setParameter(RecordCollectionEntity_.ID, id)
+                    .setParameter(RecordCollectionEntity_.MONTH, month)
+                    .setParameter(RecordCollectionEntity_.YEAR, year)
+                    .resultStream
+                    .map(RecordEntity::toRecordDto)
+
+    override fun createWholePeriod(id: Long, records: RecordCollectionCreateCommand): RecordCollectionDto? =
+            em.find(EmployeeEntity::class.java, id)?.run { records.toRecordCollection(em).also(em::persist).toRecordCollectionDto() }
+
+    override fun updateWholePeriod(id: Long, records: RecordCollectionUpdateCommand): RecordCollectionDto? =
+            em.find(EmployeeEntity::class.java, id)?.run { records.toRecordCollection(em).let(em::merge).toRecordCollectionDto() }
+
+    fun getAnyUserDemo(): EmployeeDto? =
+            em.find(EmployeeEntity::class.java, Math.random().toLong() % 5)?.toEmployeeDto()
 
     /**
      * no-op
@@ -62,64 +101,21 @@ class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace,
      * in this service for consumers (e.g. Resources/Controllers)
      */
     fun updateEmployeeDemo(employee: EmployeeUpdateCommand): Stream<EmployeeDto> =
-            stream("id = ?1", employee.id)
+            Stream.of(em.find(EmployeeEntity::class.java, employee.id))
                     .map { EmployeeEntity(employee.copy()) }
                     .map(em::merge)
                     .map(EmployeeEntity::toEmployeeDto)
 
-
-    fun updateEmployee(employee: EmployeeUpdateCommand): EmployeeDto? =
-            findById(employee.id)?.run { EmployeeEntity(employee.copy()) }?.let(em::merge)?.toEmployeeDto()
-
-    override fun listEmployees(): Stream<EmployeeDto> = EmployeeEntity.streamAll().map(EmployeeEntity::toEmployeeDto)
-
-    /**
-     * FIXME: Throws `resultStream` MethodNotFound !!??
-     * @note Below method works fine.
-     */
-    fun listForPeriodDemo(id: Long, year: Year, month: Month): Stream<RecordDto> =
-            em.createQuery(
-            GET_RECORDS_FOR_PERIOD,
-            RecordDto::class.java)
-            .setParameter(1, id)
-            .setParameter(2, month)
-            .setParameter(3, year)
-            .resultStream
-
-    /**
-     * !!Works fine.
-     * @note In kotlin 1.3.40 trimming margins, indents, etc. would become intrinsics.
-     * No string creation. Multiline for free. (E.g. can be used in annotations)
-     * @see [https://youtrack.jetbrains.com/issue/KT-17755]
-     * @implNote more an experiment to use JPQL - not an optimal solution.
-     */
-    override fun listForPeriod(id: Long, year: Year, month: Month): Stream<RecordDto> =
-            em.unwrap(Session::class.java)
-            .createQuery(
-            GET_RECORDS_FOR_PERIOD,
-            RecordDto::class.java)
-            .setParameter(1, id)
-            .setParameter(2, month)
-            .setParameter(3, year)
-            .stream()
-
-    override fun createWholePeriod(id: Long, records: RecordCollectionCreateCommand): RecordCollectionDto? =
-            findById(id)?.run { records.toRecordCollection().also(em::persist).toRecordCollectionDto() }
-
-    override fun updateWholePeriod(id: Long, records: RecordCollectionUpdateCommand): RecordCollectionDto? =
-            findById(id)?.run { records.toRecordCollection().let(em::merge).toRecordCollectionDto() }
-
-    companion object {
-        private val GET_RECORDS_FOR_PERIOD =
-                """SELECT
-                      NEW com.example.marvel.domain.model.api.record.RecordCreateCommand(p.date, p.type, p.hoursSubmitted, p.desc, p.report.id)
-                   FROM
-                      RecordEntity p
-                      JOIN
-                         p.report c
-                   WHERE
-                      c.id  = ?1
-                      and c.month = ?2
-                      and c.year = ?3""".trimIndent()
+    fun listEmployeesDemo(): List<EmployeeModel> {
+        val cb = em.criteriaBuilder
+        val cq = cb.createQuery(EmployeeCreateCommand::class.java)
+        val root = cq.from(EmployeeEntity::class.java)
+        return em.createQuery(
+                cq.select(
+                        cb.construct(EmployeeCreateCommand::class.java,
+                                root[EmployeeEntity_.id],
+                                root[EmployeeEntity_.name],
+                                root[EmployeeEntity_.email]))
+        ).resultList
     }
 }

@@ -9,6 +9,7 @@ import java.util.regex.Pattern.compile
 
 /**
  * Port from java
+ * TODO: Make more "kotlinish"
  */
 class Inflector {
 

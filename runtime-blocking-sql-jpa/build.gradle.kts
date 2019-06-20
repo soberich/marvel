@@ -2,12 +2,16 @@ import org.gradle.api.JavaVersion.VERSION_1_8
 import versioning.Deps
 
 plugins {
+    `java-library`
     kronstadt
 //    dependencies
-//    id("org.galaxx.gradle.jandex") version "1.0.2"
     `project-report`
-}
 
+}
+java {
+    val main by sourceSets
+    main.output.setResourcesDir("$buildDir/classes/java/main")
+}
 version = "0.0.1-SNAPSHOT"
 
 repositories {
@@ -18,13 +22,14 @@ dependencies {
     implementation(project(":business", "default"))
 //    implementation(project(":convention", "default"))
 
-    implementation(enforcedPlatform(Deps.Platforms.QUARKUS))
+    kapt("org.hibernate:hibernate-jpamodelgen:5.4.3.Final")
 
     arrayOf(
+            "javax.json.bind:javax.json.bind-api:1.0",
             Deps.Javax.PERSISTENCE,
-            "io.quarkus:quarkus-jdbc-h2",
-            "io.quarkus:quarkus-hibernate-orm-panache"
-    ).forEach(::implementation)
+            Deps.Javax.CDI,
+            "org.hibernate:hibernate-core:[5.3,6)"
+    ).forEach(::api)
 
 }
 

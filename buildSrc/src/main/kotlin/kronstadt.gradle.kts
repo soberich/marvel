@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets.UTF_8
 plugins {
     idea
     kotlin
-//    `kotlin-kapt`
+    `kotlin-kapt`
     `kotlin-allopen`
     `kotlin-noarg`
     `kotlin-jpa`
@@ -35,15 +35,6 @@ idea.module {
              .also(::setGeneratedSourceDirs)
     }
 }
-
-//kapt {
-//    javacOptions {
-//        file("$rootDir/javacArgs", PathValidation.FILE).forEachLine(action = ::option)
-//    }
-//    arguments {
-//        arg("kapt.kotlin.generated", "$projectDir/generated")
-//    }
-//}
 
 allOpen {
     annotations(
@@ -73,10 +64,6 @@ tasks {
     withType<KotlinJvmCompile>().configureEach {
         kotlinOptions.jvmTarget = VERSION_1_8.toString()
     }
-    withType<KaptTask>().configureEach {
-        destinationDir = file("$projectDir/generated")
-        kotlinSourcesDestinationDir = file("$projectDir/generated")
-    }
     withType<JavaCompile>().configureEach {
         options.apply {
             encoding      = UTF_8.name()
@@ -92,12 +79,12 @@ tasks {
 
 dependencies {
     //BOM
-    implementation(platform(Deps.Platforms.JACKSON))
     implementation(enforcedPlatform(kotlin("bom")))
+//    implementation(platform(Deps.Platforms.JACKSON))
     //BOM
     implementation(kotlin("stdlib-jdk8"))
     implementation(Deps.Libs.COROUTINES_JDK8)
     implementation(Deps.Libs.COROUTINES_REACTOR)
 
-    implementation(Deps.Libs.JACKSON_KOTLIN)
+//    implementation(Deps.Libs.JACKSON_KOTLIN)
 }

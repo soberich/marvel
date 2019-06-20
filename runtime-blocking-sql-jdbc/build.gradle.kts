@@ -1,9 +1,8 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
-import versioning.Deps
 
 plugins {
     kronstadt
-    jpa
+//    jpa
     dependencies
 }
 
@@ -17,12 +16,12 @@ dependencies {
     implementation(project(":business", "default"))
 
 
-    arrayOf(
-            Deps.Javax.VALIDATION,
-            Deps.Libs.EBEAN,
-            Deps.Libs.EBEAN_ANNOTATION,
-            Deps.Libs.EBEAN_QUERY
-    ).forEach(::implementation)
+//    arrayOf(
+//            Deps.Javax.VALIDATION,
+//            Deps.Libs.EBEAN,
+//            Deps.Libs.EBEAN_ANNOTATION,
+//            Deps.Libs.EBEAN_QUERY
+//    ).forEach(::implementation)
 
 //    implementation(kotlin("stdlib-jdk8"))
 //    testCompile("junit", "junit", "4.12")

@@ -2,11 +2,10 @@
 import versioning.Deps
 
 plugins {
-    java
+    `java-library`
     kronstadt
 //    `arrow-meta-convention-helper`
 //    id("com.google.protobuf") version "0.8.8"
-//    id("org.galaxx.gradle.jandex") version "1.0.2"
 }
 repositories.jcenter {
     content {
@@ -14,7 +13,10 @@ repositories.jcenter {
         includeGroupByRegex("(jakarta|sun|org\\.glassfish).+")
     }
 }
-
+java {
+    val main by sourceSets
+    main.output.setResourcesDir("$buildDir/classes/java/main")
+}
 
 //protobuf {
 //    protoc {
@@ -46,15 +48,11 @@ dependencies {
 //    kapt(Deps.Libs.ARROW_META)
 
     arrayOf(
-            Deps.Libs.ARROW_EXTRAS_DATA,
-            Deps.Libs.ARROW_OPTICS,
-            Deps.Libs.REACTIVE_STREAMS
-    ).forEach(::implementation)
-
-    arrayOf(
+            "javax.json.bind:javax.json.bind-api:1.0",
             Deps.Jakarta.VALIDATION,
-            Deps.Jakarta.JAX_RS
-    ).forEach(::implementation)
+            Deps.Libs.REACTIVE_STREAMS
+    ).forEach(::api)
+
 
 
 }

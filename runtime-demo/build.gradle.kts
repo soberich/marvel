@@ -8,7 +8,7 @@ check(current().isJava8Compatible) { "At least Java 8 is required, current JVM i
 
 plugins {
     kronstadt
-    jpa
+    jdbc
     `project-report`
 }
 
@@ -27,8 +27,10 @@ repositories {
 }
 
 java.sourceCompatibility = VERSION_1_8
+java.targetCompatibility = current()
 
-val quarkusVersion = "999-SNAPSHOT"
+
+val quarkusVersion = "0.17.0"
 
 subprojects {
     apply(plugin = "build-dashboard")
@@ -79,7 +81,9 @@ dependencies {
     annotationProcessor(Deps.Jakarta.ANNOTATION)
     compileOnly(Deps.Jakarta.ANNOTATION)
 
-    implementation(enforcedPlatform("io.quarkus:quarkus-bom:${quarkusVersion}"))
+    implementation(enforcedPlatform(Deps.Platforms.QUARKUS))
+    implementation(platform(Deps.Platforms.RESTEASY))
+    implementation(platform(Deps.Platforms.JACKSON))
 
     implementation(project(":business", "default"))
 //    implementation(project(":runtime-blocking-sql-jdbc", "default"))
@@ -87,35 +91,37 @@ dependencies {
     implementation(project(":runtime-jakarta", "default"))
 
     arrayOf(
-            Deps.Libs.ARROW_SYNTAX,
+            Deps.Libs.ARROW_EFFECTS_IO_EXTENSIONS,
             Deps.Libs.ARROW_EFFECTS_REACTOR_DATA,
             Deps.Libs.ARROW_EFFECTS_REACTOR_EXTENSIONS,
-            Deps.Libs.ARROW_EFFECTS_IO_EXTENSIONS,
             Deps.Libs.ARROW_OPTICS,
-            "io.quarkus:quarkus-resteasy:${quarkusVersion}",
-            "io.quarkus:quarkus-resteasy:${quarkusVersion}",
-            "io.quarkus:quarkus-vertx:${quarkusVersion}",
-            "org.litote.kmongo:kmongo:3.10.2-SNAPSHOT",
-            "org.litote.kmongo:kmongo-coroutine:3.10.2-SNAPSHOT",
-            "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT",
+            Deps.Libs.ARROW_SYNTAX,
+            Deps.Libs.COROUTINES_RXJAVA2,
+            Deps.Libs.SLF4J_JBOSS,
+//            "io.quarkus:quarkus-smallrye-openapi", FIXME: see README.md
+            "io.quarkus:quarkus-hibernate-orm-panache",
+            "io.quarkus:quarkus-kotlin",
+            "io.quarkus:quarkus-narayana-jta",
+            "io.quarkus:quarkus-reactive-pg-client",
+            "io.quarkus:quarkus-resteasy-jsonb",
+            "io.quarkus:quarkus-resteasy",
+            "io.quarkus:quarkus-smallrye-context-propagation",
+            "io.quarkus:quarkus-vertx",
+            "io.smallrye.reactive:smallrye-reactive-converter-rxjava2:1.0.5",
+            "io.smallrye:smallrye-context-propagation-propagators-rxjava2",
             "io.vertx:vertx-lang-kotlin-coroutines:4.0.0-SNAPSHOT",
-            kotlin("stdlib-jdk8")
+            "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT",
+            "org.jboss.logmanager:jboss-logmanager-embedded",
+            "org.jboss.resteasy:resteasy-rxjava2:${Deps.Versions.RESTEASY}",
+            "org.wildfly.common:wildfly-common"
     ).forEach(::implementation)
-//<dependency>
-//            <groupId>io.smallrye</groupId>
-//            <artifactId>smallrye-config</artifactId>
-//            <scope>runtime</scope>
-//        </dependency>
+
     arrayOf(
-            "org.jboss.resteasy:resteasy-json-binding-provider:4.0.0.Final",
-            "org.eclipse.microprofile.config:microprofile-config-api:1.3",
-            "io.smallrye:smallrye-config:1.3.5"
+            "io.quarkus:quarkus-jdbc-h2",
+            "io.quarkus:quarkus-smallrye-context-propagation",
+            "io.smallrye:smallrye-context-propagation-jta"
     ).forEach(::runtimeOnly)
-    //<dependency>
-    //    <groupId>org.jboss.resteasy</groupId>
-    //    <artifactId>resteasy-json-binding-provider</artifactId>
-    //    <version>4.0.0.Final</version>
-    //</dependency>
+
     arrayOf(
             "io.quarkus:quarkus-junit5:${quarkusVersion}",
             "io.rest-assured:rest-assured:3.3.0",

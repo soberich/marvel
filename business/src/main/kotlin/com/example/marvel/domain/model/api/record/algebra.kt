@@ -5,6 +5,7 @@ package com.example.marvel.domain.model.api.record
 import com.example.marvel.domain.model.enums.RecordType
 import java.math.BigDecimal
 import java.time.LocalDate
+import javax.json.bind.annotation.JsonbCreator
 import javax.validation.constraints.NotNull
 
 interface Record {
@@ -47,7 +48,7 @@ data class RecordDto(
     override val recordCollectionId  : Long
 ) : RecordModel(), Record by delegate { companion object }
 
-/*@optics */data class RecordCreateCommand(
+/*@optics */data class RecordCreateCommand @JsonbCreator constructor(
     @get:NotNull
     override val date                : LocalDate,
     @get:NotNull

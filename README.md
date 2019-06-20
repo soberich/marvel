@@ -5,8 +5,8 @@
 1. Tests do not run. As simple as it sounds - with kotlin setup tests are not detected at all. at least it was so for `0.15.0` for sure and for `0.16.0` (almost) for sure, even though:
     ```kotlin
     quarkus {
-        setSourceDir("$projectDir/src/main/kotlin")
-        resourcesDir() += file("$projectDir/src/main/resources")
+        setSourceDir("src/main/kotlin")
+        resourcesDir() += file("src/main/resources")
         setOutputDirectory("$buildDir/classes/kotlin/main")
     }
     ```
@@ -36,7 +36,7 @@ you extend from. Should `PanacheEntityBase` become an interface?
 8. Kotlin. If you make `@javax.persistence.Id` property a `val` Hibernate throws it can not set id for final field. In Kotlin this is common and for `data classes` with Spring-Boot( Data) you normally make it `val` even though in Java you probably would have a setter. Enhance at build time instead limiting developer experience with Kotlin?
 9. JWT. Making Endpoint `RequestScopped` for to allow MP `JwtToken` injection seems limiting. There always was request scoped things you can inject in JAX-RS runtime (with `@Context` annotation) and it worked for years. Maybe for MP `JwtToken` and companions related to same concerns there could be possibility to `@Inject` into `@ApplicationScopped` still?
 10. Kotlin. Extending `PanacheEntity*` gives much less as you can't access `static` method. All static methods in `Panache(Repository|Entity)*` needs more design with Kotlin in mind. Default methods seems to have less problems here. The only one comes in mind is that you can't override them unless annotate method with `@JvmDefault` but this is acceptable trade-off. Statics much less consumable from Kotlin. The best would be to write the extendable part of framework (e.g. `quarkus-hibernate-orm-panache`) in kotlin with full compatibility with Java. OkHttp recently did it. They rewrote the wrole thing in Kotlin while maintaining full interop with Java. I personally bumped the version to `4.0.0-rc-1` and it worked with no problem. See example in https://github.com/square/okhttp/blob/master/okhttp/src/main/java/okhttp3/RequestBody.kt. For 6-8 target classes in `io.quarkus.hibernate.orm.panache.*` package seems like a viable solution?
-11. Kotlin. Recently (in `999-SNAPSHOT` I think) added `context-propagation` does not work for coroutines. This caused to throw away all `coroutines` supporting libs (`org.litote.kmongo:kmongo-coroutine`, `io.vertx:vertx-lang-kotlin-coroutines`, and especially `arrow-kt` as all those functional compositions only makes sense for async and parallel computations which could be expressed more concisely in imperative style (`arrow-kt` bindings), but they all rely on coroutines in its core. Hope this will change with `panache-rx-coroutines` even though list of supported JPA annotations/features is not impressive / big at all.
+11. Kotlin. Recently (in `0.16.0` I think) added `context-propagation` does not work for coroutines. This caused to throw away all `coroutines` supporting libs (`org.litote.kmongo:kmongo-coroutine`, `io.vertx:vertx-lang-kotlin-coroutines`, and especially `arrow-kt` as all those functional compositions only makes sense for async and parallel computations which could be expressed more concisely in imperative style (`arrow-kt` bindings), but they all rely on coroutines in its core. Hope this will change with `panache-rx-coroutines` even though list of supported JPA annotations/features is not impressive / big at all.
 12. When add `io.quarkus:quarkus-reactive-pg-client` you got `io.reactiverse:reactive-pg-client` transitively. `io.reactiverse:reactive-pg-client` have kotlin package with extensions, which is misleading and Quarkus user should only use `smallrye-*-client` APIs for operations, I suppose.
 13. While Jsonb writes our specifically structured `data class`es (see [com.example.marvel.domain.model.api.record.RecordDto](./business/src/main/kotlin/com/example/marvel/domain/model/api/recordcollection/algebra.kt)) just fine at runtime only inspecting `public` properties (which IS desired), produced OpenAPI spec file apparently inspects model through reflection with Jackson probably. Either way, the resulting JSON model examples reflects `delegate` property. Should there be whether way to provide configuration to underling Reader or something like that? Staring from `2.0.7` `swagger-core` provides both Gradle and Maven plugins, which both works brilliantly and has all handles I mentioned (for Jackson, for Readers, Filters, etc. AND for files to merge and affect the resuling `openapi.yaml`). So, far it is the best option on the market. You can see [api.yaml](./runtime-jakarta/src/main/webapp/api.yaml) with security declaration and meta-info and produced [openapi.yaml](./runtime-jakarta/src/main/webapp/openapi.yaml) file. You can do whatever to your endpoints and then just execute 
     ```log
@@ -59,7 +59,6 @@ we got
         ... 14 more
     
     ```
-15. !!! Method `EmployeeBlockingServiceNamespaceImpl::listForPeriodDemo` throws `MethodNotFound` upon call `EntityManager::createQuery().resultStream`
 
 #### Notes:
 

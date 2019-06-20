@@ -7,9 +7,9 @@ plugins {
     java
     `java-gradle-plugin`
     `kotlin-dsl`
-    `build-dashboard`                                             // optional
-    `help-tasks`                                                  // optional
-    `project-report`                                              // optional
+    `build-dashboard`                                         // optional
+    `help-tasks`                                              // optional
+    `project-report`                                          // optional
     id("se.patrikerdes.use-latest-versions") version "0.2.10" // optional
     id("com.github.ben-manes.versions")      version "0.21.0" // optional
 }
@@ -46,7 +46,7 @@ tasks {
     }
 }
 
-val kotlinVersion = "1.3.4+"
+val kotlinVersion = KotlinVersion(1, 3, 40).toString()
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion

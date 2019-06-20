@@ -1,14 +1,17 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
+import org.gradle.api.JavaVersion.current
 import versioning.Deps
 
 plugins {
-//    java
     kronstadt
 //    dependencies
-    `jdk9plus-convention-helper`
-    id("io.quarkus") version "999-SNAPSHOT" //Deps.Versions.QUARKUS FIXME: Doesn't work because of Deps are in Java ?
+    id("io.quarkus") version versioning.Platforms.Versions.QUARKUS
     `project-report`
-//    id("org.galaxx.gradle.jandex") version "1.0.2"
+}
+
+java {
+    val main by sourceSets
+    main.output.setResourcesDir("$buildDir/classes/java/main")
 }
 
 quarkus {
@@ -21,19 +24,12 @@ version = "0.0.1-SNAPSHOT"
 
 dependencies {
     implementation(project(":business", "default"))
-    implementation(project(":runtime-blocking-sql-jpa", "default"))
+    runtimeOnly(project(":runtime-blocking-sql-jpa", "default"))
 
     implementation(enforcedPlatform(Deps.Platforms.QUARKUS))
     implementation(platform(Deps.Platforms.RESTEASY))
 
     arrayOf(
-            Deps.Libs.ARROW_EFFECTS_IO_EXTENSIONS,
-            Deps.Libs.ARROW_EFFECTS_REACTOR_DATA,
-            Deps.Libs.ARROW_EFFECTS_REACTOR_EXTENSIONS,
-            Deps.Libs.ARROW_OPTICS,
-            Deps.Libs.ARROW_SYNTAX,
-            Deps.Libs.COROUTINES_RXJAVA2,
-            Deps.Libs.SLF4J_JBOSS,
 //            "io.quarkus:quarkus-smallrye-openapi", FIXME: see README.md
             "io.quarkus:quarkus-hibernate-orm-panache",
             "io.quarkus:quarkus-kotlin",
@@ -48,15 +44,19 @@ dependencies {
             "io.vertx:vertx-lang-kotlin-coroutines:4.0.0-SNAPSHOT",
             "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT",
             "org.jboss.logmanager:jboss-logmanager-embedded",
-            "org.jboss.resteasy:resteasy-rxjava2",
+            "org.jboss.resteasy:resteasy-rxjava2:${Deps.Versions.RESTEASY}",
             "org.wildfly.common:wildfly-common"
     ).forEach(::implementation)
 
     arrayOf(
+            Deps.Libs.SLF4J_JBOSS,
             "io.quarkus:quarkus-jdbc-h2",
             "io.quarkus:quarkus-smallrye-context-propagation",
-            "io.smallrye:smallrye-context-propagation-jta",
-            "org.jboss.resteasy:resteasy-context-propagation"
+            "io.smallrye:smallrye-context-propagation-jta"
+          //FIXME: Does not work.
+          //   "org.webjars:bootstrap:4.3.1",
+          //   "org.webjars:swagger-ui:3.22.2",
+          //   "org.webjars:webjars-locator-core:0.37",
     ).forEach(::runtimeOnly)
 
     arrayOf(
@@ -71,6 +71,7 @@ dependencies {
 }
 
 java.sourceCompatibility = VERSION_1_8
+java.targetCompatibility = current()
 
 tasks.test {
     useJUnitPlatform()

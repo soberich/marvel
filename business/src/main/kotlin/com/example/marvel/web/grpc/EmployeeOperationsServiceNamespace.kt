@@ -15,13 +15,11 @@ import java.util.stream.Stream
  * @note Description came from time when we had more functional set-up and suspend functions here.
  * TODO: This should/could be wrapped with GRPC service by SalesForce (Reactive-GRPS).
  *    Or a more generic and proper solution is to use same interface from REST endpoint, and provide another
- *    runtime with GRPC as transport instead REST. Presumably SalesForce (Reactive-GRPS) should allow that.
+ *    runtime with GRPC as exchange instead REST. Presumably SalesForce (Reactive-GRPS) should allow that.
  */
 interface EmployeeOperationsServiceNamespace {
 
-    fun getAnyUserDemo(): EmployeeDto?
-
-    fun listEmployees(): Stream<EmployeeDto>
+    fun streamEmployees(): Stream<EmployeeDto>
 
     fun listForPeriod(id: Long, year: Year, month: Month): Stream<RecordDto>
 

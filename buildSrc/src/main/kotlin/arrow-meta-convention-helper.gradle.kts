@@ -20,6 +20,8 @@ idea.module {
     val paths =
             variants.map { "$buildDir/generated/source/kaptKotlin$it" } +
             variants.map { "$buildDir/generated/source/kapt$it" } +
+            variants.map { "$projectDir/src/generated/kotlin$it" } +
+            variants.map { "$projectDir/src/generated/java$it" } +
             "$buildDir/tmp/kapt/main/kotlinGenerated" +
             "$projectDir/generated"
 

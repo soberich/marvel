@@ -2,7 +2,6 @@
 
 package com.example.marvel.domain.model.jpa.recordcollection
 
-import com.example.marvel.domain.model.api.record.RecordModel
 import com.example.marvel.domain.model.api.recordcollection.RecordCollection
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
@@ -12,15 +11,13 @@ import com.example.marvel.domain.model.jpa.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.model.jpa.employee.EmployeeEntity
 import com.example.marvel.domain.model.jpa.project.ProjectEntity
 import com.example.marvel.domain.model.jpa.record.RecordEntity
-import com.example.marvel.domain.model.jpa.record.toRecord
 import com.example.marvel.domain.model.jpa.record.toRecordDto
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import java.time.Month
-import java.time.Year
 import javax.persistence.Cacheable
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.EntityManager
 import javax.persistence.EnumType.STRING
 import javax.persistence.Enumerated
 import javax.persistence.FetchType.LAZY
@@ -34,7 +31,7 @@ import javax.persistence.Transient
 @Cacheable
 data class RecordCollectionEntity(@Transient private val delegate: RecordCollection) : SimpleGeneratedIdentityOfLong(), RecordCollection by delegate {
     @Column(nullable = false, updatable = false)
-    override lateinit var year                : Year
+    override  var year                : Int = 0
     @Column(nullable = false, updatable = false)
     @Enumerated(STRING)
     override lateinit var month               : Month
@@ -55,27 +52,29 @@ data class RecordCollectionEntity(@Transient private val delegate: RecordCollect
     override fun hashCode() = super.hashCode()
 
     /**
-     * FIXME: This does not work!
+     * FIXME:
      *    @see https://github.com/quarkusio/quarkus/issues/2196
      *    As a workaround we additionally extend `PanacheRepositoryBase` in our services
      *    @note this is NOT due to it is not managed bean! Any setup won't work from here
      *    e.g. Entities/Repositories wont be enhanced in external jar!
      */
-    companion object : PanacheRepositoryBase<RecordCollectionEntity, Long>
 }
 
 inline fun RecordCollectionEntity.toRecordCollectionDto(): RecordCollectionDto =
         RecordCollectionDto(copy(), project.id, employee.id  ?: 0L, records.map(RecordEntity::toRecordDto))
 
-inline fun RecordCollectionModel.toRecordCollection(): RecordCollectionEntity = when (this) {
-    is RecordCollectionDto           -> RecordCollectionEntity(copy()).copyRelations(this)
-    is RecordCollectionCreateCommand -> RecordCollectionEntity(copy()).copyRelations(this)
-    is RecordCollectionUpdateCommand -> RecordCollectionEntity(copy()).copyRelations(this)
+inline fun RecordCollectionModel.toRecordCollection(em : EntityManager): RecordCollectionEntity = when (this) {
+    is RecordCollectionDto           -> RecordCollectionEntity(copy()).copyRelations(this, em)
+    is RecordCollectionCreateCommand -> RecordCollectionEntity(copy()).copyRelations(this, em)
+    is RecordCollectionUpdateCommand -> RecordCollectionEntity(copy()).copyRelations(this, em)
 }
 
-inline fun RecordCollectionEntity.copyRelations(from: RecordCollectionModel): RecordCollectionEntity =
+/**
+ * TODO: Research is making `it` instead `it.copy()` makes properties immutable for free??
+ */
+inline fun RecordCollectionEntity.copyRelations(from: RecordCollectionModel, em: EntityManager): RecordCollectionEntity =
         apply {
-            project  = ProjectEntity .findById(from.projectId)
-            employee = EmployeeEntity.findById(from.employeeId)
-            records  = from.records.map(RecordModel::toRecord)
+            project  = em.getReference(ProjectEntity::class.java,  from.projectId)
+            employee = em.getReference(EmployeeEntity::class.java, from.employeeId)
+            records  = from.records.map { RecordEntity(it).apply { report = this@copyRelations } }
         }

@@ -302,7 +302,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/RecordDto'
     put:
-      operationId: adjustWholePeriod_1
+      operationId: adjustWholePeriod
       parameters:
       - name: id
         in: path
@@ -324,7 +324,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RecordCollectionDto'
     post:
-      operationId: saveWholePeriod_1
+      operationId: saveWholePeriod
       parameters:
       - name: id
         in: path

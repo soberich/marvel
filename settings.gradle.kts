@@ -27,6 +27,7 @@ pluginManagement {
 include(
         ":business",
         ":openapi",
+//        ":event-sourcing",
 //        ":convention",
 //        ":runtime-blocking-sql-jdbc",
         ":runtime-blocking-sql-jpa",

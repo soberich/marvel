@@ -5,11 +5,6 @@ plugins {
 }
 
 dependencies {
-//    "kapt"(Deps.Libs.EBEAN_ANNOTATION)
-//    "kapt"(Deps.Libs.EBEAN_QUERY)
-//    "kapt"(Deps.Libs.EBEAN_QUERY_GEN)
-//    "kapt"(Deps.Libs.EBEAN_PERSISTENCE)
-
     annotationProcessor(Deps.Javax.JAXB) {
         because("MetaModel and some other components require this to be on annotationProcessor classpath")
     }
@@ -31,10 +26,4 @@ dependencies {
     compileOnly(Deps.Javax.ANNOTATION) {
         because("Java 9+")
     }
-
-    implementation(Deps.Libs.VALIDATOR)
-
-    implementation(Deps.Libs.EBEAN)
-    implementation(Deps.Libs.EBEAN_QUERY)
-    implementation(Deps.Libs.EBEAN_ANNOTATION)
 }

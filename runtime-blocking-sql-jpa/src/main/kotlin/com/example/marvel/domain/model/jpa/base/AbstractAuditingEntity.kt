@@ -1,12 +1,13 @@
 package com.example.marvel.domain.model.jpa.base
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import java.io.Serializable
 import java.time.Instant
+import javax.json.bind.annotation.JsonbTransient
 import javax.persistence.Column
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
+
 
 /**
  * NO-OP
@@ -40,18 +41,18 @@ abstract class AbstractAuditingEntity<T : Serializable>(
 ) : IdentityOf<T>() {
 
     @Column(nullable = false, updatable = false)
-    @JsonIgnore
+    @JsonbTransient
     var createdBy           : String? = null
 
     @Column(nullable = false, updatable = false)
-    @JsonIgnore
+    @JsonbTransient
     var createdDate         : Instant = Instant.now()
 
     @Column(nullable = false, length = 50)
-    @JsonIgnore
+    @JsonbTransient
     var lastModifiedBy      : String? = null
 
     @Column(nullable = false)
-    @JsonIgnore
+    @JsonbTransient
     var lastModifiedDate    : Instant = Instant.now()
 }

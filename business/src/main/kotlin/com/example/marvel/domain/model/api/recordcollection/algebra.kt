@@ -7,7 +7,7 @@ import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.record.RecordModel
 import com.example.marvel.domain.model.api.record.RecordUpdateCommand
 import java.time.Month
-import java.time.Year
+import javax.json.bind.annotation.JsonbCreator
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
@@ -15,7 +15,7 @@ import javax.validation.constraints.Null
 
 interface RecordCollection {
     var id                  : Long?
-    val year                : Year
+    val year                : Int
     val month               : Month
 }
 
@@ -32,9 +32,9 @@ interface RecordCollection {
         /**
          * Could use be default args
          */
-        inline operator fun invoke(id: Long? = null, year: Year, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
+        inline operator fun invoke(id: Long? = null, year: Int, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
                 RecordCollectionDto(RecordCollectionCreateCommand(id ?: 0, year, month, projectId, employeeId, emptyList()), projectId, employeeId, emptyList())
-        inline operator fun invoke(year: Year, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
+        inline operator fun invoke(year: Int, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
                 RecordCollectionModel(null, year, month, projectId, employeeId, records)
     }
 }
@@ -46,11 +46,11 @@ data class RecordCollectionDto(
     override val records             : List/*K*/<RecordDto>
 ) : RecordCollectionModel(), RecordCollection by delegate { companion object }
 
-/*@optics*/data class RecordCollectionCreateCommand(
+/*@optics*/data class RecordCollectionCreateCommand @JsonbCreator constructor(
     @get:Null
     override var id                  : Long?,
     @get:NotNull
-    override val year                : Year,
+    override val year                : Int,
     @get:NotNull
     override val month               : Month,
     @get:NotNull
@@ -65,7 +65,7 @@ data class RecordCollectionDto(
     @get:NotNull
     override var id                  : Long?,
     @get:NotNull
-    override val year                : Year,
+    override val year                : Int,
     @get:NotNull
     override val month               : Month,
     @get:NotNull
