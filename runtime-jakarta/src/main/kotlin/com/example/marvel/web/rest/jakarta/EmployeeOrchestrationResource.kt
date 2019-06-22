@@ -1,14 +1,14 @@
 package com.example.marvel.web.rest.jakarta
 
 import com.example.marvel.domain.model.api.employee.EmployeeDto
-import com.example.marvel.domain.model.api.record.RecordModel
+import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpdateCommand
 import com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace
 import com.example.marvel.web.rest.EmployeeResourceAdapter
 import io.reactivex.Flowable
-import io.vertx.core.json.JsonObject
+import io.vertx.kotlin.core.json.jsonObjectOf
 import io.vertx.kotlin.coroutines.dispatcher
 import io.vertx.reactivex.core.eventbus.EventBus
 import kotlinx.coroutines.CoroutineScope
@@ -71,14 +71,14 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
     @Path("/employee")
     override fun getEmployees(): Flowable<EmployeeDto> =
             Flowable.fromIterable(Iterable(employees.streamEmployees()::iterator))
-                    .doFinally { eventBus.publish("any.address", JsonObject.mapFrom("""{"pojo event":"example "EmployeeCreatedEvent" "}""")) }
+                    .doFinally { eventBus.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
 
     @GET
     @Path("/employee/{id:[1-9][0-9]*}/records")
     override fun getForPeriod(
             @PathParam("id")        id: Long,
             @QueryParam("year")   year: Int,
-            @QueryParam("month") month: Month): Flowable<RecordModel> =
+            @QueryParam("month") month: Month): Flowable<RecordDto> =
             Flowable.fromIterable(Iterable(employees.listForPeriod(id, Year.of(year), month)::iterator))
 
     @POST

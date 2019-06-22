@@ -104,6 +104,7 @@ public interface Deps {
     interface Libs {
         //Meta `apt`
         String ARROW_META                                  = "io.arrow-kt:arrow-meta"                                  + ':' + Versions.ARROW;
+        String ARROW_ANNOTATIONS                           = "io.arrow-kt:arrow-annotations"                           + ':' + Versions.ARROW;
         //Very core
         String ARROW_SYNTAX                                = "io.arrow-kt:arrow-syntax"                                + ':' + Versions.ARROW;
         String ARROW_TYPECLASSES                           = "io.arrow-kt:arrow-typeclasses"                           + ':' + Versions.ARROW;
@@ -114,6 +115,7 @@ public interface Deps {
         String ARROW_EFFECTS_KOTLINX_COROUTINES            = "io.arrow-kt:arrow-effects-kotlinx-coroutines"            + ':' + Versions.ARROW; //optional
         String ARROW_EFFECTS_REACTOR                       = "io.arrow-kt:arrow-effects-reactor"                       + ':' + Versions.ARROW; //optional
         String ARROW_EFFECTS_RX2                           = "io.arrow-kt:arrow-effects-rx2"                           + ':' + Versions.ARROW; //optional
+        String ARROW_GENERIC                               = "io.arrow-kt:arrow-generic"                               + ':' + Versions.ARROW;
         //these are same but broken down to two artifacts
         String ARROW_CORE_DATA                             = "io.arrow-kt:arrow-core-data"                             + ':' + Versions.ARROW;
         String ARROW_CORE_EXTENSIONS                       = "io.arrow-kt:arrow-core-extensions"                       + ':' + Versions.ARROW;

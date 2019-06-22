@@ -45,7 +45,14 @@ java {
 //    }
 //}
 dependencies {
-//    kapt(Deps.Libs.ARROW_META)
+    kapt(Deps.Libs.ARROW_META)
+    arrayOf(
+            Deps.Libs.ARROW_EXTRAS_DATA,
+            Deps.Libs.ARROW_OPTICS,
+            Deps.Libs.ARROW_GENERIC,
+            Deps.Libs.REACTIVE_STREAMS
+    ).forEach(::implementation)
+    compileOnly(Deps.Libs.ARROW_ANNOTATIONS)
 
     arrayOf(
             "javax.json.bind:javax.json.bind-api:1.0",

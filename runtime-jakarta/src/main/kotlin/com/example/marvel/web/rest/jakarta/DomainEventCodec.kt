@@ -16,25 +16,15 @@ class DomainEventCodec : MessageCodec<Any, Any> {
         buffer.appendInt(length)
               .appendString(jsonToStr)
     }
-    override fun decodeFromWire(pos: Int, buffer: Buffer): Any {
-        // My custom message starting from this *position* of buffer
-        var _pos = pos
 
-        // Length of JSON
-        val length = buffer.getInt(_pos)
-
-        // Get JSON string by it`s length
-        // Jump 4 because getInt() == 4 bytes
-        _pos += 4
-        val start = _pos
-        _pos += length
-        val end = _pos
-        val jsonStr = buffer.getString(start, end)
-
-        // We can finally create custom message object
-        return JsonObject(jsonStr).mapTo(Any::class.java)
-    }
+    /**
+     * Get JSON string by it`s length
+     * Jump 4 because getInt() == 4 bytes
+     * @param pos Custom message starting from this *position* of buffer
+     */
+    override fun decodeFromWire(pos: Int, buffer: Buffer): Any =
+            JsonObject(buffer.getString(pos + 4, pos + 4 + buffer.getInt(pos))).mapTo(Any::class.java)
     override fun transform(o: Any): Any = o
-    override fun name(): String = this.javaClass.simpleName
+    override fun name(): String = this::class.java.simpleName
     override fun systemCodecID(): Byte = -1
 };

@@ -2,6 +2,11 @@
 
 package com.example.marvel.domain.model.api.employee
 
+import arrow.coproduct
+import arrow.core.ListK
+import arrow.optics.optics
+import arrow.product
+import javax.json.bind.annotation.JsonbCreator
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -10,7 +15,8 @@ import javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE
 
 /**
  * FIXME: Research / File a bug "Local class can not extend sealed class"
- * FIXME: Unfortunately, there are so many inconveniences with optics, that for now I give up on them.
+ * Unfortunately, there are so many inconveniences with optics, for now I'll leave a compileOnly configuration
+ * of `arrow-annotations` so consumer may decide to-arrow-or-not-to-arrow.
  *    Rest in peace, Arrow `@optic`.
  */
 
@@ -24,7 +30,7 @@ interface Employee {
  * FIXME:  Work around absence of ISO for sealed classes
  * It is clear that those inline properties are useless. They are for demo.
  */
-/*@optics */sealed class EmployeeModel : Employee {
+@coproduct @optics sealed class EmployeeModel : Employee {
 
     companion object {
         inline operator fun invoke(           name: String, email: String): EmployeeModel = EmployeeCreateCommand(null, name, email)
@@ -41,11 +47,15 @@ interface Employee {
     }
 }
 
-data class EmployeeDto(
-    private val delegate: Employee
-) : EmployeeModel(), Employee by delegate { companion object }
+/**
+ * FIXME: Track https://github.com/arrow-kt/arrow/issues/1494
+ */
+@product @optics data class EmployeeDto(
+    @PublishedApi
+    internal val delegate: Employee
+) : Employee by delegate { companion object }
 
-/*@optics */data class EmployeeCreateCommand(
+@product @optics data class EmployeeCreateCommand @JsonbCreator constructor(
     @get:Null
     override var id                  : Long?,
     @get:NotBlank
@@ -55,7 +65,7 @@ data class EmployeeDto(
     override val email               : String
 ) : EmployeeModel() { companion object }
 
-/*@optics */data class EmployeeUpdateCommand(
+@product @optics data class EmployeeUpdateCommand @JsonbCreator constructor(
     @get:NotNull
     override var id                  : Long?,
     @get:NotBlank
@@ -65,4 +75,5 @@ data class EmployeeDto(
     override val email               : String
 ) : EmployeeModel() { companion object }
 
-/*@optics */data class Employees(val employees: List/*K*/<EmployeeDto>) : List<EmployeeDto> by employees { companion object }
+@product @optics data class EmployeeRequests(val employees: ListK<EmployeeModel>) : List<EmployeeModel> by employees { companion object }
+@product @optics data class EmployeeResponses(val employees: ListK<EmployeeDto>) : List<EmployeeDto> by employees { companion object }

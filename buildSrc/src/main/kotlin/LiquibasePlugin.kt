@@ -62,7 +62,6 @@ class LiquibasePlugin : Plugin<Project> {
             }
         }
 
-
         tasks {
             val initPaths by registering {
                 group      = "liquibase"

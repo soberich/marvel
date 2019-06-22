@@ -2,6 +2,10 @@
 
 package com.example.marvel.domain.model.api.recordcollection
 
+import arrow.coproduct
+import arrow.core.ListK
+import arrow.optics.optics
+import arrow.product
 import com.example.marvel.domain.model.api.record.RecordCreateCommand
 import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.record.RecordModel
@@ -22,31 +26,32 @@ interface RecordCollection {
 /**
  * FIXME:  Some ISO for sealed classes =(
  */
-/*@optics*/sealed class RecordCollectionModel : RecordCollection {
+@coproduct @optics sealed class RecordCollectionModel : RecordCollection {
 
     abstract val projectId                    : String
     abstract val employeeId                   : Long
-    abstract val records                      : List/*K*/<@Valid RecordModel>
+    abstract val records                      : ListK<@Valid RecordModel>
 
     companion object {
         /**
          * Could use be default args
          */
         inline operator fun invoke(id: Long? = null, year: Int, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
-                RecordCollectionDto(RecordCollectionCreateCommand(id ?: 0, year, month, projectId, employeeId, emptyList()), projectId, employeeId, emptyList())
+                RecordCollectionDto(RecordCollectionCreateCommand(id ?: 0, year, month, projectId, employeeId, ListK(emptyList())), projectId, employeeId, ListK(emptyList()))
         inline operator fun invoke(year: Int, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
                 RecordCollectionModel(null, year, month, projectId, employeeId, records)
     }
 }
 
-data class RecordCollectionDto(
-    private val delegate             : RecordCollection,
-    override val projectId           : String,
-    override val employeeId          : Long,
-    override val records             : List/*K*/<RecordDto>
-) : RecordCollectionModel(), RecordCollection by delegate { companion object }
+@product @optics data class RecordCollectionDto(
+    @PublishedApi
+    internal val delegate             : RecordCollection,
+    val projectId                    : String,
+    val employeeId                   : Long,
+    val records                      : List<RecordDto>
+) : RecordCollection by delegate { companion object }
 
-/*@optics*/data class RecordCollectionCreateCommand @JsonbCreator constructor(
+@product @optics data class RecordCollectionCreateCommand @JsonbCreator constructor(
     @get:Null
     override var id                  : Long?,
     @get:NotNull
@@ -58,10 +63,10 @@ data class RecordCollectionDto(
     @get:NotNull
     override val employeeId          : Long,
     @get:NotEmpty
-    override val records             : List/*K*/<@Valid RecordCreateCommand>
+    override val records             : ListK<@Valid RecordCreateCommand>
 ) : RecordCollectionModel() { companion object }
 
-/*@optics*/data class RecordCollectionUpdateCommand(
+@product @optics data class RecordCollectionUpdateCommand @JsonbCreator constructor(
     @get:NotNull
     override var id                  : Long?,
     @get:NotNull
@@ -73,11 +78,12 @@ data class RecordCollectionDto(
     @get:NotNull
     override val employeeId          : Long,
     @get:NotEmpty
-    override val records             : List/*K*/<@Valid RecordUpdateCommand>
+    override val records             : ListK<@Valid RecordUpdateCommand>
 ) : RecordCollectionModel() { companion object }
 
 /**
  * no-op
  */
-/*@optics*/data class RecordCollections(val reports: List/*K*/<RecordCollectionDto>) : List<RecordCollectionDto> by reports { companion object }
+@product @optics data class RecordCollectionRequests(val reports: ListK<RecordCollectionModel>) : List<RecordCollectionModel> by reports { companion object }
+@product @optics data class RecordCollectionResponses(val reports: ListK<RecordCollectionDto>) : List<RecordCollectionDto> by reports { companion object }
 

@@ -2,8 +2,13 @@
 
 package com.example.marvel.domain.model.api.project
 
+import arrow.coproduct
+import arrow.core.ListK
+import arrow.optics.optics
+import arrow.product
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
+import javax.json.bind.annotation.JsonbCreator
 import javax.validation.constraints.NotNull
 
 interface Project {
@@ -14,7 +19,7 @@ interface Project {
  * FIXME: Some ISO for sealed classes =(
  * TODO: Research and/or file a bug.
  */
-/*@optics */sealed class ProjectModel : Project {
+@coproduct @optics sealed class ProjectModel : Project {
 
     companion object {
         /**
@@ -32,16 +37,17 @@ interface Project {
     }
 }
 
-data class ProjectDto(
-    private val delegate             : Project
-) : ProjectModel(), Project by delegate { companion object }
+@product @optics data class ProjectDto(
+    @PublishedApi
+    internal val delegate             : Project
+) : Project by delegate { companion object }
 
-/*@optics */data class ProjectCreateCommand(
+@product @optics data class ProjectCreateCommand @JsonbCreator constructor(
     @get:NotNull
     override val id                  : String
 ) : ProjectModel() { companion object }
 
-/*@optics */data class ProjectUpdateCommand(
+@product @optics data class ProjectUpdateCommand @JsonbCreator constructor(
     @get:NotNull
     override val id                  : String
 ) : ProjectModel() { companion object }
@@ -49,5 +55,6 @@ data class ProjectDto(
 /**
  * no-op
  */
-/*@optics */data class Projects(val records: List/*K*/<ProjectDto>) : List<ProjectDto> by records { companion object }
+@product @optics data class ProjectRequests(val projects: ListK<ProjectModel>) : List<ProjectModel> by projects { companion object }
+@product @optics data class ProjectResponses(val projects: ListK<ProjectDto>) : List<ProjectDto> by projects { companion object }
 

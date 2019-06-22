@@ -1,7 +1,7 @@
 package com.example.marvel.web.rest
 
 import com.example.marvel.domain.model.api.employee.EmployeeDto
-import com.example.marvel.domain.model.api.record.RecordModel
+import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpdateCommand
@@ -36,7 +36,7 @@ interface EmployeeResourceAdapter {
     fun getForPeriod(
             @NotNull    id: Long,
             @NotNull  year: Int,
-            @NotNull month: Month): Publisher<RecordModel>
+            @NotNull month: Month): Publisher<RecordDto>
 
     fun saveWholePeriod(
             @NotNull             id: Long,

@@ -2,6 +2,10 @@
 
 package com.example.marvel.domain.model.api.record
 
+import arrow.coproduct
+import arrow.core.ListK
+import arrow.optics.optics
+import arrow.product
 import com.example.marvel.domain.model.enums.RecordType
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -19,7 +23,7 @@ interface Record {
  * FIXME: Some ISO for sealed classes =(
  * TODO: Research and/or file a bug.
  */
-/*@optics */sealed class RecordModel : Record {
+@coproduct @optics sealed class RecordModel : Record {
 
     abstract val recordCollectionId  : Long
 
@@ -43,12 +47,13 @@ interface Record {
     }
 }
 
-data class RecordDto(
-    private val delegate             : Record,
-    override val recordCollectionId  : Long
-) : RecordModel(), Record by delegate { companion object }
+@product @optics data class RecordDto(
+    @PublishedApi
+    internal val delegate             : Record,
+    val recordCollectionId            : Long
+) : Record by delegate { companion object }
 
-/*@optics */data class RecordCreateCommand @JsonbCreator constructor(
+@product @optics data class RecordCreateCommand @JsonbCreator constructor(
     @get:NotNull
     override val date                : LocalDate,
     @get:NotNull
@@ -60,7 +65,7 @@ data class RecordDto(
     override val recordCollectionId  : Long
 ) : RecordModel() { companion object }
 
-/*@optics */data class RecordUpdateCommand(
+@product @optics data class RecordUpdateCommand @JsonbCreator constructor(
     @get:NotNull
     override val date                : LocalDate,
     @get:NotNull
@@ -75,7 +80,8 @@ data class RecordDto(
 /**
  * no-op
  */
-/*@optics */data class Records(val records: List/*K*/<RecordDto>) : List<RecordDto> by records { companion object }
+@product @optics data class RecordRequests(val records: ListK<RecordModel>) : List<RecordModel> by records { companion object }
+@product @optics data class RecordsResponses(val records: ListK<RecordDto>) : List<RecordDto> by records { companion object }
 
 
 ///**
