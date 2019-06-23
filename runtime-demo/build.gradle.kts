@@ -85,7 +85,7 @@ dependencies {
     implementation(platform(Deps.Platforms.RESTEASY))
     implementation(platform(Deps.Platforms.JACKSON))
 
-    implementation(project(":business", "default"))
+    implementation(project(":api", "default"))
 //    implementation(project(":runtime-blocking-sql-jdbc", "default"))
 //    implementation(project(":runtime-nosql", "default"))
     implementation(project(":runtime-jakarta", "default"))
@@ -124,7 +124,7 @@ dependencies {
 
     arrayOf(
             "io.quarkus:quarkus-junit5:${quarkusVersion}",
-            "io.rest-assured:rest-assured:3.3.0",
+            "io.rest-assured:rest-assured",
             Deps.Libs.COROUTINES_TEST,
             kotlin("test"),
             kotlin("test-junit")
@@ -135,19 +135,3 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-
-
-//import org.gradle.api.JavaVersion.*
-//import java.nio.charset.Charset
-//import java.nio.charset.StandardCharsets.UTF_8
-//
-//check(current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${current()}" }
-//
-//plugins {
-//	base
-////    id("com.moowork.node")              version "1.2.0"
-//    // ./gradlew dependencyUpdates
-//    id("com.github.ben-manes.versions") version "0.20.0"
-//}
-//
-

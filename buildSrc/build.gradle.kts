@@ -75,7 +75,7 @@ val kotlinVersion = KotlinVersion(1, 3, 40).toString()
     implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "2.0.8")
     implementation("nu.studer",                                         "gradle-credentials-plugin",                "1.0.7")
     implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "2.7.1")
-    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.2.0.M3")
+    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.2.0.M4")
     implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "0.2.10")
     //TODO:
 //    implementation("com.github.JetBrains",                              "gradle-idea-ext-plugin",                   "master-SNAPSHOT")

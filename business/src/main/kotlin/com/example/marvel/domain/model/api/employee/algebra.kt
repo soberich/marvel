@@ -2,10 +2,8 @@
 
 package com.example.marvel.domain.model.api.employee
 
-import arrow.coproduct
 import arrow.core.ListK
 import arrow.optics.optics
-import arrow.product
 import javax.json.bind.annotation.JsonbCreator
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
@@ -30,7 +28,7 @@ interface Employee {
  * FIXME:  Work around absence of ISO for sealed classes
  * It is clear that those inline properties are useless. They are for demo.
  */
-@coproduct @optics sealed class EmployeeModel : Employee {
+@optics sealed class EmployeeModel : Employee {
 
     companion object {
         inline operator fun invoke(           name: String, email: String): EmployeeModel = EmployeeCreateCommand(null, name, email)
@@ -50,12 +48,12 @@ interface Employee {
 /**
  * FIXME: Track https://github.com/arrow-kt/arrow/issues/1494
  */
-@product @optics data class EmployeeDto(
+@optics data class EmployeeDto(
     @PublishedApi
     internal val delegate: Employee
 ) : Employee by delegate { companion object }
 
-@product @optics data class EmployeeCreateCommand @JsonbCreator constructor(
+@optics data class EmployeeCreateCommand @JsonbCreator constructor(
     @get:Null
     override var id                  : Long?,
     @get:NotBlank
@@ -65,7 +63,7 @@ interface Employee {
     override val email               : String
 ) : EmployeeModel() { companion object }
 
-@product @optics data class EmployeeUpdateCommand @JsonbCreator constructor(
+@optics data class EmployeeUpdateCommand @JsonbCreator constructor(
     @get:NotNull
     override var id                  : Long?,
     @get:NotBlank
@@ -75,5 +73,5 @@ interface Employee {
     override val email               : String
 ) : EmployeeModel() { companion object }
 
-@product @optics data class EmployeeRequests(val employees: ListK<EmployeeModel>) : List<EmployeeModel> by employees { companion object }
-@product @optics data class EmployeeResponses(val employees: ListK<EmployeeDto>) : List<EmployeeDto> by employees { companion object }
+@optics data class EmployeeRequests(val employees: ListK<EmployeeModel>) : List<EmployeeModel> by employees { companion object }
+@optics data class EmployeeResponses(val employees: ListK<EmployeeDto>) : List<EmployeeDto> by employees { companion object }

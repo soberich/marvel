@@ -49,7 +49,6 @@ dependencies {
     arrayOf(
             Deps.Libs.ARROW_EXTRAS_DATA,
             Deps.Libs.ARROW_OPTICS,
-            Deps.Libs.ARROW_GENERIC,
             Deps.Libs.REACTIVE_STREAMS
     ).forEach(::implementation)
     compileOnly(Deps.Libs.ARROW_ANNOTATIONS)

@@ -23,8 +23,9 @@ quarkus {
 version = "0.0.1-SNAPSHOT"
 
 dependencies {
-    implementation(project(":business", "default"))
-    runtimeOnly(project(":runtime-blocking-sql-jpa", "default"))
+    implementation(project(":api", "default"))
+    compileOnly(project(":spi", "default"))
+    implementation(project(":runtime-blocking-sql-jpa", "default"))
 
     implementation(enforcedPlatform(Deps.Platforms.QUARKUS))
     implementation(platform(Deps.Platforms.RESTEASY))
@@ -62,8 +63,8 @@ dependencies {
     arrayOf(
             "io.quarkus:quarkus-junit5",
             "io.rest-assured:rest-assured"
-//            , "org.jetbrains.kotlin:kotlin-test",
-//            "org.jetbrains.kotlin:kotlin-test-junit",
+//            kotlin("test"),
+//            kotlin("test-junit")
 //            "io.kotlintest:kotlintest-runner-junit5:3.3.2"
     ).forEach(::testImplementation)
 

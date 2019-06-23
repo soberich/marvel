@@ -53,7 +53,7 @@ data class EmployeeEntity(@Transient private val delegate: Employee) : SimpleGen
 inline fun EmployeeEntity.toEmployeeDto(): EmployeeDto = EmployeeDto(copy())
 
 inline fun EmployeeModel.toEmployee(): EmployeeEntity = when (this) {
-    is EmployeeDto           -> EmployeeEntity(copy())
+//    is EmployeeDto           -> EmployeeEntity(copy())
     is EmployeeCreateCommand -> EmployeeEntity(copy())
     is EmployeeUpdateCommand -> EmployeeEntity(copy())
 }

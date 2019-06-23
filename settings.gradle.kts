@@ -25,13 +25,15 @@ pluginManagement {
 }
 
 include(
+        ":api",
         ":business",
-        ":openapi",
+        ":convention",
 //        ":event-sourcing",
-//        ":convention",
+        ":openapi",
 //        ":runtime-blocking-sql-jdbc",
         ":runtime-blocking-sql-jpa",
+        ":runtime-jakarta",
 //        ":runtime-nosql",
-        ":runtime-jakarta"
+        ":spi"
 
 )

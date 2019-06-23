@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull
 /**
  * We use interfaces also for a great Micronaut / Quarkus / RestEasy capability - declarative / proxy client creation.
  * We can later take this interface and just use it, say in tests, instead of additional boilerplate with Restassured.
+ * TODO: This should/could be wrapped with GRPC service by SalesForce (Reactive-GRPS).
+ *    Or a more generic and proper solution is to use same interface from REST endpoint, and provide another
+ *    runtime with GRPC as exchange instead REST. Presumably SalesForce (Reactive-GRPS) should allow that.
  */
 interface EmployeeResourceAdapter {
 

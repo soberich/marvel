@@ -1,4 +1,4 @@
-package com.example.marvel.web.grpc
+package com.example.marvel.service.employee
 
 import com.example.marvel.domain.model.api.employee.EmployeeDto
 import com.example.marvel.domain.model.api.record.RecordDto
@@ -13,9 +13,6 @@ import java.util.stream.Stream
  * A set of functions arranged in single namespace for convenience and composability.
  * Otherwise we could leave them global.
  * @note Description came from time when we had more functional set-up and suspend functions here.
- * TODO: This should/could be wrapped with GRPC service by SalesForce (Reactive-GRPS).
- *    Or a more generic and proper solution is to use same interface from REST endpoint, and provide another
- *    runtime with GRPC as exchange instead REST. Presumably SalesForce (Reactive-GRPS) should allow that.
  */
 interface EmployeeOperationsServiceNamespace {
 

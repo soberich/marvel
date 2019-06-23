@@ -2,10 +2,8 @@
 
 package com.example.marvel.domain.model.api.recordcollection
 
-import arrow.coproduct
 import arrow.core.ListK
 import arrow.optics.optics
-import arrow.product
 import com.example.marvel.domain.model.api.record.RecordCreateCommand
 import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.record.RecordModel
@@ -26,7 +24,7 @@ interface RecordCollection {
 /**
  * FIXME:  Some ISO for sealed classes =(
  */
-@coproduct @optics sealed class RecordCollectionModel : RecordCollection {
+@optics sealed class RecordCollectionModel : RecordCollection {
 
     abstract val projectId                    : String
     abstract val employeeId                   : Long
@@ -43,7 +41,7 @@ interface RecordCollection {
     }
 }
 
-@product @optics data class RecordCollectionDto(
+@optics data class RecordCollectionDto(
     @PublishedApi
     internal val delegate             : RecordCollection,
     val projectId                    : String,
@@ -51,7 +49,7 @@ interface RecordCollection {
     val records                      : List<RecordDto>
 ) : RecordCollection by delegate { companion object }
 
-@product @optics data class RecordCollectionCreateCommand @JsonbCreator constructor(
+@optics data class RecordCollectionCreateCommand @JsonbCreator constructor(
     @get:Null
     override var id                  : Long?,
     @get:NotNull
@@ -66,7 +64,7 @@ interface RecordCollection {
     override val records             : ListK<@Valid RecordCreateCommand>
 ) : RecordCollectionModel() { companion object }
 
-@product @optics data class RecordCollectionUpdateCommand @JsonbCreator constructor(
+@optics data class RecordCollectionUpdateCommand @JsonbCreator constructor(
     @get:NotNull
     override var id                  : Long?,
     @get:NotNull
@@ -84,6 +82,6 @@ interface RecordCollection {
 /**
  * no-op
  */
-@product @optics data class RecordCollectionRequests(val reports: ListK<RecordCollectionModel>) : List<RecordCollectionModel> by reports { companion object }
-@product @optics data class RecordCollectionResponses(val reports: ListK<RecordCollectionDto>) : List<RecordCollectionDto> by reports { companion object }
+@optics data class RecordCollectionRequests(val reports: ListK<RecordCollectionModel>) : List<RecordCollectionModel> by reports { companion object }
+@optics data class RecordCollectionResponses(val reports: ListK<RecordCollectionDto>) : List<RecordCollectionDto> by reports { companion object }
 

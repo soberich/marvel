@@ -13,7 +13,7 @@ import com.example.marvel.domain.model.jpa.record.toRecordDto
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity_
 import com.example.marvel.domain.model.jpa.recordcollection.toRecordCollection
 import com.example.marvel.domain.model.jpa.recordcollection.toRecordCollectionDto
-import com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace
+import com.example.marvel.service.employee.EmployeeOperationsServiceNamespace
 import java.time.Month
 import java.time.Year
 import java.util.stream.Stream

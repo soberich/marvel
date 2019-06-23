@@ -1,53 +1,29 @@
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
-             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-             version="2.1">
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
 
     <persistence-unit name="default" transaction-type="JTA">
 
-        <description>SPANNER config</description>
+        <description>Marvel default unit</description>
 
         <properties>
-<!--            <property name="hibernate.archive.autodetection" value="class, hbm"/>-->
-<!--             jdbc:h2:file:./build/h2db/db/marvel;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE-->
-<!--             jdbc:h2:mem:marvel;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE-->
+            <!-- database connection -->
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./build/h2db/db/marvel;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-<!--            <property name="hibernate.dialect" value="nl.topicus.hibernate.dialect.CloudSpannerDialect"/>-->
-<!--            <property name="hibernate.connection.driver_class" value="nl.topicus.jdbc.CloudSpannerDriver"/>-->
-            <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
-<!--            <property name="hibernate.connection.url" value="jdbc:cloudspanner://localhost;Project=example-stg-example-123;Instance=example-spins;Database=example-spdb;PvtKeyPath=${user.home}/.config/gcloud/application_default_credentials.json;ReportDefaultSchemaAsNull=false"/>-->
-            <property name="hibernate.connection.url" value="jdbc:h2:mem:marvel;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"/>
-            <property name="hibernate.connection.username" value="sa"/>
-<!--            <property name="hibernate.connection.username" value="sa"/>-->
 
-<!--            <property name="hibernate.connection.pool_size" value="5"/>-->
-
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-
-<!--            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-<!--            <property name="hibernate.schema_management_tool" value="nl.topicus.hibernate.dialect.CloudSpannerSchemaManagementTool"/>-->
-<!--            <property name="hibernate.physical_naming_strategy" value="org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"/>-->
-<!--            <property name="hibernate.physical_naming_strategy" value="com.example.marvel.domain.model.jpa.naming.PhysicalNamingStrategyImpl"/>-->
-<!--            <property name="hibernate.implicit_naming_strategy" value="com.example.marvel.domain.model.jpa.naming.ImplicitNamingStrategyImpl"/>-->
+            <property name="javax.persistence.schema-generation.database.action" value="create-drop"/>
+<!--            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
 <!--            <property name="javax.persistence.schema-generation.scripts.action" value="create-drop"/>-->
 <!--            <property name="javax.persistence.schema-generation.scripts.create-target" value="/Users/yanpetrov/Projects/marvel/runtime-blocking-sql-jpa/src/main/resources/create.ddl"/>-->
 <!--            <property name="javax.persistence.schema-generation.scripts.drop-target" value="/Users/yanpetrov/Projects/marvel/runtime-blocking-sql-jpa/src/main/resources/drop.ddl"/>-->
-
-<!--            <property name="hibernate.max_fetch_depth" value="5"/>-->
-
-<!--            <property name="hibernate.cache.region_prefix" value="hibernate.test"/>-->
-<!--            <property name="hibernate.cache.region.factory_class"-->
-<!--                      value="org.hibernate.testing.cache.CachingRegionFactory"/>-->
-
-            <!--NOTE: hibernate.jdbc.batch_versioned_data should be set to false when testing with Oracle-->
-<!--            <property name="hibernate.jdbc.batch_versioned_data" value="true"/>-->
-
-<!--            <property name="javax.persistence.validation.mode" value="NONE"/>-->
-<!--            <property name="hibernate.service.allow_crawling" value="false"/>-->
-<!--            <property name="hibernate.session.events.log" value="true"/>-->
+            <!-- naming -->
+            <property name="hibernate.physical_naming_strategy" value="com.example.marvel.domain.model.jpa.naming.PhysicalNamingStrategyImpl"/>
+<!--            <property name="hibernate.implicit_naming_strategy" value="com.example.marvel.domain.model.jpa.naming.ImplicitNamingStrategyImpl"/>-->
         </properties>
 
     </persistence-unit>

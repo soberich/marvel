@@ -47,12 +47,12 @@ you extend from. Should `PanacheEntityBase` become an interface?
 14. Micronaut and Quarkus both doesn't go well with default time arguments and inheritance by delegation
 we got 
     ```log
-    Caused by: javax.enterprise.inject.AmbiguousResolutionException: Ambiguous dependencies for type com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace and qualifiers [@Default]
+    Caused by: javax.enterprise.inject.AmbiguousResolutionException: Ambiguous dependencies for type com.example.marvel.service.EmployeeOperationsServiceNamespace and qualifiers [@Default]
         - java member: com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource#<init>()
-        - declared on CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource, com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace, kotlin.coroutines.CoroutineContext, java.lang.Object, com.example.marvel.web.rest.EmployeeResourceAdapter], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource]
+        - declared on CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource, com.example.marvel.service.EmployeeOperationsServiceNamespace, kotlin.coroutines.CoroutineContext, java.lang.Object, com.example.marvel.web.rest.EmployeeResourceAdapter], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource]
         - available beans:
-            - CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource, com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace, kotlin.coroutines.CoroutineContext, java.lang.Object, com.example.marvel.web.rest.EmployeeResourceAdapter], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource]
-            - CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeBlockingServiceNamespaceImpl, com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace, io.quarkus.hibernate.orm.panache.PanacheRepositoryBase<com.example.marvel.domain.model.jpa.employee.EmployeeEntity, java.lang.Long>, java.lang.Object], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeBlockingServiceNamespaceImpl]
+            - CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource, com.example.marvel.service.EmployeeOperationsServiceNamespace, kotlin.coroutines.CoroutineContext, java.lang.Object, com.example.marvel.web.rest.EmployeeResourceAdapter], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource]
+            - CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeBlockingServiceNamespaceImpl, com.example.marvel.service.EmployeeOperationsServiceNamespace, io.quarkus.hibernate.orm.panache.PanacheRepositoryBase<com.example.marvel.domain.model.jpa.employee.EmployeeEntity, java.lang.Long>, java.lang.Object], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeBlockingServiceNamespaceImpl]
         at io.quarkus.arc.processor.Beans.resolveInjectionPoint(Beans.java:393)
         at io.quarkus.arc.processor.BeanInfo.init(BeanInfo.java:366)
         at io.quarkus.arc.processor.BeanDeployment.init(BeanDeployment.java:286)

@@ -20,6 +20,7 @@ pluginManagement {
 
 include(
         ":business",
+        ":api",
         ":convention",
 //        ":runtime-blocking-sql-jdbc",
         ":runtime-blocking-sql-jpa",

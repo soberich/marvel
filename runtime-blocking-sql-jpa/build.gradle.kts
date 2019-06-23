@@ -18,11 +18,17 @@ repositories {
     jcenter()
 }
 
+/**
+ * ORDER MATTERS!!
+ * JPAMODELGEN Should go first!
+ */
 dependencies {
-    implementation(project(":business", "default"))
-//    implementation(project(":convention", "default"))
-
     kapt("org.hibernate:hibernate-jpamodelgen:5.4.3.Final")
+    api(project(":business", "default"))
+    api(project(":spi", "default"))
+    implementation(project(":convention", "default"))
+
+
 
     arrayOf(
             "javax.json.bind:javax.json.bind-api:1.0",

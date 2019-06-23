@@ -11,6 +11,7 @@ import com.example.marvel.domain.model.jpa.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.model.jpa.employee.EmployeeEntity
 import com.example.marvel.domain.model.jpa.project.ProjectEntity
 import com.example.marvel.domain.model.jpa.record.RecordEntity
+import com.example.marvel.domain.model.jpa.record.toRecord
 import com.example.marvel.domain.model.jpa.record.toRecordDto
 import java.time.Month
 import javax.persistence.Cacheable
@@ -31,7 +32,7 @@ import javax.persistence.Transient
 @Cacheable
 data class RecordCollectionEntity(@Transient private val delegate: RecordCollection) : SimpleGeneratedIdentityOfLong(), RecordCollection by delegate {
     @Column(nullable = false, updatable = false)
-    override  var year                : Int = 0
+    override var year                         : Int = 0
     @Column(nullable = false, updatable = false)
     @Enumerated(STRING)
     override lateinit var month               : Month
@@ -64,17 +65,18 @@ inline fun RecordCollectionEntity.toRecordCollectionDto(): RecordCollectionDto =
         RecordCollectionDto(copy(), project.id, employee.id  ?: 0L, records.map(RecordEntity::toRecordDto))
 
 inline fun RecordCollectionModel.toRecordCollection(em : EntityManager): RecordCollectionEntity = when (this) {
-    is RecordCollectionDto           -> RecordCollectionEntity(copy()).copyRelations(this, em)
+//    is RecordCollectionDto           -> RecordCollectionEntity(copy()).copyRelations(this, em)
     is RecordCollectionCreateCommand -> RecordCollectionEntity(copy()).copyRelations(this, em)
     is RecordCollectionUpdateCommand -> RecordCollectionEntity(copy()).copyRelations(this, em)
 }
 
 /**
  * TODO: Research is making `it` instead `it.copy()` makes properties immutable for free??
+ * TODO: Let's try make `it.toRecord(em)` and see what happens..
  */
 inline fun RecordCollectionEntity.copyRelations(from: RecordCollectionModel, em: EntityManager): RecordCollectionEntity =
         apply {
             project  = em.getReference(ProjectEntity::class.java,  from.projectId)
             employee = em.getReference(EmployeeEntity::class.java, from.employeeId)
-            records  = from.records.map { RecordEntity(it).apply { report = this@copyRelations } }
+            records  = from.records.map { it.toRecord(em) } /*RecordEntity(it).apply { report = this@copyRelations }*/
         }

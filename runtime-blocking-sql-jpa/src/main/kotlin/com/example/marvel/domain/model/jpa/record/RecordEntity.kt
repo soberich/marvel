@@ -34,6 +34,7 @@ import javax.persistence.Transient
  * This could be a just Tuple3
  * but we push to keep hexagonal: less imports (from arrow in this layer) => better.
  */
+@Suppress("JpaAttributeMemberSignatureInspection", "JpaAttributeTypeInspection")
 @Embeddable
 data class RecordId(val report: RecordCollectionEntity, val date: LocalDate, val type: RecordType) : Serializable
 
@@ -41,7 +42,7 @@ data class RecordId(val report: RecordCollectionEntity, val date: LocalDate, val
  * FIXME:
  *  N.B. The `date` is purposefully left first - to check the wrong way.
  */
-@NamedQuery(name = "Record.findForPeriod", query = "SELECT p FROM RecordEntity p JOIN RecordCollectionEntity c WHERE c.id = :id AND c.month = :month AND c.year = :year")
+@NamedQuery(name = "Record.findForPeriod", query = "SELECT p FROM RecordEntity p JOIN p.report c WHERE c.id = :id AND c.month = :month AND c.year = :year")
 
 
 @Entity
@@ -57,7 +58,7 @@ data class RecordEntity(@Transient private val delegate: Record) : IdentityOf<Re
     override lateinit var hoursSubmitted      : BigDecimal
     override var desc                         : String? = null
     @Id @ManyToOne(optional= false, fetch = LAZY)
-    @JoinColumn(name = "record_collection_id", updatable = false)
+    @JoinColumn(updatable = false)
     lateinit var report                       : RecordCollectionEntity
 
     @get:JsonbTransient
@@ -84,7 +85,7 @@ inline fun RecordEntity.toRecordDto(): RecordDto = RecordDto(copy(), report.id  
  * Could be some logic here if we want to distinct between creation and update, for example.
  */
 inline fun RecordModel.toRecord(em: EntityManager): RecordEntity = when (this) {
-    is RecordDto           -> RecordEntity(copy()).copyRelations(this, em)
+//    is RecordDto           -> RecordEntity(copy()).copyRelations(this, em)
     is RecordCreateCommand -> RecordEntity(copy()).copyRelations(this, em)
     is RecordUpdateCommand -> RecordEntity(copy()).copyRelations(this, em)
 }

@@ -5,7 +5,7 @@ import com.example.marvel.domain.model.api.record.RecordModel
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpdateCommand
-import com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace
+import com.example.marvel.service.EmployeeOperationsServiceNamespace
 import com.example.marvel.web.rest.EmployeeResourceAdapter
 import io.reactivex.Flowable
 import io.vertx.kotlin.coroutines.dispatcher

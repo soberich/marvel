@@ -1,14 +1,15 @@
 package com.example.marvel.domain.model.jpa.base
 
 import java.io.Serializable
-import java.util.*
+import java.util.Objects
 import javax.persistence.MappedSuperclass
 import javax.persistence.Version
 
 
 /**
- * IdentityOf holder for and identity type
+ * IdentityOf holder for identity type
  */
+
 @MappedSuperclass
 abstract class IdentityOf<T : Serializable>: IdentifiableOf<T> {
 
