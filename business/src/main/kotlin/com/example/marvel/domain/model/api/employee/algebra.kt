@@ -2,7 +2,7 @@
 
 package com.example.marvel.domain.model.api.employee
 
-import arrow.core.ListK
+import arrow.data.ListK
 import arrow.optics.optics
 import javax.json.bind.annotation.JsonbCreator
 import javax.validation.constraints.Email

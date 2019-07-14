@@ -2,7 +2,7 @@
 
 package com.example.marvel.domain.model.api.project
 
-import arrow.core.ListK
+import arrow.data.ListK
 import arrow.optics.optics
 import java.time.LocalDateTime
 import java.util.UUID

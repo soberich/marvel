@@ -1,4 +1,3 @@
-//import com.google.protobuf.gradle.*
 import versioning.Deps
 
 plugins {
@@ -8,6 +7,12 @@ plugins {
 repositories.jcenter {
     content {
         includeGroupByRegex("(jakarta|sun|org\\.glassfish).+")
+    }
+}
+
+java {
+    registerFeature("eventSourcing") {
+        usingSourceSet(sourceSets.main.get())
     }
 }
 

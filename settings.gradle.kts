@@ -5,7 +5,11 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         mavenCentral()
-        maven("http://dl.bintray.com/kotlin/kotlin-eap")
+        maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+            content {
+                includeGroup("org.jetbrains.kotlin")
+            }
+        }
         maven("https://oss.sonatype.org/content/repositories/snapshots") {
             mavenContent {
                 snapshotsOnly()

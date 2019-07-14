@@ -1,0 +1,2 @@
+#// java folder in sourceset needed bacause of bug in Quarkus.
+#// It throws exception if there is no such folder.

@@ -1,6 +1,12 @@
-
 import org.gradle.api.JavaVersion.current
-
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath("io.quarkus:quarkus-gradle-plugin:0.19.1")
+    }
+}
 check(current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${current()}" }
 
 plugins {
@@ -8,11 +14,42 @@ plugins {
     `project-report`
 }
 
+project(":runtime-jakarta") {
+    buildscript {
+        repositories {
+            mavenLocal()
+        }
+        dependencies {
+            classpath("io.quarkus:quarkus-gradle-plugin:0.19.1")
+        }
+    }
+    apply(plugin = "java")
+    apply(plugin = "io.quarkus")
+    configure<io.quarkus.gradle.QuarkusPluginExtension> {
+        setSourceDir("$projectDir/src/main/kotlin")
+//        resourcesDir() += file("$projectDir/src/main/resources")
+        setOutputDirectory("$buildDir/classes/kotlin/main")
+    }
+    val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
+    if (this.extensions.findByType<JavaPluginExtension>() != null) {
+        configure<JavaPluginExtension> {
+            main?.output?.setResourcesDir("$buildDir/classes/java/main")
+        }
+    }
+    dependencies {
+        "implementation"(project(":convention"))
+//        "implementation"(project(":convention")) {
+//            capabilities {
+//                requireCapability("com.example.marvel:convention-quarkus")
+//            }
+//        }
+    }
+}
+
 subprojects {
     apply(plugin = "build-dashboard")
     apply(plugin = "help-tasks")
-    apply(plugin = "project-report")
-    apply(plugin = "com.github.ben-manes.versions")
+    apply(plugin = "dependencies")
 
     group       = "com.example.marvel"
     version     = "0.0.1-SNAPSHOT"
@@ -25,8 +62,12 @@ subprojects {
                 includeGroup("nl.topicus") //0.10-SNAPSHOT
             }
         }
-        maven("http://dl.bintray.com/kotlin/kotlin-eap")
         jcenter()
+        maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+            content {
+                includeGroup("org.jetbrains.kotlin")
+            }
+        }
         maven("https://dl.bintray.com/arrow-kt/arrow-kt") {
             content {
                 includeGroup("io.arrow-kt")

@@ -18,26 +18,28 @@ public interface Deps {
         String ANNOTATION        = "[1.3,2)";
         String CDI               = "[2,3)";
         String CONCURRENT        = "[1.1,2)";
+        String HIBERNATE         = "[5.3,6)";
         String INJECT            = "[,3)";
         String JAX_RS            = "[2.1,2.2)";
         String JAXB              = "[2.3,2.5)";
         String JAXB_RUNTIME      = "[2.4,2.5)";
+        String JSONB             = "[1,2)";
+        String MONEY             = "[1,2)";
         String PERSISTENCE       = "[2.2,3)";
         String REACTIVE_STREAMS  = "[1,2)";
         String SERVLET           = "[4,5)";
         String TRANSACTION       = "[1.3,2)";
         String VALIDATION        = "[2,2.1)";
 
-        String ARROW             = "+";
+        String ARROW             = "0.9.0";
         String COROUTINES        = "+";
-        String EBEAN             = "11.39.1";
-        String EBEAN_ANNOTATION  = "4.10";
+        String EBEAN             = "11.41.1";
+        String EBEAN_ANNOTATION  = "4.11";
         String EBEAN_PERSISTENCE = "2.2.2";
         String EBEAN_QUERY       = EBEAN;
         String EBEAN_QUERY_GEN   = EBEAN;
         String EBEAN_TEST        = EBEAN;
         String HIKARI            = "+";
-        String JACKSON           = "2.9.9";
         String JACKSON_COREUTILS = "1.8";
         String JACKSON_MONEY     = "1.0.2";
         String JBOSS_LOG         = "2.1.4.Final";
@@ -49,15 +51,14 @@ public interface Deps {
         String LIQUIBASE_GRADLE  = "2.0.1";
         String LIQUIBASE_HIB5    = "3.6";
         String LOMBOK            = "1.18.2";
-        String MONEY             = "1.3";
+        String MONETA            = "1.3";
         String OKHTTP            = "4.0.0-rc1";
         String OPENAPI           = "2.0.8";
-        String RESTEASY          = "4.0.0.Final";
         String RESTEASY_BOOT     = "3.0.0.Final";
         String RETROFIT2         = "2.4.0";
+        String RX2               = "2.2.10";
         String SLF4J_API         = "1.7.25";
         String SLF4J_JBOSS       = "1.0.4.GA";
-        String STATEMACHINE      = "2.1.3.RELEASE";
         String SWAGGER           = "2.0.7";
         String VALIDATOR         = "6.0.12.Final";
         String ZALANDO_PROBLEM   = "0.22.0";
@@ -67,9 +68,9 @@ public interface Deps {
     interface Platforms {
         //val KOTLIN: Nothing = TODO("Scripts are PRE-compiled, can't these lines from script to apply '" + "org.jetbrains.kotlin:kotlin-bom"   + ':' + Versions.KOTLIN + '\'')
         String JACKSON      = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
-        String RESTEASY     = "org.jboss.resteasy:resteasy-bom"                          + ':' + Versions.RESTEASY;
+        String RESTEASY     = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
         String QUARKUS      = "io.quarkus:quarkus-bom"                                   + ':' + versioning.Platforms.Versions.QUARKUS;
-        String STATEMACHINE = "org.springframework.statemachine:spring-statemachine-bom" + ':' + Versions.STATEMACHINE;
+        String STATEMACHINE = "org.springframework.statemachine:spring-statemachine-bom" + ':' + versioning.Platforms.Versions.STATEMACHINE;
     }
 
     interface Jakarta {
@@ -94,7 +95,9 @@ public interface Deps {
         String JAX_RS       = "javax.ws.rs:javax.ws.rs-api"                                     + ':' + Versions.JAX_RS;
         String JAXB         = "javax.xml.bind:jaxb-api"                                         + ':' + Versions.JAXB;
         String JAXB_RUNTIME = "org.glassfish.jaxb:jaxb-runtime"                                 + ':' + Versions.JAXB_RUNTIME;
+        String JSONB        = "javax.json.bind:javax.json.bind-api"                             + ':' + Versions.JSONB;
         String JSR_305      = "com.google.code.findbugs:jsr305"                                 + ':' + Versions.JSR_305;
+        String MONEY        = "javax.money:money-api"                                           + ':' + Versions.MONEY;
         String PERSISTENCE  = "javax.persistence:javax.persistence-api"                         + ':' + Versions.PERSISTENCE;
         String SERVLET      = "javax.servlet:javax.servlet-api"                                 + ':' + Versions.SERVLET;
         String TRANSACTION  = "javax.transaction:javax.transaction-api"                         + ':' + Versions.TRANSACTION;
@@ -116,6 +119,11 @@ public interface Deps {
         String ARROW_EFFECTS_REACTOR                       = "io.arrow-kt:arrow-effects-reactor"                       + ':' + Versions.ARROW; //optional
         String ARROW_EFFECTS_RX2                           = "io.arrow-kt:arrow-effects-rx2"                           + ':' + Versions.ARROW; //optional
         String ARROW_GENERIC                               = "io.arrow-kt:arrow-generic"                               + ':' + Versions.ARROW;
+        /**
+         * @deprecated use {@linkplain #ARROW_OPTICS_CORE} and {@linkplain #ARROW_OPTICS_MTL} instead.
+         */
+        @Deprecated
+        String ARROW_OPTICS                                = "io.arrow-kt:arrow-optics"                                + ':' + Versions.ARROW;
         //these are same but broken down to two artifacts
         String ARROW_CORE_DATA                             = "io.arrow-kt:arrow-core-data"                             + ':' + Versions.ARROW;
         String ARROW_CORE_EXTENSIONS                       = "io.arrow-kt:arrow-core-extensions"                       + ':' + Versions.ARROW;
@@ -131,7 +139,8 @@ public interface Deps {
         String ARROW_EFFECTS_REACTOR_EXTENSIONS            = "io.arrow-kt:arrow-effects-reactor-extensions"            + ':' + Versions.ARROW; //optional
         String ARROW_EFFECTS_RX2_DATA                      = "io.arrow-kt:arrow-effects-rx2-data"                      + ':' + Versions.ARROW; //optional
         String ARROW_EFFECTS_RX2_EXTENSIONS                = "io.arrow-kt:arrow-effects-rx2-extensions"                + ':' + Versions.ARROW; //optional
-        String ARROW_OPTICS                                = "io.arrow-kt:arrow-optics"                                + ':' + Versions.ARROW; //optional
+        String ARROW_OPTICS_CORE                           = "io.arrow-kt:arrow-optics-core"                           + ':' + Versions.ARROW; //optional
+        String ARROW_OPTICS_MTL                            = "io.arrow-kt:arrow-optics-mtl"                            + ':' + Versions.ARROW; //optional
         //Other
         String COROUTINES_JDK8             = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8"                    + ':' + Versions.COROUTINES;
         String COROUTINES_REACTOR          = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor"                 + ':' + Versions.COROUTINES;
@@ -143,6 +152,7 @@ public interface Deps {
         String EBEAN_QUERY                 = "io.ebean:ebean-querybean"                                         + ':' + Versions.EBEAN_QUERY;
         String EBEAN_QUERY_GEN             = "io.ebean:kotlin-querybean-generator"                              + ':' + Versions.EBEAN_QUERY_GEN;
         String EBEAN_TEST                  = "io.ebean.test:ebean-test-config"                                  + ':' + Versions.EBEAN_TEST;
+        String HIBERNATE                   = "org.hibernate:hibernate-core"                                     + ':' + Versions.HIBERNATE;
         String HIKARI                      = "com.zaxxer:HikariCP"                                              + ':' + Versions.HIKARI;
         String JACKSON_AFTERBURNER         = "com.fasterxml.jackson.module:jackson-module-afterburner"          + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_ANNOTATIONS         = "com.fasterxml.jackson.core:jackson-annotations"                   + ':' + versioning.Platforms.Versions.JACKSON;
@@ -166,7 +176,7 @@ public interface Deps {
         String LIQUIBASE_GRADLE            = "org.liquibase:liquibase-gradle-plugin"                            + ':' + Versions.LIQUIBASE_GRADLE;
         String LIQUIBASE_HIB5              = "org.liquibase.ext:liquibase-hibernate5"                           + ':' + Versions.LIQUIBASE_HIB5;
         String LOMBOK                      = "org.projectlombok:lombok"                                         + ':' + Versions.LOMBOK;
-        String MONEY                       = "org.javamoney:moneta"                                             + ':' + Versions.MONEY;
+        String MONEY                       = "org.javamoney:moneta"                                             + ':' + Versions.MONETA;
         String OKHTTP                      = "com.squareup.okhttp3:okhttp-urlconnection"                        + ':' + Versions.OKHTTP;
         String OKHTTP_LOG                  = "com.squareup.okhttp3:logging-interceptor"                         + ':' + Versions.OKHTTP;
         String OKHTTP_URL                  = "com.squareup.okhttp3:okhttp-urlconnection"                        + ':' + Versions.OKHTTP;
@@ -176,6 +186,7 @@ public interface Deps {
         String RESTEASY_BOOT               = "org.jboss.resteasy:resteasy-spring-boot-starter"                  + ':' + Versions.RESTEASY_BOOT;
         String RETROFIT2                   = "com.squareup.retrofit2:retrofit"                                  + ':' + Versions.RETROFIT2;
         String RETROFIT2_JACK              = "com.squareup.retrofit2:converter-jackson"                         + ':' + Versions.RETROFIT2;
+        String RX2                         = "io.reactivex.rxjava2:rxjava"                                      + ':' + Versions.RX2;
         String SLF4J_API                   = "org.slf4j:slf4j-api"                                              + ':' + Versions.SLF4J_API;
         String SLF4J_JBOSS                 = "org.jboss.slf4j:slf4j-jboss-logmanager"                           + ':' + Versions.SLF4J_JBOSS;
         String SWAGGER_JAXRS2              = "io.swagger.core.v3:swagger-jaxrs2"                                + ':' + Versions.SWAGGER;

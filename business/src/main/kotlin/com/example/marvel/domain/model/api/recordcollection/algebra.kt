@@ -2,7 +2,7 @@
 
 package com.example.marvel.domain.model.api.recordcollection
 
-import arrow.core.ListK
+import arrow.data.ListK
 import arrow.optics.optics
 import com.example.marvel.domain.model.api.record.RecordCreateCommand
 import com.example.marvel.domain.model.api.record.RecordDto

@@ -4,7 +4,11 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        maven("http://dl.bintray.com/kotlin/kotlin-eap")
+        maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+            content {
+                includeGroup("org.jetbrains.kotlin")
+            }
+        }
     }
     resolutionStrategy {
         eachPlugin {

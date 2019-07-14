@@ -2,7 +2,7 @@
 
 package com.example.marvel.domain.model.api.record
 
-import arrow.core.ListK
+import arrow.data.ListK
 import arrow.optics.optics
 import com.example.marvel.domain.model.enums.RecordType
 import java.math.BigDecimal

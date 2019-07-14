@@ -30,7 +30,7 @@ java.sourceCompatibility = VERSION_1_8
 java.targetCompatibility = current()
 
 
-val quarkusVersion = "0.17.0"
+val quarkusVersion = "0.19.1"
 
 subprojects {
     apply(plugin = "build-dashboard")
@@ -112,7 +112,7 @@ dependencies {
             "io.vertx:vertx-lang-kotlin-coroutines:4.0.0-SNAPSHOT",
             "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT",
             "org.jboss.logmanager:jboss-logmanager-embedded",
-            "org.jboss.resteasy:resteasy-rxjava2:${Deps.Versions.RESTEASY}",
+            "org.jboss.resteasy:resteasy-rxjava2",
             "org.wildfly.common:wildfly-common"
     ).forEach(::implementation)
 

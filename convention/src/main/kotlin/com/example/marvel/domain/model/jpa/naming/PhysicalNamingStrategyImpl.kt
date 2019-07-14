@@ -14,8 +14,8 @@ import kotlin.text.RegexOption.IGNORE_CASE
 
 class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
 
-    override fun toPhysicalTableName(id: Identifier, ctx: JdbcEnvironment): Identifier? {
-        val singular = id.text ?: return null
+    override fun toPhysicalTableName(id: Identifier?, ctx: JdbcEnvironment): Identifier? {
+        val singular = id?.text ?: return null
         var plural = singular.replace(ENTITIES, EMPTY)
         plural =
                 if (SEQ.matches(plural))
@@ -25,19 +25,22 @@ class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
 
     }
 
-    override fun toPhysicalColumnName(id: Identifier, context: JdbcEnvironment): Identifier? = formatIdentifier(id)
+    override fun toPhysicalSchemaName(name: Identifier?, context: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalSchemaName(name, context))
+    override fun toPhysicalCatalogName(name: Identifier?, context: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalCatalogName(name, context))
+    override fun toPhysicalSequenceName(name: Identifier?, context: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalSequenceName(name, context))
+    override fun toPhysicalColumnName(id: Identifier?, context: JdbcEnvironment): Identifier? = formatIdentifier(super.toPhysicalColumnName(id, context))
 
-    private fun formatIdentifier(id: Identifier, name: String? = id.text): Identifier? {
-        name ?: return null
-        val formattedName = name.replace(CAMEL, SNAKE).toLowerCase()
-        return if (formattedName != name) Identifier.toIdentifier(formattedName, id.isQuoted)
-        else id
-
+    internal fun formatIdentifier(id: Identifier?, name: String? = id?.text): Identifier? = name?.run {
+        replace(CAMEL, SNAKE).toLowerCase().let {
+            return if (it != name) Identifier.toIdentifier(it, id?.isQuoted ?: false)
+            else id
+        }
     }
 
     companion object {
-        val INSTANCE = PhysicalNamingStrategyImpl()
         private const val serialVersionUID = -1L
+        @JvmStatic
+        val INSTANCE = PhysicalNamingStrategyImpl()
         private const val SNAKE  = "$1\\_$2"
         private const val DOLLAR = """$"""
         private const val EMPTY  = ""
@@ -45,7 +48,6 @@ class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
 
         val ENTITIES = """entity|Entity|Entities|entities""".toRegex()
         val CAMEL    = """((?!^)[^_]+)([A-Z0-9]+)""".toRegex()
-//        val CAMEL    = """([a-z]+)([A-Z]+)""".toRegex() //Vlad's
         val SEQ      = """.+(?<!_seq)$""".toRegex(IGNORE_CASE)
     }
 }

@@ -10,7 +10,13 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.integration.api.ObjectMapperProcessor;
-import io.swagger.v3.oas.models.media.*;
+import io.swagger.v3.oas.models.media.ComposedSchema;
+import io.swagger.v3.oas.models.media.DateTimeSchema;
+import io.swagger.v3.oas.models.media.FileSchema;
+import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.NumberSchema;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 
 import javax.ws.rs.core.StreamingOutput;
 import java.lang.reflect.ParameterizedType;
@@ -28,8 +34,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Value.construct;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import static com.fasterxml.jackson.annotation.JsonCreator.Mode.PROPERTIES;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_ABSENT;
-import static com.fasterxml.jackson.databind.DeserializationFeature.*;
-import static com.fasterxml.jackson.databind.MapperFeature.*;
+import static com.fasterxml.jackson.annotation.PropertyAccessor.ALL;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static com.fasterxml.jackson.databind.DeserializationFeature.READ_ENUMS_USING_TO_STRING;
+import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS;
+import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
+import static com.fasterxml.jackson.databind.MapperFeature.ALLOW_EXPLICIT_PROPERTY_RENAMING;
+import static com.fasterxml.jackson.databind.MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS;
+import static com.fasterxml.jackson.databind.MapperFeature.DEFAULT_VIEW_INCLUSION;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_ENUMS_USING_TO_STRING;
 import static java.util.Arrays.asList;
 
@@ -103,15 +116,15 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
         Json.configure(mapper);
     }
 
-    static public class Json extends ObjectMapper {
+    static class Json extends ObjectMapper {
         private static final long serialVersionUID = 1L;
         static TimeZone DEFAULT_TIMEZONE   = TimeZone.getTimeZone("UTC");
 
-        public Json() {
+        Json() {
             configure(this);
         }
 
-        public static void configure(ObjectMapper mapper) {
+        static void configure(ObjectMapper mapper) {
             mapper.setTimeZone(DEFAULT_TIMEZONE)
                     .registerModules(
                             new JavaTimeModule(),
@@ -120,7 +133,7 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
                     ).setSerializationInclusion(NON_ABSENT)
 //            .disable(WRITE_DATES_AS_TIMESTAMPS)
                     /*.setDefaultSetterInfo(empty().withValueNulls(SKIP, SKIP))*/
-                    .setDefaultVisibility(construct(PUBLIC_ONLY, PUBLIC_ONLY, PUBLIC_ONLY, PUBLIC_ONLY, PUBLIC_ONLY))
+                    .setDefaultVisibility(construct(ALL, PUBLIC_ONLY))
                     .enable(ALLOW_EXPLICIT_PROPERTY_RENAMING, ACCEPT_CASE_INSENSITIVE_ENUMS, ACCEPT_CASE_INSENSITIVE_PROPERTIES)
                     .enable(FAIL_ON_NUMBERS_FOR_ENUMS, READ_ENUMS_USING_TO_STRING)
                     .enable(WRITE_ENUMS_USING_TO_STRING)

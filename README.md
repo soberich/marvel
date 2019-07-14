@@ -1,3 +1,9 @@
+#### Recent Notes:
+
+ - Quarkus _strictly_ requires `beans.xml` in every subproject/module.
+ - Quarkus in some cases requires a subproject/module to have an `src/main/java` folder (even if empty) otherwise the build fails.
+
+
 #### To notice (room for improvement)
 
 ##### Almost all issues are as consequence of multi-module project setup and Kotlin - which both very desirable!

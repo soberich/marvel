@@ -23,7 +23,7 @@
 <!--            <property name="javax.persistence.schema-generation.scripts.drop-target" value="/Users/yanpetrov/Projects/marvel/runtime-blocking-sql-jpa/src/main/resources/drop.ddl"/>-->
             <!-- naming -->
             <property name="hibernate.physical_naming_strategy" value="com.example.marvel.domain.model.jpa.naming.PhysicalNamingStrategyImpl"/>
-<!--            <property name="hibernate.implicit_naming_strategy" value="com.example.marvel.domain.model.jpa.naming.ImplicitNamingStrategyImpl"/>-->
+            <property name="hibernate.implicit_naming_strategy" value="com.example.marvel.domain.model.jpa.naming.ImplicitNamingStrategyImpl"/>
         </properties>
 
     </persistence-unit>

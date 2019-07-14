@@ -2,7 +2,6 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
-import org.jetbrains.kotlin.gradle.internal.KaptTask
 import versioning.Deps
 import java.nio.charset.StandardCharsets.UTF_8
 
@@ -17,7 +16,11 @@ plugins {
 }
 
 repositories {
-    maven("http://dl.bintray.com/kotlin/kotlin-eap")
+    maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+        content {
+            includeGroup("org.jetbrains.kotlin")
+        }
+    }
 }
 
 idea.module {

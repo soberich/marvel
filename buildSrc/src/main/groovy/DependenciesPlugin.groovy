@@ -18,6 +18,8 @@ class DependenciesPlugin implements Plugin<Project> {
         project.with {
             apply(plugin: "com.vanniktech.dependency.graph.generator")
             apply(plugin: "com.github.ben-manes.versions")
+            apply(plugin: "se.patrikerdes.use-latest-versions")
+            apply(plugin: "project-report")
 
             def springGenerator = new Generator(
                 "spring", // Suffix for our Gradle task.

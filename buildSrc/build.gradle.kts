@@ -10,8 +10,8 @@ plugins {
     `build-dashboard`                                         // optional
     `help-tasks`                                              // optional
     `project-report`                                          // optional
-    id("se.patrikerdes.use-latest-versions") version "0.2.10" // optional
     id("com.github.ben-manes.versions")      version "0.21.0" // optional
+    id("se.patrikerdes.use-latest-versions") version "0.2.10" // optional
 }
 
 kotlinDslPluginOptions.experimentalWarning.set(false)
@@ -19,7 +19,11 @@ kotlinDslPluginOptions.experimentalWarning.set(false)
 repositories {
     gradlePluginPortal()
     jcenter()
-    maven("http://dl.bintray.com/kotlin/kotlin-eap")
+    maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+        content {
+            includeGroup("org.jetbrains.kotlin")
+        }
+    }
     maven(url = "https://repo.spring.io/milestone") {
         content {
             includeGroupByRegex("org\\.springframework.*")
@@ -51,7 +55,7 @@ tasks {
     }
 }
 
-val kotlinVersion = KotlinVersion(1, 3, 40).toString()
+val kotlinVersion = KotlinVersion(1, 3, 41).toString()
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion

@@ -5,6 +5,7 @@
 /build/resources/main/static/**
 /build/resources/test/static/**
 /src/test/javascript/coverage/
+.bitrise*
 
 ######################
 # Node

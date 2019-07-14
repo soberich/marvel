@@ -18,10 +18,9 @@ interface EmployeeOperationsServiceNamespace {
 
     fun streamEmployees(): Stream<EmployeeDto>
 
-    fun listForPeriod(id: Long, year: Year, month: Month): Stream<RecordDto>
+    fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordDto>
 
-    fun createWholePeriod(id: Long, records: RecordCollectionCreateCommand): RecordCollectionDto?
+    fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDto?
 
-    fun updateWholePeriod(id: Long, records: RecordCollectionUpdateCommand): RecordCollectionDto?
-
+    fun updateWholePeriod(employeeId: Long, records: RecordCollectionUpdateCommand): RecordCollectionDto?
 }

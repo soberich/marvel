@@ -8,9 +8,9 @@ import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpda
 import com.example.marvel.service.employee.EmployeeOperationsServiceNamespace
 import com.example.marvel.web.rest.EmployeeResourceAdapter
 import io.reactivex.Flowable
+import io.vertx.core.eventbus.EventBus
 import io.vertx.kotlin.core.json.jsonObjectOf
 import io.vertx.kotlin.coroutines.dispatcher
-import io.vertx.reactivex.core.eventbus.EventBus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.future.future
 import java.time.Month
@@ -18,6 +18,7 @@ import java.time.Year
 import java.util.concurrent.CompletionStage
 import javax.annotation.PostConstruct
 import javax.inject.Inject
+import javax.transaction.Transactional
 import javax.ws.rs.Consumes
 import javax.ws.rs.GET
 import javax.ws.rs.NotFoundException
@@ -50,14 +51,14 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
     /**
      * Could move to ctor
      */
-    @Inject
-    internal lateinit var vertx: io.vertx.reactivex.core.Vertx
+//    @Inject
+//    internal lateinit var vertx: io.vertx.reactivex.core.Vertx
 
     @Inject
     internal lateinit var eventBus: EventBus
-
-    @Inject
-    internal lateinit var client: io.reactiverse.reactivex.pgclient.PgPool
+//
+//    @Inject
+//    internal lateinit var client: io.reactiverse.reactivex.pgclient.PgPool
 
     @Context
     internal lateinit var headers: HttpHeaders
@@ -67,6 +68,7 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
         eventBus.registerCodec(DomainEventCodec())
     }
 
+    @Transactional
     @GET
     @Path("/employee")
     override fun getEmployees(): Flowable<EmployeeDto> =

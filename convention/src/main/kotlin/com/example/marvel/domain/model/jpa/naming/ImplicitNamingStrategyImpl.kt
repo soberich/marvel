@@ -7,7 +7,7 @@ import org.hibernate.boot.model.naming.ImplicitJoinColumnNameSource
 import org.hibernate.boot.model.naming.ImplicitMapKeyColumnNameSource
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
 import org.hibernate.boot.model.naming.ImplicitUniqueKeyNameSource
-import java.util.*
+import java.util.Arrays
 import java.util.Comparator.comparing
 
 /**
@@ -30,7 +30,7 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
 
     override fun determineForeignKeyName(source: ImplicitForeignKeyNameSource): Identifier =
             source.userProvidedIdentifier ?: toIdentifier(
-                    generateFkName(
+                    generateName(
                             "FK_",
                             source.tableName,
                             source.referencedTableName,
@@ -41,7 +41,7 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
 
     override fun determineUniqueKeyName(source: ImplicitUniqueKeyNameSource): Identifier =
             source.userProvidedIdentifier ?: toIdentifier(
-                    generateFkName(
+                    generateName(
                             "UK_",
                             source.tableName, null,
                             source.columnNames, null
@@ -51,7 +51,7 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
 
     override fun determineIndexName(source: ImplicitIndexNameSource): Identifier =
             source.userProvidedIdentifier ?: toIdentifier(
-                    generateFkName(
+                    generateName(
                             "IDX_",
                             source.tableName, null,
                             source.columnNames, null
@@ -59,11 +59,11 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
                     source.buildingContext
             )
 
-    private fun generateFkName(prefix: String?,
-                               tableName: Identifier,
-                               referencedTableName: Identifier?,
-                               columnNames: List<Identifier>?,
-                               suffix: String?): String {
+    private fun generateName(prefix: String?,
+                             tableName: Identifier,
+                             referencedTableName: Identifier?,
+                             columnNames: List<Identifier>?,
+                             suffix: String?): String {
         val columnNamesArray =
                 if (columnNames.isNullOrEmpty()) emptyArray()
                 else columnNames.toTypedArray()
@@ -77,13 +77,14 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
         if (alphabeticalColumns.isNotEmpty())
             sb.append("with")
         for (columnName in alphabeticalColumns)
-            sb.append('_').append(columnName)
+            sb.append('_').append(PhysicalNamingStrategyImpl.INSTANCE.formatIdentifier(columnName))
         val substring = sb.substring(0, if (sb.length > 59) 59 else sb.length)
         return (prefix ?: "") + substring + (suffix ?: "")
     }
 
-
-    // FIXME: Does not work
+    /**
+     * FIXME: Does not work
+     */
     override fun determineMapKeyColumnName(source: ImplicitMapKeyColumnNameSource): Identifier =
             toIdentifier(
                     "${transformAttributePath(source.pluralAttributePath)}_TYPE",
@@ -92,5 +93,7 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
 
     companion object {
         private const val serialVersionUID = -1L
+        @JvmStatic
+        val INSTANCE: ImplicitNamingStrategyImpl = ImplicitNamingStrategyImpl()
     }
 }

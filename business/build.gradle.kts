@@ -4,7 +4,6 @@ import versioning.Deps
 plugins {
     `java-library`
     kronstadt
-//    `arrow-meta-convention-helper`
 //    id("com.google.protobuf") version "0.8.8"
 }
 repositories.jcenter {
@@ -12,10 +11,6 @@ repositories.jcenter {
         includeGroup("io.arrow-kt")
         includeGroupByRegex("(jakarta|sun|org\\.glassfish).+")
     }
-}
-java {
-    val main by sourceSets
-    main.output.setResourcesDir("$buildDir/classes/java/main")
 }
 
 //protobuf {
@@ -46,11 +41,7 @@ java {
 //}
 dependencies {
     kapt(Deps.Libs.ARROW_META)
-    arrayOf(
-            Deps.Libs.ARROW_EXTRAS_DATA,
-            Deps.Libs.ARROW_OPTICS,
-            Deps.Libs.REACTIVE_STREAMS
-    ).forEach(::implementation)
+
     compileOnly(Deps.Libs.ARROW_ANNOTATIONS)
 
     arrayOf(
@@ -58,6 +49,13 @@ dependencies {
             Deps.Jakarta.VALIDATION,
             Deps.Libs.REACTIVE_STREAMS
     ).forEach(::api)
+
+    arrayOf(
+            Deps.Libs.ARROW_EXTRAS_DATA,
+            Deps.Libs.ARROW_OPTICS,
+            Deps.Libs.REACTIVE_STREAMS
+    ).forEach(::implementation)
+
 
 
 
