@@ -14,6 +14,8 @@ import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEnti
 import com.example.marvel.domain.model.jpa.recordcollection.toRecordCollection
 import com.example.marvel.domain.model.jpa.recordcollection.toRecordCollectionDto
 import com.example.marvel.service.employee.EmployeeOperationsServiceNamespace
+import com.kumuluz.ee.rest.beans.QueryParameters
+import com.kumuluz.ee.rest.utils.JPAUtils
 import java.time.Month
 import java.time.Year
 import java.util.stream.Stream
@@ -44,6 +46,9 @@ class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace 
     @Transactional(NOT_SUPPORTED)
     override fun streamEmployees(): Stream<EmployeeDto> =
             em.createQuery("SELECT e FROM EmployeeEntity e", EmployeeEntity::class.java).resultStream.map(EmployeeEntity::toEmployeeDto)
+
+    override fun filterEmployees(filter: String): List<EmployeeDto> =
+            JPAUtils.queryEntities(em, EmployeeEntity::class.java, QueryParameters.query(filter).build()).map(EmployeeEntity::toEmployeeDto)
 
     override fun createEmployee(employee: EmployeeCreateCommand): EmployeeDto =
             employee.toEmployee().also(em::persist).toEmployeeDto()

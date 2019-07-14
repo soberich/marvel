@@ -26,7 +26,8 @@ dependencies {
             Deps.Javax.CDI,
             Deps.Javax.JSONB,
             Deps.Javax.PERSISTENCE,
-            Deps.Libs.HIBERNATE
+            Deps.Libs.HIBERNATE,
+            "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3"
     ).forEach(::api)
 
     implementation(project(":convention", "default"))

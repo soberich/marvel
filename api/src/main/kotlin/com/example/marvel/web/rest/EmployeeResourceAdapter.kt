@@ -38,14 +38,14 @@ interface EmployeeResourceAdapter {
      */
     fun getEmployees(): Publisher<EmployeeDto>
 
+    fun filterEmployees(limit: Long?): Publisher<EmployeeDto>
+
     fun createEmployee(
             @NotNull @Valid employee: EmployeeCreateCommand): CompletionStage<EmployeeDto>
 
     fun updateEmployee(
             @NotNull              id: Long,
             @NotNull @Valid employee: EmployeeUpdateCommand): CompletionStage<EmployeeDto>
-
-
 
     fun getForPeriod(
             @NotNull    id: Long,

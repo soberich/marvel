@@ -20,6 +20,8 @@ interface EmployeeOperationsServiceNamespace {
 
     fun streamEmployees(): Stream<EmployeeDto>
 
+    fun filterEmployees(filter: String): List<EmployeeDto>
+
     fun createEmployee(employee: EmployeeCreateCommand): EmployeeDto
 
     fun updateEmployee(employeeId: Long, employee: EmployeeUpdateCommand): EmployeeDto?

@@ -31,7 +31,10 @@ import javax.ws.rs.QueryParam
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
+import javax.ws.rs.core.UriInfo
 import io.vertx.core.Vertx as VertxBare
+
+
 
 /**
  * Named imports used for program composition to be more self-documented
@@ -57,10 +60,26 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
     @Context
     internal lateinit var headers: HttpHeaders
 
+    @Context
+    internal lateinit var uriInfo: UriInfo
+
     @PostConstruct
     fun init() {
         eventBus.registerCodec(DomainEventCodec())
     }
+
+    @GET
+    @Path("/employee")
+    @Produces("application/stream+json")
+    override fun getEmployees(): Flowable<EmployeeDto> =
+            Flowable.fromIterable(Iterable(employees.streamEmployees()::iterator))
+                    .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
+
+    @GET
+    @Path("/employee")
+    override fun filterEmployees(@QueryParam("limit") limit: Long?): Flowable<EmployeeDto> =
+            Flowable.fromIterable(Iterable(employees.filterEmployees(uriInfo.requestUri.query)::iterator))
+                    .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
 
     @POST
     @Path("/employee")
@@ -76,13 +95,6 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
             employee: EmployeeUpdateCommand): CompletionStage<EmployeeDto> = CompletableFuture.supplyAsync {
         employees.updateEmployee(id, employee)
     }
-
-    @GET
-    @Path("/employee")
-    @Produces("application/stream+json")
-    override fun getEmployees(): Flowable<EmployeeDto> =
-            Flowable.fromIterable(Iterable(employees.streamEmployees()::iterator))
-                    .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
 
     @GET
     @Path("/employee/{id:[1-9][0-9]*}/records")
