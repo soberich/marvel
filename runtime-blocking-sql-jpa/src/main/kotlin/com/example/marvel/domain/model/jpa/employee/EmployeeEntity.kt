@@ -28,7 +28,7 @@ import javax.persistence.UniqueConstraint
             UniqueConstraint(columnNames = ["email"]),
             UniqueConstraint(columnNames = ["name"])])
 @Access(PROPERTY)
-data class EmployeeEntity(@Transient val delegate: Employee) : Employee by delegate, SimpleGeneratedIdentityOfLong() {
+data class EmployeeEntity(@Transient private val delegate: Employee) : SimpleGeneratedIdentityOfLong(), Employee by delegate {
     @get:Column(nullable = false)
     override lateinit var name                : String
     @get:Column(nullable = false)
