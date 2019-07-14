@@ -1,3 +1,4 @@
+import io.quarkus.gradle.QuarkusPluginExtension
 import org.gradle.api.JavaVersion.current
 buildscript {
     repositories {
@@ -25,13 +26,13 @@ project(":runtime-jakarta") {
     }
     apply(plugin = "java")
     apply(plugin = "io.quarkus")
-    configure<io.quarkus.gradle.QuarkusPluginExtension> {
+    configure<QuarkusPluginExtension> {
         setSourceDir("$projectDir/src/main/kotlin")
 //        resourcesDir() += file("$projectDir/src/main/resources")
         setOutputDirectory("$buildDir/classes/kotlin/main")
     }
     val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
-    if (this.extensions.findByType<JavaPluginExtension>() != null) {
+    if (extensions.findByType<JavaPluginExtension>() != null) {
         configure<JavaPluginExtension> {
             main?.output?.setResourcesDir("$buildDir/classes/java/main")
         }
