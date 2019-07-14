@@ -14,6 +14,8 @@ import com.example.marvel.domain.model.jpa.record.RecordEntity
 import com.example.marvel.domain.model.jpa.record.toRecord
 import com.example.marvel.domain.model.jpa.record.toRecordDto
 import java.time.Month
+import javax.persistence.Access
+import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Cacheable
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Column
@@ -30,20 +32,21 @@ import javax.persistence.Transient
 
 @Entity
 @Cacheable
+@Access(PROPERTY)
 data class RecordCollectionEntity(@Transient private val delegate: RecordCollection) : SimpleGeneratedIdentityOfLong(), RecordCollection by delegate {
-    @Column(nullable = false, updatable = false)
+    @get:Column(nullable = false, updatable = false)
     override var year                         : Int = 0
-    @Column(nullable = false, updatable = false)
-    @Enumerated(STRING)
+    @get:Column(nullable = false, updatable = false)
+    @get:Enumerated(STRING)
     override lateinit var month               : Month
-    @ManyToOne(optional = false, fetch = LAZY)
-    @JoinColumn(updatable =false)
+    @get:ManyToOne(optional = false, fetch = LAZY)
+    @get:JoinColumn(updatable =false)
     lateinit var project                      : ProjectEntity
-    @ManyToOne(optional = false, fetch = LAZY)
-    @JoinColumn(updatable =false)
+    @get:ManyToOne(optional = false, fetch = LAZY)
+    @get:JoinColumn(updatable =false)
     lateinit var employee                     : EmployeeEntity
 
-    @OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)
+    @get:OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)
     lateinit var records                      : List<RecordEntity>
 
     /**

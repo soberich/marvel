@@ -49,7 +49,6 @@ dependencies {
      * FIXME: Should be `runtimeOnly` but Quarkus breaks to work with Gradle with finer grained dependency configurations
      */
     arrayOf(
-            Deps.Libs.SLF4J_JBOSS,
             "io.quarkus:quarkus-jdbc-h2",
             "io.quarkus:quarkus-smallrye-context-propagation",
             "io.smallrye:smallrye-context-propagation-jta",

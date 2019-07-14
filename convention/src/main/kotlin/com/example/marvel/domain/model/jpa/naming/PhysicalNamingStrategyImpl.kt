@@ -14,7 +14,7 @@ import kotlin.text.RegexOption.IGNORE_CASE
 
 class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
 
-    override fun toPhysicalTableName(id: Identifier?, ctx: JdbcEnvironment): Identifier? {
+    override fun toPhysicalTableName(id: Identifier?, ctx: JdbcEnvironment?): Identifier? {
         val singular = id?.text ?: return null
         var plural = singular.replace(ENTITIES, EMPTY)
         plural =
@@ -25,10 +25,10 @@ class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
 
     }
 
-    override fun toPhysicalSchemaName(name: Identifier?, context: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalSchemaName(name, context))
-    override fun toPhysicalCatalogName(name: Identifier?, context: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalCatalogName(name, context))
-    override fun toPhysicalSequenceName(name: Identifier?, context: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalSequenceName(name, context))
-    override fun toPhysicalColumnName(id: Identifier?, context: JdbcEnvironment): Identifier? = formatIdentifier(super.toPhysicalColumnName(id, context))
+    override fun toPhysicalSchemaName(id: Identifier?, ctx: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalSchemaName(id, ctx))
+    override fun toPhysicalCatalogName(id: Identifier?, ctx: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalCatalogName(id, ctx))
+    override fun toPhysicalSequenceName(id: Identifier?, ctx: JdbcEnvironment?): Identifier? = toPhysicalTableName(id, ctx)
+    override fun toPhysicalColumnName(id: Identifier?, ctx: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalColumnName(id, ctx))
 
     internal fun formatIdentifier(id: Identifier?, name: String? = id?.text): Identifier? = name?.run {
         replace(CAMEL, SNAKE).toLowerCase().let {

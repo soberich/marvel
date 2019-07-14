@@ -18,6 +18,7 @@ import java.time.Month
 import java.time.Year
 import java.util.stream.Stream
 import javax.enterprise.context.ApplicationScoped
+import javax.inject.Named
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
@@ -29,6 +30,7 @@ import javax.transaction.Transactional.TxType.NOT_SUPPORTED
  * All calls to (`withContext(this)`)[kotlinx.coroutines.withContext]
  * could be simply convenient overloaded operator (`Dispatchers.IO { ... }`)[kotlinx.coroutines.invoke]
  */
+@Named
 @Transactional
 @ApplicationScoped
 class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace {
@@ -37,19 +39,20 @@ class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace 
     lateinit var em: EntityManager
 
     /**
-     * TODO: Into interface.
+     * @implNote Stream should be open on consumer side. Transaction will close it.
      */
-    fun updateEmployee(employee: EmployeeUpdateCommand): EmployeeDto? =
-            em.find(EmployeeEntity::class.java, employee.id)
-                    ?.run { EmployeeEntity(employee.copy()) }
-                    ?.let(em::merge)
-                    ?.toEmployeeDto()
-
-    @Transactional(NOT_SUPPORTED) // Stream should be open on consumer side. Transaction will close it.
+    @Transactional(NOT_SUPPORTED)
     override fun streamEmployees(): Stream<EmployeeDto> =
-            em.createQuery("SELECT e FROM EmployeeEntity e", EmployeeEntity::class.java)
-                    .resultStream
-                    .map(EmployeeEntity::toEmployeeDto)
+            em.createQuery("SELECT e FROM EmployeeEntity e", EmployeeEntity::class.java).resultStream.map(EmployeeEntity::toEmployeeDto)
+
+    override fun createEmployee(employee: EmployeeCreateCommand): EmployeeDto =
+            employee.toEmployee().also(em::persist).toEmployeeDto()
+
+    override fun updateEmployee(employeeId: Long, employee: EmployeeUpdateCommand): EmployeeDto? =
+            em.find(EmployeeEntity::class.java, employeeId)?.run { employee.toEmployee().let(em::merge).toEmployeeDto() }
+
+
+
 
     /**
      * @note In kotlin 1.3.40 trimming margins, indents, etc. would become intrinsics.
@@ -80,8 +83,8 @@ class EmployeeBlockingServiceNamespaceImpl : EmployeeOperationsServiceNamespace 
      * in this service for consumers (e.g. Resources/Controllers)
      */
     @Transactional(MANDATORY)
-    fun updateEmployeeDemo(employee: EmployeeUpdateCommand): Stream<EmployeeDto> =
-            Stream.of(em.find(EmployeeEntity::class.java, employee.id))
+    fun updateEmployeeDemo(employeeId: Long, employee: EmployeeUpdateCommand): Stream<EmployeeDto> =
+            Stream.of(em.find(EmployeeEntity::class.java, employeeId))
                     .map { EmployeeEntity(employee.copy()) }
                     .map(em::merge)
                     .map(EmployeeEntity::toEmployeeDto)

@@ -11,6 +11,7 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.integration.api.ObjectMapperProcessor;
 import io.swagger.v3.oas.models.media.ComposedSchema;
+import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
@@ -22,9 +23,12 @@ import javax.ws.rs.core.StreamingOutput;
 import java.lang.reflect.ParameterizedType;
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -51,6 +55,8 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
 
     private static final List<String>
             STREAMING_CLASSES  = asList(
+                "arrow.data.ListK",
+                "arrow.core.ListK",
                 "org.reactivestreams.Publisher",
                 "io.reactivex.Flowable",
                 "io.reactivex.Observable"
@@ -87,8 +93,10 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
                 Class<?> cls = _type.getRawClass();
                 // Try to put checks in the order from most frequently-used
                 // to less frequently-used in the code-base
-                if (Instant.class.isAssignableFrom(cls))
+                if (Instant.class.isAssignableFrom(cls) || LocalDateTime.class.isAssignableFrom(cls))
                     return new ComposedSchema().anyOf(asList(new DateTimeSchema(), new IntegerSchema().format("int64"), new NumberSchema())).example(1544391144);
+                if (Date.class.isAssignableFrom(cls) || LocalDate.class.isAssignableFrom(cls))
+                    return new ComposedSchema().anyOf(asList(new DateSchema(), new IntegerSchema().format("int64"), new NumberSchema())).example(1544391144);
                 if (Year.class.isAssignableFrom(cls))
                     return new ComposedSchema().anyOf(asList(new StringSchema(), new IntegerSchema())).pattern("[0-9]{4}").example(2018);
                 if (Period.class.isAssignableFrom(cls))

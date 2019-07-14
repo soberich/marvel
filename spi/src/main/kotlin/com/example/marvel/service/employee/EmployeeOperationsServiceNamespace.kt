@@ -1,6 +1,8 @@
 package com.example.marvel.service.employee
 
+import com.example.marvel.domain.model.api.employee.EmployeeCreateCommand
 import com.example.marvel.domain.model.api.employee.EmployeeDto
+import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
 import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
@@ -17,6 +19,10 @@ import java.util.stream.Stream
 interface EmployeeOperationsServiceNamespace {
 
     fun streamEmployees(): Stream<EmployeeDto>
+
+    fun createEmployee(employee: EmployeeCreateCommand): EmployeeDto
+
+    fun updateEmployee(employeeId: Long, employee: EmployeeUpdateCommand): EmployeeDto?
 
     fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordDto>
 

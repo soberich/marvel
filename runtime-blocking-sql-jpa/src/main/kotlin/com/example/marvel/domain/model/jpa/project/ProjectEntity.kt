@@ -2,14 +2,17 @@ package com.example.marvel.domain.model.jpa.project
 
 import com.example.marvel.domain.model.api.project.Project
 import com.example.marvel.domain.model.jpa.base.IdentityOf
+import javax.persistence.Access
+import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 
 @Entity
+@Access(PROPERTY)
 data class ProjectEntity(
-    @Id @Column(name = "name", length = 50)
-    override val id                  : String
+    @get:Id @get:Column(name = "name", length = 50)
+    override var id                  : String
 ) : IdentityOf<String>(), Project {
 
     /**

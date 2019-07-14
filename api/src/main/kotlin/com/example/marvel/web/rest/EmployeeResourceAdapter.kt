@@ -1,6 +1,8 @@
 package com.example.marvel.web.rest
 
+import com.example.marvel.domain.model.api.employee.EmployeeCreateCommand
 import com.example.marvel.domain.model.api.employee.EmployeeDto
+import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
 import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
@@ -35,6 +37,15 @@ interface EmployeeResourceAdapter {
      * and the semantics are more understandable.
      */
     fun getEmployees(): Publisher<EmployeeDto>
+
+    fun createEmployee(
+            @NotNull @Valid employee: EmployeeCreateCommand): CompletionStage<EmployeeDto>
+
+    fun updateEmployee(
+            @NotNull              id: Long,
+            @NotNull @Valid employee: EmployeeUpdateCommand): CompletionStage<EmployeeDto>
+
+
 
     fun getForPeriod(
             @NotNull    id: Long,

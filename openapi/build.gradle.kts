@@ -15,7 +15,7 @@ tasks.withType<ResolveTask>().configureEach {
     objectMapperProcessorClass = "com.example.marvel.openapi.OpenApiConfig"
     openApiFile                = file("$rootDir/runtime-jakarta/src/main/resources/META-INF/resources/api.yaml", FILE)
     outputFormat               = YAML
-    outputPath                 =  "$rootDir/runtime-jakarta/src/main/webapp"
+    outputPath                 =  "$rootDir/runtime-jakarta/src/main/resources/META-INF/resources"
     prettyPrint                = true
     //Don't need it in jakarta as Quarkus don't need Application class
 //    readerClass                = "com.example.marvel.openapi.ApplicationPathReader"

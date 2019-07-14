@@ -43,7 +43,7 @@ interface RecordCollection {
 
 @optics data class RecordCollectionDto(
     @PublishedApi
-    internal val delegate             : RecordCollection,
+    internal val delegate            : RecordCollection,
     val projectId                    : String,
     val employeeId                   : Long,
     val records                      : List<RecordDto>

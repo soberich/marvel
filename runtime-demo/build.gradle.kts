@@ -97,7 +97,6 @@ dependencies {
             Deps.Libs.ARROW_OPTICS,
             Deps.Libs.ARROW_SYNTAX,
             Deps.Libs.COROUTINES_RXJAVA2,
-            Deps.Libs.SLF4J_JBOSS,
 //            "io.quarkus:quarkus-smallrye-openapi", FIXME: see README.md
             "io.quarkus:quarkus-hibernate-orm-panache",
             "io.quarkus:quarkus-kotlin",

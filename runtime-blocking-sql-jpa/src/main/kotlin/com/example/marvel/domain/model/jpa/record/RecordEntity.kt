@@ -15,9 +15,10 @@ import java.io.Serializable
 import java.math.BigDecimal
 import java.time.LocalDate
 import javax.json.bind.annotation.JsonbTransient
+import javax.persistence.Access
+import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Cacheable
 import javax.persistence.Column
-import javax.persistence.Embeddable
 import javax.persistence.Entity
 import javax.persistence.EntityManager
 import javax.persistence.EnumType.STRING
@@ -34,9 +35,7 @@ import javax.persistence.Transient
  * This could be a just Tuple3
  * but we push to keep hexagonal: less imports (from arrow in this layer) => better.
  */
-@Suppress("JpaAttributeMemberSignatureInspection", "JpaAttributeTypeInspection")
-@Embeddable
-data class RecordId(val report: RecordCollectionEntity, val date: LocalDate, val type: RecordType) : Serializable
+data class RecordId(var id: Long?, var date: LocalDate, var type: RecordType) : Serializable
 
 /**
  * FIXME:
@@ -44,25 +43,32 @@ data class RecordId(val report: RecordCollectionEntity, val date: LocalDate, val
  */
 @NamedQuery(name = "Record.findForPeriod", query = "SELECT p FROM RecordEntity p JOIN p.report c WHERE c.id = :id AND c.month = :month AND c.year = :year")
 
-
 @Entity
 @Immutable
 @Cacheable
+@Access(PROPERTY)
 @IdClass(RecordId::class)
 data class RecordEntity(@Transient private val delegate: Record) : IdentityOf<RecordId>(), Record by delegate {
-    @Id @Column(updatable = false)
+    @get:Id @get:Column(nullable = false, updatable = false)
     override lateinit var date                : LocalDate
-    @Id @Enumerated(STRING)
+    @get:Id @get:Enumerated(STRING)
     override lateinit var type                : RecordType
-    @Column(precision = 3, scale = 1)
+    @get:Column(precision = 3, scale = 1)
     override lateinit var hoursSubmitted      : BigDecimal
     override var desc                         : String? = null
-    @Id @ManyToOne(optional= false, fetch = LAZY)
-    @JoinColumn(updatable = false)
+    @get:Id
+    @get:ManyToOne(optional= false, fetch = LAZY)
+    @get:JoinColumn(updatable = false)
     lateinit var report                       : RecordCollectionEntity
 
     @get:JsonbTransient
-    final override inline val id: RecordId get() = RecordId(report, date, type)
+    override var id: RecordId
+        get() = RecordId(report?.id, date, type)
+        set(value) {
+            report?.id = value.id
+            date = value.date
+            type = value.type
+        }
 
     /**
      * @see com.example.marvel.domain.model.jpa.base.IdentityOf

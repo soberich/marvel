@@ -9,6 +9,8 @@ import com.example.marvel.domain.model.api.employee.EmployeeModel
 import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
 import com.example.marvel.domain.model.jpa.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity
+import javax.persistence.Access
+import javax.persistence.AccessType.PROPERTY
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -25,13 +27,14 @@ import javax.persistence.UniqueConstraint
         uniqueConstraints = [
             UniqueConstraint(columnNames = ["email"]),
             UniqueConstraint(columnNames = ["name"])])
-data class EmployeeEntity(@Transient private val delegate: Employee) : SimpleGeneratedIdentityOfLong(), Employee by delegate {
-    @Column(nullable = false)
+@Access(PROPERTY)
+data class EmployeeEntity(@Transient val delegate: Employee) : Employee by delegate, SimpleGeneratedIdentityOfLong() {
+    @get:Column(nullable = false)
     override lateinit var name                : String
-    @Column(nullable = false)
+    @get:Column(nullable = false)
     override lateinit var email               : String
 
-    @OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)
+    @get:OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)
     lateinit var records                      : List<RecordCollectionEntity>
 
     override fun equals(other: Any?) = super.equals(other)

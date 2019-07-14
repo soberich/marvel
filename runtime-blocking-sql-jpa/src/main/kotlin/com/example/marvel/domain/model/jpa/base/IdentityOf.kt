@@ -2,6 +2,8 @@ package com.example.marvel.domain.model.jpa.base
 
 import java.io.Serializable
 import java.util.Objects
+import javax.persistence.Access
+import javax.persistence.AccessType.PROPERTY
 import javax.persistence.MappedSuperclass
 import javax.persistence.Version
 
@@ -11,10 +13,10 @@ import javax.persistence.Version
  */
 
 @MappedSuperclass
+@Access(PROPERTY)
 abstract class IdentityOf<T : Serializable>: IdentifiableOf<T> {
 
-    @Version
-    @kotlin.jvm.Transient
+    @get:Version
     protected var optimisticVersion = 0
 
     /**

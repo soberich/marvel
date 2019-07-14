@@ -19,7 +19,6 @@ dependencies {
             Deps.Jakarta.JAX_RS,
             Deps.Libs.RX2,
             Deps.Libs.SLF4J_API,
-            "io.vertx:vertx-lang-kotlin-coroutines:4.0.0-SNAPSHOT",
             "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT"
     ).forEach(::api)
 }
