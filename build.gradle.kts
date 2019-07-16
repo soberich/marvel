@@ -57,12 +57,7 @@ subprojects {
     description = "${name.replace('-', ' ').toUpperCase()} of Native Quarkus/Micronaut Arrow-Kt Vert.x Coroutines GRPC Kotlin-DSL app"
     
     repositories {
-        mavenLocal {
-            content {
-                includeGroup("io.quarkus")
-                includeGroup("nl.topicus") //0.10-SNAPSHOT
-            }
-        }
+        mavenLocal()
         jcenter()
         maven("http://dl.bintray.com/kotlin/kotlin-eap") {
             content {
