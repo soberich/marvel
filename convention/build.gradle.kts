@@ -19,7 +19,9 @@ java {
 }
 
 java.sourceCompatibility = VERSION_1_8
-
+/**
+ * TODO: Remove Quarkus form convention default configuration to not to leak here.
+ */
 dependencies {
     api(Deps.Libs.HIBERNATE)
 

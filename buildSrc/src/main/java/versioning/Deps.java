@@ -67,6 +67,7 @@ public interface Deps {
 
     interface Platforms {
         //val KOTLIN: Nothing = TODO("Scripts are PRE-compiled, can't these lines from script to apply '" + "org.jetbrains.kotlin:kotlin-bom"   + ':' + Versions.KOTLIN + '\'')
+        String BLAZE_JPA    = "com.blazebit:blaze-persistence-bom"                       + ':' + versioning.Platforms.Versions.BLAZE_JPA;
         String JACKSON      = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
         String RESTEASY     = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
         String QUARKUS      = "io.quarkus:quarkus-bom"                                   + ':' + versioning.Platforms.Versions.QUARKUS;
@@ -156,6 +157,7 @@ public interface Deps {
         String HIKARI                      = "com.zaxxer:HikariCP"                                              + ':' + Versions.HIKARI;
         String JACKSON_AFTERBURNER         = "com.fasterxml.jackson.module:jackson-module-afterburner"          + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_ANNOTATIONS         = "com.fasterxml.jackson.core:jackson-annotations"                   + ':' + versioning.Platforms.Versions.JACKSON;
+        String JACKSON_MR_BEAN             = "com.fasterxml.jackson.module:jackson-module-mrbean"               + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_CORE                = "com.fasterxml.jackson.core:jackson-core"                          + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_COREUTILS           = "com.github.fge:jackson-coreutils"                                 + ':' + Versions.JACKSON_COREUTILS;
         String JACKSON_DATABIND            = "com.fasterxml.jackson.core:jackson-databind"                      + ':' + versioning.Platforms.Versions.JACKSON;
