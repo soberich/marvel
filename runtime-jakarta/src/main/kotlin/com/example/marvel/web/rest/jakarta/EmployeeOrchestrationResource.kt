@@ -78,7 +78,7 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
     @GET
     @Path("/employee")
     override fun filterEmployees(@QueryParam("limit") limit: Long?): Flowable<EmployeeDto> =
-            Flowable.fromIterable(Iterable(employees.filterEmployees(uriInfo.requestUri.query)::iterator))
+            Flowable.fromIterable(employees.filterEmployees(uriInfo.requestUri.query))
                     .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
 
     @POST
