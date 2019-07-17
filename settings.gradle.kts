@@ -1,6 +1,11 @@
+import versioning.*
+
 rootProject.name = "marvel"
 
 pluginManagement {
+    plugins {
+        id("io.quarkus") version Platforms.Versions.QUARKUS
+    }
     repositories {
         mavenLocal()
         gradlePluginPortal()
