@@ -1,4 +1,4 @@
-package com.example.marvel.web.rest.jakarta
+package com.example.marvel.web.rest.jaxrs
 
 import javax.inject.Named
 import javax.ws.rs.ApplicationPath

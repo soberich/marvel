@@ -41,9 +41,8 @@ include(
         ":openapi",
 //        ":runtime-blocking-sql-jdbc",
         ":runtime-blocking-sql-jpa",
-        ":runtime-jakarta",
+        ":runtime-jaxrs",
 //        ":runtime-nosql",
         ":spi",
-        ":spring-boot-runner",
-        ":javaee-runner"
+        ":jakartaee-runner"
 )

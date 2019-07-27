@@ -8,21 +8,21 @@ plugins {
 }
 
 tasks.withType<ResolveTask>().configureEach {
-    description                = "At build-time (on demand) task. Creates an openapi.yaml definition file in `runtime-jakarta`"
+    description                = "At build-time (on demand) task. Creates an openapi.yaml definition file in `runtime-jaxrs`"
     group                      = "documentation"
     classpath                  = project.sourceSets.main.get().runtimeClasspath
     modelConverterClasses      = linkedSetOf("com.example.marvel.openapi.OpenApiConfig")
     objectMapperProcessorClass = "com.example.marvel.openapi.OpenApiConfig"
-    openApiFile                = file("$rootDir/runtime-jakarta/src/main/resources/META-INF/resources/api.yaml", FILE)
+    openApiFile                = file("$rootDir/runtime-jaxrs/src/main/resources/META-INF/resources/api.yaml", FILE)
     outputFormat               = YAML
-    outputPath                 =  "$rootDir/runtime-jakarta/src/main/resources/META-INF/resources"
+    outputPath                 =  "$rootDir/runtime-jaxrs/src/main/resources/META-INF/resources"
     prettyPrint                = true
-    //Don't need it in jakarta as Quarkus don't need Application class
+    //Don't need it in jaxrs as Quarkus don't need Application class
     readerClass                = "com.example.marvel.openapi.ApplicationPathReader"
-    resourcePackages           = setOf("com.example.marvel.web.rest.jakarta", "com.example.marvel.web.rest")
+    resourcePackages           = setOf("com.example.marvel.web.rest.jaxrs", "com.example.marvel.web.rest")
 }
 
 dependencies {
-    implementation(project(":runtime-jakarta"))
+    implementation(project(":runtime-jaxrs"))
     implementation(project(":convention"))
 }

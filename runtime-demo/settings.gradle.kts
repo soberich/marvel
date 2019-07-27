@@ -29,7 +29,7 @@ include(
 //        ":runtime-blocking-sql-jdbc",
         ":runtime-blocking-sql-jpa",
 //        ":runtime-nosql",
-        ":runtime-jakarta"
+        ":runtime-jaxrs"
 
 )
 

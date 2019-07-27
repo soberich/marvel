@@ -1,4 +1,4 @@
-package com.example.marvel.web.rest.jakarta
+package com.example.marvel.web.rest.jaxrs
 
 import com.example.marvel.domain.model.api.employee.Employee
 import com.example.marvel.domain.model.api.employee.EmployeeCreateCommand

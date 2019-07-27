@@ -1,4 +1,4 @@
-package com.example.marvel.web.rest.jakarta
+package com.example.marvel.web.rest.jaxrs
 
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.eventbus.MessageCodec

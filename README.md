@@ -22,12 +22,12 @@
     ```log
     org.junit.jupiter.api.extension.TestInstantiationException
     : TestInstanceFactory [io.quarkus.test.junit.QuarkusTestExtension]
-    failed to instantiate test class [com.example.marvel.web.rest.jakarta.EmployeeServiceOperationsNamespaceTest]
+    failed to instantiate test class [com.example.marvel.web.rest.jaxrs.EmployeeServiceOperationsNamespaceTest]
     : The test class
-    class com.example.marvel.web.rest.jakarta.EmployeeServiceOperationsNamespaceTest
+    class com.example.marvel.web.rest.jaxrs.EmployeeServiceOperationsNamespaceTest
     is not located in any of the directories [classes/java/test, /test-classes, bin/test]
     ```
-    There is a Test [com.example.marvel.web.rest.jakarta.EmployeeServiceOperationsNamespaceTest](runtime-jakarta/src/test/kotlin/com/example/marvel/web/rest/jakarta/EmployeeServiceOperationsNamespaceTest.kt)
+    There is a Test [com.example.marvel.web.rest.jaxrs.EmployeeServiceOperationsNamespaceTest](runtime-jakarta/src/test/kotlin/com/example/marvel/web/rest/jakarta/EmployeeServiceOperationsNamespaceTest.kt)
     You can uncomment and try. 
 2. Multi-module project with with Quarkus is annoying. 
 Recompilation never works here. Always an error. But also, simple restart didn't work either due to https://github.com/quarkusio/quarkus/issues/2413 (it didn't work in 100%!! of cases, and I then simplified Gradle build logic - it begin to sometime restart fine). By restarting fine I mean many times slower than some Spring-Boot application because Quarkus obviously does a lot of things at build time - which is intended for to allow hot-reload, but when the later do not work - it slows things down drastically. The more complex Gradle setup the more chances that simple restart (say by telling IDEA to restart the app) won't work.
@@ -54,11 +54,11 @@ you extend from. Should `PanacheEntityBase` become an interface?
 we got 
     ```log
     Caused by: javax.enterprise.inject.AmbiguousResolutionException: Ambiguous dependencies for type com.example.marvel.service.EmployeeOperationsServiceNamespace and qualifiers [@Default]
-        - java member: com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource#<init>()
-        - declared on CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource, com.example.marvel.service.EmployeeOperationsServiceNamespace, kotlin.coroutines.CoroutineContext, java.lang.Object, com.example.marvel.web.rest.EmployeeResourceAdapter], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource]
+        - java member: com.example.marvel.web.rest.jaxrs.EmployeeOrchestrationResource#<init>()
+        - declared on CLASS bean [types=[com.example.marvel.web.rest.jaxrs.EmployeeOrchestrationResource, com.example.marvel.service.EmployeeOperationsServiceNamespace, kotlin.coroutines.CoroutineContext, java.lang.Object, com.example.marvel.web.rest.EmployeeResourceAdapter], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jaxrs.EmployeeOrchestrationResource]
         - available beans:
-            - CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource, com.example.marvel.service.EmployeeOperationsServiceNamespace, kotlin.coroutines.CoroutineContext, java.lang.Object, com.example.marvel.web.rest.EmployeeResourceAdapter], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeOrchestrationResource]
-            - CLASS bean [types=[com.example.marvel.web.rest.jakarta.EmployeeBlockingServiceNamespaceImpl, com.example.marvel.service.EmployeeOperationsServiceNamespace, io.quarkus.hibernate.orm.panache.PanacheRepositoryBase<com.example.marvel.domain.model.jpa.employee.EmployeeEntity, java.lang.Long>, java.lang.Object], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jakarta.EmployeeBlockingServiceNamespaceImpl]
+            - CLASS bean [types=[com.example.marvel.web.rest.jaxrs.EmployeeOrchestrationResource, com.example.marvel.service.EmployeeOperationsServiceNamespace, kotlin.coroutines.CoroutineContext, java.lang.Object, com.example.marvel.web.rest.EmployeeResourceAdapter], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jaxrs.EmployeeOrchestrationResource]
+            - CLASS bean [types=[com.example.marvel.web.rest.jaxrs.EmployeeBlockingServiceNamespaceImpl, com.example.marvel.service.EmployeeOperationsServiceNamespace, io.quarkus.hibernate.orm.panache.PanacheRepositoryBase<com.example.marvel.domain.model.jpa.employee.EmployeeEntity, java.lang.Long>, java.lang.Object], qualifiers=[@Default, @Any], target=com.example.marvel.web.rest.jaxrs.EmployeeBlockingServiceNamespaceImpl]
         at io.quarkus.arc.processor.Beans.resolveInjectionPoint(Beans.java:393)
         at io.quarkus.arc.processor.BeanInfo.init(BeanInfo.java:366)
         at io.quarkus.arc.processor.BeanDeployment.init(BeanDeployment.java:286)

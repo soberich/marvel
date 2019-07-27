@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":runtime-jakarta", "default")) //FIXME: WHY `api` configuration is available here!??
+    implementation(project(":runtime-jaxrs", "default")) //FIXME: WHY `api` configuration is available here!??
     runtimeOnly(project(":runtime-blocking-sql-jpa", "default"))
     implementation(platform(Deps.Platforms.BLAZE_JPA))
 

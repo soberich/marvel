@@ -86,7 +86,7 @@ dependencies {
     implementation(project(":api", "default"))
 //    implementation(project(":runtime-blocking-sql-jdbc", "default"))
 //    implementation(project(":runtime-nosql", "default"))
-    implementation(project(":runtime-jakarta", "default"))
+    implementation(project(":runtime-jaxrs", "default"))
 
     arrayOf(
             Deps.Libs.ARROW_EFFECTS_IO_EXTENSIONS,

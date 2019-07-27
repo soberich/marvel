@@ -1,4 +1,4 @@
-package com.example.marvel.web.rest.jakarta
+package com.example.marvel.web.rest.jaxrs
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import javax.inject.Inject

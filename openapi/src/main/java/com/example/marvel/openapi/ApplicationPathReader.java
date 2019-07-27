@@ -1,6 +1,6 @@
 package com.example.marvel.openapi;
 
-import com.example.marvel.web.rest.jakarta.JaxRsApp;
+import com.example.marvel.web.rest.jaxrs.JaxRsApp;
 import io.swagger.v3.jaxrs2.Reader;
 
 import javax.ws.rs.ApplicationPath;

@@ -58,7 +58,7 @@ subprojects {
     }
 }
 //
-//project(":runtime-jakarta") {
+//project(":runtime-jaxrs") {
 ////    buildscript {
 ////        repositories {
 ////            mavenLocal()
