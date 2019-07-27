@@ -1,5 +1,5 @@
-import io.quarkus.gradle.QuarkusPluginExtension
 import org.gradle.api.JavaVersion.current
+
 buildscript {
     repositories {
         mavenLocal()
@@ -15,37 +15,6 @@ plugins {
     `project-report`
 }
 
-project(":runtime-jakarta") {
-    buildscript {
-        repositories {
-            mavenLocal()
-        }
-        dependencies {
-            classpath("io.quarkus:quarkus-gradle-plugin:0.19.1")
-        }
-    }
-    apply(plugin = "java")
-    apply(plugin = "io.quarkus")
-    configure<QuarkusPluginExtension> {
-        setSourceDir("$projectDir/src/main/kotlin")
-//        resourcesDir() += file("$projectDir/src/main/resources")
-        setOutputDirectory("$buildDir/classes/kotlin/main")
-    }
-    val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
-    if (extensions.findByType<JavaPluginExtension>() != null) {
-        configure<JavaPluginExtension> {
-            main?.output?.setResourcesDir("$buildDir/classes/java/main")
-        }
-    }
-    dependencies {
-        "implementation"(project(":convention"))
-//        "implementation"(project(":convention")) {
-//            capabilities {
-//                requireCapability("com.example.marvel:convention-quarkus")
-//            }
-//        }
-    }
-}
 
 subprojects {
     apply(plugin = "build-dashboard")
@@ -64,6 +33,8 @@ subprojects {
             }
         }
         jcenter()
+        maven("https://repository.jboss.org/nexus/content/repositories/public")
+        maven("https://repo.spring.io/milestone")
         maven("http://dl.bintray.com/kotlin/kotlin-eap") {
             content {
                 includeGroup("org.jetbrains.kotlin")
@@ -86,3 +57,41 @@ subprojects {
         }
     }
 }
+//
+//project(":runtime-jakarta") {
+////    buildscript {
+////        repositories {
+////            mavenLocal()
+////        }
+////        dependencies {
+////            classpath("io.quarkus:quarkus-gradle-plugin:0.19.1")
+////        }
+////    }
+//    apply(plugin = "java")
+////    apply(plugin = "spring-boot")
+////    configure<QuarkusPluginExtension> {
+////        setSourceDir("$projectDir/src/main/kotlin")
+//////        resourcesDir() += file("$projectDir/src/main/resources")
+////        setOutputDirectory("$buildDir/classes/kotlin/main")
+////    }
+////    val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
+////    if (extensions.findByType<JavaPluginExtension>() != null) {
+////        configure<JavaPluginExtension> {
+////            main?.output?.setResourcesDir("$buildDir/classes/java/main")
+////        }
+////    }
+//    dependencies {
+//        //        "implementation"(project(":convention"))
+////        "implementation"(project(":convention")) {
+////            capabilities {
+////                requireCapability("com.example.marvel:convention-quarkus")
+////            }
+////        }
+//        "implementation"(project(":convention")) {
+//            capabilities {
+//                requireCapability("com.example.marvel:convention-spring")
+//            }
+//        }
+//    }
+//}
+

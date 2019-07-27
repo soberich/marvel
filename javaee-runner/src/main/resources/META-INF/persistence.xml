@@ -1,12 +1,15 @@
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
-             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
-             version="2.2">
+<persistence
+        xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+                            http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+        version="2.2">
 
     <persistence-unit name="default" transaction-type="JTA">
-
         <description>Marvel default unit</description>
+<!--        <jta-data-source>java:/jdbc/AppDS</jta-data-source>-->
+        <class>com.example.marvel.domain.model.jpa.employee.EmployeeEntity</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
             <!-- database connection -->
@@ -17,7 +20,7 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.create-database-schemas" value="true"/>
+<!--            <property name="javax.persistence.schema-generation.create-database-schemas" value="true"/>-->
 <!--            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
 <!--            <property name="javax.persistence.schema-generation.scripts.action" value="create-drop"/>-->
 <!--            <property name="javax.persistence.schema-generation.scripts.create-target" value="/Users/yanpetrov/Projects/marvel/runtime-blocking-sql-jpa/src/main/resources/create.ddl"/>-->

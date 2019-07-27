@@ -24,7 +24,8 @@ data class RecordImpl(
     override val report              : RecordCollection
 ) : IdentityOf<RecordImpl.RecordId>(), Record {
 
-    @get:JsonIgnore
+    @get:
+    [JsonIgnore]
     final override inline val id: RecordImpl.RecordId get() = RecordId(report.id, date, type)
 
     data class RecordId(val recordCollectionId: Long, val date: LocalDate, val type: RecordType) : Serializable

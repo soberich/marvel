@@ -11,7 +11,7 @@ plugins {
     `help-tasks`                                              // optional
     `project-report`                                          // optional
     id("com.github.ben-manes.versions")      version "0.21.0" // optional
-    id("se.patrikerdes.use-latest-versions") version "0.2.10" // optional
+    id("se.patrikerdes.use-latest-versions") version "0.2.12" // optional
 }
 
 kotlinDslPluginOptions.experimentalWarning.set(false)
@@ -55,7 +55,7 @@ tasks {
     }
 }
 
-val kotlinVersion = KotlinVersion(1, 3, 41).toString()
+val kotlinVersion = "1.3.5+"
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
@@ -80,7 +80,7 @@ val kotlinVersion = KotlinVersion(1, 3, 41).toString()
     implementation("nu.studer",                                         "gradle-credentials-plugin",                "1.0.7")
     implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "2.7.1")
     implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.2.0.M4")
-    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "0.2.10")
+    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "0.2.12")
     //TODO:
 //    implementation("com.github.JetBrains",                              "gradle-idea-ext-plugin",                   "master-SNAPSHOT")
 }

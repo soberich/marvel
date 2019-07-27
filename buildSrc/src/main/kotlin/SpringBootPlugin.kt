@@ -24,21 +24,20 @@ import org.springframework.boot.gradle.tasks.bundling.BootWar
 
 class SpringBootPlugin : Plugin<Project> {
 
-
-
     override fun apply(project: Project) = project.run {
 
+        apply(plugin = "java")
         apply(plugin = "org.springframework.boot")
         apply(plugin = "io.spring.dependency-management")
 
         configure<SpringBootExtension> {
-                mainClassName = "com.example.marvel.Application"
+                mainClassName = "com.example.marvel.spring.boot.MainKt"
                 buildInfo()
         }
 
         tasks {
             withType<BootWar>().configureEach {
-                mainClassName = "com.example.marvel.Application"
+                mainClassName = "com.example.marvel.spring.boot.MainKt"
             }
             val cleanResources by registering(Jar::class) {
                 delete("build/resources")

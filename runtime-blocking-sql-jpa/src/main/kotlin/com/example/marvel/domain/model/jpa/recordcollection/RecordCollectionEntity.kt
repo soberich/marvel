@@ -19,7 +19,6 @@ import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Cacheable
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Column
-import javax.persistence.Entity
 import javax.persistence.EntityManager
 import javax.persistence.EnumType.STRING
 import javax.persistence.Enumerated
@@ -30,23 +29,28 @@ import javax.persistence.OneToMany
 import javax.persistence.Transient
 
 
-@Entity
+//@Entity
 @Cacheable
 @Access(PROPERTY)
 data class RecordCollectionEntity(@Transient private val delegate: RecordCollection) : SimpleGeneratedIdentityOfLong(), RecordCollection by delegate {
-    @get:Column(nullable = false, updatable = false)
+    @get:
+    [Column(nullable = false, updatable = false)]
     override var year                         : Int = 0
-    @get:Column(nullable = false, updatable = false)
-    @get:Enumerated(STRING)
+    @get:
+    [Column(nullable = false, updatable = false)
+    Enumerated(STRING)]
     override lateinit var month               : Month
-    @get:ManyToOne(optional = false, fetch = LAZY)
-    @get:JoinColumn(updatable =false)
+    @get:
+    [ManyToOne(optional = false, fetch = LAZY)
+    JoinColumn(updatable =false)]
     lateinit var project                      : ProjectEntity
-    @get:ManyToOne(optional = false, fetch = LAZY)
-    @get:JoinColumn(updatable =false)
+    @get:
+    [ManyToOne(optional = false, fetch = LAZY)
+    JoinColumn(updatable =false)]
     lateinit var employee                     : EmployeeEntity
 
-    @get:OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)
+    @get:
+    [OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)]
     lateinit var records                      : List<RecordEntity>
 
     /**

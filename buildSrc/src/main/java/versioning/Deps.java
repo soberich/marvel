@@ -19,7 +19,7 @@ public interface Deps {
         String CDI               = "[2,3)";
         String CONCURRENT        = "[1.1,2)";
         String HIBERNATE         = "[5.3,6)";
-        String INJECT            = "[,3)";
+        String INJECT            = "(0,3)";
         String JAX_RS            = "[2.1,2.2)";
         String JAXB              = "[2.3,2.5)";
         String JAXB_RUNTIME      = "[2.4,2.5)";
@@ -41,7 +41,7 @@ public interface Deps {
         String EBEAN_TEST        = EBEAN;
         String HIKARI            = "+";
         String JACKSON_COREUTILS = "1.8";
-        String JACKSON_MONEY     = "1.0.2";
+        String JACKSON_MONEY     = "1.1.1";
         String JBOSS_LOG         = "2.1.4.Final";
         String JJWT              = "0.9.1";
         String JSON_PATCH        = "1.9";
@@ -61,7 +61,7 @@ public interface Deps {
         String SLF4J_JBOSS       = "1.0.4.GA";
         String SWAGGER           = "2.0.7";
         String VALIDATOR         = "6.0.12.Final";
-        String ZALANDO_PROBLEM   = "0.22.0";
+        String ZALANDO_PROBLEM   = "0.23.0";
 
     }
 

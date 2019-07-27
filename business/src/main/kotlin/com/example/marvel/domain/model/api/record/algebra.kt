@@ -52,26 +52,34 @@ interface Record {
 ) : Record by delegate { companion object }
 
 @optics data class RecordCreateCommand @JsonbCreator constructor(
-    @get:NotNull
+    @get:
+    [NotNull]
     override val date                : LocalDate,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val type                : RecordType,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val hoursSubmitted      : BigDecimal,
     override val desc                : String?,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val recordCollectionId  : Long
 ) : RecordModel() { companion object }
 
 @optics data class RecordUpdateCommand @JsonbCreator constructor(
-    @get:NotNull
+    @get:
+    [NotNull]
     override val date                : LocalDate,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val type                : RecordType,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val hoursSubmitted      : BigDecimal,
     override val desc                : String?,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val recordCollectionId  : Long
 ) : RecordModel() { companion object }
 

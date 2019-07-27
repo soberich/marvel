@@ -18,10 +18,11 @@ tasks.withType<ResolveTask>().configureEach {
     outputPath                 =  "$rootDir/runtime-jakarta/src/main/resources/META-INF/resources"
     prettyPrint                = true
     //Don't need it in jakarta as Quarkus don't need Application class
-//    readerClass                = "com.example.marvel.openapi.ApplicationPathReader"
+    readerClass                = "com.example.marvel.openapi.ApplicationPathReader"
     resourcePackages           = setOf("com.example.marvel.web.rest.jakarta", "com.example.marvel.web.rest")
 }
 
 dependencies {
     implementation(project(":runtime-jakarta"))
+    implementation(project(":convention"))
 }

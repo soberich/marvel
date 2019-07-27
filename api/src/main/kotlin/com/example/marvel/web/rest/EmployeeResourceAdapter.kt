@@ -1,7 +1,8 @@
 package com.example.marvel.web.rest
 
+import com.example.marvel.domain.model.api.employee.Employee
 import com.example.marvel.domain.model.api.employee.EmployeeCreateCommand
-import com.example.marvel.domain.model.api.employee.EmployeeDto
+import com.example.marvel.domain.model.api.employee.EmployeeDetailedView
 import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
 import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
@@ -36,16 +37,16 @@ interface EmployeeResourceAdapter {
      * P.S. BTW, In such case return types from RxJava2 serves slightly better as they give idea of COLD/HOT producer
      * and the semantics are more understandable.
      */
-    fun getEmployees(): Publisher<EmployeeDto>
+    fun getEmployees(): Publisher<Employee>
 
-    fun filterEmployees(limit: Long?): Publisher<EmployeeDto>
+    fun filterEmployees(filter: String?): Publisher<Employee>
 
     fun createEmployee(
-            @NotNull @Valid employee: EmployeeCreateCommand): CompletionStage<EmployeeDto>
+            @NotNull @Valid employee: EmployeeCreateCommand): CompletionStage<EmployeeDetailedView>
 
     fun updateEmployee(
             @NotNull              id: Long,
-            @NotNull @Valid employee: EmployeeUpdateCommand): CompletionStage<EmployeeDto>
+            @NotNull @Valid employee: EmployeeUpdateCommand): CompletionStage<EmployeeDetailedView>
 
     fun getForPeriod(
             @NotNull    id: Long,

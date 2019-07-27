@@ -16,7 +16,8 @@ import javax.persistence.Version
 @Access(PROPERTY)
 abstract class IdentityOf<T : Serializable>: IdentifiableOf<T> {
 
-    @get:Version
+    @get:
+    [Version]
     protected var optimisticVersion = 0
 
     /**

@@ -1,0 +1,42 @@
+import versioning.Deps
+
+plugins {
+    id("war")
+    id("kronstadt")
+//    id("org.wildfly.build.provision") version "0.0.11"
+}
+
+//tasks.withType(ProvisionTask).configureEach {
+//    variables["wildfly.version"] = "17.0.1.Final"
+//    override( "org.hibernate:hibernate-core") {
+//        version = "5.4.3.Final"
+//    }
+//}
+
+dependencies {
+    implementation(project(":runtime-jakarta")) //FIXME: WHY `api` configuration is available here!??
+    implementation(project(":runtime-blocking-sql-jpa"))
+    implementation(project(":convention"))
+
+    implementation(platform(Deps.Platforms.BLAZE_JPA))
+
+    compileOnly(Deps.Jakarta.PERSISTENCE)
+    compileOnly("com.blazebit:blaze-persistence-core-api")
+    compileOnly("com.blazebit:blaze-persistence-entity-view-api")
+
+    implementation(
+            "com.blazebit:blaze-persistence-integration-entity-view-cdi",
+            Deps.Libs.RX2
+    )
+
+    runtimeOnly(
+            "com.blazebit:blaze-persistence-core-impl",
+            "com.blazebit:blaze-persistence-entity-view-impl",
+            "com.blazebit:blaze-persistence-integration-hibernate-5.3",
+            "org.jboss.resteasy:resteasy-rxjava2:3.7.0.Final",
+            "com.blazebit:blaze-persistence-jpa-criteria-impl",
+            "com.h2database:h2:+",
+//            "mysql:mysql-connector-java:5.1.38",
+            "io.vertx:vertx-web:4.0.0-SNAPSHOT",
+    )
+}

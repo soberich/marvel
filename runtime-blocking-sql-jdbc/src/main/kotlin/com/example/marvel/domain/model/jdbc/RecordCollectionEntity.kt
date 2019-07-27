@@ -18,6 +18,7 @@ import javax.persistence.EnumType.STRING
 data class RecordCollectionEntity(
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     override val id                  : Long,
     @Column(nullable = false)
     override val year                : Year,

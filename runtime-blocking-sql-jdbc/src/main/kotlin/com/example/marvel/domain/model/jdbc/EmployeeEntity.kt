@@ -14,6 +14,7 @@ import javax.persistence.CascadeType.ALL
 data class EmployeeEntity(
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     override val id                  : Long,
     @Column(nullable = false)
     override val name                : String,

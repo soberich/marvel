@@ -1,7 +1,8 @@
 package com.example.marvel.web.rest.jakarta
 
+import com.example.marvel.domain.model.api.employee.Employee
 import com.example.marvel.domain.model.api.employee.EmployeeCreateCommand
-import com.example.marvel.domain.model.api.employee.EmployeeDto
+import com.example.marvel.domain.model.api.employee.EmployeeDetailedView
 import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
 import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
@@ -32,7 +33,6 @@ import javax.ws.rs.core.Context
 import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import javax.ws.rs.core.UriInfo
-import io.vertx.core.Vertx as VertxBare
 
 
 
@@ -40,10 +40,10 @@ import io.vertx.core.Vertx as VertxBare
  * Named imports used for program composition to be more self-documented
  */
 @Named
-@Path("/api")
+@Path("/")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private val employees: EmployeeOperationsServiceNamespace) : EmployeeResourceAdapter {
+class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ private val employees: EmployeeOperationsServiceNamespace) : EmployeeResourceAdapter {
 
     /**
      * Could move to ctor
@@ -51,17 +51,18 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
 //    @Inject
 //    internal lateinit var vertx: io.vertx.reactivex.core.Vertx
 
-    @Inject
-    internal lateinit var eventBus: EventBus
+    @set:Inject
+    protected lateinit var eventBus: EventBus
+
 //
 //    @Inject
 //    internal lateinit var client: io.reactiverse.reactivex.pgclient.PgPool
 
-    @Context
-    internal lateinit var headers: HttpHeaders
+    @set:Context
+    protected lateinit var headers: HttpHeaders
 
-    @Context
-    internal lateinit var uriInfo: UriInfo
+    @set:Context
+    protected lateinit var uriInfo: UriInfo
 
     @PostConstruct
     fun init() {
@@ -71,28 +72,30 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
     @GET
     @Path("/employee")
     @Produces("application/stream+json")
-    override fun getEmployees(): Flowable<EmployeeDto> =
+    override fun getEmployees(): Flowable<Employee> =
             Flowable.fromIterable(Iterable(employees.streamEmployees()::iterator))
                     .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
 
     @GET
-    @Path("/employee")
-    override fun filterEmployees(@QueryParam("limit") limit: Long?): Flowable<EmployeeDto> =
+    @Path("/employee/filter")
+    override fun filterEmployees(
+            @QueryParam("filter") filter: String?): Flowable<Employee> =
             Flowable.fromIterable(employees.filterEmployees(uriInfo.requestUri.query))
                     .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
 
-    @POST
-    @Path("/employee")
+//    @POST
+//    @Path("/employee")
     override fun createEmployee(
-            employee: EmployeeCreateCommand): CompletionStage<EmployeeDto> = CompletableFuture.supplyAsync {
-        employees.createEmployee(employee)
+            employee: EmployeeCreateCommand): CompletionStage<EmployeeDetailedView> {
+        val createEmployee = employees.createEmployee(employee)
+        return CompletableFuture.completedFuture(createEmployee)
     }
 
     @PUT
     @Path("/employee/{id:[1-9][0-9]*}")
     override fun updateEmployee(
             @PathParam("id") id: Long,
-            employee: EmployeeUpdateCommand): CompletionStage<EmployeeDto> = CompletableFuture.supplyAsync {
+            employee: EmployeeUpdateCommand): CompletionStage<EmployeeDetailedView> = CompletableFuture.supplyAsync {
         employees.updateEmployee(id, employee)
     }
 

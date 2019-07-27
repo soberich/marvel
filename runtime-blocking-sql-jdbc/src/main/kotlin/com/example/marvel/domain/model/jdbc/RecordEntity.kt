@@ -40,7 +40,8 @@ data class RecordEntity(
     override val report              : RecordCollectionEntity
 ) : IdentityOf<RecordId>(), Record {
 
-    @get:JsonIgnore
+    @get:
+    [JsonIgnore]
     final override inline val id: RecordId get() = RecordId(report.id, date, type)
 
     /**

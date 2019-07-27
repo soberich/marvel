@@ -66,8 +66,6 @@ subprojects {
                 encoding      = UTF_8.name()
                 isIncremental = true
                 isFork        = true
-                // compiler deamon JVM options
-                forkOptions.jvmArgs = project.extra["org.gradle.jvmargs"].toString().split(" ")
                 // javac tasks args
                 file("$rootDir/javacArgs", PathValidation.FILE).forEachLine(action = compilerArgs::add)
             }

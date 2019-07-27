@@ -1,4 +1,4 @@
-import versioning.*
+import versioning.Platforms
 
 rootProject.name = "marvel"
 
@@ -43,6 +43,7 @@ include(
         ":runtime-blocking-sql-jpa",
         ":runtime-jakarta",
 //        ":runtime-nosql",
-        ":spi"
-
+        ":spi",
+        ":spring-boot-runner",
+        ":javaee-runner"
 )

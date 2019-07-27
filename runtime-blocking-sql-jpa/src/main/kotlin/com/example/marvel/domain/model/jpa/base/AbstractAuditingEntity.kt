@@ -2,7 +2,6 @@ package com.example.marvel.domain.model.jpa.base
 
 import java.io.Serializable
 import java.time.Instant
-import javax.json.bind.annotation.JsonbTransient
 import javax.persistence.Column
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -36,23 +35,20 @@ import javax.persistence.MappedSuperclass
 abstract class AbstractAuditingEntity<T : Serializable>(
     @Id
     @GeneratedValue
+    @Column(updatable = false)
     override
     var id                   : T
 ) : IdentityOf<T>() {
 
     @Column(nullable = false, updatable = false)
-    @JsonbTransient
     var createdBy           : String? = null
 
     @Column(nullable = false, updatable = false)
-    @JsonbTransient
     var createdDate         : Instant = Instant.now()
 
     @Column(nullable = false, length = 50)
-    @JsonbTransient
     var lastModifiedBy      : String? = null
 
     @Column(nullable = false)
-    @JsonbTransient
     var lastModifiedDate    : Instant = Instant.now()
 }

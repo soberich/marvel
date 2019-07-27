@@ -50,32 +50,44 @@ interface RecordCollection {
 ) : RecordCollection by delegate { companion object }
 
 @optics data class RecordCollectionCreateCommand @JsonbCreator constructor(
-    @get:Null
+    @get:
+    [Null]
     override var id                  : Long?,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val year                : Int,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val month               : Month,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val projectId           : String,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val employeeId          : Long,
-    @get:NotEmpty
+    @get:
+    [NotEmpty]
     override val records             : ListK<@Valid RecordCreateCommand>
 ) : RecordCollectionModel() { companion object }
 
 @optics data class RecordCollectionUpdateCommand @JsonbCreator constructor(
-    @get:NotNull
+    @get:
+    [NotNull]
     override var id                  : Long?,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val year                : Int,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val month               : Month,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val projectId           : String,
-    @get:NotNull
+    @get:
+    [NotNull]
     override val employeeId          : Long,
-    @get:NotEmpty
+    @get:
+    [NotEmpty]
     override val records             : ListK<@Valid RecordUpdateCommand>
 ) : RecordCollectionModel() { companion object }
 

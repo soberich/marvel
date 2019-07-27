@@ -44,7 +44,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EmployeeDto'
+                  $ref: '#/components/schemas/Employee'
     post:
       operationId: createEmployee
       requestBody:
@@ -59,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeDto'
+                $ref: '#/components/schemas/EmployeeDetailedView'
   /management/configprops:
     get:
       tags:
@@ -273,6 +273,23 @@ paths:
         404:
           description: Not Found
       deprecated: false
+  /api/employee/filter:
+    get:
+      operationId: filterEmployees
+      parameters:
+      - name: filter
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
   /api/employee/{id}:
     put:
       operationId: updateEmployee
@@ -295,7 +312,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmployeeDto'
+                $ref: '#/components/schemas/EmployeeDetailedView'
   /api/employee/{id}/records:
     get:
       operationId: getForPeriod
@@ -393,15 +410,25 @@ components:
           type: string
         templated:
           type: boolean
-    EmployeeDto:
+    Employee:
       type: object
       properties:
-        name:
+        email:
           type: string
         id:
           type: integer
           format: int64
+        name:
+          type: string
+    EmployeeDetailedView:
+      type: object
+      properties:
         email:
+          type: string
+        id:
+          type: integer
+          format: int64
+        name:
           type: string
     EmployeeCreateCommand:
       required:
@@ -409,30 +436,64 @@ components:
       - name
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
         email:
+          type: string
+        name:
           type: string
     EmployeeUpdateCommand:
       required:
       - email
-      - id
       - name
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
         email:
           type: string
+        name:
+          type: string
+    Record:
+      type: object
+      properties:
+        date:
+          example: 1544391144
+          anyOf:
+          - type: string
+            format: date
+          - type: integer
+            format: int64
+          - type: number
+        desc:
+          type: string
+        hoursSubmitted:
+          type: number
+        type:
+          type: string
+          enum:
+          - HOURS_WORKED
+          - OVERTIME
+          - ILLNESS
+          - LEAVE
+          - HOLIDAY_AVAILABLE
+          - EDUCATION
+          - STAND_BY
+          - KILOMETRES
+          - OTHER
     RecordDto:
       type: object
       properties:
+        date:
+          example: 1544391144
+          anyOf:
+          - type: string
+            format: date
+          - type: integer
+            format: int64
+          - type: number
+        delegate:
+          $ref: '#/components/schemas/Record'
+        desc:
+          type: string
+        hoursSubmitted:
+          type: number
         recordCollectionId:
           type: integer
           format: int64
@@ -447,36 +508,13 @@ components:
           - EDUCATION
           - STAND_BY
           - KILOMETRES
-        date:
-          example: 1544391144
-          anyOf:
-          - type: string
-            format: date
-          - type: integer
-            format: int64
-          - type: number
-        desc:
-          type: string
-        hoursSubmitted:
-          type: number
-    RecordCollectionDto:
+          - OTHER
+    RecordCollection:
       type: object
       properties:
-        projectId:
-          type: string
-        employeeId:
-          type: integer
-          format: int64
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordDto'
         id:
           type: integer
           format: int64
-        year:
-          type: integer
-          format: int32
         month:
           type: string
           enum:
@@ -492,6 +530,54 @@ components:
           - OCTOBER
           - NOVEMBER
           - DECEMBER
+        year:
+          type: integer
+          format: int32
+    RecordCollectionDto:
+      type: object
+      properties:
+        delegate:
+          $ref: '#/components/schemas/RecordCollection'
+        employeeId:
+          type: integer
+          format: int64
+        id:
+          type: integer
+          format: int64
+        month:
+          type: string
+          enum:
+          - JANUARY
+          - FEBRUARY
+          - MARCH
+          - APRIL
+          - MAY
+          - JUNE
+          - JULY
+          - AUGUST
+          - SEPTEMBER
+          - OCTOBER
+          - NOVEMBER
+          - DECEMBER
+        projectId:
+          type: string
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordDto'
+        year:
+          type: integer
+          format: int32
+    ListKRecordCreateCommand:
+      type: array
+      properties:
+        empty:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+      items:
+        $ref: '#/components/schemas/RecordCreateCommand'
     RecordCollectionCreateCommand:
       required:
       - employeeId
@@ -501,12 +587,12 @@ components:
       - year
       type: object
       properties:
+        employeeId:
+          type: integer
+          format: int64
         id:
           type: integer
           format: int64
-        year:
-          type: integer
-          format: int32
         month:
           type: string
           enum:
@@ -524,9 +610,6 @@ components:
           - DECEMBER
         projectId:
           type: string
-        employeeId:
-          type: integer
-          format: int64
         records:
           type: array
           properties:
@@ -537,6 +620,9 @@ components:
               format: int32
           items:
             $ref: '#/components/schemas/RecordCreateCommand'
+        year:
+          type: integer
+          format: int32
     RecordCreateCommand:
       required:
       - date
@@ -553,6 +639,13 @@ components:
           - type: integer
             format: int64
           - type: number
+        desc:
+          type: string
+        hoursSubmitted:
+          type: number
+        recordCollectionId:
+          type: integer
+          format: int64
         type:
           type: string
           enum:
@@ -564,13 +657,17 @@ components:
           - EDUCATION
           - STAND_BY
           - KILOMETRES
-        hoursSubmitted:
-          type: number
-        desc:
-          type: string
-        recordCollectionId:
+          - OTHER
+    ListKRecordUpdateCommand:
+      type: array
+      properties:
+        empty:
+          type: boolean
+        size:
           type: integer
-          format: int64
+          format: int32
+      items:
+        $ref: '#/components/schemas/RecordUpdateCommand'
     RecordCollectionUpdateCommand:
       required:
       - employeeId
@@ -581,12 +678,12 @@ components:
       - year
       type: object
       properties:
+        employeeId:
+          type: integer
+          format: int64
         id:
           type: integer
           format: int64
-        year:
-          type: integer
-          format: int32
         month:
           type: string
           enum:
@@ -604,13 +701,19 @@ components:
           - DECEMBER
         projectId:
           type: string
-        employeeId:
-          type: integer
-          format: int64
         records:
           type: array
+          properties:
+            empty:
+              type: boolean
+            size:
+              type: integer
+              format: int32
           items:
             $ref: '#/components/schemas/RecordUpdateCommand'
+        year:
+          type: integer
+          format: int32
     RecordUpdateCommand:
       required:
       - date
@@ -627,6 +730,13 @@ components:
           - type: integer
             format: int64
           - type: number
+        desc:
+          type: string
+        hoursSubmitted:
+          type: number
+        recordCollectionId:
+          type: integer
+          format: int64
         type:
           type: string
           enum:
@@ -638,13 +748,7 @@ components:
           - EDUCATION
           - STAND_BY
           - KILOMETRES
-        hoursSubmitted:
-          type: number
-        desc:
-          type: string
-        recordCollectionId:
-          type: integer
-          format: int64
+          - OTHER
   securitySchemes:
     BasicAuth:
       type: http

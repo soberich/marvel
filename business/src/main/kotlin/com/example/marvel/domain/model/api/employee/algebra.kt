@@ -7,8 +7,6 @@ import arrow.optics.optics
 import javax.json.bind.annotation.JsonbCreator
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Null
 import javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE
 
 /**
@@ -19,23 +17,28 @@ import javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE
  */
 
 interface Employee {
-    var id                  : Long?
+    val id                  : Long
     val name                : String
     val email               : String
 }
+
+interface EmployeeDetailedView {
+    val id                  : Long
+    val name                : String
+    val email               : String
+}
+
 
 /**
  * FIXME:  Work around absence of ISO for sealed classes
  * It is clear that those inline properties are useless. They are for demo.
  */
-@optics sealed class EmployeeModel : Employee {
+@optics sealed class EmployeeModel {
 
     companion object {
-        inline operator fun invoke(           name: String, email: String): EmployeeModel = EmployeeCreateCommand(null, name, email)
-        inline operator fun invoke(id: Long,  name: String, email: String): EmployeeModel = EmployeeCreateCommand(id, name, email)
-        inline operator fun invoke(id: Long?, name: String, email: String): Employee  =
+        inline operator fun invoke(id: Long, name: String, email: String): Employee  =
             object : Employee {
-                override inline var id          : Long? get() = id
+                override inline var id          : Long get() = id
                     set(value) = Unit
                 override inline val name        : String get() = name
                 override inline val email       : String get() = email
@@ -45,33 +48,30 @@ interface Employee {
     }
 }
 
-/**
- * FIXME: Track https://github.com/arrow-kt/arrow/issues/1494
- */
-@optics data class EmployeeDto(
-    @PublishedApi
-    internal val delegate: Employee
-) : Employee by delegate { companion object }
-
 @optics data class EmployeeCreateCommand @JsonbCreator constructor(
-    @get:Null
-    override var id                  : Long?,
-    @get:NotBlank
-    override val name                : String,
-    @get:NotBlank
-    @get:Email(flags = [CASE_INSENSITIVE])
-    override val email               : String
+    @get:
+    [NotBlank]
+    val name                         : String,
+    @get:
+    [NotBlank]
+    @get:
+    [Email(flags = [CASE_INSENSITIVE])]
+    val email                        : String
 ) : EmployeeModel() { companion object }
 
+/**
+ * Aggregate does't have `ID` in body, but it rather comes from path or param passes for request.
+ * This enables us to address on later stages more complex concerns like ABAC.
+ */
 @optics data class EmployeeUpdateCommand @JsonbCreator constructor(
-    @get:NotNull
-    override var id                  : Long?,
-    @get:NotBlank
-    override val name                : String,
-    @get:NotBlank
-    @get:Email(flags = [CASE_INSENSITIVE])
-    override val email               : String
+    @get:
+    [NotBlank]
+    val name                         : String,
+    @get:
+    [NotBlank]
+    @get:
+    [Email(flags = [CASE_INSENSITIVE])]
+    val email                        : String
 ) : EmployeeModel() { companion object }
 
 @optics data class EmployeeRequests(val employees: ListK<EmployeeModel>) : List<EmployeeModel> by employees { companion object }
-@optics data class EmployeeResponses(val employees: ListK<EmployeeDto>) : List<EmployeeDto> by employees { companion object }

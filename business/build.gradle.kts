@@ -41,6 +41,7 @@ repositories.jcenter {
 //}
 dependencies {
     kapt(Deps.Libs.ARROW_META)
+    kapt(Deps.Libs.VALIDATOR_AP)
 
     compileOnly(Deps.Libs.ARROW_ANNOTATIONS)
 
@@ -51,9 +52,8 @@ dependencies {
     ).forEach(::api)
 
     arrayOf(
-            Deps.Libs.ARROW_EXTRAS_DATA,
-            Deps.Libs.ARROW_OPTICS,
-            Deps.Libs.REACTIVE_STREAMS
+//            Deps.Libs.ARROW_EXTRAS_DATA,
+            Deps.Libs.ARROW_OPTICS
     ).forEach(::implementation)
 
 

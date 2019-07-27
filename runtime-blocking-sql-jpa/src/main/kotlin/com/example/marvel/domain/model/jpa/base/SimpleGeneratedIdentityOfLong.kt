@@ -19,8 +19,9 @@ import javax.persistence.MappedSuperclass
 @Access(PROPERTY)
 abstract class SimpleGeneratedIdentityOfLong: IdentityOf<Long>() {
 
-    @get:Id
-    @get:GenericGenerator(
+    @get:[
+    Id
+    GenericGenerator(
             name = "optimized-sequence",
             strategy = "enhanced-sequence",
             parameters = [
@@ -28,7 +29,7 @@ abstract class SimpleGeneratedIdentityOfLong: IdentityOf<Long>() {
                 Parameter(name = "initial_value"              , value = "1"),
                 Parameter(name = "increment_size"             , value = "25"),
                 Parameter(name = "optimizer"                  , value = "pooled")])
-    @get:GeneratedValue(strategy = SEQUENCE, generator = "optimized-sequence")
-    @get:Column(updatable = false)
+    GeneratedValue(strategy = SEQUENCE, generator = "optimized-sequence")
+    Column(updatable = false)]
     override var id: Long? = 0L
 }

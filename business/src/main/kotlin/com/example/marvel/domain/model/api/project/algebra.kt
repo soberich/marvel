@@ -41,12 +41,14 @@ interface Project {
 ) : Project by delegate { companion object }
 
 @optics data class ProjectCreateCommand @JsonbCreator constructor(
-    @get:NotNull
+    @get:
+    [NotNull]
     override val id                  : String
 ) : ProjectModel() { companion object }
 
 @optics data class ProjectUpdateCommand @JsonbCreator constructor(
-    @get:NotNull
+    @get:
+    [NotNull]
     override val id                  : String
 ) : ProjectModel() { companion object }
 

@@ -14,7 +14,7 @@ import javax.persistence.Id
 @History
 data class ProjectEntity(
     @Id
-    @Column(name = "name", length = 50)
+    @Column(name = "name", length = 50, updateable = false)
     override val id                  : String
 ) : IdentityOf<String>(), Project {
 

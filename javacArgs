@@ -4,3 +4,4 @@
 -Xdoclint:none
 -Xdiags:verbose
 -parameters
+-Amapstruct.defaultComponentModel=jsr330

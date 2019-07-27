@@ -14,7 +14,6 @@ import org.hibernate.annotations.Immutable
 import java.io.Serializable
 import java.math.BigDecimal
 import java.time.LocalDate
-import javax.json.bind.annotation.JsonbTransient
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Cacheable
@@ -43,25 +42,30 @@ data class RecordId(var id: Long?, var date: LocalDate, var type: RecordType) : 
  */
 @NamedQuery(name = "Record.findForPeriod", query = "SELECT p FROM RecordEntity p JOIN p.report c WHERE c.id = :id AND c.month = :month AND c.year = :year")
 
-@Entity
+//@Entity
 @Immutable
 @Cacheable
 @Access(PROPERTY)
 @IdClass(RecordId::class)
 data class RecordEntity(@Transient private val delegate: Record) : IdentityOf<RecordId>(), Record by delegate {
-    @get:Id @get:Column(nullable = false, updatable = false)
+    @get:
+    [Id
+    Column(nullable = false, updatable = false)]
     override lateinit var date                : LocalDate
-    @get:Id @get:Enumerated(STRING)
+    @get:
+    [Id
+    Enumerated(STRING)]
     override lateinit var type                : RecordType
-    @get:Column(precision = 3, scale = 1)
+    @get:
+    [Column(precision = 3, scale = 1)]
     override lateinit var hoursSubmitted      : BigDecimal
     override var desc                         : String? = null
-    @get:Id
-    @get:ManyToOne(optional= false, fetch = LAZY)
-    @get:JoinColumn(updatable = false)
+    @get:
+    [Id
+    ManyToOne(optional= false, fetch = LAZY)
+    JoinColumn(updatable = false)]
     lateinit var report                       : RecordCollectionEntity
 
-    @get:JsonbTransient
     override var id: RecordId
         get() = RecordId(report?.id, date, type)
         set(value) {

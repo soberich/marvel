@@ -16,6 +16,7 @@ import javax.persistence.MappedSuperclass
 abstract class AbstractAuditingEntity<T : Serializable>(
     @Id
     @GeneratedValue
+    @Column(updateble = false)
     override
     val id                   : T
 ) : IdentityOf<T>() {

@@ -16,11 +16,13 @@ import javax.enterprise.inject.Produces
 @ApplicationScoped
 class DatabaseConfig {
 
-    @get:Produces
-    @get:ApplicationScoped
+    @get:
+    [Produces
+    ApplicationScoped]
     val client: CoroutineClient = KMongo.createClient().coroutine
 
-    @get:Produces
-    @get:ApplicationScoped
+    @get:
+    [Produces
+    ApplicationScoped]
     val db: CoroutineDatabase get() = client.getDatabase("default")
 }
