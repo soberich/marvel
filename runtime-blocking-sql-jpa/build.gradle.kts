@@ -21,7 +21,7 @@ dependencies {
     kapt("org.hibernate:hibernate-jpamodelgen:5.4.3.Final")
     kapt("org.mapstruct:mapstruct-processor:1.3.0.Final")
 
-    compileOnly("org.mapstruct:mapstruct-jdk8:1.3.0.Final")
+    compileOnly("org.mapstruct:mapstruct:1.3.0.Final")
 
     api(project(":business", "default"))
     api(project(":spi", "default"))
