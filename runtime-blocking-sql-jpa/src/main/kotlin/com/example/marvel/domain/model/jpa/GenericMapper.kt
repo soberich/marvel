@@ -6,11 +6,17 @@ import org.mapstruct.ObjectFactory
 import org.mapstruct.TargetType
 import java.io.Serializable
 import javax.inject.Inject
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 /**
  * @see [https://youtrack.jetbrains.com/issue/KT-25960] for why is this not an interface and not split to, say, creator and updater.
  */
 abstract class GenericMapper<CreateView, CreateCommand, UpdateView, UpdateCommand> {
+
+    @set:
+    [PersistenceContext]
+    protected lateinit var em: EntityManager
 
     @set:
     [Inject]
@@ -25,6 +31,18 @@ abstract class GenericMapper<CreateView, CreateCommand, UpdateView, UpdateComman
     fun @receiver:TargetType Class<UpdateView>.objectFactory(@Context id: Serializable): UpdateView = evm.getReference(this, id)
 
     abstract fun toEntity(@Context id: Serializable, source: UpdateCommand): UpdateView
+
+    /**
+     * Convenience function to use function reference where possible.
+     * @see com.example.marvel.domain.model.jpa.employee.EmployeeBlockingServiceNamespaceImpl.createEmployee
+     */
+    fun create(createView: CreateView) = evm.update(em, createView)
+
+    /**
+     * Convenience function to use function reference where possible.
+     * @see com.example.marvel.domain.model.jpa.employee.EmployeeBlockingServiceNamespaceImpl.updateEmployee
+     */
+    fun update(updateView: UpdateView) = evm.update(em, updateView)
 
     /**
      * FIXME: Exception thrown though `@ObjectFactory` present
