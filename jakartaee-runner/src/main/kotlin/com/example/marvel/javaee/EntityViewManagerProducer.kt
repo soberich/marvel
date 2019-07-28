@@ -21,8 +21,8 @@ class EntityViewManagerProducer @Inject constructor(
     @Volatile
     protected lateinit var evm: EntityViewManager
 
-    fun init(@Observes @Initialized(ApplicationScoped::class) init: Any?) {
+    fun init(@[Observes Initialized(ApplicationScoped::class)] init: Any?) {
         // do some configuration
-        evm = config!!.createEntityViewManager(criteriaBuilderFactory)
+        evm = config.createEntityViewManager(criteriaBuilderFactory)
     }
 }

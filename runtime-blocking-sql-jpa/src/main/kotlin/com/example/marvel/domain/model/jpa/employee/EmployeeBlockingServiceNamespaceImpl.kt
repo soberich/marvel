@@ -43,8 +43,9 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
         private val cbf: CriteriaBuilderFactory
 ) : EmployeeOperationsServiceNamespace {
 
-    @PersistenceContext
-    private lateinit var em: EntityManager
+    @set:
+    [PersistenceContext]
+    protected lateinit var em: EntityManager
 
     /**
      * @implNote Stream should be open on consumer side. Transaction will close it.

@@ -26,8 +26,9 @@ class EventSourcing /*: AbstractVerticle()*/ {
     internal var httpPort   = 8081
     internal var configFile = "event-sourcing.env"
 
-    @Inject
-    internal lateinit var vertx: Vertx
+    @set:
+    [Inject]
+    protected lateinit var vertx: Vertx
 
     @PostConstruct
     fun init() {
