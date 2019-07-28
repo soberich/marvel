@@ -12,15 +12,14 @@ import javax.persistence.MappedSuperclass
 
 
 /**
- * IdentityOf holder for and identity type
+ * IdentityOf holder for Long identity type.
  */
-
 @MappedSuperclass
 @Access(PROPERTY)
 abstract class SimpleGeneratedIdentityOfLong: IdentityOf<Long>() {
 
-    @get:[
-    Id
+    @get:
+    [Id
     GenericGenerator(
             name = "optimized-sequence",
             strategy = "enhanced-sequence",

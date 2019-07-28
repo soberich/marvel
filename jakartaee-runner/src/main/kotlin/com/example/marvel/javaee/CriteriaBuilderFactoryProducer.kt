@@ -14,7 +14,8 @@ import javax.persistence.PersistenceUnit
 @ApplicationScoped
 class CriteriaBuilderFactoryProducer {
 
-    @PersistenceUnit
+    @set:
+    [PersistenceUnit]
     protected lateinit var entityManagerFactory: EntityManagerFactory
 
     @get:

@@ -40,5 +40,8 @@ data class EmployeeEntity(
     override fun hashCode() = super.hashCode()
 }
 
-fun EmployeeCreateCommand.map(mapper: (EmployeeCreateCommand) -> EmployeeCreateView): EmployeeCreateView = mapper(this)
-fun EmployeeUpdateCommand.map(id: Long, mapper: (Long, EmployeeUpdateCommand) -> EmployeeUpdateView): EmployeeUpdateView = mapper(id, this)
+/**
+ * TODO: `inline`
+ */
+/*inline*/ fun EmployeeCreateCommand.map(mapper: (EmployeeCreateCommand) -> EmployeeCreateView): EmployeeCreateView = mapper(this)
+/*inline*/ fun EmployeeUpdateCommand.map(id: Long, mapper: (Long, EmployeeUpdateCommand) -> EmployeeUpdateView): EmployeeUpdateView = mapper(id, this)

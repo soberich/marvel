@@ -4,6 +4,7 @@ import com.blazebit.persistence.view.EntityViewManager
 import org.mapstruct.Context
 import org.mapstruct.ObjectFactory
 import org.mapstruct.TargetType
+import java.io.Serializable
 import javax.inject.Inject
 
 /**
@@ -11,8 +12,9 @@ import javax.inject.Inject
  */
 abstract class GenericMapper<CreateView, CreateCommand, UpdateView, UpdateCommand> {
 
-    @Inject
-    lateinit var evm: EntityViewManager
+    @set:
+    [Inject]
+    protected lateinit var evm: EntityViewManager
 
     @ObjectFactory
     fun @receiver:TargetType Class<CreateView>.objectFactory(): CreateView = evm.create(this)

@@ -2,6 +2,8 @@ package com.example.marvel.domain.model.jpa.base
 
 import java.io.Serializable
 import java.time.Instant
+import javax.persistence.Access
+import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -32,23 +34,29 @@ import javax.persistence.MappedSuperclass
  *    ... 10 more
  */
 @MappedSuperclass
+@Access(PROPERTY)
 abstract class AbstractAuditingEntity<T : Serializable>(
-    @Id
-    @GeneratedValue
-    @Column(updatable = false)
+    @get:
+    [Id
+    GeneratedValue
+    Column(updatable = false)]
     override
     var id                   : T
 ) : IdentityOf<T>() {
 
-    @Column(nullable = false, updatable = false)
+    @get:
+    [Column(nullable = false, updatable = false, length = 50)]
     var createdBy           : String? = null
 
-    @Column(nullable = false, updatable = false)
+    @get:
+    [Column(nullable = false, updatable = false)]
     var createdDate         : Instant = Instant.now()
 
-    @Column(nullable = false, length = 50)
+    @get:
+    [Column(nullable = false, length = 50)]
     var lastModifiedBy      : String? = null
 
-    @Column(nullable = false)
+    @get:
+    [Column(nullable = false)]
     var lastModifiedDate    : Instant = Instant.now()
 }

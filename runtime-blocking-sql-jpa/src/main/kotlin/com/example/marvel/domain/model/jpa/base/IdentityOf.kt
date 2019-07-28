@@ -9,9 +9,8 @@ import javax.persistence.Version
 
 
 /**
- * IdentityOf holder for identity type
+ * IdentityOf holder for any identity type.
  */
-
 @MappedSuperclass
 @Access(PROPERTY)
 abstract class IdentityOf<T : Serializable>: IdentifiableOf<T> {

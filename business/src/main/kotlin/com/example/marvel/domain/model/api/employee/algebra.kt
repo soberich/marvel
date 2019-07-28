@@ -53,9 +53,8 @@ interface EmployeeDetailedView {
     [NotBlank]
     val name                         : String,
     @get:
-    [NotBlank]
-    @get:
-    [Email(flags = [CASE_INSENSITIVE])]
+    [NotBlank
+    Email(flags = [CASE_INSENSITIVE])]
     val email                        : String
 ) : EmployeeModel() { companion object }
 
@@ -68,9 +67,8 @@ interface EmployeeDetailedView {
     [NotBlank]
     val name                         : String,
     @get:
-    [NotBlank]
-    @get:
-    [Email(flags = [CASE_INSENSITIVE])]
+    [NotBlank
+    Email(flags = [CASE_INSENSITIVE])]
     val email                        : String
 ) : EmployeeModel() { companion object }
 

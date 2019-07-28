@@ -51,22 +51,25 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
 //    @Inject
 //    internal lateinit var vertx: io.vertx.reactivex.core.Vertx
 
-    @set:Inject
-    protected lateinit var eventBus: EventBus
+    @set:
+    [Inject]
+    var eventBus: EventBus? = null
 
 //
 //    @Inject
 //    internal lateinit var client: io.reactiverse.reactivex.pgclient.PgPool
 
-    @set:Context
+    @set:
+    [Context]
     protected lateinit var headers: HttpHeaders
 
-    @set:Context
+    @set:
+    [Context]
     protected lateinit var uriInfo: UriInfo
 
     @PostConstruct
     fun init() {
-        eventBus.registerCodec(DomainEventCodec())
+        eventBus?.registerCodec(DomainEventCodec())
     }
 
     @GET
