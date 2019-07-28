@@ -59,10 +59,10 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
                     .map { evm.convert(it, EmployeeListingView::class.java) }
 
     override fun createEmployee(employee: EmployeeCreateCommand): EmployeeDetailedView =
-            employee.toEmployee(mapper).also { evm.update(em, it) }
+            employee.map(mapper::toEntity).also { evm.update(em, it) }
 
     override fun updateEmployee(employeeId: Long, employee: EmployeeUpdateCommand): EmployeeDetailedView? =
-            employee.toEmployee(employeeId, mapper).also { evm.update(em, it) }
+            employee.map(employeeId, mapper::toEntity).also { evm.update(em, it) }
 
     /**
      * @note In kotlin 1.3.40 trimming margins, indents, etc. would become intrinsics.
