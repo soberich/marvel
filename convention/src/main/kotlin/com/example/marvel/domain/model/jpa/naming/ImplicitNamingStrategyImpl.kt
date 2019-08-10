@@ -7,13 +7,10 @@ import org.hibernate.boot.model.naming.ImplicitJoinColumnNameSource
 import org.hibernate.boot.model.naming.ImplicitMapKeyColumnNameSource
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
 import org.hibernate.boot.model.naming.ImplicitUniqueKeyNameSource
-import java.util.Arrays
-import java.util.Comparator.comparing
 
 /**
  * Port from java
  * TODO: Make Inherited entities inherit id path
- * TODO: Make more "kotlinish"
  */
 
 class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
@@ -64,22 +61,15 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
                              referencedTableName: Identifier?,
                              columnNames: List<Identifier>?,
                              suffix: String?): String {
-        val columnNamesArray =
-                if (columnNames.isNullOrEmpty()) emptyArray()
-                else columnNames.toTypedArray()
 
-        val sb = StringBuilder()
-                .append(tableName).append('_')
-        if (referencedTableName != null)
-            sb.append("references_").append(referencedTableName).append('_')
-        val alphabeticalColumns = columnNamesArray.clone()
-        Arrays.sort(alphabeticalColumns, comparing<Identifier, String> { it.canonicalName })
-        if (alphabeticalColumns.isNotEmpty())
-            sb.append("with")
-        for (columnName in alphabeticalColumns)
-            sb.append('_').append(PhysicalNamingStrategyImpl.INSTANCE.formatIdentifier(columnName))
-        val substring = sb.substring(0, if (sb.length > 59) 59 else sb.length)
-        return (prefix ?: "") + substring + (suffix ?: "")
+        val name = "${tableName}_" +
+                if (referencedTableName != null) "references_${referencedTableName}_" else ""
+
+        columnNames?.toTypedArray()?.sortedBy { it.canonicalName }?.fold(name + "with") { it, id ->
+            it + "_${PhysicalNamingStrategyImpl.INSTANCE.formatIdentifier(id)}"
+        }
+
+        return prefix.orEmpty() + name.take(59) + suffix.orEmpty()
     }
 
     /**
