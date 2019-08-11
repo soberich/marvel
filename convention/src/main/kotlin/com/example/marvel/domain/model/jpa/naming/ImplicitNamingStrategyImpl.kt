@@ -56,16 +56,12 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
                     source.buildingContext
             )
 
-    private fun generateName(prefix: String?,
-                             tableName: Identifier,
-                             referencedTableName: Identifier?,
-                             columnNames: List<Identifier>?,
-                             suffix: String?): String {
+    private fun generateName(prefix: String?, tableName: Identifier, referencedTableName: Identifier?, columnNames: List<Identifier>?, suffix: String?): String {
 
-        val name = "${tableName}_" +
+        var name = "${tableName}_" +
                 if (referencedTableName != null) "references_${referencedTableName}_" else ""
 
-        columnNames?.toTypedArray()?.sortedBy { it.canonicalName }?.fold(name + "with") { it, id ->
+        name += columnNames?.toTypedArray()?.sortedBy(Identifier::getCanonicalName)?.fold("with") { it, id ->
             it + "_${PhysicalNamingStrategyImpl.INSTANCE.formatIdentifier(id)}"
         }
 
