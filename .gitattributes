@@ -7,6 +7,9 @@
 # The above will handle all files NOT found below
 # These files are text and should be normalized (Convert crlf => lf)
 
+# Project specific
+*.script linguist-language=Java
+
 *.bat           text eol=crlf
 *.coffee        text
 *.css           text

@@ -1,0 +1,21 @@
+root = true
+
+[*]
+# Do not change
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Changeable
+indent_style = space
+indent_size = 4
+
+[gradlew.bat]
+end_of_line = crlf
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{ts,tsx,js,jsx,json,css,scss,y?ml}]
+indent_size = 2
