@@ -1,7 +1,7 @@
 package com.example.marvel.web.rest.jakarta
 
 import com.example.marvel.domain.model.api.employee.EmployeeDto
-import com.example.marvel.domain.model.api.record.RecordModel
+import com.example.marvel.domain.model.api.record.RecordCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpdateCommand

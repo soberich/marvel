@@ -14,6 +14,7 @@ plugins {
 //}
 
 dependencies {
+
     implementation(project(":runtime-jaxrs")) //FIXME: WHY `api` configuration is available here!??
     implementation(project(":runtime-blocking-sql-jpa"))
     implementation(project(":convention"))

@@ -5,3 +5,6 @@
 -Xdiags:verbose
 -parameters
 -Amapstruct.defaultComponentModel=jsr330
+-verbose
+-XprintRounds
+-XprintProcessorInfo

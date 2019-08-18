@@ -1,11 +1,6 @@
-import versioning.Platforms
-
 rootProject.name = "marvel"
 
 pluginManagement {
-    plugins {
-        id("io.quarkus") version Platforms.Versions.QUARKUS
-    }
     repositories {
         mavenLocal()
         gradlePluginPortal()
@@ -43,6 +38,7 @@ include(
         ":runtime-blocking-sql-jpa",
         ":runtime-jaxrs",
 //        ":runtime-nosql",
-        ":spi",
-        ":jakartaee-runner"
+//        ":jakartaee-runner",
+        ":quarkus-runner",
+        ":spi"
 )

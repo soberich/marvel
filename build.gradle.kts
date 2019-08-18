@@ -1,18 +1,11 @@
 import org.gradle.api.JavaVersion.current
 
-buildscript {
-    repositories {
-        mavenLocal()
-    }
-    dependencies {
-        classpath("io.quarkus:quarkus-gradle-plugin:0.19.1")
-    }
-}
 check(current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${current()}" }
 
 plugins {
     base
     `project-report`
+    id("io.quarkus") version "0.21.1" apply false
 }
 
 
@@ -24,7 +17,7 @@ subprojects {
     group       = "com.example.marvel"
     version     = "0.0.1-SNAPSHOT"
     description = "${name.replace('-', ' ').toUpperCase()} of Native Quarkus/Micronaut Arrow-Kt Vert.x Coroutines GRPC Kotlin-DSL app"
-    
+
     repositories {
         mavenLocal {
             content {
