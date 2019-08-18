@@ -47,7 +47,8 @@ allOpen {
         "javax.enterprise.context.ApplicationScoped",
         "javax.enterprise.context.RequestScoped",
         "javax.inject.Named",
-        "javax.ws.rs.Path"
+        "javax.ws.rs.Path",
+        "org.springframework.web.bind.annotation.RestController"
     )
 }
 

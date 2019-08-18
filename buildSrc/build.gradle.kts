@@ -1,5 +1,4 @@
 
-import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
@@ -10,7 +9,7 @@ plugins {
     `build-dashboard`                                         // optional
     `help-tasks`                                              // optional
     `project-report`                                          // optional
-    id("com.github.ben-manes.versions")      version "0.21.0" // optional
+    id("com.github.ben-manes.versions")      version "0.22.0" // optional
     id("se.patrikerdes.use-latest-versions") version "0.2.12" // optional
 }
 
@@ -51,7 +50,8 @@ tasks {
         }
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = VERSION_1_8.toString()
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+        //kotlinOptions.jvmTarget = maxOf(JavaVersion.current().toString().toBigDecimal(), 12.toBigDecimal()).toString()
     }
 }
 
@@ -79,7 +79,7 @@ val kotlinVersion = "1.3.5+"
     implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "2.0.8")
     implementation("nu.studer",                                         "gradle-credentials-plugin",                "1.0.7")
     implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "2.7.1")
-    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.2.0.M4")
+    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.2.0.M5")
     implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "0.2.12")
     //TODO:
 //    implementation("com.github.JetBrains",                              "gradle-idea-ext-plugin",                   "master-SNAPSHOT")

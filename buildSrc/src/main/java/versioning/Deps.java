@@ -33,7 +33,7 @@ public interface Deps {
 
         String ARROW             = "0.9.0";
         String COROUTINES        = "+";
-        String EBEAN             = "11.41.1";
+        String EBEAN             = "11.42.2";
         String EBEAN_ANNOTATION  = "4.11";
         String EBEAN_PERSISTENCE = "2.2.2";
         String EBEAN_QUERY       = EBEAN;
@@ -68,9 +68,10 @@ public interface Deps {
     interface Platforms {
         //val KOTLIN: Nothing = TODO("Scripts are PRE-compiled, can't these lines from script to apply '" + "org.jetbrains.kotlin:kotlin-bom"   + ':' + Versions.KOTLIN + '\'')
         String BLAZE_JPA    = "com.blazebit:blaze-persistence-bom"                       + ':' + versioning.Platforms.Versions.BLAZE_JPA;
+        String COROUTINES   = "org.jetbrains.kotlinx:kotlinx-coroutines-bom"             + ':' + versioning.Platforms.Versions.COROUTINES;
         String JACKSON      = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
-        String RESTEASY     = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
         String QUARKUS      = "io.quarkus:quarkus-bom"                                   + ':' + versioning.Platforms.Versions.QUARKUS;
+        String RESTEASY     = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
         String STATEMACHINE = "org.springframework.statemachine:spring-statemachine-bom" + ':' + versioning.Platforms.Versions.STATEMACHINE;
     }
 
@@ -84,6 +85,7 @@ public interface Deps {
         String JAXB         = "jakarta.xml.bind:jakarta.xml.bind-api"                           + ':' + Versions.JAXB;
         String JAXB_RUNTIME = "org.glassfish.jaxb:jaxb-runtime"                                 + ':' + Versions.JAXB;
         String PERSISTENCE  = "jakarta.persistence:jakarta.persistence-api"                     + ':' + Versions.PERSISTENCE;
+        String SERVLET      = "jakarta.servlet:jakarta.servlet-api"                             + ':' + Versions.SERVLET;
         String VALIDATION   = "jakarta.validation:jakarta.validation-api"                       + ':' + Versions.VALIDATION;
     }
 
@@ -152,7 +154,7 @@ public interface Deps {
         String EBEAN_PERSISTENCE           = "io.ebean:persistence-api"                                         + ':' + Versions.EBEAN_PERSISTENCE;
         String EBEAN_QUERY                 = "io.ebean:ebean-querybean"                                         + ':' + Versions.EBEAN_QUERY;
         String EBEAN_QUERY_GEN             = "io.ebean:kotlin-querybean-generator"                              + ':' + Versions.EBEAN_QUERY_GEN;
-        String EBEAN_TEST                  = "io.ebean.test:ebean-test-config"                                  + ':' + Versions.EBEAN_TEST;
+        String EBEAN_TEST                  = "io.ebean:ebean-test"                                              + ':' + Versions.EBEAN_TEST;
         String HIBERNATE                   = "org.hibernate:hibernate-core"                                     + ':' + Versions.HIBERNATE;
         String HIKARI                      = "com.zaxxer:HikariCP"                                              + ':' + Versions.HIKARI;
         String JACKSON_AFTERBURNER         = "com.fasterxml.jackson.module:jackson-module-afterburner"          + ':' + versioning.Platforms.Versions.JACKSON;
