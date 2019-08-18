@@ -18,7 +18,7 @@ tasks.withType<ResolveTask>().configureEach {
     outputPath                 =  "$rootDir/runtime-jaxrs/src/main/resources/META-INF/resources"
     prettyPrint                = true
     //Don't need it in jaxrs as Quarkus don't need Application class
-    readerClass                = "com.example.marvel.openapi.ApplicationPathReader"
+//    readerClass                = "com.example.marvel.openapi.ApplicationPathReader"
     resourcePackages           = setOf("com.example.marvel.web.rest.jaxrs", "com.example.marvel.web.rest")
 }
 

@@ -101,11 +101,13 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
 
     @Override
     public void processJsonObjectMapper(ObjectMapper mapper) {
-        Json.configure(mapper.enable(SORT_PROPERTIES_ALPHABETICALLY));
+        Json.configure(mapper);
+        mapper.enable(SORT_PROPERTIES_ALPHABETICALLY);
     }
 
     @Override
     public void processYamlObjectMapper(ObjectMapper mapper) {
-        Json.configure(mapper.enable(SORT_PROPERTIES_ALPHABETICALLY));
+        Json.configure(mapper);
+        mapper.enable(SORT_PROPERTIES_ALPHABETICALLY);
     }
 }
