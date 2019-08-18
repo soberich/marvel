@@ -22,7 +22,7 @@ plugins {
 
 quarkus {
     setSourceDir("$projectDir/src/main/kotlin")
-    setSourceDir("$buildDir/generated/source/kapt/main")
+//    setSourceDir("$buildDir/generated/source/kapt/main")
 //        resourcesDir() += file("$projectDir/src/main/resources")
     setOutputDirectory("$buildDir/classes/kotlin/main")
 }
@@ -39,9 +39,9 @@ java.sourceCompatibility = VERSION_1_8
  * TODO: Remove Quarkus form convention default configuration to not to leak here.
  */
 dependencies {
-    kapt("org.immutables:value:2.7.4") // for annotation processor
-    compileOnly("org.immutables:value:2.7.4:annotations") // annotation-only artifact
-    compileOnly("org.immutables:builder:2.7.4") // there are only annotations anyway
+    kapt("org.immutables:value:2.8.0-CriteriaPreview1") // for annotation processor
+    compileOnly("org.immutables:value:2.8.0-CriteriaPreview1:annotations") // annotation-only artifact
+    compileOnly("org.immutables:builder:2.8.0-CriteriaPreview1") // there are only annotations anyway
 
     kapt(Deps.Libs.ARROW_META)
     kapt(Deps.Libs.VALIDATOR_AP)
@@ -56,6 +56,8 @@ dependencies {
     implementation(enforcedPlatform(Deps.Platforms.QUARKUS))
     implementation(platform(Deps.Platforms.RESTEASY))
     implementation(platform(Deps.Platforms.JACKSON))
+//    implementation(project(":api"))
+    implementation(project(":spi"))
 
     arrayOf(
         Deps.Jakarta.INJECT,
@@ -66,6 +68,7 @@ dependencies {
         Deps.Libs.RX2,
         Deps.Libs.SLF4J_API,
         "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
+        "io.quarkus:quarkus-kotlin",
         "io.quarkus:quarkus-rest-client",
         "io.quarkus:quarkus-resteasy-jackson",
         "io.quarkus:quarkus-smallrye-context-propagation",
@@ -73,7 +76,6 @@ dependencies {
         "io.quarkus:quarkus-vertx",
         "io.smallrye.reactive:smallrye-reactive-converter-rxjava2:1.0.7",
         "io.smallrye:smallrye-context-propagation-propagators-rxjava2",
-        "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT",
         "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT",
         "org.jboss.logmanager:jboss-logmanager-embedded",
         "org.jboss.resteasy:resteasy-rxjava2",

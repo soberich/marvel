@@ -21,7 +21,7 @@ abstract class GenericMapper<Entity> {
 
     /**
      * FIXME: Exception thrown though `@ObjectFactory` present
-     *    The return type com.example.marvel.domain.model.jpa.employee.EmployeeCreateView
+     *    The return type com.example.marvel.api.EmployeeCreateView
      *    is an abstract class or interface. Provide a non abstract / non interface result type or a factory method.
      *    public abstract java.util.List<Entity> toEntityList(@org.jetbrains.annotations.NotNull()
      */

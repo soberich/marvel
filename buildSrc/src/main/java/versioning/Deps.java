@@ -8,7 +8,7 @@ package versioning;
  * e.g.
  * <pre>{@code
  *     Deps.Libs
- *     String JACKSON   = "com.fasterxml.jackson:jackson-databind" + ':' + Versions.JACKSON = "com.fasterxml.jackson:jackson-databind:2.9.9"
+ *     String JACKSON   = "com.fasterxml.jackson:jackson-databind" + ':' + Versions.JACKSON = "com.fasterxml.jackson:jackson-databind:2.9.9.3"
  * }</pre>
  */
 public interface Deps {

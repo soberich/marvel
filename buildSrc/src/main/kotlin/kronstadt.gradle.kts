@@ -58,14 +58,6 @@ noArg {
         "javax.ws.rs.Path"
     )
 }
-kapt {
-//    javacOptions {
-//        file("$rootDir/javacArgs", PathValidation.FILE).forEachLine(action = ::option)
-//    }
-    arguments {
-        arg("-Akapt.kotlin.generated", "src/generated/kotlin")
-    }
-}
 
 tasks {
     withType<KaptTask>().configureEach {

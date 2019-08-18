@@ -1,5 +1,7 @@
 package com.example.marvel.domain.model.jpa.record
 
+import com.example.marvel.api.RecordType
+import com.example.marvel.api.RecordView
 import java.math.BigDecimal
 import java.time.LocalDate
 

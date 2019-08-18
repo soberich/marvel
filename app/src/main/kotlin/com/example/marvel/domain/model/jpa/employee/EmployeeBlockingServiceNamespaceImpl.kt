@@ -1,12 +1,17 @@
 package com.example.marvel.domain.model.jpa.employee
 
+import com.example.marvel.api.EmployeeCommand
+import com.example.marvel.api.EmployeeDetailedView
+import com.example.marvel.api.EmployeeView
+import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
+import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
+import com.example.marvel.api.RecordCollectionDetailedView
+import com.example.marvel.api.RecordView
 import com.example.marvel.domain.model.jpa.record.RecordListingView
-import com.example.marvel.domain.model.jpa.record.RecordView
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionCommand.RecordCollectionCreateCommand
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionCommand.RecordCollectionUpdateCommand
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionDetailedView
+import com.example.marvel.domain.model.jpa.record.RecordMapperImpl
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity_
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapper
+import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapperImpl
 import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import com.kumuluz.ee.rest.beans.QueryParameters
 import com.kumuluz.ee.rest.utils.JPAUtils
@@ -14,7 +19,6 @@ import org.springframework.stereotype.Service
 import java.time.Month
 import java.time.Year
 import java.util.stream.Stream
-import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
@@ -25,9 +29,9 @@ import javax.transaction.Transactional.TxType.NOT_SUPPORTED
  */
 @Service
 @Transactional
-class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
-    private val empMapper: EmployeeMapper,
-    private val recColMapper: RecordCollectionMapper
+class EmployeeBlockingServiceNamespaceImpl /*@Inject constructor*/(
+    private val empMapper: EmployeeMapper = EmployeeMapperImpl(),
+    private val recColMapper: RecordCollectionMapper = RecordCollectionMapperImpl(empMapper, RecordMapperImpl())
 ) : EmployeeOperationsServiceNamespace {
 
     @set:

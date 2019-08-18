@@ -1,5 +1,6 @@
 package com.example.marvel.domain.model.jpa.recordcollection
 
+import com.example.marvel.api.RecordCollectionView
 import java.time.Month
 
 data class RecordCollectionListingView(

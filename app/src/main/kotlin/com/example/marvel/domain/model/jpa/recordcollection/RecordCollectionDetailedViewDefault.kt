@@ -1,6 +1,7 @@
 package com.example.marvel.domain.model.jpa.recordcollection
 
-import com.example.marvel.domain.model.jpa.record.RecordDetailedView
+import com.example.marvel.api.RecordCollectionDetailedView
+import com.example.marvel.api.RecordDetailedView
 import java.time.Month
 
 data class RecordCollectionDetailedViewDefault(

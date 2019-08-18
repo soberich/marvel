@@ -1,5 +1,6 @@
 package com.example.marvel.domain.model.jpa.record
 
+import com.example.marvel.api.RecordType
 import com.example.marvel.domain.model.jpa.base.IdentityOf
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity
 import org.hibernate.annotations.Immutable

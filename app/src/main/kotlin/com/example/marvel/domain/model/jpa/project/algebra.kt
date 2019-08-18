@@ -4,7 +4,6 @@ import arrow.data.ListK
 import arrow.optics.optics
 import java.time.LocalDateTime
 import java.util.UUID
-import javax.json.bind.annotation.JsonbCreator
 import javax.validation.constraints.NotNull
 
 interface Project {
@@ -39,13 +38,13 @@ interface Project {
     internal val delegate             : Project
 ) : Project by delegate { companion object }
 
-@optics data class ProjectCreateCommand @JsonbCreator constructor(
+@optics data class ProjectCreateCommand(
     @get:
     [NotNull]
     override val id                  : String
 ) : ProjectModel() { companion object }
 
-@optics data class ProjectUpdateCommand @JsonbCreator constructor(
+@optics data class ProjectUpdateCommand(
     @get:
     [NotNull]
     override val id                  : String

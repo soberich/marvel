@@ -4,8 +4,10 @@ import com.example.marvel.domain.model.jpa.GenericMapper
 import com.example.marvel.domain.model.jpa.MapperConfig
 import com.example.marvel.domain.model.jpa.employee.EmployeeMapper
 import com.example.marvel.domain.model.jpa.record.RecordMapper
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionCommand.RecordCollectionCreateCommand
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionCommand.RecordCollectionUpdateCommand
+import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
+import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
+import com.example.marvel.api.RecordCollectionCreateView
+import com.example.marvel.api.RecordCollectionUpdateView
 import org.mapstruct.Context
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping

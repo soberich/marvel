@@ -1,5 +1,7 @@
 package com.example.marvel.domain.model.jpa.employee
 
+import com.example.marvel.api.EmployeeDetailedView
+
 /**
  * Additional specializations of view (different projections) could be specified here.
  */

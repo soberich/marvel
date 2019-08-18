@@ -17,7 +17,7 @@ import javax.persistence.UniqueConstraint
 
 @NamedQueries(
     NamedQuery(name = "Employee.stream", query = "SELECT NEW com.example.marvel.domain.model.jpa.employee.EmployeeListingView(e.id, e.email, e.name) FROM EmployeeEntity e"),
-    NamedQuery(name = "Employee.detailed", query = "SELECT NEW com.example.marvel.domain.model.jpa.employee.EmployeeDetailedViewImpl(e.id, e.email, e.name) FROM EmployeeEntity e WHERE e.id = :id")
+    NamedQuery(name = "Employee.detailed", query = "SELECT NEW com.example.marvel.domain.model.jpa.employee.EmployeeDetailedViewDefault(e.id, e.email, e.name) FROM EmployeeEntity e WHERE e.id = :id")
 )
 
 @Entity

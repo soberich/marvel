@@ -27,4 +27,4 @@ class DomainEventCodec : MessageCodec<Any, Any> {
     override fun transform(o: Any): Any = o
     override fun name(): String = this::class.java.simpleName
     override fun systemCodecID(): Byte = -1
-};
+}

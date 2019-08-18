@@ -1,5 +1,8 @@
 package com.example.marvel.domain.model.jpa.record
 
+import com.example.marvel.api.RecordCommand
+import com.example.marvel.api.RecordCreateView
+import com.example.marvel.api.RecordUpdateView
 import com.example.marvel.domain.model.jpa.GenericMapper
 import com.example.marvel.domain.model.jpa.MapperConfig
 import org.mapstruct.Mapper

@@ -1,5 +1,8 @@
 package com.example.marvel.domain.model.jpa.employee
 
+import com.example.marvel.api.EmployeeCommand
+import com.example.marvel.api.EmployeeCreateView
+import com.example.marvel.api.EmployeeUpdateView
 import com.example.marvel.domain.model.jpa.GenericMapper
 import com.example.marvel.domain.model.jpa.MapperConfig
 import org.mapstruct.Context
