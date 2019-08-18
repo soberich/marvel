@@ -29,6 +29,6 @@ abstract class SimpleGeneratedIdentityOfLong: IdentityOf<Long>() {
                 Parameter(name = "increment_size"             , value = "25"),
                 Parameter(name = "optimizer"                  , value = "pooled")])
     GeneratedValue(strategy = SEQUENCE, generator = "optimized-sequence")
-    Column(updatable = false)]
+    Column(nullable = false, updatable = false)]
     override var id: Long? = 0L
 }

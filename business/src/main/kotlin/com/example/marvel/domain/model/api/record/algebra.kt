@@ -10,46 +10,32 @@ import java.time.LocalDate
 import javax.json.bind.annotation.JsonbCreator
 import javax.validation.constraints.NotNull
 
-interface Record {
+
+interface RecordView {
     val date                : LocalDate
     val type                : RecordType
     val hoursSubmitted      : BigDecimal
     val desc                : String?
+    val recordCollectionId  : Long
 }
 
-/**
- * FIXME: Some ISO for sealed classes =(
- * TODO: Research and/or file a bug.
- */
-@optics sealed class RecordModel : Record {
+interface RecordDetailedView {
+    val date                : LocalDate
+    val type                : RecordType
+    val hoursSubmitted      : BigDecimal
+    val desc                : String?
+    val recordCollectionId  : Long
+}
 
+@optics sealed class RecordCommand {
+    abstract val date                : LocalDate
+    abstract val type                : RecordType
+    abstract val hoursSubmitted      : BigDecimal
+    abstract val desc                : String?
     abstract val recordCollectionId  : Long
 
-    companion object {
-        /**
-         * We don't need these in this POC but it shows the variance of possible implementations
-         */
-        inline operator fun invoke(date: LocalDate, type: RecordType, hoursSubmitted: BigDecimal, recordCollectionId: Long)               : RecordModel =
-                RecordCreateCommand(date, type, hoursSubmitted, null, recordCollectionId)
-        inline operator fun invoke(date: LocalDate, type: RecordType, hoursSubmitted: BigDecimal, desc: String, recordCollectionId: Long) : RecordModel =
-                RecordCreateCommand(date, type, hoursSubmitted, desc, recordCollectionId)
-        inline operator fun invoke(date: LocalDate, type: RecordType, hoursSubmitted: BigDecimal, desc: String?, recordCollectionId: Long): Record =
-                object : Record {
-                    override val date               : LocalDate  = date
-                    override val type               : RecordType = type
-                    override val hoursSubmitted     : BigDecimal = hoursSubmitted
-                    override val desc               : String?    = desc
-                    override fun toString()         : String     =
-                            "You didn't mean to call this ever, do you? Don't call us we'll call you back"
-                }
-    }
+    companion object
 }
-
-@optics data class RecordDto(
-    @PublishedApi
-    internal val delegate             : Record,
-    val recordCollectionId            : Long
-) : Record by delegate { companion object }
 
 @optics data class RecordCreateCommand @JsonbCreator constructor(
     @get:
@@ -65,9 +51,12 @@ interface Record {
     @get:
     [NotNull]
     override val recordCollectionId  : Long
-) : RecordModel() { companion object }
+) : RecordCommand() { companion object }
 
 @optics data class RecordUpdateCommand @JsonbCreator constructor(
+    @get:
+    [NotNull]
+    val id                           : Long,
     @get:
     [NotNull]
     override val date                : LocalDate,
@@ -81,13 +70,12 @@ interface Record {
     @get:
     [NotNull]
     override val recordCollectionId  : Long
-) : RecordModel() { companion object }
+) : RecordCommand() { companion object }
 
 /**
  * no-op
  */
-@optics data class RecordRequests(val records: ListK<RecordModel>) : List<RecordModel> by records { companion object }
-@optics data class RecordsResponses(val records: ListK<RecordDto>) : List<RecordDto> by records { companion object }
+@optics data class RecordRequests(val records: ListK<RecordCommand>) : List<RecordCommand> by records { companion object }
 
 
 ///**

@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "DELEGATED_MEMBER_HIDES_SUPERTYPE_OVERRIDE")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.example.marvel.domain.model.jpa.employee
 
@@ -13,9 +13,17 @@ import javax.persistence.CascadeType.ALL
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Index
+import javax.persistence.NamedQueries
+import javax.persistence.NamedQuery
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.persistence.UniqueConstraint
+
+
+@NamedQueries(
+    NamedQuery(name = "Employee.stream", query = "SELECT NEW com.example.marvel.domain.model.jpa.employee.EmployeeListingView(e.id, e.email, e.name) FROM EmployeeEntity e"),
+    NamedQuery(name = "Employee.detailed", query = "SELECT NEW com.example.marvel.domain.model.jpa.employee.EmployeeDetailedViewImpl(e.id, e.email, e.name) FROM EmployeeEntity e WHERE e.id = :id")
+)
 
 @Entity
 @Table(
@@ -25,23 +33,16 @@ import javax.persistence.UniqueConstraint
             UniqueConstraint(columnNames = ["email"]),
             UniqueConstraint(columnNames = ["name"])])
 @Access(PROPERTY)
-data class EmployeeEntity(
+class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
     @get:
     [Column(nullable = false)]
-    var name                                  : String,
+    lateinit var name                                  : String
     @get:
     [Column(nullable = false)]
-    var email                                 : String
-) : SimpleGeneratedIdentityOfLong() {
-//    @get:OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)
-//    lateinit var records                      : List<RecordCollectionEntity>
+    lateinit var email                                 : String
 
-    override fun equals(other: Any?) = super.equals(other)
-    override fun hashCode() = super.hashCode()
+    @get:
+    [OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)]
+    lateinit var records                      : List<RecordCollectionEntity>
 }
 
-/**
- * TODO: `inline`
- */
-/*inline*/ fun EmployeeCreateCommand.map(mapper: (EmployeeCreateCommand) -> EmployeeCreateView): EmployeeCreateView = mapper(this)
-/*inline*/ fun EmployeeUpdateCommand.map(id: Long, mapper: (Long, EmployeeUpdateCommand) -> EmployeeUpdateView): EmployeeUpdateView = mapper(id, this)

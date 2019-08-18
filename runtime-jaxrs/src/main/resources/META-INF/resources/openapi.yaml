@@ -44,22 +44,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Employee'
-    post:
-      operationId: createEmployee
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EmployeeCreateCommand'
-        required: true
-      responses:
-        default:
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmployeeDetailedView'
+                  $ref: '#/components/schemas/EmployeeView'
   /management/configprops:
     get:
       tags:
@@ -289,7 +274,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Employee'
+                  $ref: '#/components/schemas/EmployeeView'
   /api/employee/{id}:
     put:
       operationId: updateEmployee
@@ -355,7 +340,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RecordDto'
+                  $ref: '#/components/schemas/RecordView'
     put:
       operationId: adjustWholePeriod
       parameters:
@@ -377,7 +362,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RecordCollectionDto'
+                $ref: '#/components/schemas/RecordCollectionDetailedView'
     post:
       operationId: saveWholePeriod
       parameters:
@@ -399,7 +384,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RecordCollectionDto'
+                $ref: '#/components/schemas/RecordCollectionDetailedView'
 components:
   schemas:
     Link:
@@ -410,7 +395,7 @@ components:
           type: string
         templated:
           type: boolean
-    Employee:
+    EmployeeView:
       type: object
       properties:
         email:
@@ -430,16 +415,6 @@ components:
           format: int64
         name:
           type: string
-    EmployeeCreateCommand:
-      required:
-      - email
-      - name
-      type: object
-      properties:
-        email:
-          type: string
-        name:
-          type: string
     EmployeeUpdateCommand:
       required:
       - email
@@ -450,7 +425,7 @@ components:
           type: string
         name:
           type: string
-    Record:
+    RecordView:
       type: object
       properties:
         date:
@@ -461,35 +436,6 @@ components:
           - type: integer
             format: int64
           - type: number
-        desc:
-          type: string
-        hoursSubmitted:
-          type: number
-        type:
-          type: string
-          enum:
-          - HOURS_WORKED
-          - OVERTIME
-          - ILLNESS
-          - LEAVE
-          - HOLIDAY_AVAILABLE
-          - EDUCATION
-          - STAND_BY
-          - KILOMETRES
-          - OTHER
-    RecordDto:
-      type: object
-      properties:
-        date:
-          example: 1544391144
-          anyOf:
-          - type: string
-            format: date
-          - type: integer
-            format: int64
-          - type: number
-        delegate:
-          $ref: '#/components/schemas/Record'
         desc:
           type: string
         hoursSubmitted:
@@ -509,39 +455,10 @@ components:
           - STAND_BY
           - KILOMETRES
           - OTHER
-    RecordCollection:
+    RecordCollectionDetailedView:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-        month:
-          type: string
-          enum:
-          - JANUARY
-          - FEBRUARY
-          - MARCH
-          - APRIL
-          - MAY
-          - JUNE
-          - JULY
-          - AUGUST
-          - SEPTEMBER
-          - OCTOBER
-          - NOVEMBER
-          - DECEMBER
-        year:
-          type: integer
-          format: int32
-    RecordCollectionDto:
-      type: object
-      properties:
-        delegate:
-          $ref: '#/components/schemas/RecordCollection'
         employeeId:
-          type: integer
-          format: int64
-        id:
           type: integer
           format: int64
         month:
@@ -564,20 +481,40 @@ components:
         records:
           type: array
           items:
-            $ref: '#/components/schemas/RecordDto'
+            $ref: '#/components/schemas/RecordDetailedView'
         year:
           type: integer
           format: int32
-    ListKRecordCreateCommand:
-      type: array
+    RecordDetailedView:
+      type: object
       properties:
-        empty:
-          type: boolean
-        size:
+        date:
+          example: 1544391144
+          anyOf:
+          - type: string
+            format: date
+          - type: integer
+            format: int64
+          - type: number
+        desc:
+          type: string
+        hoursSubmitted:
+          type: number
+        recordCollectionId:
           type: integer
-          format: int32
-      items:
-        $ref: '#/components/schemas/RecordCreateCommand'
+          format: int64
+        type:
+          type: string
+          enum:
+          - HOURS_WORKED
+          - OVERTIME
+          - ILLNESS
+          - LEAVE
+          - HOLIDAY_AVAILABLE
+          - EDUCATION
+          - STAND_BY
+          - KILOMETRES
+          - OTHER
     RecordCollectionCreateCommand:
       required:
       - employeeId
@@ -588,9 +525,6 @@ components:
       type: object
       properties:
         employeeId:
-          type: integer
-          format: int64
-        id:
           type: integer
           format: int64
         month:
@@ -718,6 +652,7 @@ components:
       required:
       - date
       - hoursSubmitted
+      - id
       - recordCollectionId
       - type
       type: object
@@ -734,6 +669,9 @@ components:
           type: string
         hoursSubmitted:
           type: number
+        id:
+          type: integer
+          format: int64
         recordCollectionId:
           type: integer
           format: int64

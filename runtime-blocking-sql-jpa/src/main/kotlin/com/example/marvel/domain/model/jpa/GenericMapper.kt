@@ -1,76 +1,51 @@
 package com.example.marvel.domain.model.jpa
 
-import com.blazebit.persistence.view.EntityViewManager
 import org.mapstruct.Context
 import org.mapstruct.ObjectFactory
 import org.mapstruct.TargetType
 import java.io.Serializable
-import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
 /**
  * @see [https://youtrack.jetbrains.com/issue/KT-25960] for why is this not an interface and not split to, say, creator and updater.
  */
-abstract class GenericMapper<CreateView, CreateCommand, UpdateView, UpdateCommand> {
+abstract class GenericMapper<Entity> {
 
     @set:
     [PersistenceContext]
     protected lateinit var em: EntityManager
 
-    @set:
-    [Inject]
-    protected lateinit var evm: EntityViewManager
-
     @ObjectFactory
-    fun @receiver:TargetType Class<CreateView>.objectFactory(): CreateView = evm.create(this)
-
-    abstract fun toEntity(source: CreateCommand): CreateView
-
-    @ObjectFactory
-    fun @receiver:TargetType Class<UpdateView>.objectFactory(@Context id: Serializable): UpdateView = evm.getReference(this, id)
-
-    abstract fun toEntity(@Context id: Serializable, source: UpdateCommand): UpdateView
-
-    /**
-     * Convenience function to use function reference where possible.
-     * @see com.example.marvel.domain.model.jpa.employee.EmployeeBlockingServiceNamespaceImpl.createEmployee
-     */
-    fun create(createView: CreateView) = evm.update(em, createView)
-
-    /**
-     * Convenience function to use function reference where possible.
-     * @see com.example.marvel.domain.model.jpa.employee.EmployeeBlockingServiceNamespaceImpl.updateEmployee
-     */
-    fun update(updateView: UpdateView) = evm.update(em, updateView)
+    fun @receiver:TargetType Class<Entity>.objectFactory(@Context id: Serializable): Entity = em.getReference(this, id)
 
     /**
      * FIXME: Exception thrown though `@ObjectFactory` present
      *    The return type com.example.marvel.domain.model.jpa.employee.EmployeeCreateView
      *    is an abstract class or interface. Provide a non abstract / non interface result type or a factory method.
-     *    public abstract java.util.List<CreateView> toEntityList(@org.jetbrains.annotations.NotNull()
+     *    public abstract java.util.List<Entity> toEntityList(@org.jetbrains.annotations.NotNull()
      */
-//    abstract fun toEntity(viewIterable: Iterable<CreateCommand>): Collection<CreateView>
+//    abstract fun toEntity(viewIterable: Iterable<CreateCommand>): Collection<Entity>
 //
-//    abstract fun toView(commandIterable: Iterable<CreateView>): Collection<CreateCommand>
+//    abstract fun toView(commandIterable: Iterable<Entity>): Collection<CreateCommand>
 //
-//    abstract fun toEntity(viewStream: Stream<out CreateCommand>): Collection<CreateView>
+//    abstract fun toEntity(viewStream: Stream<out CreateCommand>): Collection<Entity>
 //
-//    abstract fun toView(commandStream: Stream<out CreateView>): Collection<CreateCommand>
+//    abstract fun toView(commandStream: Stream<out Entity>): Collection<CreateCommand>
 //
-//    abstract fun toEntityList(viewIterable: Iterable<CreateCommand>): List<CreateView>
+//    abstract fun toEntityList(viewIterable: Iterable<CreateCommand>): List<Entity>
 //
-//    abstract fun toViewList(commandIterable: Iterable<CreateView>): List<CreateCommand>
+//    abstract fun toViewList(commandIterable: Iterable<Entity>): List<CreateCommand>
 //
-//    abstract fun toEntitySet(viewIterable: Iterable<CreateCommand>): Set<CreateView>
+//    abstract fun toEntitySet(viewIterable: Iterable<CreateCommand>): Set<Entity>
 //
-//    abstract fun toViewSet(commandIterable: Iterable<CreateView>): Set<CreateCommand>
+//    abstract fun toViewSet(commandIterable: Iterable<Entity>): Set<CreateCommand>
 //
-//    abstract fun toEntityList(viewStream: Stream<out CreateCommand>): List<CreateView>
+//    abstract fun toEntityList(viewStream: Stream<out CreateCommand>): List<Entity>
 //
-//    abstract fun toViewList(commandStream: Stream<out CreateView>): List<CreateCommand>
+//    abstract fun toViewList(commandStream: Stream<out Entity>): List<CreateCommand>
 //
-//    abstract fun toEntitySet(viewStream: Stream<out CreateCommand>): Set<CreateView>
+//    abstract fun toEntitySet(viewStream: Stream<out CreateCommand>): Set<Entity>
 //
-//    abstract fun toViewSet(commandStream: Stream<out CreateView>): Set<CreateCommand>
+//    abstract fun toViewSet(commandStream: Stream<out Entity>): Set<CreateCommand>
 }

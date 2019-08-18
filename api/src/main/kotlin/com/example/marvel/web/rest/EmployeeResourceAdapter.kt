@@ -1,12 +1,12 @@
 package com.example.marvel.web.rest
 
-import com.example.marvel.domain.model.api.employee.Employee
 import com.example.marvel.domain.model.api.employee.EmployeeCreateCommand
 import com.example.marvel.domain.model.api.employee.EmployeeDetailedView
 import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
-import com.example.marvel.domain.model.api.record.RecordDto
+import com.example.marvel.domain.model.api.employee.EmployeeView
+import com.example.marvel.domain.model.api.record.RecordView
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
-import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
+import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDetailedView
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpdateCommand
 import org.reactivestreams.Publisher
 import java.time.Month
@@ -37,9 +37,9 @@ interface EmployeeResourceAdapter {
      * P.S. BTW, In such case return types from RxJava2 serves slightly better as they give idea of COLD/HOT producer
      * and the semantics are more understandable.
      */
-    fun getEmployees(): Publisher<Employee>
+    fun getEmployees(): Publisher<EmployeeView>
 
-    fun filterEmployees(filter: String?): Publisher<Employee>
+    fun filterEmployees(filter: String?): Publisher<EmployeeView>
 
     fun createEmployee(
             @NotNull @Valid employee: EmployeeCreateCommand): CompletionStage<EmployeeDetailedView>
@@ -51,16 +51,16 @@ interface EmployeeResourceAdapter {
     fun getForPeriod(
             @NotNull    id: Long,
             @NotNull  year: Int,
-            @NotNull month: Month): Publisher<RecordDto>
+            @NotNull month: Month): Publisher<RecordView>
 
     fun saveWholePeriod(
             @NotNull             id: Long,
-            @NotNull @Valid records: RecordCollectionCreateCommand) : CompletionStage<RecordCollectionDto>
+            @NotNull @Valid records: RecordCollectionCreateCommand) : CompletionStage<RecordCollectionDetailedView>
 
     /**
      * !!No creation on PUT verb
      */
     fun adjustWholePeriod(
             @NotNull             id: Long,
-            @NotNull @Valid records: RecordCollectionUpdateCommand) : CompletionStage<RecordCollectionDto>
+            @NotNull @Valid records: RecordCollectionUpdateCommand) : CompletionStage<RecordCollectionDetailedView>
 }

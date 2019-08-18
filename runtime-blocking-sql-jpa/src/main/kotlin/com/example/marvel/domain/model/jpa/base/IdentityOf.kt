@@ -23,9 +23,9 @@ abstract class IdentityOf<T : Serializable>: IdentifiableOf<T> {
      *       final override fun equals(other: Any?) = ...
      *       final override fun hashCode() = ...
      *
-     * Such overrides allow us write all properties inside primary ctor
+     * Such overrides would've allow us write all properties inside primary ctor
      * in data classes
-     * FIXME: Ebean intercepts equals too, unfortunately
+     * FIXME: Bytecode enhancers intercepts equals too, unfortunately
      *   SecurityManager screams final method overridden.
      *   So, for now we may leave these open and override them in each Entity
      */

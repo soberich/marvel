@@ -18,6 +18,9 @@ java.sourceCompatibility = VERSION_1_8
  * TODO: Remove Quarkus form convention default configuration to not to leak here.
  */
 dependencies {
+    kapt("org.immutables:value:2.7.4") // for annotation processor
+    compileOnly("org.immutables:value:2.7.4:annotations") // annotation-only artifact
+    compileOnly("org.immutables:builder:2.7.4") // there are only annotations anyway
     kapt("org.hibernate:hibernate-jpamodelgen:5.4.3.Final")
     kapt("org.mapstruct:mapstruct-processor:1.3.0.Final")
 

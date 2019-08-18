@@ -1,9 +1,11 @@
 
+import io.quarkus.gradle.QuarkusPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
 import versioning.Deps
 
 plugins {
     kronstadt
+    id("io.quarkus")
 }
 
 version = "0.0.1-SNAPSHOT"
@@ -30,6 +32,13 @@ repositories {
     maven("https://jitpack.io")
 }
 java.sourceCompatibility = VERSION_1_8
+
+configure<QuarkusPluginExtension> {
+    setSourceDir("$projectDir/src/main/kotlin")
+//        resourcesDir() += file("$projectDir/src/main/resources")
+    setOutputDirectory("$buildDir/classes/kotlin/main")
+}
+
 /**
  * TODO: Remove Quarkus form convention default configuration to not to leak it there.
  */
@@ -71,7 +80,6 @@ dependencies {
 //    ).forEach { "implementation"(it) }
 
 //    implementation(platform(BOM_COORDINATES))
-    implementation("com.blazebit:blaze-persistence-integration-entity-view-spring:1.3.2")
     implementation(Deps.Libs.JACKSON_AFTERBURNER)
     implementation(Deps.Libs.JACKSON_JDK8)
     implementation(Deps.Libs.JACKSON_JSR310)
@@ -80,13 +88,13 @@ dependencies {
 //
 //    arrayOf(
 //            Deps.Libs.RESTEASY_BOOT,
-//            "org.springframework.boot:spring-boot-starter-actuator:${versioning.Platforms.Versions.SPRING_BOOT}",
-//            "org.springframework.boot:spring-boot-starter-aop:${versioning.Platforms.Versions.SPRING_BOOT}",
-//            "org.springframework.boot:spring-boot-starter-logging:${versioning.Platforms.Versions.SPRING_BOOT}",
-//            "org.springframework.boot:spring-boot-starter-mail:${versioning.Platforms.Versions.SPRING_BOOT}",
-////            "org.springframework.boot:spring-boot-starter-security:${versioning.Platforms.Versions.SPRING_BOOT}",
-//            "org.springframework.boot:spring-boot-starter-thymeleaf:${versioning.Platforms.Versions.SPRING_BOOT}",
-//            "org.springframework.boot:spring-boot-starter-web:${versioning.Platforms.Versions.SPRING_BOOT}"
+//            "org.springframework.boot:spring-boot-starter-actuator:${Versions.SPRING_BOOT}",
+//            "org.springframework.boot:spring-boot-starter-aop:${Versions.SPRING_BOOT}",
+//            "org.springframework.boot:spring-boot-starter-logging:${Versions.SPRING_BOOT}",
+//            "org.springframework.boot:spring-boot-starter-mail:${Versions.SPRING_BOOT}",
+////            "org.springframework.boot:spring-boot-starter-security:${Versions.SPRING_BOOT}",
+//            "org.springframework.boot:spring-boot-starter-thymeleaf:${Versions.SPRING_BOOT}",
+//            "org.springframework.boot:spring-boot-starter-web:${Versions.SPRING_BOOT}"
 //    ).forEach { "springImplementation"(it) }
 //    implementation("org.springframework:spring-tx")
 

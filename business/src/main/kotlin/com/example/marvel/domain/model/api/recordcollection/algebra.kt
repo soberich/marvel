@@ -4,96 +4,76 @@ package com.example.marvel.domain.model.api.recordcollection
 
 import arrow.data.ListK
 import arrow.optics.optics
+import com.example.marvel.domain.model.api.record.RecordCommand
 import com.example.marvel.domain.model.api.record.RecordCreateCommand
-import com.example.marvel.domain.model.api.record.RecordDto
-import com.example.marvel.domain.model.api.record.RecordModel
+import com.example.marvel.domain.model.api.record.RecordDetailedView
 import com.example.marvel.domain.model.api.record.RecordUpdateCommand
 import java.time.Month
 import javax.json.bind.annotation.JsonbCreator
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
-import javax.validation.constraints.Null
 
-interface RecordCollection {
-    var id                  : Long?
-    val year                : Int
-    val month               : Month
+interface RecordCollectionView {
+    val year                         : Int
+    val month                        : Month
+    val projectId                    : String
+    val employeeId                   : Long
 }
 
-/**
- * FIXME:  Some ISO for sealed classes =(
- */
-@optics sealed class RecordCollectionModel : RecordCollection {
-
-    abstract val projectId                    : String
-    abstract val employeeId                   : Long
-    abstract val records                      : ListK<@Valid RecordModel>
-
-    companion object {
-        /**
-         * Could use be default args
-         */
-        inline operator fun invoke(id: Long? = null, year: Int, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
-                RecordCollectionDto(RecordCollectionCreateCommand(id ?: 0, year, month, projectId, employeeId, ListK(emptyList())), projectId, employeeId, ListK(emptyList()))
-        inline operator fun invoke(year: Int, month: Month, projectId: String, employeeId: Long, records: List<RecordModel> = emptyList()): RecordCollectionDto =
-                RecordCollectionModel(null, year, month, projectId, employeeId, records)
-    }
+interface RecordCollectionDetailedView {
+    val year                         : Int
+    val month                        : Month
+    val projectId                    : String
+    val employeeId                   : Long
+    val records                      : List<@JvmWildcard RecordDetailedView>
 }
 
-@optics data class RecordCollectionDto(
-    @PublishedApi
-    internal val delegate            : RecordCollection,
-    val projectId                    : String,
-    val employeeId                   : Long,
-    val records                      : List<RecordDto>
-) : RecordCollection by delegate { companion object }
+@optics sealed class RecordCollectionCommand {
+    @get:
+    [NotNull]
+    abstract val year                : Int
+    @get:
+    [NotNull]
+    abstract val month               : Month
+    @get:
+    [NotNull]
+    abstract val projectId           : String
+    @get:
+    [NotNull]
+    abstract val employeeId          : Long
+    @get:
+    [NotEmpty]
+    abstract val records             : ListK<@Valid RecordCommand>
+
+    companion object
+}
 
 @optics data class RecordCollectionCreateCommand @JsonbCreator constructor(
-    @get:
-    [Null]
-    override var id                  : Long?,
-    @get:
-    [NotNull]
     override val year                : Int,
-    @get:
-    [NotNull]
     override val month               : Month,
-    @get:
-    [NotNull]
     override val projectId           : String,
-    @get:
-    [NotNull]
     override val employeeId          : Long,
     @get:
     [NotEmpty]
     override val records             : ListK<@Valid RecordCreateCommand>
-) : RecordCollectionModel() { companion object }
+) : RecordCollectionCommand() { companion object }
 
 @optics data class RecordCollectionUpdateCommand @JsonbCreator constructor(
     @get:
     [NotNull]
-    override var id                  : Long?,
-    @get:
-    [NotNull]
+    val id                           : Long,
     override val year                : Int,
-    @get:
-    [NotNull]
     override val month               : Month,
-    @get:
-    [NotNull]
     override val projectId           : String,
-    @get:
-    [NotNull]
     override val employeeId          : Long,
     @get:
     [NotEmpty]
     override val records             : ListK<@Valid RecordUpdateCommand>
-) : RecordCollectionModel() { companion object }
+) : RecordCollectionCommand() { companion object }
 
 /**
  * no-op
  */
-@optics data class RecordCollectionRequests(val reports: ListK<RecordCollectionModel>) : List<RecordCollectionModel> by reports { companion object }
-@optics data class RecordCollectionResponses(val reports: ListK<RecordCollectionDto>) : List<RecordCollectionDto> by reports { companion object }
+@optics data class RecordCollectionCommands(val reports: ListK<RecordCollectionCommand>) : List<RecordCollectionCommand> by reports { companion object }
 

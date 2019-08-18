@@ -1,12 +1,12 @@
 package com.example.marvel.service.employee
 
-import com.example.marvel.domain.model.api.employee.Employee
 import com.example.marvel.domain.model.api.employee.EmployeeCreateCommand
 import com.example.marvel.domain.model.api.employee.EmployeeDetailedView
 import com.example.marvel.domain.model.api.employee.EmployeeUpdateCommand
-import com.example.marvel.domain.model.api.record.RecordDto
+import com.example.marvel.domain.model.api.employee.EmployeeView
+import com.example.marvel.domain.model.api.record.RecordView
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
-import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
+import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDetailedView
 import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpdateCommand
 import java.time.Month
 import java.time.Year
@@ -19,17 +19,17 @@ import java.util.stream.Stream
  */
 interface EmployeeOperationsServiceNamespace {
 
-    fun streamEmployees(): Stream<Employee>
+    fun streamEmployees(): Stream<EmployeeView>
 
-    fun filterEmployees(filter: String): List<Employee>
+    fun filterEmployees(filter: String): List<EmployeeView>
 
     fun createEmployee(employee: EmployeeCreateCommand): EmployeeDetailedView
 
     fun updateEmployee(employeeId: Long, employee: EmployeeUpdateCommand): EmployeeDetailedView?
 
-    fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordDto>
+    fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView>
 
-    fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDto?
+    fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDetailedView?
 
-    fun updateWholePeriod(employeeId: Long, records: RecordCollectionUpdateCommand): RecordCollectionDto?
+    fun updateWholePeriod(employeeId: Long, records: RecordCollectionUpdateCommand): RecordCollectionDetailedView?
 }
