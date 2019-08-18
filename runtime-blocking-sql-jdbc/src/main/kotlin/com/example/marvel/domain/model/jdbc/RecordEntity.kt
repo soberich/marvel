@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE","OVERRIDE_BY_INLINE")
-
 package com.example.marvel.domain.model.jdbc
 
 

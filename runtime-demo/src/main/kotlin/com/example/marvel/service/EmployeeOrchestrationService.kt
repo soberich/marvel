@@ -1,6 +1,6 @@
 package com.example.marvel.service
 
-import com.example.marvel.domain.model.api.employee.Employee
+import com.example.marvel.domain.model.jpa.employee.Employee
 import com.example.marvel.domain.model.api.record.Record
 import java.time.Month
 import java.time.Year

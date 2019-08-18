@@ -1,6 +1,6 @@
 package com.example.marvel.openapi;
 
-import com.example.marvel.Json;
+import com.example.marvel.convention.serial.Json;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.SimpleType;

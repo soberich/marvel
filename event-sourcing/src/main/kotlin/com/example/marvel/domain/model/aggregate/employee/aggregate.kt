@@ -1,6 +1,6 @@
 package com.example.marvel.domain.model.aggregate.employee
 
-import com.example.marvel.domain.model.api.employee.Employee
+import com.example.marvel.domain.model.jpa.employee.Employee
 
 data class EmployeeAggregate(
     private val delegate    : Employee

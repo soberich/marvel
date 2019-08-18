@@ -1,9 +1,9 @@
 package com.example.marvel.service
 
 import arrow.effects.fix
-import com.example.marvel.domain.model.api.employee.Employee
-import com.example.marvel.domain.model.api.employee.EmployeeDto
-import com.example.marvel.domain.model.api.employee.toEmployeeDto
+import com.example.marvel.domain.model.jpa.employee.Employee
+import com.example.marvel.domain.model.jpa.employee.EmployeeDto
+import com.example.marvel.domain.model.jpa.employee.toEmployeeDto
 import com.example.marvel.domain.model.api.record.Record
 import com.example.marvel.domain.model.api.record.RecordDto
 import com.example.marvel.domain.model.api.record.toRecordDto

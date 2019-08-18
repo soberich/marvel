@@ -1,6 +1,6 @@
 package com.example.marvel.domain.model.jdbc
 
-import com.example.marvel.domain.model.api.employee.Employee
+import com.example.marvel.domain.model.jpa.employee.Employee
 import com.example.marvel.domain.model.jdbc.base.IdentityOf
 import io.ebean.Finder
 import io.ebean.annotation.Cache

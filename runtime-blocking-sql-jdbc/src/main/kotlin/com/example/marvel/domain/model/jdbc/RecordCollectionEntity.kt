@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.example.marvel.domain.model.jdbc
 
 import com.example.marvel.domain.model.api.record.RecordDto

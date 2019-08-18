@@ -29,16 +29,10 @@ pluginManagement {
 }
 
 include(
-        ":api",
-        ":business",
-        ":convention",
+        ":app",
 //        ":event-sourcing",
-        ":openapi",
+        ":openapi"
 //        ":runtime-blocking-sql-jdbc",
-        ":runtime-blocking-sql-jpa",
-        ":runtime-jaxrs",
 //        ":runtime-nosql",
 //        ":jakartaee-runner",
-        ":quarkus-runner",
-        ":spi"
 )

@@ -1,6 +1,6 @@
 package com.example.marvel.domain.model.nosql
 
-import com.example.marvel.domain.model.api.employee.Employee
+import com.example.marvel.domain.model.jpa.employee.Employee
 import com.example.marvel.domain.model.api.recordcollection.RecordCollection
 import com.example.marvel.domain.model.nosql.base.IdentityOf
 
