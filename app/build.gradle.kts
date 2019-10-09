@@ -6,7 +6,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("io.quarkus:quarkus-gradle-plugin:0.23.0")
+        classpath("io.quarkus:quarkus-gradle-plugin:0.23.2")
     }
 }
 //val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
