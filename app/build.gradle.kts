@@ -50,8 +50,8 @@ dependencies {
 
     kapt("org.hibernate:hibernate-jpamodelgen:5.4.3.Final")
 
-    kapt("org.mapstruct:mapstruct-processor:1.3.0.Final")
-    compileOnly("org.mapstruct:mapstruct:1.3.0.Final")
+    kapt("org.mapstruct:mapstruct-processor:1.3.1.Final")
+    compileOnly("org.mapstruct:mapstruct:1.3.1.Final")
 
     implementation(enforcedPlatform(Deps.Platforms.QUARKUS))
     implementation(platform(Deps.Platforms.RESTEASY))
