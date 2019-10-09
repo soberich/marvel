@@ -7,9 +7,7 @@ import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateComm
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import com.example.marvel.api.RecordCollectionDetailedView
 import com.example.marvel.api.RecordView
-import com.example.marvel.domain.model.jpa.record.RecordListingView
 import com.example.marvel.domain.model.jpa.record.RecordMapperImpl
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity_
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapper
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapperImpl
 import com.example.marvel.spi.EmployeeOperationsServiceNamespace
@@ -30,6 +28,7 @@ import javax.transaction.Transactional.TxType.NOT_SUPPORTED
 @Service
 @Transactional
 class EmployeeBlockingServiceNamespaceImpl /*@Inject constructor*/(
+    private val employeeRepository: EmployeeRepository,
     private val empMapper: EmployeeMapper = EmployeeMapperImpl(),
     private val recColMapper: RecordCollectionMapper = RecordCollectionMapperImpl(empMapper, RecordMapperImpl())
 ) : EmployeeOperationsServiceNamespace {
@@ -55,14 +54,9 @@ class EmployeeBlockingServiceNamespaceImpl /*@Inject constructor*/(
         empMapper.toEntity(employee).also(em::persist).let(empMapper::toCreateView)
 
     override fun updateEmployee(employeeId: Long, employee: EmployeeCommand.EmployeeUpdateCommand): EmployeeDetailedView? =
-        empMapper.toEntity(employeeId, employee).let(em::merge).let(empMapper::toUpdateView)
+        empMapper.toEntity(employeeId, employee).let(empMapper::toUpdateView)
 
-    override fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView> =
-            em.createNamedQuery("Record.listForPeriod", RecordListingView::class.java)
-                    .setParameter(RecordCollectionEntity_.ID, employeeId)
-                    .setParameter(RecordCollectionEntity_.MONTH, month)
-                    .setParameter(RecordCollectionEntity_.YEAR, year)
-                    .resultList
+    override fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView> = employeeRepository.listForPeriod(employeeId, year.value, month)
 
     override fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDetailedView? =
             em.find(EmployeeEntity::class.java, employeeId)?.let { recColMapper.toCreateView(recColMapper.toEntity(it.id, records).also(em::persist)) }

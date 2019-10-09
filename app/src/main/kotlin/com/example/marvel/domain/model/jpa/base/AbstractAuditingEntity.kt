@@ -42,7 +42,7 @@ abstract class AbstractAuditingEntity<T : Serializable>(
     Column(updatable = false)]
     override
     var id                   : T
-) : IdentityOf<T>() {
+) : BusinessKeyIdentityOf<T>() {
 
     @get:
     [Column(nullable = false, updatable = false, length = 50)]

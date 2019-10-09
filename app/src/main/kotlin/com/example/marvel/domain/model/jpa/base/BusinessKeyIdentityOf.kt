@@ -9,11 +9,11 @@ import javax.persistence.Version
 
 
 /**
- * IdentityOf holder for any identity type.
+ * IdentityOf holder for any (NON-generated) identity type.
  */
 @MappedSuperclass
 @Access(PROPERTY)
-abstract class IdentityOf<T : Serializable>: IdentifiableOf<T> {
+abstract class BusinessKeyIdentityOf<T : Serializable> : IdentifiableOf<T> {
 
     @get:
     [Version]
@@ -30,14 +30,13 @@ abstract class IdentityOf<T : Serializable>: IdentifiableOf<T> {
      *   So, for now we may leave these open and override them in each Entity
      */
     override fun equals(other: Any?) = when {
-        this === other                                        -> true
-        other !is IdentityOf<*>                               -> false
-        !other::class.java.isAssignableFrom(this::class.java) -> false
-        !other.canEqual(this)                                 -> false
-        else                                                  -> id  == other.id
+        this === other                     -> true
+        other !is BusinessKeyIdentityOf<*> -> false
+        !other.canEqual(this)              -> false
+        else                               -> id  == other.id
     }
 
-    protected open fun canEqual(other: Any) = other::class.java.isAssignableFrom(this::class.java)
+    protected open fun canEqual(other: Any) = this::class.java.isAssignableFrom(other::class.java)
 
     override fun hashCode() = Objects.hashCode(id)
 

@@ -1,7 +1,7 @@
 package com.example.marvel.domain.model.jpa.record
 
 import com.example.marvel.api.RecordType
-import com.example.marvel.domain.model.jpa.base.IdentityOf
+import com.example.marvel.domain.model.jpa.base.BusinessKeyIdentityOf
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity
 import org.hibernate.annotations.Immutable
 import java.io.Serializable
@@ -33,7 +33,7 @@ import javax.persistence.NamedQuery
 @Cacheable
 @Access(PROPERTY)
 @IdClass(RecordEntity.RecordId::class)
-class RecordEntity : IdentityOf<RecordEntity.RecordId>() {
+class RecordEntity : BusinessKeyIdentityOf<RecordEntity.RecordId>() {
     @get:
     [Id
     Column(nullable = false, updatable = false)]
