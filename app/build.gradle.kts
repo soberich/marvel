@@ -6,7 +6,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("io.quarkus:quarkus-gradle-plugin:0.21.1")
+        classpath("io.quarkus:quarkus-gradle-plugin:0.23.0")
     }
 }
 //val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
@@ -72,6 +72,7 @@ dependencies {
         "io.quarkus:quarkus-rest-client",
         "io.quarkus:quarkus-resteasy-jackson",
         "io.quarkus:quarkus-smallrye-context-propagation",
+        "io.quarkus:quarkus-spring-data-jpa",
         "io.quarkus:quarkus-spring-web",
         "io.quarkus:quarkus-vertx",
         "io.smallrye.reactive:smallrye-reactive-converter-rxjava2:1.0.7",
