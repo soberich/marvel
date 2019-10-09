@@ -5,7 +5,7 @@ check(current().isJava8Compatible) { "At least Java 8 is required, current JVM i
 plugins {
     base
     `project-report`
-    id("io.quarkus") version "0.23.2" apply false
+    id("io.quarkus") version "0.23.0" apply false
 }
 
 
@@ -50,7 +50,7 @@ subprojects {
         }
     }
 }
-
+//
 //project(":runtime-jaxrs") {
 ////    buildscript {
 ////        repositories {

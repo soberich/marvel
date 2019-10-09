@@ -1,3 +1,4 @@
+##### WIP: of #Quarkus / #Micronaut #Arrow-Kt #Vert.x #Coroutines #GRPC #Kotlin-DSL #monorepo playground
 #### Recent Notes:
 
  - Quarkus _strictly_ requires `beans.xml` in every subproject/module.
