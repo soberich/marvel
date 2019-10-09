@@ -1,6 +1,6 @@
 package com.example.marvel.api
 
-import arrow.data.ListK
+import arrow.core.ListK
 import arrow.optics.optics
 import java.time.Month
 import javax.validation.Valid

@@ -1,6 +1,6 @@
 package com.example.marvel.api
 
-import arrow.data.ListK
+import arrow.core.ListK
 import arrow.optics.optics
 import java.math.BigDecimal
 import java.time.LocalDate

@@ -1,6 +1,6 @@
 package com.example.marvel.domain.model.jpa.project
 
-import arrow.data.ListK
+import arrow.core.ListK
 import arrow.optics.optics
 import java.time.LocalDateTime
 import java.util.UUID

@@ -13,9 +13,9 @@ repositories.jcenter {
 
 dependencies {
     //    api(project(":business", "default"))
-    kapt("org.immutables:value:2.8.0-CriteriaPreview1") // for annotation processor
-    compileOnly("org.immutables:value:2.8.0-CriteriaPreview1:annotations") // annotation-only artifact
-    compileOnly("org.immutables:builder:2.8.0-CriteriaPreview1") // there are only annotations anyway
+    kapt("org.immutables:value:2.8.0") // for annotation processor
+    compileOnly("org.immutables:value:2.8.0:annotations") // annotation-only artifact
+    compileOnly("org.immutables:builder:2.8.0") // there are only annotations anyway
 
     kapt(Deps.Libs.ARROW_META)
     kapt(Deps.Libs.VALIDATOR_AP)
