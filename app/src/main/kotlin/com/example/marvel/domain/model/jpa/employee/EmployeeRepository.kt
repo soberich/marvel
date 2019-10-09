@@ -1,7 +1,6 @@
 package com.example.marvel.domain.model.jpa.employee
 
 import com.example.marvel.domain.model.jpa.record.RecordListingView
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity_
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -22,6 +21,4 @@ interface EmployeeRepository : JpaRepository<EmployeeEntity, Long> {
         @Param("id") id: Long,
         @Param("year") year: Int,
         @Param("month") month: Month): List<RecordListingView>
-
-
 }

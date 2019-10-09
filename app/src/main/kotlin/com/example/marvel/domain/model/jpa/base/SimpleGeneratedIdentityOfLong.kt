@@ -7,7 +7,7 @@ import org.hibernate.id.enhanced.SequenceStyleGenerator.INCREMENT_PARAM
 import org.hibernate.id.enhanced.SequenceStyleGenerator.INITIAL_PARAM
 import org.hibernate.id.enhanced.SequenceStyleGenerator.OPT_PARAM
 import javax.persistence.Access
-import javax.persistence.AccessType
+import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.SEQUENCE
@@ -19,7 +19,7 @@ import javax.persistence.MappedSuperclass
  * IdentityOf holder for Long identity type.
  */
 @MappedSuperclass
-@Access(AccessType.PROPERTY)
+@Access(PROPERTY)
 abstract class SimpleGeneratedIdentityOfLong: JpaStateTransitionAwareIdentityOf<Long>() {
 
     @get:
