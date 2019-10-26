@@ -4,23 +4,20 @@ plugins {
     `java-library`
     kronstadt
 }
-repositories.jcenter {
-    content {
-        includeGroup("io.projectreactor")
-        includeGroupByRegex("(jakarta|sun|org\\.glassfish).+")
-    }
-}
+repositories.jcenter()
 
 dependencies {
-    //    api(project(":business", "default"))
-    kapt("org.immutables:value:2.8.0") // for annotation processor
-    compileOnly("org.immutables:value:2.8.0:annotations") // annotation-only artifact
-    compileOnly("org.immutables:builder:2.8.0") // there are only annotations anyway
+    arrayOf(
+        Deps.Libs.ARROW_META,
+        Deps.Libs.IMMUTABLES_VALUE,
+        Deps.Libs.VALIDATOR_AP
+    ).forEach(::kapt)
 
-    kapt(Deps.Libs.ARROW_META)
-    kapt(Deps.Libs.VALIDATOR_AP)
-
-    compileOnly(Deps.Libs.ARROW_ANNOTATIONS)
+    arrayOf(
+        Deps.Libs.ARROW_ANNOTATIONS,
+        Deps.Libs.IMMUTABLES_BUILDER,
+        Deps.Libs.IMMUTABLES_VALUE + ":annotations"
+    ).forEach(::compileOnly)
 
     arrayOf(
         Deps.Jakarta.VALIDATION,
