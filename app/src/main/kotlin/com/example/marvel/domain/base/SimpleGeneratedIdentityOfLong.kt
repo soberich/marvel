@@ -14,7 +14,6 @@ import javax.persistence.GenerationType.SEQUENCE
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 
-
 /**
  * IdentityOf holder for Long identity type.
  */

@@ -11,7 +11,6 @@ import org.mapstruct.Mapping
 import org.mapstruct.Mappings
 import java.io.Serializable
 
-
 @Mapper(config = MapperConfig::class)
 abstract class EmployeeMapper : GenericMapper<EmployeeEntity>() {
 

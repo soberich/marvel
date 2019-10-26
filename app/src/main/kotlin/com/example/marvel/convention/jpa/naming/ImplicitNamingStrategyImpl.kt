@@ -15,7 +15,6 @@ import org.hibernate.boot.model.naming.ImplicitUniqueKeyNameSource
 
 class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
 
-
     override fun determineJoinColumnName(source: ImplicitJoinColumnNameSource): Identifier {
         val name: String =
                 if (source.nature == ImplicitJoinColumnNameSource.Nature.ELEMENT_COLLECTION || source.attributePath == null)

@@ -23,6 +23,8 @@ idea.module {
             variants.map { "$projectDir/src/generated/kotlin$it" } +
             variants.map { "$projectDir/src/generated/java$it" } +
             "$buildDir/tmp/kapt/main/kotlinGenerated" +
+            "$projectDir/src/generated/kotlin" +
+            "$projectDir/src/generated/java" +
             "$projectDir/generated"
 
     files(paths) {

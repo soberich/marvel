@@ -1,7 +1,3 @@
-
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
-
 plugins {
     java
     `java-gradle-plugin`
@@ -9,7 +5,7 @@ plugins {
     `build-dashboard`                                         // optional
     `help-tasks`                                              // optional
     `project-report`                                          // optional
-    id("com.github.ben-manes.versions")      version "0.22.0" // optional
+    id("com.github.ben-manes.versions")      version "0.27.0" // optional
     id("se.patrikerdes.use-latest-versions") version "0.2.12" // optional
 }
 
@@ -42,16 +38,18 @@ repositories {
 }
 
 tasks {
-    withType<KotlinCompile<*>>().configureEach {
+    compileKotlin {
         kotlinOptions {
             suppressWarnings = false
             verbose          = true
             freeCompilerArgs = file("../kotlincArgs", PathValidation.FILE).readLines()
+            jvmTarget        = JavaVersion.current().toString()
         }
     }
-    withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
-        //kotlinOptions.jvmTarget = maxOf(JavaVersion.current().toString().toBigDecimal(), 12.toBigDecimal()).toString()
+    compileJava {
+        options.apply {
+            file("../javacArgs", PathValidation.FILE).forEachLine(action = compilerArgs::add)
+        }
     }
 }
 
@@ -71,16 +69,12 @@ val kotlinVersion = KotlinVersion(1, 3, 50).toString()
     implementation(kotlin("noarg"            , kotlinVersion))
     implementation(kotlin("sam-with-receiver", kotlinVersion))
 //    implementation(kotlin("serialization", kotlinVersion))
-    implementation("com.bmuschko",                                      "gradle-docker-plugin",                     "5.0.0")
-    implementation("com.github.ben-manes",                              "gradle-versions-plugin",                   "0.22.0")
-    implementation("com.moowork.gradle",                                "gradle-node-plugin",                       "+")
+    implementation("com.github.ben-manes",                              "gradle-versions-plugin",                   "0.27.0")
     implementation("com.vanniktech",                                    "gradle-dependency-graph-generator-plugin", "0.5.0")
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
     implementation("io.ebean",                                          "ebean-gradle-plugin",                      "+")
-    implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "2.0.8")
-    implementation("nu.studer",                                         "gradle-credentials-plugin",                "1.0.7")
-    implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "2.7.1")
-    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.2.0.M5")
+    implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "2.0.10")
+    implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "2.8")
     implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "0.2.12")
     //TODO:
 //    implementation("com.github.JetBrains",                              "gradle-idea-ext-plugin",                   "master-SNAPSHOT")

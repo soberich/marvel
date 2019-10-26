@@ -7,7 +7,6 @@ import javax.persistence.AccessType.PROPERTY
 import javax.persistence.MappedSuperclass
 import javax.persistence.Version
 
-
 /**
  * IdentityOf holder for any (NON-generated) identity type.
  */

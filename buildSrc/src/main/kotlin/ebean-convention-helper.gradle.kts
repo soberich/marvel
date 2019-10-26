@@ -1,4 +1,3 @@
-
 import versioning.Deps
 
 plugins {
@@ -9,7 +8,7 @@ plugins {
 
 ebean.debugLevel = 2
 
-tasks.withType<JavaCompile>().configureEach {
+tasks.compileJava {
     options.annotationProcessorGeneratedSourcesDirectory = file("src/generated/java")
 }
 

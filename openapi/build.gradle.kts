@@ -1,13 +1,12 @@
-import io.swagger.v3.plugins.gradle.tasks.ResolveTask
 import io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.YAML
 import org.gradle.api.PathValidation.FILE
 
 plugins {
-    openapi
-    jackson
+    `openapi-convention-helper`
+    `jackson-convention-helper`
 }
 
-tasks.withType<ResolveTask>().configureEach {
+tasks.resolve {
     description                = "At build-time (on demand) task. Creates an openapi.yaml definition file in `app`"
     group                      = "documentation"
     classpath                  = project.sourceSets.main.get().runtimeClasspath

@@ -21,7 +21,6 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.NamedQuery
 
-
 /**
  * FIXME:
  *  N.B. The `date` is purposefully left first - to check the wrong way.

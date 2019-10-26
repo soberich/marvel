@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 
-
 /**
  * NO-OP
  * FIXME: `@GeneratedValue`

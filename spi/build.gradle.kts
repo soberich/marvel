@@ -1,6 +1,6 @@
 plugins {
     `java-library`
-    kronstadt
+    `kotlin-convention-helper`
 }
 
 dependencies {

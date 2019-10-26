@@ -1,10 +1,14 @@
+import org.gradle.api.JavaVersion.VERSION_1_8
 import versioning.Deps
 
 plugins {
     `java-library`
-    kronstadt
+    `kotlin-convention-helper`
 }
+
 repositories.jcenter()
+
+java.sourceCompatibility = VERSION_1_8
 
 dependencies {
     arrayOf(

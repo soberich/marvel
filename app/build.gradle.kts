@@ -2,8 +2,8 @@ import org.gradle.api.JavaVersion.VERSION_1_8
 import versioning.Deps
 
 plugins {
-    kronstadt
-    jackson
+    `kotlin-convention-helper`
+    `jackson-convention-helper`
     id("io.quarkus") version "0.26.1"
 }
 

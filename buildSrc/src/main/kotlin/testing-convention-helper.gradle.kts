@@ -1,4 +1,3 @@
-
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.kotlin.dsl.invoke
 import versioning.Deps
@@ -23,6 +22,6 @@ tasks.test {
 }
 
 dependencies {
-//    testRuntimeOnly(versioning.Deps.Libs.SLF4J_JBOSS)
+//    testRuntimeOnly(Deps.Libs.SLF4J_JBOSS)
     testRuntimeOnly(Deps.Libs.JBOSS_LOG)
 }
