@@ -1,2 +1,0 @@
-entity-packages: com.example.marvel.domain.model.jpa
-transactional-packages: none
