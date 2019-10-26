@@ -78,7 +78,6 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
             )
 
     companion object {
-        private const val serialVersionUID = -1L
         @JvmStatic
         val INSTANCE: ImplicitNamingStrategyImpl = ImplicitNamingStrategyImpl()
     }

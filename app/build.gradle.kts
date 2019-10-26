@@ -6,7 +6,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("io.quarkus:quarkus-gradle-plugin:0.23.2")
+        classpath("io.quarkus:quarkus-gradle-plugin:0.26.1")
     }
 }
 //val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
@@ -17,7 +17,8 @@ buildscript {
 //}
 plugins {
     kronstadt
-    id("io.quarkus")
+    id("io.quarkus") version "0.26.1"
+
 }
 
 quarkus {
@@ -25,6 +26,22 @@ quarkus {
 //    setSourceDir("$buildDir/generated/source/kapt/main")
 //        resourcesDir() += file("$projectDir/src/main/resources")
     setOutputDirectory("$buildDir/classes/kotlin/main")
+}
+//
+//val coppy by tasks.registering(Copy::class) {
+//    doFirst {
+//        from("$buildDir/classes/kotlin")
+//        into("$buildDir/classes/java")
+//    }
+//}
+
+val coppy = tasks.register<Copy>("coppy") {
+    from("$buildDir/classes/java")
+    into("$buildDir/classes/kotlin")
+}
+
+tasks.withType(io.quarkus.gradle.tasks.QuarkusDev::class).configureEach {
+    dependsOn += coppy
 }
 
 version = "0.0.1-SNAPSHOT"
@@ -56,7 +73,7 @@ dependencies {
     implementation(enforcedPlatform(Deps.Platforms.QUARKUS))
     implementation(platform(Deps.Platforms.RESTEASY))
     implementation(platform(Deps.Platforms.JACKSON))
-//    implementation(project(":api"))
+    implementation(project(":api"))
     implementation(project(":spi"))
 
     arrayOf(
@@ -75,17 +92,18 @@ dependencies {
         "io.quarkus:quarkus-spring-data-jpa",
         "io.quarkus:quarkus-spring-web",
         "io.quarkus:quarkus-vertx",
-        "io.smallrye.reactive:smallrye-reactive-converter-rxjava2:1.0.7",
+        "io.smallrye.reactive:smallrye-reactive-converter-rxjava2:1.0.10",
         "io.smallrye:smallrye-context-propagation-propagators-rxjava2",
-        "io.vertx:vertx-lang-kotlin:4.0.0-SNAPSHOT",
+        "io.vertx:vertx-lang-kotlin:4.0.0-milestone3",
         "org.jboss.logmanager:jboss-logmanager-embedded",
         "org.jboss.resteasy:resteasy-rxjava2",
         "org.springframework:spring-web:5.+",
+        "io.quarkus:quarkus-jdbc-h2",
         "org.wildfly.common:wildfly-common"
     ).forEach(::implementation)
 
     arrayOf(
-        "io.quarkus:quarkus-jdbc-h2",
+//        "com.h2database:h2",
         "io.quarkus:quarkus-smallrye-context-propagation",
         "io.smallrye:smallrye-context-propagation-jta",
         "org.webjars:bootstrap:3.1.0",

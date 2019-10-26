@@ -10,7 +10,6 @@ import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateComm
 import com.example.marvel.api.RecordCollectionDetailedView
 import com.example.marvel.api.RecordView
 import com.example.marvel.convention.serial.DomainEventCodec
-import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import io.reactivex.Flowable
 import io.vertx.core.eventbus.EventBus
 import io.vertx.kotlin.core.json.jsonObjectOf
@@ -41,7 +40,7 @@ import javax.ws.rs.core.MediaType
 @Path("/api")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ private val employees: EmployeeOperationsServiceNamespace) : EmployeeResourceAdapter {
+class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ private val employees: EmployeeBlockingServiceNamespaceImpl) : EmployeeResourceAdapter {
 
     /**
      * Could move to ctor

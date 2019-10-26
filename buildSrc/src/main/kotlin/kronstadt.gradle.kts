@@ -16,7 +16,7 @@ plugins {
 }
 
 repositories {
-    maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+    maven("https://dl.bintray.com/kotlin/kotlin-eap") {
         content {
             includeGroup("org.jetbrains.kotlin")
         }
