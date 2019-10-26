@@ -1,6 +1,6 @@
-package com.example.marvel.domain.model.jpa.employee
+package com.example.marvel.domain.employee
 
-import com.example.marvel.domain.model.jpa.record.RecordListingView
+import com.example.marvel.domain.record.RecordListingView
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -11,7 +11,7 @@ import java.time.Month
 interface EmployeeRepository : JpaRepository<EmployeeEntity, Long> {
 
     @Query("""
-        SELECT NEW com.example.marvel.domain.model.jpa.record.RecordListingView(p.date, p.type, p.hoursSubmitted, p.desc, p.report.id)
+        SELECT NEW com.example.marvel.domain.record.RecordListingView(p.date, p.type, p.hoursSubmitted, p.desc, p.report.id)
         FROM   RecordEntity p
         JOIN   p.report c
         WHERE  c.id    = :id

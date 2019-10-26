@@ -1,8 +1,8 @@
-package com.example.marvel.domain.model.jpa.project
+package com.example.marvel.domain.project
 
-import com.example.marvel.domain.model.jpa.GenericMapper
-import com.example.marvel.domain.model.jpa.MapperConfig
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapper
+import com.example.marvel.domain.GenericMapper
+import com.example.marvel.domain.MapperConfig
+import com.example.marvel.domain.recordcollection.RecordCollectionMapper
 import org.mapstruct.Mapper
 
 @Mapper(config = MapperConfig::class, uses = [RecordCollectionMapper::class])

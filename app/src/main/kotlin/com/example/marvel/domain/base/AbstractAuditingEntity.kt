@@ -1,4 +1,4 @@
-package com.example.marvel.domain.model.jpa.base
+package com.example.marvel.domain.base
 
 import java.io.Serializable
 import java.time.Instant
@@ -14,7 +14,7 @@ import javax.persistence.MappedSuperclass
  * NO-OP
  * FIXME: `@GeneratedValue`
  * FIXME:
- *    Caused by: java.lang.IllegalStateException: Cannot set final field private final java.lang.String com.example.marvel.domain.model.jpa.base.AbstractAuditingEntity.createdBy from public void com.example.marvel.domain.model.jpa.base.AbstractAuditingEntity.$$_hibernate_write_createdBy(java.lang.String)
+ *    Caused by: java.lang.IllegalStateException: Cannot set final field private final java.lang.String com.example.marvel.domain.base.AbstractAuditingEntity.createdBy from public void com.example.marvel.domain.base.AbstractAuditingEntity.$$_hibernate_write_createdBy(java.lang.String)
  *    at net.bytebuddy.implementation.FieldAccessor$ForImplicitProperty$Appender.apply(FieldAccessor.java:873)
  *    at net.bytebuddy.dynamic.scaffold.TypeWriter$MethodPool$Record$ForDefinedMethod$WithBody.applyCode(TypeWriter.java:713)
  *    at net.bytebuddy.dynamic.scaffold.TypeWriter$MethodPool$Record$ForDefinedMethod$WithBody.applyBody(TypeWriter.java:698)

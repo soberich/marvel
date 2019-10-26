@@ -1,10 +1,10 @@
-package com.example.marvel.domain.model.jpa.employee
+package com.example.marvel.domain.employee
 
 import com.example.marvel.api.EmployeeCommand
 import com.example.marvel.api.EmployeeCreateView
 import com.example.marvel.api.EmployeeUpdateView
-import com.example.marvel.domain.model.jpa.GenericMapper
-import com.example.marvel.domain.model.jpa.MapperConfig
+import com.example.marvel.domain.GenericMapper
+import com.example.marvel.domain.MapperConfig
 import org.mapstruct.Context
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping

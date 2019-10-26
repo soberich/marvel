@@ -1,4 +1,4 @@
-package com.example.marvel.domain.model.jpa
+package com.example.marvel.domain
 
 import org.mapstruct.InjectionStrategy.CONSTRUCTOR
 import org.mapstruct.MapperConfig

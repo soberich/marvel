@@ -1,4 +1,4 @@
-package com.example.marvel.domain.model.jpa.base
+package com.example.marvel.domain.base
 
 import java.io.Serializable
 import java.util.Objects

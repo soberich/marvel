@@ -1,8 +1,8 @@
-package com.example.marvel.domain.model.jpa.record
+package com.example.marvel.domain.record
 
 import com.example.marvel.api.RecordType
-import com.example.marvel.domain.model.jpa.base.BusinessKeyIdentityOf
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionEntity
+import com.example.marvel.domain.base.BusinessKeyIdentityOf
+import com.example.marvel.domain.recordcollection.RecordCollectionEntity
 import org.hibernate.annotations.Immutable
 import java.io.Serializable
 import java.math.BigDecimal
@@ -26,7 +26,7 @@ import javax.persistence.NamedQuery
  * FIXME:
  *  N.B. The `date` is purposefully left first - to check the wrong way.
  */
-@NamedQuery(name = "Record.listForPeriod", query = "SELECT NEW com.example.marvel.domain.model.jpa.record.RecordListingView(p.date, p.type, p.hoursSubmitted, p.desc, p.report.id) FROM RecordEntity p JOIN p.report c WHERE c.id = :id AND c.month = :month AND c.year = :year")
+@NamedQuery(name = "Record.listForPeriod", query = "SELECT NEW com.example.marvel.domain.record.RecordListingView(p.date, p.type, p.hoursSubmitted, p.desc, p.report.id) FROM RecordEntity p JOIN p.report c WHERE c.id = :id AND c.month = :month AND c.year = :year")
 
 @Entity
 @Immutable

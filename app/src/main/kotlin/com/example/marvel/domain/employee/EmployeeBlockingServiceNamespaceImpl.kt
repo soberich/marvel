@@ -1,4 +1,4 @@
-package com.example.marvel.domain.model.jpa.employee
+package com.example.marvel.domain.employee
 
 import com.example.marvel.api.EmployeeCommand
 import com.example.marvel.api.EmployeeDetailedView
@@ -7,9 +7,9 @@ import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateComm
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import com.example.marvel.api.RecordCollectionDetailedView
 import com.example.marvel.api.RecordView
-import com.example.marvel.domain.model.jpa.record.RecordMapperImpl
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapper
-import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapperImpl
+import com.example.marvel.domain.record.RecordMapperImpl
+import com.example.marvel.domain.recordcollection.RecordCollectionMapper
+import com.example.marvel.domain.recordcollection.RecordCollectionMapperImpl
 import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import com.kumuluz.ee.rest.beans.QueryParameters
 import com.kumuluz.ee.rest.utils.JPAUtils

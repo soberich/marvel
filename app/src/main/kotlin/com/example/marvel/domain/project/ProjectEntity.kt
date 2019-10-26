@@ -1,6 +1,6 @@
-package com.example.marvel.domain.model.jpa.project
+package com.example.marvel.domain.project
 
-import com.example.marvel.domain.model.jpa.base.BusinessKeyIdentityOf
+import com.example.marvel.domain.base.BusinessKeyIdentityOf
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column

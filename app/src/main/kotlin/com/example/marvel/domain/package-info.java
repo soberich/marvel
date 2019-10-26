@@ -3,5 +3,5 @@
  * Common recommendation NOT to use data classes for Entities,
  * but as for homegrown project we try it.
  */
-package com.example.marvel.domain.model.jpa;
+package com.example.marvel.domain;
 

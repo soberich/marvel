@@ -1,9 +1,9 @@
-package com.example.marvel.domain.model.jpa.recordcollection
+package com.example.marvel.domain.recordcollection
 
-import com.example.marvel.domain.model.jpa.base.SimpleGeneratedIdentityOfLong
-import com.example.marvel.domain.model.jpa.employee.EmployeeEntity
-import com.example.marvel.domain.model.jpa.project.ProjectEntity
-import com.example.marvel.domain.model.jpa.record.RecordEntity
+import com.example.marvel.domain.base.SimpleGeneratedIdentityOfLong
+import com.example.marvel.domain.employee.EmployeeEntity
+import com.example.marvel.domain.project.ProjectEntity
+import com.example.marvel.domain.record.RecordEntity
 import java.time.Month
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY

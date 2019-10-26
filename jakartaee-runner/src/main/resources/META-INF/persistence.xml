@@ -8,7 +8,7 @@
     <persistence-unit name="default" transaction-type="JTA">
         <description>Marvel default unit</description>
 <!--        <jta-data-source>java:/jdbc/AppDS</jta-data-source>-->
-        <class>com.example.marvel.domain.model.jpa.employee.EmployeeEntity</class>
+        <class>com.example.marvel.domain.employee.EmployeeEntity</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>

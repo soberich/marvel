@@ -1,4 +1,4 @@
-package com.example.marvel.domain.model.jpa.employee
+package com.example.marvel.domain.employee
 
 import com.example.marvel.api.EmployeeView
 

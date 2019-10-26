@@ -1,4 +1,4 @@
-package com.example.marvel.domain.model.jpa.recordcollection
+package com.example.marvel.domain.recordcollection
 
 import com.example.marvel.api.RecordCollectionView
 import java.time.Month
