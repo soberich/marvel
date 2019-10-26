@@ -5,7 +5,6 @@ check(current().isJava8Compatible) { "At least Java 8 is required, current JVM i
 plugins {
     base
     `project-report`
-    id("io.quarkus") version "0.23.0" apply false
 }
 
 
@@ -19,16 +18,10 @@ subprojects {
     description = "${name.replace('-', ' ').toUpperCase()} of Native Quarkus/Micronaut Arrow-Kt Vert.x Coroutines GRPC Kotlin-DSL app"
 
     repositories {
-        mavenLocal {
-            content {
-                includeGroup("io.quarkus")
-                includeGroup("nl.topicus") //0.10-SNAPSHOT
-            }
-        }
         jcenter()
         maven("https://repository.jboss.org/nexus/content/repositories/public")
         maven("https://repo.spring.io/milestone")
-        maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+        maven("https://dl.bintray.com/kotlin/kotlin-eap") {
             content {
                 includeGroup("org.jetbrains.kotlin")
             }
@@ -50,8 +43,8 @@ subprojects {
         }
     }
 }
-//
-//project(":runtime-jaxrs") {
+
+//subprojects {
 ////    buildscript {
 ////        repositories {
 ////            mavenLocal()
@@ -67,24 +60,26 @@ subprojects {
 //////        resourcesDir() += file("$projectDir/src/main/resources")
 ////        setOutputDirectory("$buildDir/classes/kotlin/main")
 ////    }
-////    val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
-////    if (extensions.findByType<JavaPluginExtension>() != null) {
-////        configure<JavaPluginExtension> {
-////            main?.output?.setResourcesDir("$buildDir/classes/java/main")
-////        }
-////    }
-//    dependencies {
-//        //        "implementation"(project(":convention"))
-////        "implementation"(project(":convention")) {
-////            capabilities {
-////                requireCapability("com.example.marvel:convention-quarkus")
-////            }
-////        }
-//        "implementation"(project(":convention")) {
-//            capabilities {
-//                requireCapability("com.example.marvel:convention-spring")
-//            }
+//    val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
+//    if (extensions.findByType<JavaPluginExtension>() != null) {
+//        configure<JavaPluginExtension> {
+//            main?.output?.setResourcesDir("$buildDir/classes/kotlin/main")
+////            main?.output?.classesDirs?.files?.plusAssign(file("$buildDir/classes/kotlin/main"))
+////            main?.output?.classesDirs?.files?.plusAssign(file("$buildDir/classes/java/main"))
 //        }
 //    }
+////    dependencies {
+////        //        "implementation"(project(":convention"))
+//////        "implementation"(project(":convention")) {
+//////            capabilities {
+//////                requireCapability("com.example.marvel:convention-quarkus")
+//////            }
+//////        }
+//////        "implementation"(project(":convention")) {
+//////            capabilities {
+//////                requireCapability("com.example.marvel:convention-spring")
+//////            }
+//////        }
+////    }
 //}
-
+//

@@ -18,7 +18,7 @@ kotlinDslPluginOptions.experimentalWarning.set(false)
 repositories {
     gradlePluginPortal()
     jcenter()
-    maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+    maven("https://dl.bintray.com/kotlin/kotlin-eap") {
         content {
             includeGroup("org.jetbrains.kotlin")
         }
@@ -64,7 +64,7 @@ val kotlinVersion = KotlinVersion(1, 3, 50).toString()
     implementation(kotlin("stdlib-jdk8"))
     /**
      * N.B. Kotlin BOM does NOT contain kapt and compiler-plugins. There is another "special" BOM
-     * e.g. "org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin" but it has longer name
+     * e.g. "org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin", but it has longer name
      */
     implementation(kotlin("gradle-plugin"    , kotlinVersion))
     implementation(kotlin("allopen"          , kotlinVersion))

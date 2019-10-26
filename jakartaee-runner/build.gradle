@@ -38,6 +38,6 @@ dependencies {
             "com.blazebit:blaze-persistence-jpa-criteria-impl",
             "com.h2database:h2:+",
 //            "mysql:mysql-connector-java:5.1.38",
-            "io.vertx:vertx-web:4.0.0-SNAPSHOT",
+            "io.vertx:vertx-web:4.0.0-milestone3",
     )
 }

@@ -1,11 +1,14 @@
 rootProject.name = "marvel"
 
 pluginManagement {
+    plugins {
+        id("io.quarkus") version "0.26.1"
+    }
     repositories {
         mavenLocal()
         gradlePluginPortal()
         mavenCentral()
-        maven("http://dl.bintray.com/kotlin/kotlin-eap") {
+        maven("https://dl.bintray.com/kotlin/kotlin-eap") {
             content {
                 includeGroup("org.jetbrains.kotlin")
             }

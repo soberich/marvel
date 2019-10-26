@@ -27,8 +27,6 @@ class Json : ObjectMapper() {
     }
 
     companion object {
-        private const val serialVersionUID = 1L
-
         internal val DEFAULT_TIMEZONE = TimeZone.getTimeZone("UTC")
 
         @JvmStatic
