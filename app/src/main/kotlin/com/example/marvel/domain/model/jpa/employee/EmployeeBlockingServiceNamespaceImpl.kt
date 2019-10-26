@@ -10,6 +10,7 @@ import com.example.marvel.api.RecordView
 import com.example.marvel.domain.model.jpa.record.RecordMapperImpl
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapper
 import com.example.marvel.domain.model.jpa.recordcollection.RecordCollectionMapperImpl
+import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import com.kumuluz.ee.rest.beans.QueryParameters
 import com.kumuluz.ee.rest.utils.JPAUtils
 import org.springframework.stereotype.Service
@@ -28,8 +29,7 @@ import javax.transaction.Transactional.TxType.NOT_SUPPORTED
 @Transactional
 class EmployeeBlockingServiceNamespaceImpl /*@Inject constructor*/(
     private val employeeRepository: EmployeeRepository
-
-) /*: EmployeeOperationsServiceNamespace*/ {
+) : EmployeeOperationsServiceNamespace {
     private val empMapper: EmployeeMapper = EmployeeMapperImpl()
     private val recColMapper: RecordCollectionMapper = RecordCollectionMapperImpl(empMapper, RecordMapperImpl())
     @set:
@@ -40,27 +40,27 @@ class EmployeeBlockingServiceNamespaceImpl /*@Inject constructor*/(
      * @implNote Stream should be open on consumer side. Transaction will close it.
      */
     @Transactional(NOT_SUPPORTED)
-    /*override */fun streamEmployees(): Stream<EmployeeView> =
+    override fun streamEmployees(): Stream<EmployeeView> =
             em.createNamedQuery("Employee.stream", EmployeeListingView::class.java)
                     .resultStream
                     .map(EmployeeView::class.java::cast)
 
-    /*override */fun filterEmployees(filter: String): List<EmployeeView> =
+    override fun filterEmployees(filter: String): List<EmployeeView> =
             JPAUtils.queryEntities(em, EmployeeEntity::class.java, QueryParameters.query(filter).build())
                     .map { EmployeeListingView(it.id!!, it.name, it.email) }
 
-    /*override */fun createEmployee(employee: EmployeeCommand.EmployeeCreateCommand): EmployeeDetailedView =
+    override fun createEmployee(employee: EmployeeCommand.EmployeeCreateCommand): EmployeeDetailedView =
         empMapper.toEntity(employee).also(em::persist).let(empMapper::toCreateView)
 
-    /*override */fun updateEmployee(employeeId: Long, employee: EmployeeCommand.EmployeeUpdateCommand): EmployeeDetailedView? =
+    override fun updateEmployee(employeeId: Long, employee: EmployeeCommand.EmployeeUpdateCommand): EmployeeDetailedView? =
         empMapper.toEntity(employeeId, employee).let(empMapper::toUpdateView)
 
-    /*override */fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView> = employeeRepository.listForPeriod(employeeId, year.value, month)
+    override fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView> = employeeRepository.listForPeriod(employeeId, year.value, month)
 
-    /*override */fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDetailedView? =
+    override fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDetailedView? =
             em.find(EmployeeEntity::class.java, employeeId)?.let { recColMapper.toCreateView(recColMapper.toEntity(it.id, records).also(em::persist)) }
 
-    /*override */fun updateWholePeriod(employeeId: Long, records: RecordCollectionUpdateCommand): RecordCollectionDetailedView? =
+    override fun updateWholePeriod(employeeId: Long, records: RecordCollectionUpdateCommand): RecordCollectionDetailedView? =
             em.find(EmployeeEntity::class.java, employeeId)?.run { recColMapper.toUpdateView(recColMapper.toEntity(records.id, records).let(em::merge)) }
 
     fun getAnyUserDemo(): EmployeeDetailedView? =
