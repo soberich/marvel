@@ -40,6 +40,7 @@ public interface Deps {
         String EBEAN_QUERY_GEN   = EBEAN;
         String EBEAN_TEST        = EBEAN;
         String HIKARI            = "+";
+        String IMMUTABLES        = "2.8.1";
         String JACKSON_COREUTILS = "1.8";
         String JACKSON_MONEY     = "1.1.1";
         String JBOSS_LOG         = "2.1.4.Final";
@@ -51,6 +52,7 @@ public interface Deps {
         String LIQUIBASE_GRADLE  = "2.0.1";
         String LIQUIBASE_HIB5    = "3.6";
         String LOMBOK            = "1.18.2";
+        String MAPSTRUCT         = "1.3.1.Final";
         String MONETA            = "1.3";
         String OKHTTP            = "4.0.0-rc1";
         String OPENAPI           = "2.0.8";
@@ -60,7 +62,7 @@ public interface Deps {
         String SLF4J_API         = "1.7.25";
         String SLF4J_JBOSS       = "1.0.4.GA";
         String SWAGGER           = "2.0.7";
-        String VALIDATOR         = "6.0.12.Final";
+        String VALIDATOR         = "6.1.0.Final";
         String ZALANDO_PROBLEM   = "0.23.0";
 
     }
@@ -122,10 +124,6 @@ public interface Deps {
         String ARROW_EFFECTS_REACTOR                       = "io.arrow-kt:arrow-effects-reactor"                       + ':' + Versions.ARROW; //optional
         String ARROW_EFFECTS_RX2                           = "io.arrow-kt:arrow-effects-rx2"                           + ':' + Versions.ARROW; //optional
         String ARROW_GENERIC                               = "io.arrow-kt:arrow-generic"                               + ':' + Versions.ARROW;
-        /**
-         * @deprecated use {@linkplain #ARROW_OPTICS_CORE} and {@linkplain #ARROW_OPTICS_MTL} instead.
-         */
-        @Deprecated
         String ARROW_OPTICS                                = "io.arrow-kt:arrow-optics"                                + ':' + Versions.ARROW;
         //these are same but broken down to two artifacts
         String ARROW_CORE_DATA                             = "io.arrow-kt:arrow-core-data"                             + ':' + Versions.ARROW;
@@ -156,10 +154,12 @@ public interface Deps {
         String EBEAN_QUERY_GEN             = "io.ebean:kotlin-querybean-generator"                              + ':' + Versions.EBEAN_QUERY_GEN;
         String EBEAN_TEST                  = "io.ebean:ebean-test"                                              + ':' + Versions.EBEAN_TEST;
         String HIBERNATE                   = "org.hibernate:hibernate-core"                                     + ':' + Versions.HIBERNATE;
+        String HIBERNATE_JPAMODELGEN       = "org.hibernate:hibernate-jpamodelgen"                              + ':' + Versions.HIBERNATE;
         String HIKARI                      = "com.zaxxer:HikariCP"                                              + ':' + Versions.HIKARI;
+        String IMMUTABLES_VALUE            = "org.immutables:value"                                             + ':' + Versions.IMMUTABLES;
+        String IMMUTABLES_BUILDER          = "org.immutables:builder"                                           + ':' + Versions.IMMUTABLES;
         String JACKSON_AFTERBURNER         = "com.fasterxml.jackson.module:jackson-module-afterburner"          + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_ANNOTATIONS         = "com.fasterxml.jackson.core:jackson-annotations"                   + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_MR_BEAN             = "com.fasterxml.jackson.module:jackson-module-mrbean"               + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_CORE                = "com.fasterxml.jackson.core:jackson-core"                          + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_COREUTILS           = "com.github.fge:jackson-coreutils"                                 + ':' + Versions.JACKSON_COREUTILS;
         String JACKSON_DATABIND            = "com.fasterxml.jackson.core:jackson-databind"                      + ':' + versioning.Platforms.Versions.JACKSON;
@@ -172,6 +172,7 @@ public interface Deps {
         String JACKSON_JSR310              = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"           + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_KOTLIN              = "com.fasterxml.jackson.module:jackson-module-kotlin"               + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_MONEY               = "org.zalando:jackson-datatype-money"                               + ':' + Versions.JACKSON_MONEY;
+        String JACKSON_MR_BEAN             = "com.fasterxml.jackson.module:jackson-module-mrbean"               + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_PARAMETER           = "com.fasterxml.jackson.module:jackson-module-parameter-names"      + ':' + versioning.Platforms.Versions.JACKSON;
         String JBOSS_LOG                   = "org.jboss.logmanager:jboss-logmanager"                            + ':' + Versions.JBOSS_LOG;
         String JJWT                        = "io.jsonwebtoken:jjwt"                                             + ':' + Versions.JJWT;
@@ -180,6 +181,8 @@ public interface Deps {
         String LIQUIBASE_GRADLE            = "org.liquibase:liquibase-gradle-plugin"                            + ':' + Versions.LIQUIBASE_GRADLE;
         String LIQUIBASE_HIB5              = "org.liquibase.ext:liquibase-hibernate5"                           + ':' + Versions.LIQUIBASE_HIB5;
         String LOMBOK                      = "org.projectlombok:lombok"                                         + ':' + Versions.LOMBOK;
+        String MAPSTRUCT                   = "org.mapstruct:mapstruct"                                          + ':' + Versions.MAPSTRUCT;
+        String MAPSTRUCT_AP                = "org.mapstruct:mapstruct-processor"                                + ':' + Versions.MAPSTRUCT;
         String MONEY                       = "org.javamoney:moneta"                                             + ':' + Versions.MONETA;
         String OKHTTP                      = "com.squareup.okhttp3:okhttp-urlconnection"                        + ':' + Versions.OKHTTP;
         String OKHTTP_LOG                  = "com.squareup.okhttp3:logging-interceptor"                         + ':' + Versions.OKHTTP;

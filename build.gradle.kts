@@ -7,7 +7,6 @@ plugins {
     `project-report`
 }
 
-
 subprojects {
     apply(plugin = "build-dashboard")
     apply(plugin = "help-tasks")
@@ -43,6 +42,9 @@ subprojects {
         }
     }
 
+    /*
+     * FIXME: Delete all below when Runtime considers multiple dirs for classpath and sourcepath.
+     */
     apply(plugin = "java")
     tasks {
         val copyClassesWorkaroundQuarkusGradleKotlinPoorSupport by registering(Copy::class) {
@@ -59,43 +61,3 @@ subprojects {
         }
     }
 }
-
-//subprojects {
-////    buildscript {
-////        repositories {
-////            mavenLocal()
-////        }
-////        dependencies {
-////            classpath("io.quarkus:quarkus-gradle-plugin:0.19.1")
-////        }
-////    }
-//    apply(plugin = "java")
-////    apply(plugin = "spring-boot")
-////    configure<QuarkusPluginExtension> {
-////        setSourceDir("$projectDir/src/main/kotlin")
-//////        resourcesDir() += file("$projectDir/src/main/resources")
-////        setOutputDirectory("$buildDir/classes/kotlin/main")
-////    }
-//    val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
-//    if (extensions.findByType<JavaPluginExtension>() != null) {
-//        configure<JavaPluginExtension> {
-//            main?.output?.setResourcesDir("$buildDir/classes/kotlin/main")
-////            main?.output?.classesDirs?.files?.plusAssign(file("$buildDir/classes/kotlin/main"))
-////            main?.output?.classesDirs?.files?.plusAssign(file("$buildDir/classes/java/main"))
-//        }
-//    }
-////    dependencies {
-////        //        "implementation"(project(":convention"))
-//////        "implementation"(project(":convention")) {
-//////            capabilities {
-//////                requireCapability("com.example.marvel:convention-quarkus")
-//////            }
-//////        }
-//////        "implementation"(project(":convention")) {
-//////            capabilities {
-//////                requireCapability("com.example.marvel:convention-spring")
-//////            }
-//////        }
-////    }
-//}
-//
