@@ -4,6 +4,7 @@ import java.io.Serializable
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.MappedSuperclass
+import javax.persistence.Transient
 
 /**
  * IdentityOf holder for GENERATED identity type.
@@ -12,8 +13,9 @@ import javax.persistence.MappedSuperclass
 @Access(PROPERTY)
 abstract class JpaStateTransitionAwareIdentityOf<T : Serializable> : BusinessKeyIdentityOf<T>() {
 
-    @Volatile
-    private var bucketDisperser: Any? = null
+    @get:
+    [Transient]
+    @Volatile private var bucketDisperser: Any? = null
         get() {
             if (field != null || field == null && id == null) {
                 if (field == null) {
