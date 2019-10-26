@@ -2,7 +2,6 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
-import org.jetbrains.kotlin.gradle.internal.KaptTask
 
 plugins {
     idea
@@ -59,11 +58,13 @@ noArg {
     )
 }
 
-tasks {
-    withType<KaptTask>().configureEach {
-        destinationDir = file("src/generated/kotlin")
-        kotlinSourcesDestinationDir = file("src/generated/kotlin")
+kapt {
+    javacOptions {
+        file("$rootDir/javacArgs", PathValidation.FILE).forEachLine(action = ::option)
     }
+}
+
+tasks {
     withType<KotlinCompile<*>>().configureEach {
         kotlinOptions {
             suppressWarnings = false

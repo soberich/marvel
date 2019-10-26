@@ -4,7 +4,8 @@
 -Xdoclint:none
 -Xdiags:verbose
 -parameters
--Amapstruct.defaultComponentModel=jsr330
+-Amapstruct.defaultComponentModel=cdi
+-AaddSuppressWarningsAnnotation=true
 -verbose
 -XprintRounds
 -XprintProcessorInfo
