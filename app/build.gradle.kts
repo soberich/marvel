@@ -1,6 +1,6 @@
-
 import org.gradle.api.JavaVersion.VERSION_1_8
 import versioning.Deps
+
 buildscript {
     repositories {
         mavenLocal()
@@ -9,12 +9,7 @@ buildscript {
         classpath("io.quarkus:quarkus-gradle-plugin:0.26.1")
     }
 }
-//val main = ((this as ExtensionAware).extensions.findByName("sourceSets") as? SourceSetContainer?)?.findByName("main")
-//if (extensions.findByType<JavaPluginExtension>() != null) {
-//    configure<JavaPluginExtension> {
-//        main?.output?.setResourcesDir("$buildDir/classes/java/main")
-//    }
-//}
+
 plugins {
     kronstadt
     id("io.quarkus") version "0.26.1"
@@ -24,24 +19,8 @@ plugins {
 quarkus {
     setSourceDir("$projectDir/src/main/kotlin")
 //    setSourceDir("$buildDir/generated/source/kapt/main")
-//        resourcesDir() += file("$projectDir/src/main/resources")
+//    resourcesDir() += file("$projectDir/src/main/resources")
     setOutputDirectory("$buildDir/classes/kotlin/main")
-}
-//
-//val coppy by tasks.registering(Copy::class) {
-//    doFirst {
-//        from("$buildDir/classes/kotlin")
-//        into("$buildDir/classes/java")
-//    }
-//}
-
-val coppy = tasks.register<Copy>("coppy") {
-    from("$buildDir/classes/java")
-    into("$buildDir/classes/kotlin")
-}
-
-tasks.withType(io.quarkus.gradle.tasks.QuarkusDev::class).configureEach {
-    dependsOn += coppy
 }
 
 version = "0.0.1-SNAPSHOT"

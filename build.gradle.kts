@@ -42,6 +42,22 @@ subprojects {
             }
         }
     }
+
+    apply(plugin = "java")
+    tasks {
+        val copyClassesWorkaroundQuarkusGradleKotlinPoorSupport by registering(Copy::class) {
+            from("$buildDir/classes/java")
+            into("$buildDir/classes/kotlin")
+        }
+        val copyResourcesWorkaroundQuarkusGradleKotlinPoorSupport by registering(Copy::class) {
+            from("$projectDir/src/main/resources/META-INF")
+            into("$buildDir/classes/kotlin/main/META-INF")
+        }
+        "classes" {
+            dependsOn += copyClassesWorkaroundQuarkusGradleKotlinPoorSupport
+            dependsOn += copyResourcesWorkaroundQuarkusGradleKotlinPoorSupport
+        }
+    }
 }
 
 //subprojects {
