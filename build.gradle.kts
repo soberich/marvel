@@ -1,5 +1,4 @@
 import org.gradle.api.JavaVersion.current
-import org.gradle.api.file.DuplicatesStrategy.INCLUDE
 
 check(current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${current()}" }
 
@@ -40,27 +39,6 @@ subprojects {
             mavenContent {
                 snapshotsOnly()
             }
-        }
-    }
-
-    /*
-     * FIXME: Delete all below when Runtime considers multiple dirs for classpath and sourcepath.
-     */
-    apply(plugin = "java")
-    tasks {
-        val `copy classes workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
-            duplicatesStrategy = INCLUDE
-            from("$buildDir/classes/java")
-            into("$buildDir/classes/kotlin")
-        }
-        val `copy resources workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
-            duplicatesStrategy = INCLUDE
-            from("$projectDir/src/main/resources/META-INF")
-            into("$buildDir/classes/kotlin/main/META-INF")
-        }
-        "classes" {
-            dependsOn += `copy classes workaround quarkus gradle kotlin poor support`
-            dependsOn += `copy resources workaround quarkus gradle kotlin poor support`
         }
     }
 }
