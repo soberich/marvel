@@ -4,7 +4,8 @@ import versioning.Deps
 plugins {
     `kotlin-convention-helper`
     `jackson-convention-helper`
-    id("io.quarkus") version "0.26.1"
+    id("io.quarkus")                version "0.26.1"
+    id("com.webcohesion.enunciate") version "2.12.0"
 }
 
 repositories.jcenter()
@@ -17,6 +18,8 @@ java.sourceCompatibility = VERSION_1_8
  * TODO: Remove Quarkus form convention default configuration to not to leak here.
  */
 dependencies {
+    enunciate("dk.jyskebank.tooling.enunciate:enunciate-openapi:1.1.+")
+
     arrayOf(
         Deps.Libs.HIBERNATE_JPAMODELGEN,
         Deps.Libs.MAPSTRUCT_AP,
