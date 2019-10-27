@@ -10,8 +10,6 @@ plugins {
 
 repositories.jcenter()
 
-java.sourceCompatibility = VERSION_1_8
-
 /**
  * ORDER MATTERS!!
  * JPAMODELGEN Should go first!
@@ -37,8 +35,8 @@ dependencies {
         enforcedPlatform(Deps.Platforms.QUARKUS),
         platform(Deps.Platforms.RESTEASY),
         platform(Deps.Platforms.JACKSON),
-        project(":api"),
-        project(":spi"),
+        project(":time-service:api"),
+        project(":time-service:spi"),
         Deps.Libs.ARROW_OPTICS,
         "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
         "io.quarkus:quarkus-hibernate-orm",

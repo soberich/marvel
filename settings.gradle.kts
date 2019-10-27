@@ -32,9 +32,9 @@ pluginManagement {
 }
 
 include(
-    ":api",
-    ":app",
     ":gatling",
-    ":openapi",
-    ":spi"
+    ":legacy-openapi",
+    ":time-service:api",
+    ":time-service:app",
+    ":time-service:spi"
 )

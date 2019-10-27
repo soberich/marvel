@@ -8,8 +8,6 @@ plugins {
 
 repositories.jcenter()
 
-java.sourceCompatibility = VERSION_1_8
-
 dependencies {
     arrayOf(
         Deps.Libs.ARROW_META,

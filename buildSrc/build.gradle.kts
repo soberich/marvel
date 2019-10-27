@@ -9,8 +9,6 @@ plugins {
     id("se.patrikerdes.use-latest-versions") version "0.2.12" // optional
 }
 
-kotlinDslPluginOptions.experimentalWarning.set(false)
-
 repositories {
     gradlePluginPortal()
     jcenter()
@@ -36,6 +34,11 @@ repositories {
         }
     }
 }
+
+kotlinDslPluginOptions.experimentalWarning.set(false)
+
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.current()
 
 tasks {
     compileKotlin {
