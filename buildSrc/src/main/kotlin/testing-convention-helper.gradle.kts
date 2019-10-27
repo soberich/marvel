@@ -1,4 +1,7 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.kotlin.dsl.invoke
 import versioning.Deps
 
@@ -8,16 +11,20 @@ plugins {
 
 tasks.test {
     useJUnitPlatform()
-    testLogging.showStandardStreams = true
-    maxParallelForks                = if (Runtime.getRuntime().availableProcessors() / 2 < 1) 1 else Runtime.getRuntime().availableProcessors() / 2
+    maxParallelForks = if (Runtime.getRuntime().availableProcessors() / 2 < 1) 1 else Runtime.getRuntime().availableProcessors() / 2
     setForkEvery(100)
-    reports.html.isEnabled          = true
-    reports.junitXml.isEnabled      = true
-    systemProperty("java.util.logging.manager", "org.jboss.logmanager.LogManager")
-    systemProperty("log4j2.debug", "")
+    reports {
+        html    .isEnabled = true
+        junitXml.isEnabled = true
+    }
+    systemProperties(
+        "java.util.logging.manager" to "org.jboss.logmanager.LogManager",
+        "log4j2.debug" to ""
+    )
     testLogging {
-        exceptionFormat = TestExceptionFormat.FULL
-        events("passed", "skipped", "failed")
+        events              = setOf(PASSED, SKIPPED, FAILED)
+        exceptionFormat     = FULL
+        showStandardStreams = true
     }
 }
 
