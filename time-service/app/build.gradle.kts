@@ -1,9 +1,9 @@
-import org.gradle.api.JavaVersion.VERSION_1_8
 import versioning.Deps
 
 plugins {
     `kotlin-convention-helper`
     `jackson-convention-helper`
+    `dependencies`
     id("io.quarkus")                version "0.26.1"
     id("com.webcohesion.enunciate") version "2.12.0"
 }

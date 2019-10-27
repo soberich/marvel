@@ -20,7 +20,7 @@ repositories {
             includeGroup("org.jetbrains.kotlin")
         }
     }
-    maven(url = "https://repo.spring.io/milestone") {
+    maven("https://repo.spring.io/milestone") {
         content {
             includeGroupByRegex("org\\.springframework.*")
             includeGroup("io.projectreactor")

@@ -10,7 +10,7 @@ application {
     applicationDefaultJvmArgs = file("jvmArgs", PathValidation.FILE).readLines()
 }
 
-tasks.named<JavaExec>("run") {
+(tasks.run) {
     file("$buildDir/reports/gatling").mkdirs()
     args = listOf(
         "-s", "com.example.marvel.gatling.AddressGatlingTest",

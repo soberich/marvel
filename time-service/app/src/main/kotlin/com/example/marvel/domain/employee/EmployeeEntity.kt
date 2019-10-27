@@ -37,6 +37,6 @@ class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
 
     @get:
     [OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)]
-    lateinit var records                      : List<RecordCollectionEntity>
+    lateinit var records                               : List<RecordCollectionEntity>
 }
 
