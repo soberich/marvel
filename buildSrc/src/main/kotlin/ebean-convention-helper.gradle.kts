@@ -8,7 +8,7 @@ plugins {
 
 ebean.debugLevel = 2
 
-tasks.compileJava {
+tasks.withType<JavaCompile>().configureEach {
     options.annotationProcessorGeneratedSourcesDirectory = file("src/generated/java")
 }
 

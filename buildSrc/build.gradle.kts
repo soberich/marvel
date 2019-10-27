@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+
 plugins {
     java
     `java-gradle-plugin`
@@ -37,19 +40,24 @@ repositories {
 
 kotlinDslPluginOptions.experimentalWarning.set(false)
 
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-java.targetCompatibility = JavaVersion.current()
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.current()
+}
 
 tasks {
-    compileKotlin {
+    withType<KotlinCompile<*>>().configureEach {
         kotlinOptions {
             suppressWarnings = false
             verbose          = true
             freeCompilerArgs = file("../kotlincArgs", PathValidation.FILE).readLines()
-            jvmTarget        = JavaVersion.current().toString()
         }
     }
-    compileJava {
+    withType<KotlinJvmCompile>().configureEach {
+        kotlinOptions.jvmTarget = JavaVersion.current().toString()
+        //kotlinOptions.jvmTarget = maxOf(JavaVersion.current().toString().toBigDecimal(), 12.toBigDecimal()).toString()
+    }
+    withType<JavaCompile>().configureEach {
         options.apply {
             file("../javacArgs", PathValidation.FILE).forEachLine(action = compilerArgs::add)
         }

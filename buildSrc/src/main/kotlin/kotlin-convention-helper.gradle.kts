@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+
 plugins {
     idea
     java //if not applied `spring-boot-runner` reports missing `annotationProcessor` configuration
@@ -9,19 +12,24 @@ plugins {
     `kotlin-spring`
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-java.targetCompatibility = JavaVersion.current()
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.current()
+}
 
 tasks {
-    compileKotlin {
+    withType<KotlinCompile<*>>().configureEach {
         kotlinOptions {
             suppressWarnings = false
             verbose          = true
             freeCompilerArgs = file("$rootDir/kotlincArgs", PathValidation.FILE).readLines()
-            jvmTarget        = JavaVersion.current().toString()
         }
     }
-    compileJava {
+    withType<KotlinJvmCompile>().configureEach {
+        kotlinOptions.jvmTarget = JavaVersion.current().toString()
+        //kotlinOptions.jvmTarget = maxOf(JavaVersion.current().toString().toBigDecimal(), 12.toBigDecimal()).toString()
+    }
+    withType<JavaCompile>().configureEach {
         options.apply {
             isFork = true
             file("$rootDir/javacArgs", PathValidation.FILE).forEachLine(action = compilerArgs::add)
