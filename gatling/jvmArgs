@@ -1,0 +1,12 @@
+-Djava.net.preferIPv4Stack=true
+-Djava.net.preferIPv6Addresses=false
+-Xmx1G
+-Xss100M
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:+OptimizeStringConcat
+-XX:+ParallelRefProcEnabled
+-XX:+PerfDisableSharedMem
+-XX:+UseG1GC
+-XX:G1HeapRegionSize=16m
+-XX:InitiatingHeapOccupancyPercent=75
+-XX:MaxGCPauseMillis=30

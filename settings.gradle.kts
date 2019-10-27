@@ -34,6 +34,7 @@ pluginManagement {
 include(
     ":api",
     ":app",
+    ":gatling",
     ":openapi",
     ":spi"
 )
