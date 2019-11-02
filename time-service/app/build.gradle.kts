@@ -39,7 +39,6 @@ dependencies {
         project(":time-service.api"),
         project(":time-service.spi"),
         Deps.Libs.ARROW_OPTICS,
-//        Deps.Libs.RX2,
         "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
         "io.quarkus:quarkus-hibernate-orm",
         "io.quarkus:quarkus-jdbc-h2",
@@ -49,14 +48,16 @@ dependencies {
         "io.quarkus:quarkus-smallrye-context-propagation",
         "io.quarkus:quarkus-spring-data-jpa",
         "io.quarkus:quarkus-spring-web",
+        "io.quarkus:quarkus-undertow",
         "io.quarkus:quarkus-vertx",
         "io.smallrye.reactive:smallrye-reactive-converter-rxjava2:1.0.10",
         "io.smallrye:smallrye-context-propagation-jta",
         "io.smallrye:smallrye-context-propagation-propagators-rxjava2",
         "io.vertx:vertx-lang-kotlin:4.0.0-milestone3",
+        "io.vertx:vertx-rx-java2",
         "org.jboss.logmanager:jboss-logmanager-embedded",
         "org.jboss.resteasy:resteasy-rxjava2",
-        /*such libs should stay in colpile classpath unfortunately, polluting it, this started between 0.23.1 and 0.26.1*/
+        /*such libs should stay in compile classpath unfortunately, polluting it, this started between 0.23.1 and 0.26.1*/
         "org.webjars:bootstrap",
         "org.webjars:swagger-ui",
         "org.wildfly.common:wildfly-common"

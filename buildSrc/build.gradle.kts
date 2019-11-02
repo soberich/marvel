@@ -9,7 +9,7 @@ plugins {
     `help-tasks`                                              // optional
     `project-report`                                          // optional
     id("com.github.ben-manes.versions")      version "0.27.0" // optional
-    id("se.patrikerdes.use-latest-versions") version "0.2.12" // optional
+    id("se.patrikerdes.use-latest-versions") version "0.2.13" // optional
 }
 
 repositories {
@@ -38,7 +38,10 @@ repositories {
     }
 }
 
-kotlinDslPluginOptions.experimentalWarning.set(false)
+kotlinDslPluginOptions {
+    experimentalWarning.set(false)
+    jvmTarget.set((JavaVersion.current().takeUnless(JavaVersion::isJava12Compatible) ?: JavaVersion.VERSION_12).toString())
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -54,8 +57,7 @@ tasks {
         }
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.current().toString()
-        //kotlinOptions.jvmTarget = maxOf(JavaVersion.current().toString().toBigDecimal(), 12.toBigDecimal()).toString()
+        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless(JavaVersion::isJava12Compatible) ?: JavaVersion.VERSION_12).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {

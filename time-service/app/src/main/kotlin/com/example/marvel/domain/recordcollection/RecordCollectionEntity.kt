@@ -35,7 +35,7 @@ class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     lateinit var project                      : ProjectEntity
     @get:
     [ManyToOne(optional = false, fetch = LAZY)
-    JoinColumn(updatable =false)]
+    JoinColumn(updatable = false)]
     lateinit var employee                     : EmployeeEntity
 
     @get:

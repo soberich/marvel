@@ -42,24 +42,24 @@ subprojects {
         }
     }
 
-//    /*
-//     * FIXME: Delete all below when Runtime considers multiple dirs for classpath and sourcepath.
-//     */
-//    apply(plugin = "java")
-//    tasks {
-//        val `copy classes workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
-//            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
-//            from("$buildDir/classes/java")
-//            into("$buildDir/classes/kotlin")
-//        }
-//        val `copy resources workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
-//            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
-//            from("$projectDir/src/main/resources/META-INF")
-//            into("$buildDir/classes/kotlin/main/META-INF")
-//        }
-//        "classes" {
-//            dependsOn += `copy classes workaround quarkus gradle kotlin poor support`
-//            dependsOn += `copy resources workaround quarkus gradle kotlin poor support`
-//        }
-//    }
+    /*
+     * FIXME: Delete all below when Runtime considers multiple dirs for classpath and sourcepath.
+     */
+    apply(plugin = "java")
+    tasks {
+        val `copy classes workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
+            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+            from("$buildDir/classes/java")
+            into("$buildDir/classes/kotlin")
+        }
+        val `copy resources workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
+            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+            from("$projectDir/src/main/resources/META-INF")
+            into("$buildDir/classes/kotlin/main/META-INF")
+        }
+        "classes" {
+            dependsOn += `copy classes workaround quarkus gradle kotlin poor support`
+            dependsOn += `copy resources workaround quarkus gradle kotlin poor support`
+        }
+    }
 }
