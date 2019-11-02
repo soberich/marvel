@@ -1,3 +1,5 @@
+import java.io.FileFilter
+
 rootProject.name = "marvel"
 
 pluginManagement {
@@ -30,8 +32,17 @@ pluginManagement {
 
 include(
     ":gatling",
-    ":legacy-openapi",
-    ":time-service:api",
-    ":time-service:app",
-    ":time-service:spi"
+    ":legacy-openapi"
 )
+
+for (serviceDir in setOf("time-service")) {
+    for (`sub-project` in file(serviceDir, PathValidation.DIRECTORY).listFiles(FileFilter(File::isDirectory))!!) {
+        ":${`sub-project`.name}"
+            .also(::include)
+            .run(::project)
+            .apply {
+                name       = "$serviceDir.${`sub-project`.name}"
+                projectDir = `sub-project`
+            }
+    }
+}

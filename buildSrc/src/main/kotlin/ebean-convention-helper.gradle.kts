@@ -8,10 +8,6 @@ plugins {
 
 ebean.debugLevel = 2
 
-tasks.withType<JavaCompile>().configureEach {
-    options.annotationProcessorGeneratedSourcesDirectory = file("src/generated/java")
-}
-
 dependencies {
     "kapt"(Deps.Libs.EBEAN_ANNOTATION)
     "kapt"(Deps.Libs.EBEAN_QUERY)

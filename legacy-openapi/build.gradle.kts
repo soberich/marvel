@@ -1,5 +1,4 @@
 import io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.YAML
-import org.gradle.api.PathValidation.FILE
 
 plugins {
     `documentation-convention-helper`
@@ -12,7 +11,7 @@ tasks.resolve {
     classpath                  = project.sourceSets.main.get().runtimeClasspath
     modelConverterClasses      = linkedSetOf("com.example.marvel.openapi.OpenApiConfig")
     objectMapperProcessorClass = "com.example.marvel.openapi.OpenApiConfig"
-    openApiFile                = file("$rootDir/time-service/app/src/main/resources/META-INF/resources/api.yaml", FILE)
+    openApiFile                = file("$rootDir/time-service/app/src/main/resources/META-INF/resources/api.yaml", PathValidation.FILE)
     outputFormat               = YAML
     outputPath                 =  "$rootDir/app/src/main/resources/META-INF/resources"
     prettyPrint                = true
@@ -22,5 +21,5 @@ tasks.resolve {
 }
 
 dependencies {
-    implementation(project(":time-service:app"))
+    implementation(project(":time-service.app"))
 }

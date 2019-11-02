@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    api(project(":time-service:api"))
+    api(project(":time-service.api"))
 }
