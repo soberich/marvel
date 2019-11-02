@@ -39,6 +39,7 @@ dependencies {
         project(":time-service:api"),
         project(":time-service:spi"),
         Deps.Libs.ARROW_OPTICS,
+//        Deps.Libs.RX2,
         "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
         "io.quarkus:quarkus-hibernate-orm",
         "io.quarkus:quarkus-jdbc-h2",
