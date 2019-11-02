@@ -10,6 +10,7 @@ plugins {
     `kotlin-noarg`
     `kotlin-jpa`
     `kotlin-spring`
+    org.jetbrains.gradle.plugin.`idea-ext`
 }
 
 java {

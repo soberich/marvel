@@ -10,7 +10,7 @@ plugins {
 subprojects {
     apply(plugin = "build-dashboard")
     apply(plugin = "help-tasks")
-    apply(plugin = "dependencies")
+    apply(plugin = "dependencies-reporting-helper")
 
     group       = "com.example.marvel"
     version     = "0.0.1-SNAPSHOT"

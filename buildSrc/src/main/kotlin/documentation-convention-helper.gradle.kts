@@ -3,6 +3,7 @@ import versioning.Deps
 plugins {
     java
     io.swagger.core.v3.`swagger-gradle-plugin`
+//    com.webcohesion.enunciate
 }
 
 dependencies {

@@ -2,7 +2,7 @@ import io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.YAML
 import org.gradle.api.PathValidation.FILE
 
 plugins {
-    `openapi-convention-helper`
+    `documentation-convention-helper`
     `jackson-convention-helper`
 }
 

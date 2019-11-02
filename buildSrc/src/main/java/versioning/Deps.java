@@ -33,8 +33,8 @@ public interface Deps {
 
         String ARROW             = "0.10.2";
         String COROUTINES        = "+";
-        String EBEAN             = "11.42.2";
-        String EBEAN_ANNOTATION  = "4.11";
+        String EBEAN             = "12.1.2";
+        String EBEAN_ANNOTATION  = "6.1";
         String EBEAN_PERSISTENCE = "2.2.2";
         String EBEAN_QUERY       = EBEAN;
         String EBEAN_QUERY_GEN   = EBEAN;
@@ -205,5 +205,3 @@ public interface Deps {
         String ZALANDO_PROBLEM_JACK        = "org.zalando:jackson-datatype-problem"                             + ':' + Versions.ZALANDO_PROBLEM;
     }
 }
-
-

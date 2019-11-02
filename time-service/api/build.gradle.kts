@@ -1,4 +1,3 @@
-import org.gradle.api.JavaVersion.VERSION_1_8
 import versioning.Deps
 
 plugins {

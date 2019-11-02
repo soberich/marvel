@@ -83,14 +83,17 @@ val kotlinVersion = KotlinVersion(1, 3, 50).toString()
     implementation("com.github.ben-manes",                              "gradle-versions-plugin",                   "0.27.0")
     implementation("com.vanniktech",                                    "gradle-dependency-graph-generator-plugin", "0.5.0")
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
+    implementation("gradle.plugin.com.webcohesion.enunciate",           "enunciate-gradle",                         "+")
+    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext","gradle-idea-ext",                          "0.7")
     implementation("io.ebean",                                          "ebean-gradle-plugin",                      "+")
-    implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "2.0.10")
-    implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "2.8")
-    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "0.2.12")
-    //TODO:
-//    implementation("com.github.JetBrains",                              "gradle-idea-ext-plugin",                   "master-SNAPSHOT")
+    implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "+")
+    implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "+")
+    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "+")
 }
 
+/**
+ * It is not used as all plugins converted to precompiled scripts, however this is a neat way to get on board other plugins if needed.
+ */
 gradlePlugin {
     plugins {
         for (plugin in file("./src/main", PathValidation.DIRECTORY).walk().filter { it.isFile && it.name.contains("Plugin") }) {

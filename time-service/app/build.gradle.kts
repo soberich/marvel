@@ -3,9 +3,9 @@ import versioning.Deps
 plugins {
     `kotlin-convention-helper`
     `jackson-convention-helper`
-    `dependencies`
-    id("io.quarkus")                version "0.26.1"
-    id("com.webcohesion.enunciate") version "2.12.0"
+    com.webcohesion.enunciate
+    `dependencies-reporting-helper`
+    id("io.quarkus")                version versioning.Platforms.Versions.QUARKUS
 }
 
 repositories.jcenter()
@@ -25,6 +25,7 @@ dependencies {
     ).forEach(::kapt)
 
     arrayOf(
+        Deps.Jakarta.SERVLET,
         Deps.Libs.IMMUTABLES_BUILDER,
         Deps.Libs.IMMUTABLES_VALUE + ":annotations",
         Deps.Libs.MAPSTRUCT
