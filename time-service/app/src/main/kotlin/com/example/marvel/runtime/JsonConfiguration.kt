@@ -3,14 +3,16 @@ package com.example.marvel.runtime
 import com.example.marvel.convention.serial.Json
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.quarkus.jackson.ObjectMapperCustomizer
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Instance
+import javax.enterprise.inject.Produces
+import javax.inject.Singleton
 
-@Configuration
+@ApplicationScoped
 class JsonConfiguration {
 
-    @Bean
+    @Produces
+    @Singleton
     fun objectMapper(cstzrs: Instance<ObjectMapperCustomizer>): ObjectMapper = Json().apply {
         cstzrs.takeUnless(Instance<ObjectMapperCustomizer>::isUnsatisfied)?.forEach { it.customize(this) }
     }

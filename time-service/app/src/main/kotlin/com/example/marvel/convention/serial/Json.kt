@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.MapperFeature.DEFAULT_VIEW_INCLUSION
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature.WRITE_ENUMS_USING_TO_STRING
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-//import com.fasterxml.jackson.module.afterburner.AfterburnerModule
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import java.util.TimeZone
 
@@ -32,7 +32,7 @@ class Json : ObjectMapper() {
         @JvmStatic
         fun configure(mapper: ObjectMapper) {
             mapper.setTimeZone(DEFAULT_TIMEZONE).registerModules(
-//                AfterburnerModule(),
+                AfterburnerModule(),
                 JavaTimeModule(),
                 ParameterNamesModule(PROPERTIES)
             ).setSerializationInclusion(NON_ABSENT)

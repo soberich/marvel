@@ -1,11 +1,4 @@
-import org.gradle.api.JavaVersion.current
-
-check(current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${current()}" }
-
-plugins {
-    base
-    `project-report`
-}
+check(JavaVersion.current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${JavaVersion.current()}" }
 
 subprojects {
     apply(plugin = "build-dashboard")
@@ -44,6 +37,7 @@ subprojects {
 
     /*
      * FIXME: Delete all below when Runtime considers multiple dirs for classpath and sourcepath.
+     * FIXME: It only works starting from 2nd launch of `quarkusDev` (e.g. with `FROM-CACHE`)
      */
     apply(plugin = "java")
     tasks {
