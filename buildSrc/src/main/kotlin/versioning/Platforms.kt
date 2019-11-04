@@ -8,7 +8,7 @@ object Platforms {
         const val BLAZE_JPA    = "1.3.2"
         const val COROUTINES   = "1.3.2"
         const val JACKSON      = "2.9.10"
-        const val QUARKUS      = "0.27.0"
+        const val QUARKUS      = "0.28.1"
         const val REACTOR      = "Dysprosium-SR1"
         const val RESTEASY     = "4.1.1.Final"
         const val SPRING_BOOT  = "2.2.0.RELEASE"
