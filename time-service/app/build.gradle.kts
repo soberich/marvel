@@ -32,7 +32,7 @@ dependencies {
     ).forEach(::compileOnly)
 
     arrayOf(
-        /*even though Deps.Libs may contain strict version this enforces proper platform recomendations*/
+        /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
         enforcedPlatform(Deps.Platforms.QUARKUS),
         platform(Deps.Platforms.RESTEASY),
         platform(Deps.Platforms.JACKSON),
@@ -79,4 +79,5 @@ quarkus {
 
 tasks.test {
     useJUnitPlatform()
+    exclude("**/Native*")
 }

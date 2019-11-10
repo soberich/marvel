@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import java.nio.file.Files
+import java.nio.file.Paths
 
 plugins {
     idea
@@ -23,7 +25,7 @@ tasks {
         kotlinOptions {
             suppressWarnings = false
             verbose          = true
-            freeCompilerArgs = file("$rootDir/kotlincArgs", PathValidation.FILE).readLines()
+            freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))
         }
     }
     withType<KotlinJvmCompile>().configureEach {
@@ -32,17 +34,18 @@ tasks {
     withType<JavaCompile>().configureEach {
         options.apply {
             isFork = true
-            file("$rootDir/javacArgs", PathValidation.FILE).forEachLine(action = compilerArgs::add)
+            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach(compilerArgs::add)
         }
     }
 }
 
 kapt.javacOptions {
-    file("$rootDir/javacArgs", PathValidation.FILE).forEachLine(action = ::option)
+    Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach(::option)
 }
 
 allOpen.annotations(
     "io.micronaut.aop.Around",
+    "io.quarkus.test.junit.QuarkusTest",
     "javax.enterprise.context.ApplicationScoped",
     "javax.enterprise.context.RequestScoped",
     "javax.inject.Named",

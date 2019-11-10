@@ -1,0 +1,114 @@
+
+
+//0. Entry data/glossary:
+//   a) "Event processor/engine" — regardless of implementation, name tells what it does. Implies Kafka.
+//   b) "Event processor/engine log" — Implies Kafka topic.
+//   c) "CDC" — change data capture, regardless of implementation, name tells what it does. Domain event aggregation already was done for us. DB changes its data with update/insert statements, we just need to capture it. No source code changes. Implies Debezium.
+//   d) "DB changelog" — different providers have different names for DB changelog. For MySql implies "binlog". CDC supports AWS RDS with per table lock for initial snapshot (this fact has no implications, it is just the only difference with "non-hosted" DB solutions).
+//   d) "`security`" — whether a shared library on application code level, or a communication level (HTTP) redirects/interceptors etc. Implies `carepool-security` and `usermanagement-service`.
+
+//1.POST /treatments/1/../item `{"smth": {}}`
+
+@Table(
+        name = "items",
+        indexes = [
+            Index(columnList = "whatever ASC, name DESC")],
+        uniqueConstraints = [
+            UniqueConstraint(columnNames = ["code"]),
+            UniqueConstraint(columnNames = ["name"])])
+@Access(PROPERTY)
+//@MaterializeAggregate(aggregateName="items-aggregated") //CDC annotation example, read below
+class ItemEntity : SimpleGeneratedIdentityOfLong() {
+    @get:
+    [Column(nullable = false), updateable = false]
+    lateinit var name                                  : String
+    @get:
+    [Column(nullable = false)]
+    lateinit var code                                  : String
+    // etc...
+
+    @get:
+    [Column(updatable = false)
+    OneToMany(mappedBy = "item")]
+    lateinit var attributes                            : List<ItemAttributeEntity>
+    // etc...
+}
+
+/*
+ * `@MaterializeAggregate` example of CDC integration with persistence layer. It's totally optional, as CDC works on DB level; fine, without changing source code at all.
+ */
+
+@Transactional
+fun adjustItem(item: ItemCommand): ItemDetailedView =
+    itemRepository.save(item.toEntity())
+
+//2. HTTP request ends receiving `ItemDetailedView`.
+
+/*
+ * _N.B. Note that, further there is NO `security` needed, as communication is in closed network and event-driven (so is post-fact)._
+ * Though we still CAN interact with `security` level IF we want to (for example to fetch user login, email, id).
+ * This means, we are not bound to particular design or technological solutions anymore.
+ */
+
+//3. CDC parses DB binlog, and stashes to Kafka topic_
+//4. ItemChangedEvent emmited (e.g. new entry in Event processor log)
+
+@Named
+class Payments @inject constructor(private val paymentRepository: PaymentRepository) {
+
+    @Incoming("items-aggregated")    //...whatever name
+    @Outgoing(“payments-aggregated”) //or more fine-grained `payment-recalculated`
+    fun itemWasChanged(event: ItemChangedEvent): PaymentChangedEvent = //return could be `Flowable<>`, `CompletableFuture<>`, anyway it is async.
+        paymentRepository.findById(event.paymentId)
+            .recalculateAmount();
+
+    /**
+     * Read our own writes.
+     */
+    @Incoming("payment-aggregated")    //...whatever name
+    fun itemWasChanged(event: PaymentChangedEvent) { //`event` could be `KafkaMessage<ID, PaymentChangedEvent>`
+        if (event.paymentStartedTimestamp + MINUTES.of(30L) <= LocalDateTime.now()) {
+                paymentRepository.findById(event.paymentId)
+                    .expire();
+        }
+    }
+
+    //P.S. No `whateverServiceFeignClient.callAndDealWithIt(...)` any more. Programming model simplified. Method bodies reduced.
+}
+
+// Additionally, to serve progress info, for client side applications.
+// > Subscribing to the `payment-aggregated`, `items-aggregated` topic is a great way to react to any new values. It’s a bit wasteful though if you’re just interested in the latest aggregated value for a given treatment/payment/account.
+
+import org.apache.kafka.streams.KafkaStreams
+import org.apache.kafka.streams.errors.InvalidStateStoreException
+import org.apache.kafka.streams.state.QueryableStoreTypes
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore
+
+@RestController
+@RequestMapping([ "payments" ])
+class PaymentResource {
+
+    @set:
+    [Inject]
+    protected lateinit var streams: KafkaStreams
+
+    @GetMapping([ "/{id:[1-9][0-9]*}/progress" ])
+    fun paymentRecalcStatus(@[NotNull PathVariable] id): PaymentDetailedView =
+        Response.ok(getProgress().get(id))
+        ?:throw WebApplicationException(
+            Response.notFound()
+                .body("""{ "id": $id, "status": "Timeout. Payment request was not processed by now." }""")
+          )
+
+    private fun getProgress(timeout: Duration = Duration.ofSeconds(30L)): ReadOnlyKeyValueStore<ID, PaymentChangedEvent> {
+        val time = LocalDateTime.now()
+        while (LocalDateTime.now().isBefore(time + timeout)) {
+            try {
+                return streams.store("payment-values", QueryableStoreTypes.keyValueStore());
+            } catch (e: InvalidStateStoreException) {
+                // ignore, store not ready yet
+
+            }
+        }
+    }
+}

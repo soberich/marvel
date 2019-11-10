@@ -1,10 +1,10 @@
-import java.io.FileFilter
+import java.nio.file.Files
+import java.nio.file.Paths
 
 rootProject.name = "marvel"
 
 pluginManagement {
     repositories {
-        mavenLocal()
         gradlePluginPortal()
         mavenCentral()
         maven("https://dl.bintray.com/kotlin/kotlin-eap") {
@@ -36,13 +36,16 @@ include(
 )
 
 for (serviceDir in setOf("time-service")) {
-    for (`sub-project` in file(serviceDir, PathValidation.DIRECTORY).listFiles(FileFilter(File::isDirectory))!!) {
-        ":${`sub-project`.name}"
-            .also(::include)
-            .run(::project)
-            .apply {
-                name       = "$serviceDir.${`sub-project`.name}"
-                projectDir = `sub-project`
+    Files.list(Paths.get("$rootDir", serviceDir)).use {
+        it.filter(Files::isDirectory)
+            .forEach {
+                ":${it.fileName}"
+                    .also(::include)
+                    .run(::project)
+                    .apply {
+                        name       = "$serviceDir.${it.fileName}"
+                        projectDir = it.toFile()
+                    }
             }
     }
 }

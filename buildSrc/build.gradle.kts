@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import java.nio.file.Files
+import java.nio.file.Paths
 
 plugins {
     java
@@ -53,7 +55,7 @@ tasks {
         kotlinOptions {
             suppressWarnings = false
             verbose          = true
-            freeCompilerArgs = file("../kotlincArgs", PathValidation.FILE).readLines()
+            freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs"))
         }
     }
     withType<KotlinJvmCompile>().configureEach {
@@ -61,7 +63,7 @@ tasks {
     }
     withType<JavaCompile>().configureEach {
         options.apply {
-            file("../javacArgs", PathValidation.FILE).forEachLine(action = compilerArgs::add)
+            Files.lines(Paths.get("$rootDir", "javacArgs")).forEach(compilerArgs::add)
         }
     }
 }
@@ -98,14 +100,18 @@ val kotlinVersion = KotlinVersion(1, 3, 50).toString()
  */
 gradlePlugin {
     plugins {
-        for (plugin in file("./src/main", PathValidation.DIRECTORY).walk().filter { it.isFile && it.name.contains("Plugin") }) {
-            val name = plugin.nameWithoutExtension
-                .replace(Regex("\\$"), "")
-                .replace(Regex("((?!^)[^_])([A-Z0-9]+)"), "$1-$2").toLowerCase()
-            register(name) {
-                id = name.substringBeforeLast("-plugin")
-                implementationClass = plugin.nameWithoutExtension
-            }
+        Files.walk(Paths.get("$rootDir", "src", "main")).use {
+            it.filter(Files::isRegularFile)
+                .filter { it.fileName.last().toString().contains("Plugin") }
+                .forEach {
+                    val name = it.toFile().nameWithoutExtension
+                        .replace(Regex("\\$"), "")
+                        .replace(Regex("((?!^)[^_])([A-Z0-9]+)"), "$1-$2").toLowerCase()
+                    register(name) {
+                        id = name.substringBeforeLast("-plugin")
+                        implementationClass = it.toFile().nameWithoutExtension
+                    }
+                }
         }
     }
 }
