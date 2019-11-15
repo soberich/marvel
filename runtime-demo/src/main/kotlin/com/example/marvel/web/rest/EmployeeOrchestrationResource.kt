@@ -1,34 +1,30 @@
 package com.example.marvel.web.rest.jakarta
 
+import arrow.core.ForListK
+import arrow.core.ListK
+import arrow.core.extensions.listk.traverse.traverse
 import com.example.marvel.domain.model.api.employee.EmployeeDto
-import com.example.marvel.domain.model.api.record.RecordModel
-import com.example.marvel.domain.model.api.recordcollection.RecordCollectionCreateCommand
-import com.example.marvel.domain.model.api.recordcollection.RecordCollectionDto
-import com.example.marvel.domain.model.api.recordcollection.RecordCollectionUpdateCommand
 import com.example.marvel.web.grpc.EmployeeOperationsServiceNamespace
-import com.example.marvel.web.rest.EmployeeResourceAdapter
-import io.reactivex.Flowable
 import io.vertx.kotlin.coroutines.dispatcher
 import io.vertx.reactivex.core.eventbus.EventBus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.future.future
-import java.time.Month
-import java.time.Year
 import java.util.concurrent.CompletionStage
 import javax.inject.Inject
 import javax.ws.rs.Consumes
-import javax.ws.rs.GET
-import javax.ws.rs.NotFoundException
-import javax.ws.rs.POST
-import javax.ws.rs.PUT
 import javax.ws.rs.Path
-import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
-import javax.ws.rs.QueryParam
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType.APPLICATION_JSON
 import kotlin.coroutines.CoroutineContext
+import arrow.core.k
+import arrow.effects.IO
+import arrow.effects.extensions.fx
+import arrow.optics.typeclasses.Each
+import kotlinx.coroutines.Dispatchers
+import javax.servlet.http.HttpServletRequest
+import kotlin.streams.toList
 import io.vertx.core.Vertx as VertxBare
 
 /**
@@ -37,7 +33,7 @@ import io.vertx.core.Vertx as VertxBare
 @Path("/api")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private val employees: EmployeeOperationsServiceNamespace)
+class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private val employees: EmployeeOperationsServiceNamespace):
         /**
          * FIXME: @see in [README.md]
          */
@@ -47,44 +43,57 @@ class EmployeeOrchestrationResource @Inject constructor(VX: VertxBare, private v
     /**
      * Could move to ctor
      */
-    @Inject
-    internal lateinit var vertx: io.vertx.reactivex.core.Vertx
+    @set:
+    [Inject]
+    protected lateinit var vertx: io.vertx.reactivex.core.Vertx
 
-    @Inject
-    internal lateinit var eventBus: EventBus
+    @set:
+    [Inject]
+    protected lateinit var client: io.reactiverse.reactivex.pgclient.PgPool
 
-    @Inject
-    internal lateinit var client: io.reactiverse.reactivex.pgclient.PgPool
+    @set:
+    [Inject]
+    protected var eventBus: EventBus? = null
+
+    @set:
+    [Inject]
+    protected lateinit var request: HttpServletRequest
+
+    @field:
+    [Context]
+    protected lateinit var requestHeaders: HttpHeaders
 
 
-//    fun getEmployeesDemo1(): CompletionStage<List<EmployeeDto>> = CoroutineScope(Dispatchers.IO).future {
-//        val program = IO.fx {
-//            val all: ListK<EmployeeDto> = !effect { employees.listEmployees().toList().k() }
-//            val any: EmployeeDto?        = !effect { employees.getAnyUserDemo() }
-//            /*
-//             * Traversing immutable nestes structures
-//             */
-////            val updatedEmployees: Employees = Employees.employees.every(ListK.each()).name.modify(Employees(all), String::toUpperCase)
-////            val names: ListK<String>        = Employees.employees.every(ListK.each()).name.getAll(updatedEmployees)
-//            /*
-//             * No-op unwrapped alternative
-//             */
-//            Each.fromTraverse<ForListK, String>(ListK.traverse()).each().modify(all.map(EmployeeDto::email).k(), String::toUpperCase)
-//
-//            val namesStr = names.joinToString()
-//            headers.requestHeaders.putSingle("X-ErrorCode", namesStr)
-//            eventBus.publish("audit", "employeee.added.$namesStr")
-//            updatedEmployees
+    fun getEmployeesDemo1(): CompletionStage<List<EmployeeDto>> = CoroutineScope(Dispatchers.IO).future {
+        val program = IO.fx {
+            val all: ListK<EmployeeDto> = !effect { employees.streamEmployees().toList().k() }
+            val any: EmployeeDto?        = !effect { employees.getAnyUserDemo() }
+            /*
+             * Traversing immutable nested structures
+             */
+//            val updatedEmployees: Employees = Employees.employees.every(ListK.each()).name.modify(Employees(all), String::toUpperCase)
+            val updatedEmployees = all.copy(list = listOf())
+//            val names: ListK<String>        = Employees.employees.every(ListK.each()).name.getAll(updatedEmployees)
+            val names: ListK<String>        = listOf("one", "two", "three").k()
+            /*
+             * No-op unwrapped alternative
+             */
+            Each.fromTraverse<ForListK, String>(ListK.traverse()).each().modify(all.map(EmployeeDto::email).k(), String::toUpperCase)
+
+            val namesStr = names.joinToString()
+//            requestHeaders.requestHeaders.putSingle("X-ErrorCode", namesStr)
+            eventBus?.publish("audit", "employeee.added.$namesStr")
+            updatedEmployees
+        }
+
+        val execution: Employees = program.unsafeRunSync()
+        execution
+    }
+
+    fun getEmployeesDemo2(): CompletionStage<List<EmployeeDto>>  = CoroutineScope(this).future {
+        emptyList()
+//        Nel.fromList(employees.listEmployees()).fold({ headers.requestHeaders.putSingle("X-ErrorCode", "WHAAAT"); emptyList<EmployeeDto>() }) {
+//            it.all.k().onEach { EmployeeInput.name.modify(it, String::toUpperCase) }
 //        }
-//
-//        val execution: Employees = program.unsafeRunSync()
-//        execution
-//    }
-//
-//    fun getEmployeesDemo2(): CompletionStage<List<EmployeeDto>>  = CoroutineScope(this).future {
-//        emptyList()
-////        Nel.fromList(employees.listEmployees()).fold({ headers.requestHeaders.putSingle("X-ErrorCode", "WHAAAT"); emptyList<EmployeeDto>() }) {
-////            it.all.k().onEach { EmployeeInput.name.modify(it, String::toUpperCase) }
-////        }
-//    }
+    }
 }

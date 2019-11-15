@@ -18,7 +18,7 @@ import javax.inject.Inject
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.HttpHeaders
-import javax.ws.rs.core.HttpHeaders.CONTENTid
+import javax.ws.rs.core.HttpHeaders.CONTENT_ID
 import kotlin.coroutines.CoroutineContext
 import arrow.effects.extensions.io.fx.fx as composeProgram
 import io.vertx.core.Vertx as VertxBare

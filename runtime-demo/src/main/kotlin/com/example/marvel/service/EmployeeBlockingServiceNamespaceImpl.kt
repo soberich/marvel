@@ -145,26 +145,26 @@ class EmployeeBlockingServiceNamespaceImpl : /*EmployeeOperationsServiceNamespac
 
 
 
-//class EmployeeBlockingServiceNamespaceImpl @Inject constructor(private val VX: Vertx, private val eventBus: EventBus) : EmployeeOrchestrationService {
-//
-//    val nettyVertxEventLoop: CoroutineDispatcher by lazy { VX.dispatcher() }
-//
+class EmployeeBlockingServiceNamespaceImpl @Inject constructor(private val VX: Vertx, private val eventBus: EventBus) : EmployeeOrchestrationService {
 
-//    override suspend fun getEmployeesAsync(): List<Employee> = fx {
-//        continueOn(nettyVertxEventLoop)
-//
-//        CoroutineScope(Dispatchers.IO) {
-//            //Flow control is very readable because it is imperative.
-//            val fetchEmployeeThenFetchRecords = effect { service.getEmployeesAsync() }.map {
-//                it.map { catch(::UnsupportedOperationException) { effect { service.getForPeriodAsync(it.id, Year.now(), Month.JANUARY) } }.flatten() }
-//            }
-//
-//            val januaryRecordsOfEmployeesFetchedInParallel = !parSequence(fetchEmployeeThenFetchRecords.fix().unsafeRunSync())
-//
-//            januaryRecordsOfEmployeesFetchedInParallel.flatten()
-//        }
-//    }.unsafeRunSync()
-//
-//    override suspend fun getForPeriodAsync(employeeId: Long, year: Year, month: Month): List<Record> {
-//    }
-//}
+    val nettyVertxEventLoop: CoroutineDispatcher by lazy { VX.dispatcher() }
+
+
+    override suspend fun getEmployeesAsync(): List<Employee> = fx {
+        continueOn(nettyVertxEventLoop)
+
+        CoroutineScope(Dispatchers.IO) {
+            //Flow control is very readable because it is imperative.
+            val fetchEmployeeThenFetchRecords = effect { service.getEmployeesAsync() }.map {
+                it.map { catch(::UnsupportedOperationException) { effect { service.getForPeriodAsync(it.id, Year.now(), Month.JANUARY) } }.flatten() }
+            }
+
+            val januaryRecordsOfEmployeesFetchedInParallel = !parSequence(fetchEmployeeThenFetchRecords.fix().unsafeRunSync())
+
+            januaryRecordsOfEmployeesFetchedInParallel.flatten()
+        }
+    }.unsafeRunSync()
+
+    override suspend fun getForPeriodAsync(employeeId: Long, year: Year, month: Month): List<Record> {
+    }
+}

@@ -25,9 +25,10 @@ pluginManagement {
 }
 
 include(
+        ":runtime-demo",
         ":business",
         ":openapi",
-//        ":event-sourcing",
+//        ":event-sourcing",w
 //        ":convention",
 //        ":runtime-blocking-sql-jdbc",
         ":runtime-blocking-sql-jpa",

@@ -19,6 +19,8 @@ import java.util.stream.Stream
  */
 interface EmployeeOperationsServiceNamespace {
 
+    fun getAnyUserDemo(): EmployeeDto
+
     fun streamEmployees(): Stream<EmployeeDto>
 
     fun listForPeriod(id: Long, year: Year, month: Month): Stream<RecordDto>
