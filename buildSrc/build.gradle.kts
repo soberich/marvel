@@ -69,7 +69,7 @@ tasks {
 }
 
 //val kotlinVersion = "1.3.5+"
-val kotlinVersion = KotlinVersion(1, 3, 50).toString()
+val kotlinVersion = KotlinVersion(1, 3, 60).toString()
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
