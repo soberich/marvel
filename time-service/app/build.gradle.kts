@@ -70,12 +70,12 @@ dependencies {
     ).forEach(::testImplementation)
 }
 
-quarkus {
-    setSourceDir("$projectDir/src/main/kotlin")
-//    setSourceDir("$buildDir/generated/source/kapt/main")
-//    resourcesDir() += file("$projectDir/src/main/resources")
-    setOutputDirectory("$buildDir/classes/kotlin/main")
-}
+//quarkus {
+//    setSourceDir("$projectDir/src/main/kotlin")
+////    setSourceDir("$buildDir/generated/source/kapt/main")
+////    resourcesDir() += file("$projectDir/src/main/resources")
+//    setOutputDirectory("$buildDir/classes/kotlin/main")
+//}
 
 tasks.test {
     useJUnitPlatform()
