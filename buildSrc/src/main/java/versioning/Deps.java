@@ -3,12 +3,12 @@ package versioning;
 /**
  * Project targets all maximum developer experience
  * and tries to hit as close to "how it should be done" (a.k.a. "standard") as possible.
- * For now this file is in Java as IntelliJ IDEA gives nice pop-ups for Java and but not Kotlin/Groovy
- * allowing to see what this string with dependency declaration actually contains.
+ * For now this file is in Java as IntelliJ IDEA gives a nice pop-up for Java, but not Kotlin/Groovy
+ * allowing to see the actual contents of variable with dependency declaration.
  * e.g.
  * <pre>{@code
  *     Deps.Libs
- *     String JACKSON   = "com.fasterxml.jackson:jackson-databind" + ':' + Versions.JACKSON = "com.fasterxml.jackson:jackson-databind:2.9.9.3"
+ *     String JACKSON   = "com.fasterxml.jackson:jackson-databind" + ':' + Versions.JACKSON = "com.fasterxml.jackson:jackson-databind:{@value versioning.Platforms.Versions#JACKSON}"
  * }</pre>
  */
 public interface Deps {

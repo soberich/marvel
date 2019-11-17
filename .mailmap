@@ -1,21 +1,21 @@
 # Mailmap
 # Developers may want or might be forced to commit from registered business email with particular name.
 # Such practice both nicely aligned and enforced at the same time when commit required to be signed with GPG key (`-S` flag).
-# Developers are expected whether on their our willing or because of aforementioned practice to:
+# Developers are expected whether on their own willing or because of aforementioned practice to:
 #   1. Add historical overrides to fix mistakes made in Git config.
-#   2. Add override in case somehow again committed wrong annotations.
+#   2. Add override in case somehow, again, committed wrong annotations.
 
 ## Blocks of entries sorted in alphabetical order.
-## Most precise overridings should go first as ant-paths and such, where first match wins.
+## Most precise overrides should go first as ant-paths and such, where first match wins.
 
-### Block contains overridings for both name and email.
-
-
-
-### Block contains overridings email only.
+### Block contains overrides for both name and email.
 
 
 
-### Block contains overridings for name only.
+### Block contains overrides for email only.
+
+
+
+### Block contains overrides for name only.
 
 
