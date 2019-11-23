@@ -1,12 +1,13 @@
 import org.gradle.api.tasks.SourceSet.MAIN_SOURCE_SET_NAME
 import org.gradle.internal.os.OperatingSystem
 import versioning.Deps
-import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.jar.Attributes.Name.CLASS_PATH
 import kotlin.collections.set
 
-val liquibase by configurations.creating
+val liquibase: Configuration by configurations.creating
 
 dependencies {
     liquibase(Deps.Libs.LIQUIBASE_HIB5)
@@ -32,7 +33,7 @@ tasks {
                 dependsOn(liquibase)
                 archiveAppendix.set("pathingLiquibase")
                 doFirst {
-                    manifest.attributes["Class-Path"] = project
+                    manifest.attributes[CLASS_PATH.toString()] = project
                         .convention.getPlugin(JavaPluginConvention::class)
                         .sourceSets[MAIN_SOURCE_SET_NAME].runtimeClasspath.plus(liquibase)
                         .joinToString(separator = " ") { it.toURI().toURL().toString().replaceFirst("file:/", "/") }
@@ -67,11 +68,11 @@ fun liquibaseCommand(command: String) {
         main = "org.liquibase.gradle.OutputEnablingLiquibaseRunner"
 
         args(
-            "--changeLogFile=$projectDir/src/main/resources/config/liquibase/changelog/${ZonedDateTime.now(ZoneId.of("Z")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))}_changelog.xml",
+            "--changeLogFile=$projectDir/src/main/resources/config/liquibase/changelog/${ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))}_changelog.xml",
             "--referenceUrl=hibernate:spring:com.example.marvel?dialect=org.hibernate.dialect.H2Dialect&hibernate.physical_naming_strategy=com.example.marvel.PhysicalNamingStrategyImpl&hibernate.implicit_naming_strategy=com.example.marvel.ImplicitNamingStrategyImpl",
             "--username=example",
             "--password=",
-            "--url=jdbc:h2:file:${project.buildDir}/h2db/db/example",
+            "--url=jdbc:h2:retry:${project.buildDir}/h2db/db/example",
             "--driver=org.h2.Driver",
             command
         )

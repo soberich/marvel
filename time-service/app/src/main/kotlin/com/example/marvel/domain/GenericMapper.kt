@@ -14,10 +14,10 @@ abstract class GenericMapper<Entity> {
 
     @set:
     [PersistenceContext]
-    protected lateinit var em: EntityManager
+    protected open lateinit var em: EntityManager
 
     @ObjectFactory
-    fun @receiver:TargetType Class<Entity>.objectFactory(@Context id: Serializable): Entity = em.getReference(this, id)
+    open fun @receiver:TargetType Class<Entity>.objectFactory(@Context id: Serializable): Entity = em.getReference(this, id)
 
     /**
      * FIXME: Exception thrown though `@ObjectFactory` present

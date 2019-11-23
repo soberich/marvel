@@ -10,6 +10,7 @@ plugins {
     `build-dashboard`                                         // optional
     `help-tasks`                                              // optional
     `project-report`                                          // optional
+    `maven-publish`
     id("com.github.ben-manes.versions")      version "0.27.0" // optional
     id("se.patrikerdes.use-latest-versions") version "0.2.13" // optional
 }
@@ -17,6 +18,7 @@ plugins {
 repositories {
     gradlePluginPortal()
     jcenter()
+    mavenCentral()
     maven("https://dl.bintray.com/kotlin/kotlin-eap") {
         content {
             includeGroup("org.jetbrains.kotlin")
@@ -46,6 +48,7 @@ kotlinDslPluginOptions {
 }
 
 java {
+//    withJavadocJar()
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.current()
 }
@@ -68,10 +71,17 @@ tasks {
     }
 }
 
-//val kotlinVersion = "1.3.5+"
 val kotlinVersion = KotlinVersion(1, 3, 60).toString()
 
 /*plugins'*/ dependencies {
+        implementation("io.quarkus:quarkus-bootstrap-core:1.0.0.CR2")
+        implementation("io.quarkus:quarkus-devtools-common:1.0.0.CR2")
+        implementation("io.quarkus:quarkus-platform-descriptor-json:1.0.0.CR2")
+        implementation("io.quarkus:quarkus-platform-descriptor-resolver-json:1.0.0.CR2")
+        implementation("io.quarkus:quarkus-development-mode:1.0.0.CR2")
+        implementation("io.quarkus:quarkus-creator:1.0.0.CR2")
+        implementation(gradleApi())
+
     //noinspection DifferentKotlinGradleVersion
     implementation(enforcedPlatform(kotlin("bom", kotlinVersion)))
     implementation(kotlin("stdlib-jdk8"))
@@ -102,14 +112,23 @@ gradlePlugin {
     plugins {
         Files.walk(Paths.get("$rootDir", "src", "main")).use {
             it.filter(Files::isRegularFile)
-                .filter { it.fileName.last().toString().contains("Plugin") }
-                .forEach {
-                    val name = it.toFile().nameWithoutExtension
-                        .replace(Regex("\\$"), "")
-                        .replace(Regex("((?!^)[^_])([A-Z0-9]+)"), "$1-$2").toLowerCase()
+                .filter { it.fileName.toString().substringBeforeLast(".").endsWith("Plugin") }
+                .forEach { pp ->
+                    val name = pp.fileName.toString().substringBeforeLast(".")
+                        .replace('$', Char.MIN_VALUE)
+                        .replace("""((?!^)[^_])([A-Z0-9]+)""".toRegex(), "$1-$2").toLowerCase()
                     register(name) {
                         id = name.substringBeforeLast("-plugin")
-                        implementationClass = it.toFile().nameWithoutExtension
+                        implementationClass = project.sourceSets
+                            .map(SourceSet::allSource)
+                            .flatMap(SourceDirectorySet::getSrcDirs)
+                            .asSequence()
+                            .map(File::absolutePath)
+                            .filter { pp.toAbsolutePath().toString().contains(it) }
+                            .map { pp.toAbsolutePath().toString().substringAfterLast(it + File.separator) }
+                            .map { it.substringBeforeLast('.') }
+                            .map { it.replace('/', '.') }
+                            .single()
                     }
                 }
         }

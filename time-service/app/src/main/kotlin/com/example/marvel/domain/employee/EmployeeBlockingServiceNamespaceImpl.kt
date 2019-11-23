@@ -43,7 +43,7 @@ class EmployeeBlockingServiceNamespaceImpl /*@Inject constructor*/(
     override fun streamEmployees(): Stream<EmployeeView> =
             em.createNamedQuery("Employee.stream", EmployeeListingView::class.java)
                     .resultStream
-                    .map(EmployeeView::class.java::cast)
+                    .map { it as EmployeeView }
 
     override fun filterEmployees(filter: String): List<EmployeeView> =
             JPAUtils.queryEntities(em, EmployeeEntity::class.java, QueryParameters.query(filter).build())
