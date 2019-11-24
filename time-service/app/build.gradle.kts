@@ -5,7 +5,7 @@ plugins {
     `jackson-convention-helper`
     com.webcohesion.enunciate
     `dependencies-reporting-helper`
-    id("quarkus")               /* version versioning.Platforms.Versions.QUARKUS*/
+    id("io.quarkus")                version versioning.Platforms.Versions.QUARKUS
 }
 
 repositories.jcenter()
@@ -70,12 +70,11 @@ dependencies {
     ).forEach(::testImplementation)
 }
 
-tasks.withType<io.quarkus.gradle.tasks.QuarkusDev>().configureEach {
-    setSourceDir("$projectDir/src/main/kotlin:$projectDir/src/main/java:$buildDir/generated/source/kapt/main")
+quarkus {
+    setSourceDir("$projectDir/src/main/kotlin")
 //    setSourceDir("$buildDir/generated/source/kapt/main")
 //    resourcesDir() += file("$projectDir/src/main/resources")
-//    setOutputDirectory("$buildDir/classes/kotlin/main")
-//    println(resourcesDir())
+    setOutputDirectory("$buildDir/classes/kotlin/main")
 }
 
 tasks.test {

@@ -1,9 +1,5 @@
 check(JavaVersion.current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${JavaVersion.current()}" }
 
-plugins {
-    idea
-}
-
 subprojects {
     apply(plugin = "build-dashboard")
     apply(plugin = "help-tasks")
@@ -44,20 +40,20 @@ subprojects {
      * FIXME: It only works starting from 2nd launch of `quarkusDev` (e.g. with `FROM-CACHE`)
      */
     apply(plugin = "java")
-//    tasks {
-//        val `copy classes workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
-//            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
-//            from("$buildDir/classes/java")
-//            into("$buildDir/classes/kotlin")
-//        }
-//        val `copy resources workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
-//            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
-//            from("$projectDir/src/main/resources/META-INF")
-//            into("$buildDir/classes/kotlin/main/META-INF")
-//        }
-//        "classes" {
-//            dependsOn += `copy classes workaround quarkus gradle kotlin poor support`
-//            dependsOn += `copy resources workaround quarkus gradle kotlin poor support`
-//        }
-//    }
+    tasks {
+        val `copy classes workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
+            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+            from("$buildDir/classes/java")
+            into("$buildDir/classes/kotlin")
+        }
+        val `copy resources workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
+            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+            from("$projectDir/src/main/resources/META-INF")
+            into("$buildDir/classes/kotlin/main/META-INF")
+        }
+        "classes" {
+            dependsOn += `copy classes workaround quarkus gradle kotlin poor support`
+            dependsOn += `copy resources workaround quarkus gradle kotlin poor support`
+        }
+    }
 }

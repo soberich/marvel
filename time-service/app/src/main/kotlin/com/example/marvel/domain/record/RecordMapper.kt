@@ -8,9 +8,7 @@ import com.example.marvel.domain.MapperConfig
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Mappings
-import javax.enterprise.inject.Default
 
-@Default
 @Mapper(config = MapperConfig::class)
 abstract class RecordMapper : GenericMapper<RecordEntity>() {
 
