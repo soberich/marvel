@@ -103,8 +103,9 @@ gradlePlugin {
         Files.walk(Paths.get("$rootDir", "src", "main")).use {
             it.filter(Files::isRegularFile)
                 .filter { it.fileName.toString().substringBeforeLast(".").endsWith("Plugin") }
-                .forEach { pp ->
-                    val name = pp.fileName.toString().substringBeforeLast(".")
+                .map(Path::toAbsolutePath)
+                .forEach { absolutePluginPath ->
+                    val name = absolutePluginPath.fileName.toString().substringBeforeLast(".")
                         .replace('$', Char.MIN_VALUE)
                         .replace("""((?!^)[^_])([A-Z0-9]+)""".toRegex(), "$1-$2").toLowerCase()
                     register(name) {
@@ -114,8 +115,8 @@ gradlePlugin {
                             .flatMap(SourceDirectorySet::getSrcDirs)
                             .asSequence()
                             .map(File::absolutePath)
-                            .filter { pp.toAbsolutePath().toString().contains(it) }
-                            .map { pp.toAbsolutePath().toString().substringAfterLast(it + File.separator) }
+                            .filter { absolutePluginPath.toString().contains(it) }
+                            .map { absolutePluginPath.toString().substringAfterLast(it + File.separator) }
                             .map { it.substringBeforeLast('.') }
                             .map { it.replace('/', '.') }
                             .single()
