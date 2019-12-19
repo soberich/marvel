@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 
 plugins {
@@ -33,11 +34,6 @@ repositories {
             snapshotsOnly()
         }
     }
-    maven("https://jitpack.io") {
-        content {
-            includeGroup("com.github.JetBrains")
-        }
-    }
 }
 
 kotlinDslPluginOptions {
@@ -68,8 +64,8 @@ tasks {
     }
 }
 
-//val kotlinVersion = "1.3.5+"
-val kotlinVersion = KotlinVersion(1, 3, 60).toString()
+//val kotlinVersion = "1.3.6+"
+val kotlinVersion = KotlinVersion(1, 3, 61).toString()
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
@@ -106,7 +102,7 @@ gradlePlugin {
                 .map(Path::toAbsolutePath)
                 .forEach { absolutePluginPath ->
                     val name = absolutePluginPath.fileName.toString().substringBeforeLast(".")
-                        .replace('$', Char.MIN_VALUE)
+                        .replace('$', Char.MIN_VALUE) //FIXME: `Char.MIN_VALUE` is probably incorrect
                         .replace("""((?!^)[^_])([A-Z0-9]+)""".toRegex(), "$1-$2").toLowerCase()
                     register(name) {
                         id = name.substringBeforeLast("-plugin")

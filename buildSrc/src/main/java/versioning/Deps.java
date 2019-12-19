@@ -55,7 +55,7 @@ public interface Deps {
         String MAPSTRUCT         = "1.3.1.Final";
         String MONETA            = "1.3";
         String OKHTTP            = "4.0.0-rc1";
-        String OPENAPI           = "2.0.8";
+        String OPENAPI           = "2.1.0";
         String RESTEASY_BOOT     = "3.0.0.Final";
         String RETROFIT2         = "2.4.0";
         String RX2               = "2.2.10";
