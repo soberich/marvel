@@ -7,9 +7,6 @@ import com.example.marvel.api.EmployeeView
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import com.example.marvel.api.RecordCollectionDetailedView
-import com.example.marvel.api.RecordView
-import java.time.Month
-import java.time.Year
 import java.util.stream.Stream
 
 /**
@@ -27,7 +24,7 @@ interface EmployeeOperationsServiceNamespace {
 
     fun updateEmployee(employeeId: Long, employee: EmployeeUpdateCommand): EmployeeDetailedView?
 
-    fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView>
+//    fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView>
 
     fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDetailedView?
 

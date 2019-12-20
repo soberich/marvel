@@ -1,15 +1,17 @@
 import versioning.Deps
 
 plugins {
+    application
     `kotlin-convention-helper`
     `jackson-convention-helper`
     com.webcohesion.enunciate
     `dependencies-reporting-helper`
-    id("io.quarkus")                version versioning.Platforms.Versions.QUARKUS
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 repositories.jcenter()
 
+val developmentOnly  by configurations.creating
 /**
  * ORDER MATTERS!!
  * JPAMODELGEN Should go first!
@@ -17,67 +19,90 @@ repositories.jcenter()
  */
 dependencies {
     enunciate("dk.jyskebank.tooling.enunciate:enunciate-openapi:1.1.+")
-
+    annotationProcessor("io.micronaut.data:micronaut-data-processor:1.0.0.BUILD-SNAPSHOT")
     arrayOf(
+        enforcedPlatform("io.micronaut:micronaut-bom:1.3.0.M2"),
+        "io.micronaut.spring:micronaut-spring-annotation",
+        "io.micronaut.spring:micronaut-spring-boot-annotation",
+        "io.micronaut.spring:micronaut-spring-web-annotation",
+        "io.micronaut.data:micronaut-data-processor",
+        "io.micronaut:micronaut-graal",
+        "io.micronaut:micronaut-inject-java",
+//        "io.micronaut:micronaut-validation",
         Deps.Libs.HIBERNATE_JPAMODELGEN,
         Deps.Libs.MAPSTRUCT_AP,
         Deps.Libs.VALIDATOR_AP
     ).forEach(::kapt)
 
     arrayOf(
+        "com.oracle.substratevm:svm",
+        Deps.Jakarta.PERSISTENCE,
         Deps.Jakarta.SERVLET,
         Deps.Libs.IMMUTABLES_BUILDER,
         Deps.Libs.IMMUTABLES_VALUE + ":annotations",
         Deps.Libs.MAPSTRUCT
     ).forEach(::compileOnly)
 
+    developmentOnly("io.methvin:directory-watcher")
+    developmentOnly("io.micronaut:micronaut-runtime-osx")
+    developmentOnly("net.java.dev.jna:jna")
+
     arrayOf(
         /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-        enforcedPlatform(Deps.Platforms.QUARKUS),
-        platform(Deps.Platforms.RESTEASY),
-        platform(Deps.Platforms.JACKSON),
+        enforcedPlatform("io.micronaut:micronaut-bom:1.3.0.M2"),
         project(":time-service.api"),
         project(":time-service.spi"),
         Deps.Libs.ARROW_OPTICS,
         "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
-        "io.quarkus:quarkus-hibernate-orm",
-        "io.quarkus:quarkus-jdbc-h2",
-        "io.quarkus:quarkus-kotlin",
-        "io.quarkus:quarkus-rest-client",
-        "io.quarkus:quarkus-resteasy-jackson",
-        "io.quarkus:quarkus-smallrye-context-propagation",
-        "io.quarkus:quarkus-spring-data-jpa",
-        "io.quarkus:quarkus-spring-web",
-        "io.quarkus:quarkus-undertow",
-        "io.quarkus:quarkus-vertx",
-        "io.smallrye.reactive:smallrye-reactive-converter-rxjava2:1.0.10",
-        "io.smallrye:smallrye-context-propagation-jta",
-        "io.smallrye:smallrye-context-propagation-propagators-rxjava2",
-        "io.vertx:vertx-lang-kotlin:4.0.0-milestone3",
-        "io.vertx:vertx-rx-java2",
-        "org.jboss.logmanager:jboss-logmanager-embedded",
-        "org.jboss.resteasy:resteasy-rxjava2",
-        /*such libs should stay in compile classpath unfortunately, polluting it, this started between 0.23.1 and 0.26.1*/
-        "org.webjars:bootstrap",
-        "org.webjars:swagger-ui",
-        "org.wildfly.common:wildfly-common"
+        "io.micronaut.configuration:micronaut-hibernate-jpa",
+        "io.micronaut.configuration:micronaut-jdbc-hikari",
+        "io.micronaut.data:micronaut-data-hibernate-jpa",
+        "io.micronaut.data:micronaut-data-spring",
+        "io.micronaut.kotlin:micronaut-kotlin-runtime:+",
+        "io.micronaut:micronaut-http-client",
+        "io.micronaut:micronaut-http-server",
+        "io.micronaut:micronaut-http-server-netty",
+        "io.micronaut:micronaut-runtime",
+        "io.micronaut:micronaut-spring",
+        "io.micronaut:micronaut-validation", //io.micronaut.configuration:micronaut-hibernate-validator
+        "org.springframework.boot:spring-boot-starter-web:+",
+        "org.springframework:spring-orm",
+        "org.springframework:spring-tx:5.2.2.RELEASE"
     ).forEach(::implementation)
 
     arrayOf(
+        enforcedPlatform("io.micronaut:micronaut-bom:1.3.0.M2"),
+        "io.micronaut:micronaut-inject-java",
+        "io.micronaut.spring:micronaut-spring-boot-annotation",
+        "io.micronaut.spring:micronaut-spring-web-annotation",
+        "io.micronaut:micronaut-graal"
+    ).forEach(::kaptTest)
+
+    arrayOf(
+        "io.micronaut.spring:micronaut-spring-boot",
+        "io.micronaut.spring:micronaut-spring-web",
+        "io.micronaut:micronaut-graal",
+        "ognl:ognl:3.1.12",
+        "com.h2database:h2"
+    ).forEach(::runtimeOnly)
+
+    arrayOf(
         kotlin("test-junit5"),
-        "io.quarkus:quarkus-junit5",
-        "io.rest-assured:rest-assured"
+        "io.micronaut.test:micronaut-test-junit5",
+        "io.rest-assured:rest-assured:+"
     ).forEach(::testImplementation)
 }
 
-quarkus {
-    setSourceDir("$projectDir/src/main/kotlin")
-//    setSourceDir("$buildDir/generated/source/kapt/main")
-//    resourcesDir() += file("$projectDir/src/main/resources")
-    setOutputDirectory("$buildDir/classes/kotlin/main")
-}
-
-tasks.test {
-    useJUnitPlatform()
-    exclude("**/Native*")
+tasks {
+    test {
+        useJUnitPlatform()
+        exclude("**/Native*")
+    }
+    (run) {
+        jvmArgs("-noverify", "-XX:TieredStopAtLevel=1", "-Dcom.sun.management.jmxremote")
+    }
+//    shadowJar {
+//
+//        mainClassName = "com.example.marvel.Application"
+//    }
 }

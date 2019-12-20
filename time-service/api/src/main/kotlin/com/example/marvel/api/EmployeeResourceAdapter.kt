@@ -5,7 +5,6 @@ import com.example.marvel.api.EmployeeCommand.EmployeeUpdateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import org.reactivestreams.Publisher
-import java.time.Month
 import java.util.concurrent.CompletionStage
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
@@ -35,7 +34,7 @@ interface EmployeeResourceAdapter {
      */
     fun getEmployees(): Publisher<EmployeeView>
 
-    fun filterEmployees(filter: String?): Publisher<EmployeeView>
+//    fun filterEmployees(filter: String?): Publisher<EmployeeView>
 
     fun createEmployee(
             @NotNull @Valid employee: EmployeeCreateCommand): CompletionStage<EmployeeDetailedView>
@@ -44,10 +43,10 @@ interface EmployeeResourceAdapter {
             @NotNull              id: Long,
             @NotNull @Valid employee: EmployeeUpdateCommand): CompletionStage<EmployeeDetailedView>
 
-    fun getForPeriod(
-            @NotNull    id: Long,
-            @NotNull  year: Int,
-            @NotNull month: Month): Publisher<RecordView>
+//    fun getForPeriod(
+//            @NotNull    id: Long,
+//            @NotNull  year: Int,
+//            @NotNull month: Month): Publisher<RecordView>
 
     fun saveWholePeriod(
             @NotNull             id: Long,

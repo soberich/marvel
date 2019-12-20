@@ -13,7 +13,7 @@ tasks.resolve {
     objectMapperProcessorClass = "com.example.marvel.openapi.OpenApiConfig"
     openApiFile                = file("$rootDir/time-service/app/src/main/resources/META-INF/resources/api.yaml", PathValidation.FILE)
     outputFormat               = YAML
-    outputPath                 =  "$rootDir/app/src/main/resources/META-INF/resources"
+    outputDir                 =  file("$rootDir/time-service/app/src/main/resources/META-INF/resources", PathValidation.DIRECTORY)
     prettyPrint                = true
     //Don't need it in jaxrs as Quarkus don't need Application class
 //    readerClass                = "com.example.marvel.openapi.ApplicationPathReader"

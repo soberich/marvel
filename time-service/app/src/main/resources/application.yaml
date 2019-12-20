@@ -1,0 +1,23 @@
+micronaut:
+  application:
+    name: marvel
+datasources:
+  default:
+    url: ${JDBC_URL:`jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE`}
+    username: ${JDBC_USER:sa}
+    password: ${JDBC_PASSWORD:""}
+    driverClassName: ${JDBC_DRIVER:org.h2.Driver}
+jackson:
+  bean-introspection-module: true
+jpa:
+  default:
+#    packages-to-scan:
+#      - 'example.micronaut.domain'
+    properties:
+      hibernate:
+        format_sql: true
+        hbm2ddl:
+          auto: update
+        implicit_naming_strategy: com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
+        physical_naming_strategy: com.example.marvel.convention.jpa.naming.PhysicalNamingStrategyImpl
+        show_sql: true

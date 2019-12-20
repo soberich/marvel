@@ -11,6 +11,7 @@ import io.swagger.v3.oas.integration.api.ObjectMapperProcessor;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
+import io.swagger.v3.oas.models.media.EmailSchema;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
@@ -26,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -40,11 +42,13 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
 
     private static final List<String>
             STREAMING_CLASSES  = asList(
-                "arrow.data.ListK",
                 "arrow.core.ListK",
-                "org.reactivestreams.Publisher",
+                "arrow.data.ListK",
                 "io.reactivex.Flowable",
-                "io.reactivex.Observable"
+                "io.reactivex.Observable",
+                "org.reactivestreams.Publisher",
+                "org.springframework.data.domain.Page",
+                "org.springframework.data.domain.Slice"
             ),
             WRAPPER_CLASSES    = asList(
                 "java.util.concurrent.CompletionStage",
@@ -78,22 +82,33 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
                 Class<?> cls = _type.getRawClass();
                 // Try to put checks in the order from most frequently-used
                 // to less frequently-used in the code-base
+//                if (Temporal.class.isAssignableFrom(cls) && (type.getPropertyName().equalsIgnoreCase("dateCreated") || type.getPropertyName().equalsIgnoreCase("dateModified")))
+//                    return null;
+//                if (Number.class.isAssignableFrom(cls) || cls.isPrimitive() && type.getPropertyName().equalsIgnoreCase("version"))
+//                    return null;
                 if (Instant.class.isAssignableFrom(cls) || LocalDateTime.class.isAssignableFrom(cls))
                     return new ComposedSchema().anyOf(asList(new DateTimeSchema(), new IntegerSchema().format("int64"), new NumberSchema())).example(1544391144);
                 if (Date.class.isAssignableFrom(cls) || LocalDate.class.isAssignableFrom(cls))
                     return new ComposedSchema().anyOf(asList(new DateSchema(), new IntegerSchema().format("int64"), new NumberSchema())).example(1544391144);
                 if (Year.class.isAssignableFrom(cls))
+                    //language=RegExp
                     return new ComposedSchema().anyOf(asList(new StringSchema(), new IntegerSchema())).pattern("[0-9]{4}").example(2018);
                 if (Period.class.isAssignableFrom(cls))
+                    //language=RegExp
                     return new StringSchema().format("ISO 8601").pattern("([-+]?)P(?:([-+]?[0-9]+)Y)?(?:([-+]?[0-9]+)M)?(?:([-+]?[0-9]+)W)?(?:([-+]?[0-9]+)D)?").example("-P3Y+6M25W-15D");
                 if (ZoneId.class.isAssignableFrom(cls) || TimeZone.class.isAssignableFrom(cls))
                     return new StringSchema().format("time-zone").example("UTC");
                 if (Locale.class.isAssignableFrom(cls))
+                    //language=RegExp
                     return new StringSchema().format("IETF BCP 47").pattern("(?<lang>[a-z]{2,8})(?:_(?<country>(?:[a-z]{2})|(?:[0-9]{3})))?").example(Locale.ENGLISH);
                 if (ByteBuffer.class.isAssignableFrom(cls))
                     return new FileSchema();
                 if (StreamingOutput.class.isAssignableFrom(cls))
                     return new FileSchema();
+                if (String.class.isAssignableFrom(cls) && type.getPropertyName().equalsIgnoreCase("email"))
+                    return new EmailSchema();
+                if (Currency.class.isAssignableFrom(cls))
+                    return new StringSchema().example("USD");
             }
         }
         return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;

@@ -78,6 +78,6 @@ class ImplicitNamingStrategyImpl : ImplicitNamingStrategyJpaCompliantImpl() {
 
     companion object {
         @JvmStatic
-        val INSTANCE: ImplicitNamingStrategyImpl = ImplicitNamingStrategyImpl()
+        val INSTANCE = ImplicitNamingStrategyImpl()
     }
 }

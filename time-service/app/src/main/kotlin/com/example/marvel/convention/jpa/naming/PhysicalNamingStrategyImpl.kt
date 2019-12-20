@@ -1,6 +1,8 @@
 package com.example.marvel.convention.jpa.naming
 
 import com.example.marvel.convention.utils.Inflector
+import io.micronaut.context.annotation.Replaces
+import io.micronaut.data.hibernate.naming.DefaultPhysicalNamingStrategy
 import org.hibernate.boot.model.naming.Identifier
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment
@@ -9,8 +11,9 @@ import kotlin.text.RegexOption.IGNORE_CASE
 /**
  * Port from java
  * TODO: Make Inherited entities inherit id path
+ * FIXME: Replaces non-portable
  */
-
+@Replaces(DefaultPhysicalNamingStrategy::class)
 class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
 
     override fun toPhysicalTableName(id: Identifier?, ctx: JdbcEnvironment?): Identifier? {

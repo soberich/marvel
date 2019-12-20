@@ -20,6 +20,7 @@ import javax.persistence.IdClass
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.NamedQuery
+import javax.persistence.Transient
 
 /**
  * FIXME:
@@ -51,10 +52,12 @@ class RecordEntity : BusinessKeyIdentityOf<RecordEntity.RecordId>() {
     JoinColumn(updatable = false)]
     lateinit var report                       : RecordCollectionEntity
 
+    @get:
+    [Transient]
     override var id: RecordId
-        get() = RecordId(report.id, date, type)
+        get() = RecordId(report, date, type)
         set(value) {
-            report.id = value.id
+            report = value.report
             date = value.date
             type = value.type
         }
@@ -63,5 +66,5 @@ class RecordEntity : BusinessKeyIdentityOf<RecordEntity.RecordId>() {
      * This could be a just Tuple3
      * but we push to keep hexagonal: less imports (from arrow in this layer) => better.
      */
-    data class RecordId(var id: Long?, var date: LocalDate, var type: RecordType) : Serializable
+    data class RecordId(var report: RecordCollectionEntity, var date: LocalDate = LocalDate.MIN, var type: RecordType = RecordType.OTHER) : Serializable
 }

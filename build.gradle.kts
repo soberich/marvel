@@ -13,6 +13,11 @@ subprojects {
         jcenter()
         maven("https://repository.jboss.org/nexus/content/repositories/public")
         maven("https://repo.spring.io/milestone")
+        maven("https://dl.bintray.com/micronaut/core-releases-local") {
+            content {
+                includeGroupByRegex("io\\.micronaut.*")
+            }
+        }
         maven("https://dl.bintray.com/kotlin/kotlin-eap") {
             content {
                 includeGroup("org.jetbrains.kotlin")
@@ -39,21 +44,21 @@ subprojects {
      * FIXME: Delete all below when Runtime considers multiple dirs for classpath and sourcepath.
      * FIXME: It only works starting from 2nd launch of `quarkusDev` (e.g. with `FROM-CACHE`)
      */
-    apply(plugin = "java")
-    tasks {
-        val `copy classes workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
-            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
-            from("$buildDir/classes/java")
-            into("$buildDir/classes/kotlin")
-        }
-        val `copy resources workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
-            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
-            from("$projectDir/src/main/resources/META-INF")
-            into("$buildDir/classes/kotlin/main/META-INF")
-        }
-        "classes" {
-            dependsOn += `copy classes workaround quarkus gradle kotlin poor support`
-            dependsOn += `copy resources workaround quarkus gradle kotlin poor support`
-        }
-    }
+//    apply(plugin = "java")
+//    tasks {
+//        val `copy classes workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
+//            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+//            from("$buildDir/classes/java")
+//            into("$buildDir/classes/kotlin")
+//        }
+//        val `copy resources workaround quarkus gradle kotlin poor support` by registering(Copy::class) {
+//            duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+//            from("$projectDir/src/main/resources/META-INF")
+//            into("$buildDir/classes/kotlin/main/META-INF")
+//        }
+//        "classes" {
+//            dependsOn += `copy classes workaround quarkus gradle kotlin poor support`
+//            dependsOn += `copy resources workaround quarkus gradle kotlin poor support`
+//        }
+//    }
 }
