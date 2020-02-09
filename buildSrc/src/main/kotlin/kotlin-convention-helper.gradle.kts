@@ -44,7 +44,9 @@ kapt.javacOptions {
 }
 
 allOpen.annotations(
+    "arrow.optics.optics",
     "io.micronaut.aop.Around",
+    "io.micronaut.core.annotation.Introspected",
     "io.quarkus.test.junit.QuarkusTest",
     "javax.enterprise.context.ApplicationScoped",
     "javax.enterprise.context.RequestScoped",

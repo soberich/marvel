@@ -3,6 +3,7 @@ package com.example.marvel.domain.base
 import java.io.Serializable
 import java.util.Objects
 import javax.persistence.Access
+import javax.persistence.AccessType.FIELD
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.MappedSuperclass
 import javax.persistence.Version
@@ -14,9 +15,12 @@ import javax.persistence.Version
 @Access(PROPERTY)
 abstract class BusinessKeyIdentityOf<T : Serializable> : IdentifiableOf<T> {
 
-    @get:
-    [Version]
-    protected var optimisticVersion = 0
+    /**
+     * To allow creating transient references with default ctor and set them to `@ManyToOne` owning side.
+     */
+    @field:
+    [Version Access(FIELD)]
+    private var optimisticVersion = 0
 
     /**
      *       final override fun equals(other: Any?) = ...

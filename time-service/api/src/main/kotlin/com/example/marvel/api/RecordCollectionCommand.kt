@@ -26,7 +26,6 @@ import javax.validation.constraints.NotNull
 
     companion object
 
-
     @optics data class RecordCollectionCreateCommand(
         override val year                : Int,
         override val month               : Month,
