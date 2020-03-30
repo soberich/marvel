@@ -11,10 +11,19 @@ import com.example.marvel.api.EmployeeView
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import com.example.marvel.api.RecordCollectionDetailedView
+import com.example.marvel.convention.utils.RxStreams
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import org.springframework.http.MediaType
+import org.springframework.transaction.TransactionDefinition
+import org.springframework.transaction.annotation.Isolation
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
+//import org.springframework.transaction.TransactionDefinition
+//import org.springframework.transaction.annotation.Isolation
+//import org.springframework.transaction.annotation.Propagation
+//import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -30,6 +39,7 @@ import javax.inject.Inject
  */
 @RestController("/api")
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
+@Transactional(propagation = Propagation.REQUIRED, timeout = TransactionDefinition.TIMEOUT_DEFAULT, readOnly = false, isolation = Isolation.DEFAULT)
 class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ private val employees: EmployeeBlockingServiceNamespaceImpl) : EmployeeResourceAdapter {
 
     /**
@@ -57,7 +67,7 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
 
     @GetMapping("/employee", produces = ["application/stream+json"])
     override fun getEmployees(): Flowable<EmployeeView> =
-            Flowable.fromIterable(Iterable(employees.streamEmployees()::iterator))
+        RxStreams.fromCallable(employees::streamEmployees).toFlowable(BackpressureStrategy.MISSING)
 //                    .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
 
 //    @GetMapping("/employee/filter")
@@ -73,11 +83,10 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
         return CompletableFuture.completedFuture(createEmployee)
     }
 
-    @PutMapping("/employee/{id:[1-9][0-9]*}")
+    @PutMapping("/employee")
     override fun updateEmployee(
-        @PathVariable("id") id: Long,
         @RequestBody employee: EmployeeUpdateCommand): CompletionStage<EmployeeDetailedView> = CompletableFuture.supplyAsync {
-        employees.updateEmployee(id, employee)
+        employees.updateEmployee(employee)
     }
 
 //    @GetMapping("/employee/{id:[1-9][0-9]*}/records")
@@ -87,17 +96,15 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
 //        @RequestParam("month") month: Month): Flowable<RecordView> =
 //        Flowable.fromIterable(Iterable(employees.listForPeriod(id, Year.of(year), month)::iterator))
 
-    @PostMapping("/employee/{id:[1-9][0-9]*}/records")
+    @PostMapping("/employee/records")
     override fun saveWholePeriod(
-        @PathVariable("id") id: Long,
         @RequestBody records: RecordCollectionCreateCommand): CompletionStage<RecordCollectionDetailedView> = CompletableFuture.supplyAsync {
-        employees.createWholePeriod(id, records) ?: throw RuntimeException()
+        employees.createWholePeriod(records) ?: throw RuntimeException()
     }
 
-    @PutMapping("/employee/{id:[1-9][0-9]*}/records")
+    @PutMapping("/employee/records")
     override fun adjustWholePeriod(
-        @PathVariable("id") id: Long,
         @RequestBody records: RecordCollectionUpdateCommand): CompletionStage<RecordCollectionDetailedView> = CompletableFuture.supplyAsync {
-        employees.updateWholePeriod(id, records) ?: throw RuntimeException()
+        employees.updateWholePeriod(records) ?: throw RuntimeException()
     }
 }

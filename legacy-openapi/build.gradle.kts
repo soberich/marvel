@@ -7,7 +7,7 @@ plugins {
 
 tasks.resolve {
     description                = "At build-time (on demand) task. Creates an openapi.yaml definition file in `app`"
-    group                      = "documentation"
+    group                      = JavaBasePlugin.DOCUMENTATION_GROUP
     classpath                  = project.sourceSets.main.get().runtimeClasspath
     modelConverterClasses      = linkedSetOf("com.example.marvel.openapi.OpenApiConfig")
     objectMapperProcessorClass = "com.example.marvel.openapi.OpenApiConfig"
@@ -21,5 +21,6 @@ tasks.resolve {
 }
 
 dependencies {
+    implementation(project(":shared-convention"))
     implementation(project(":time-service.app"))
 }

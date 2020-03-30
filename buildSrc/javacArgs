@@ -6,6 +6,15 @@
 -parameters
 -Amapstruct.defaultComponentModel=spring
 -AaddSuppressWarningsAnnotation=true
+-Amicronaut.processing.incremental=true
+-Amicronaut.processing.annotations=com.example.*
 -verbose
 -XprintRounds
 -XprintProcessorInfo
+-Xmaxwarns
+500
+-Xmaxerrs
+500
+-encoding
+UTF-8
+--enable-preview

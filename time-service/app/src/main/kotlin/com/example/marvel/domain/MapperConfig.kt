@@ -9,11 +9,11 @@ import org.mapstruct.ReportingPolicy.ERROR
 import org.mapstruct.ReportingPolicy.WARN
 
 @MapperConfig(
-        injectionStrategy                 = CONSTRUCTOR,
-        mappingInheritanceStrategy        = AUTO_INHERIT_ALL_FROM_CONFIG,
-        nullValueCheckStrategy            = ALWAYS,
-        nullValuePropertyMappingStrategy  = IGNORE,
-        typeConversionPolicy              = ERROR,
-        unmappedSourcePolicy              = WARN,
-        unmappedTargetPolicy              = ERROR)
+    injectionStrategy                = CONSTRUCTOR,
+    mappingInheritanceStrategy       = AUTO_INHERIT_ALL_FROM_CONFIG,
+    nullValueCheckStrategy           = ALWAYS,
+    nullValuePropertyMappingStrategy = IGNORE,
+    typeConversionPolicy             = ERROR,
+    unmappedSourcePolicy             = WARN,
+    unmappedTargetPolicy             = ERROR)
 interface MapperConfig

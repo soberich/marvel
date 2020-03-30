@@ -1,22 +1,21 @@
 package com.example.marvel.api
 
 import arrow.core.ListK
-import arrow.optics.optics
 import java.math.BigDecimal
 import java.time.LocalDate
 import javax.validation.constraints.NotNull
 
 
-@optics sealed class RecordCommand {
+/*@optics*/ sealed class RecordCommand {
     abstract val date                : LocalDate
     abstract val type                : RecordType
     abstract val hoursSubmitted      : BigDecimal
     abstract val desc                : String?
     abstract val recordCollectionId  : Long
 
-    companion object
+    companion object {}
 
-    @optics data class RecordCreateCommand(
+    /*@optics*/ data class RecordCreateCommand(
         @get:
         [NotNull]
         override val date                : LocalDate,
@@ -32,7 +31,7 @@ import javax.validation.constraints.NotNull
         override val recordCollectionId  : Long
     ) : RecordCommand() { companion object }
 
-    @optics data class RecordUpdateCommand(
+    /*@optics*/ data class RecordUpdateCommand(
         @get:
         [NotNull]
         val id                           : Long,
@@ -54,7 +53,7 @@ import javax.validation.constraints.NotNull
     /**
      * no-op
      */
-    @optics data class RecordRequests(val records: ListK<RecordCommand>) : List<RecordCommand> by records { companion object }
+    /*@optics*/ data class RecordRequests(val records: ListK<RecordCommand>) : List<RecordCommand> by records { companion object }
 }
 
 

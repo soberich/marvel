@@ -11,7 +11,7 @@ plugins {
     `build-dashboard`                                         // optional
     `help-tasks`                                              // optional
     `project-report`                                          // optional
-    id("com.github.ben-manes.versions")      version "0.27.0" // optional
+    id("com.github.ben-manes.versions")      version "0.28.0" // optional
     id("se.patrikerdes.use-latest-versions") version "0.2.13" // optional
 }
 
@@ -38,34 +38,36 @@ repositories {
 
 kotlinDslPluginOptions {
     experimentalWarning.set(false)
-    jvmTarget.set((JavaVersion.current().takeUnless(JavaVersion::isJava12Compatible) ?: JavaVersion.VERSION_12).toString())
+    jvmTarget.set((JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_13) } ?: JavaVersion.VERSION_13).toString())
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_14
     targetCompatibility = JavaVersion.current()
 }
 
 tasks {
     withType<KotlinCompile<*>>().configureEach {
-        kotlinOptions {
-            suppressWarnings = false
-            verbose          = true
-            freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs"))
-        }
+        kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs"))
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless(JavaVersion::isJava12Compatible) ?: JavaVersion.VERSION_12).toString()
+        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_13) } ?: JavaVersion.VERSION_13).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
             Files.lines(Paths.get("$rootDir", "javacArgs")).forEach(compilerArgs::add)
         }
     }
+    withType<Test>().configureEach {
+        jvmArgs("--enable-preview")
+    }
+    withType<JavaExec>().configureEach {
+        jvmArgs("--enable-preview")
+    }
 }
 
-//val kotlinVersion = "1.3.6+"
-val kotlinVersion = KotlinVersion(1, 3, 61).toString()
+val kotlinVersion = "1.4-M1"
+//val kotlinVersion = KotlinVersion(1, 3, 71).toString()
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
@@ -80,15 +82,18 @@ val kotlinVersion = KotlinVersion(1, 3, 61).toString()
     implementation(kotlin("noarg"            , kotlinVersion))
     implementation(kotlin("sam-with-receiver", kotlinVersion))
 //    implementation(kotlin("serialization", kotlinVersion))
-    implementation("com.github.ben-manes",                              "gradle-versions-plugin",                   "0.27.0")
+    implementation("com.github.ben-manes",                              "gradle-versions-plugin",                   "0.28.0")
     implementation("com.vanniktech",                                    "gradle-dependency-graph-generator-plugin", "0.5.0")
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
     implementation("gradle.plugin.com.webcohesion.enunciate",           "enunciate-gradle",                         "+")
     implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext","gradle-idea-ext",                          "0.7")
     implementation("io.ebean",                                          "ebean-gradle-plugin",                      "+")
+    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.3.0.M3")
     implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "+")
+    implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
     implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "+")
     implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "+")
+    implementation("gradle.plugin.com.btkelly",                         "gnag",                                     "+")
 }
 
 /**
@@ -102,7 +107,7 @@ gradlePlugin {
                 .map(Path::toAbsolutePath)
                 .forEach { absolutePluginPath ->
                     val name = absolutePluginPath.fileName.toString().substringBeforeLast(".")
-                        .replace('$', Char.MIN_VALUE) //FIXME: `Char.MIN_VALUE` is probably incorrect
+                        .replace("$", "") //FIXME: `Char.MIN_VALUE` is probably incorrect
                         .replace("""((?!^)[^_])([A-Z0-9]+)""".toRegex(), "$1-$2").toLowerCase()
                     register(name) {
                         id = name.substringBeforeLast("-plugin")

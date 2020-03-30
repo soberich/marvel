@@ -1,12 +1,12 @@
 package com.example.marvel.domain.base
 
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.io.Serializable
 import java.time.Instant
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 
 /**
@@ -34,21 +34,15 @@ import javax.persistence.MappedSuperclass
  */
 @MappedSuperclass
 @Access(PROPERTY)
-abstract class AbstractAuditingEntity<T : Serializable>(
-    @get:
-    [Id
-    GeneratedValue
-    Column(updatable = false)]
-    override
-    var id                   : T
-) : BusinessKeyIdentityOf<T>() {
+abstract class AbstractAuditingEntity<T : Serializable> : BusinessKeyIdentityOf<T>() {
 
     @get:
     [Column(nullable = false, updatable = false, length = 50)]
     var createdBy           : String? = null
 
     @get:
-    [Column(nullable = false, updatable = false)]
+    [CreationTimestamp
+    Column(nullable = false, updatable = false)]
     var createdDate         : Instant = Instant.now()
 
     @get:
@@ -56,6 +50,7 @@ abstract class AbstractAuditingEntity<T : Serializable>(
     var lastModifiedBy      : String? = null
 
     @get:
-    [Column(nullable = false)]
+    [UpdateTimestamp
+    Column(nullable = false)]
     var lastModifiedDate    : Instant = Instant.now()
 }

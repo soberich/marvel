@@ -27,6 +27,9 @@ import javax.persistence.UniqueConstraint
             UniqueConstraint(columnNames = ["email"]),
             UniqueConstraint(columnNames = ["name"])])
 @Access(PROPERTY)
+//@DynamicUpdate
+//@SelectBeforeUpdate
+//@OptimisticLocking(type = DIRTY)
 class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
     @get:
     [Column(nullable = false)]
@@ -37,6 +40,6 @@ class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
 
     @get:
     [OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)]
-    lateinit var records                               : List<RecordCollectionEntity>
+    var records                                        : List<RecordCollectionEntity> = mutableListOf()
 }
 

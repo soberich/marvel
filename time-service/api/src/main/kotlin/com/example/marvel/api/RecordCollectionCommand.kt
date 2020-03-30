@@ -1,13 +1,12 @@
 package com.example.marvel.api
 
 import arrow.core.ListK
-import arrow.optics.optics
 import java.time.Month
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
-@optics sealed class RecordCollectionCommand {
+/*@optics*/ sealed class RecordCollectionCommand {
     @get:
     [NotNull]
     abstract val year                : Int
@@ -26,7 +25,7 @@ import javax.validation.constraints.NotNull
 
     companion object
 
-    @optics data class RecordCollectionCreateCommand(
+    /*@optics*/ data class RecordCollectionCreateCommand(
         override val year                : Int,
         override val month               : Month,
         override val projectId           : String,
@@ -36,7 +35,7 @@ import javax.validation.constraints.NotNull
         override val records             : ListK<@Valid RecordCommand.RecordCreateCommand>
     ) : RecordCollectionCommand() { companion object }
 
-    @optics data class RecordCollectionUpdateCommand(
+    /*@optics*/ data class RecordCollectionUpdateCommand(
         @get:
         [NotNull]
         val id                           : Long,
@@ -52,6 +51,6 @@ import javax.validation.constraints.NotNull
     /**
      * no-op
      */
-    @optics data class RecordCollectionCommands(val reports: ListK<RecordCollectionCommand>) : List<RecordCollectionCommand> by reports { companion object }
+    /*@optics*/ data class RecordCollectionCommands(val reports: ListK<RecordCollectionCommand>) : List<RecordCollectionCommand> by reports { companion object }
 }
 

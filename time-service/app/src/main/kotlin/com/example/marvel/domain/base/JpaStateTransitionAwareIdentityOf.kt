@@ -11,24 +11,12 @@ import javax.persistence.Transient
  */
 @MappedSuperclass
 @Access(PROPERTY)
-abstract class JpaStateTransitionAwareIdentityOf<T : Serializable> : BusinessKeyIdentityOf<T>() {
+abstract class JpaStateTransitionAwareIdentityOf<T : Serializable> : AbstractAuditingEntity<T>() {
 
+    @Suppress("JpaAttributeTypeInspection")
     @get:
     [Transient]
-    @Volatile private var bucketDisperser: Any? = null
-        get() {
-            if (field != null || field == null && id == null) {
-                if (field == null) {
-                    synchronized(this) {
-                        if (field == null) {
-                            field = Any()
-                        }
-                    }
-                }
-                return field
-            }
-            return id
-        }
+    private val bucketDisperser by lazy { id ?: Any() }
 
     override fun equals(other: Any?) = when {
         this === other                                 -> true

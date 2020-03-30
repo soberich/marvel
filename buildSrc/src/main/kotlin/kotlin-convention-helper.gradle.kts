@@ -16,26 +16,29 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_14
     targetCompatibility = JavaVersion.current()
 }
 
 tasks {
     withType<KotlinCompile<*>>().configureEach {
-        kotlinOptions {
-            suppressWarnings = false
-            verbose          = true
-            freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))
-        }
+        kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless(JavaVersion::isJava12Compatible) ?: JavaVersion.VERSION_12).toString()
+        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_13) } ?: JavaVersion.VERSION_13).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
             isFork = true
+            forkOptions.jvmArgs = listOf("--enable-preview")
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach(compilerArgs::add)
         }
+    }
+    withType<Test>().configureEach {
+        jvmArgs("--enable-preview")
+    }
+    withType<JavaExec>().configureEach {
+        jvmArgs("--enable-preview")
     }
 }
 
@@ -59,6 +62,21 @@ noArg.annotations(
     "javax.inject.Named",
     "javax.ws.rs.Path"
 )
+
+//gnag {
+//    isEnabled = true
+//    setFailOnError(true)
+//
+//    ktlint { isEnabled = true }
+//
+//    github {
+//        repoName("btkelly/android-svsu-acm-20131120")
+//        authToken("0000000000000")
+//        issueNumber("1")
+//        setCommentInline(true)
+//        setCommentOnSuccess(true)
+//    }
+//}
 
 dependencies {
     //BOM

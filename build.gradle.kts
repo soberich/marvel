@@ -1,4 +1,4 @@
-check(JavaVersion.current().isJava8Compatible) { "At least Java 8 is required, current JVM is ${JavaVersion.current()}" }
+check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 8 is required, current JVM is ${JavaVersion.current()}" }
 
 subprojects {
     apply(plugin = "build-dashboard")

@@ -3,6 +3,7 @@ package com.example.marvel.openapi;
 import com.example.marvel.convention.serial.Json;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -27,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
+import java.time.temporal.Temporal;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Iterator;
@@ -63,7 +65,7 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
                 "java.lang.Void"
             );
 
-    private static final Json mapper = new Json();
+    private static final JsonMapper mapper = Json.getConfiguredBuilder().build();
 
     @Override
     public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
@@ -82,10 +84,10 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
                 Class<?> cls = _type.getRawClass();
                 // Try to put checks in the order from most frequently-used
                 // to less frequently-used in the code-base
-//                if (Temporal.class.isAssignableFrom(cls) && (type.getPropertyName().equalsIgnoreCase("dateCreated") || type.getPropertyName().equalsIgnoreCase("dateModified")))
-//                    return null;
-//                if (Number.class.isAssignableFrom(cls) || cls.isPrimitive() && type.getPropertyName().equalsIgnoreCase("version"))
-//                    return null;
+                if (Temporal.class.isAssignableFrom(cls) && (type.getPropertyName().equalsIgnoreCase("dateCreated") || type.getPropertyName().equalsIgnoreCase("dateModified")))
+                    return null;
+                if (Number.class.isAssignableFrom(cls) || cls.isPrimitive() && type.getPropertyName().equalsIgnoreCase("version"))
+                    return null;
                 if (Instant.class.isAssignableFrom(cls) || LocalDateTime.class.isAssignableFrom(cls))
                     return new ComposedSchema().anyOf(asList(new DateTimeSchema(), new IntegerSchema().format("int64"), new NumberSchema())).example(1544391144);
                 if (Date.class.isAssignableFrom(cls) || LocalDate.class.isAssignableFrom(cls))
@@ -116,13 +118,21 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
 
     @Override
     public void processJsonObjectMapper(ObjectMapper mapper) {
-        Json.configure(mapper);
-        mapper.enable(SORT_PROPERTIES_ALPHABETICALLY);
+        mapper
+            .setConfig(OpenApiConfig.mapper.getDeserializationConfig())
+            .setConfig(OpenApiConfig.mapper.getSerializationConfig())
+            .setPropertyNamingStrategy(OpenApiConfig.mapper.getPropertyNamingStrategy())
+            .setVisibility(OpenApiConfig.mapper.getVisibilityChecker())
+            .enable(SORT_PROPERTIES_ALPHABETICALLY);
     }
 
     @Override
     public void processYamlObjectMapper(ObjectMapper mapper) {
-        Json.configure(mapper);
-        mapper.enable(SORT_PROPERTIES_ALPHABETICALLY);
+        mapper
+            .setConfig(OpenApiConfig.mapper.getDeserializationConfig())
+            .setConfig(OpenApiConfig.mapper.getSerializationConfig())
+            .setPropertyNamingStrategy(OpenApiConfig.mapper.getPropertyNamingStrategy())
+            .setVisibility(OpenApiConfig.mapper.getVisibilityChecker())
+            .enable(SORT_PROPERTIES_ALPHABETICALLY);
     }
 }

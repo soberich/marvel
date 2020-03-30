@@ -18,7 +18,7 @@ public interface Deps {
         String ANNOTATION        = "[1.3,2)";
         String CDI               = "[2,3)";
         String CONCURRENT        = "[1.1,2)";
-        String HIBERNATE         = "[5.3,6)";
+        String HIBERNATE         = "[5.4,6)";
         String INJECT            = "(0,3)";
         String JAX_RS            = "[2.1,2.2)";
         String JAXB              = "[2.3,2.5)";
@@ -31,16 +31,16 @@ public interface Deps {
         String TRANSACTION       = "[1.3,2)";
         String VALIDATION        = "[2,2.1)";
 
-        String ARROW             = "0.10.2";
+        String ARROW             = "0.10.4";
         String COROUTINES        = "+";
-        String EBEAN             = "12.1.2";
-        String EBEAN_ANNOTATION  = "6.1";
-        String EBEAN_PERSISTENCE = "2.2.2";
+        String EBEAN             = "12.2.1";
+        String EBEAN_ANNOTATION  = "6.11";
+        String EBEAN_PERSISTENCE = "2.2.4";
         String EBEAN_QUERY       = EBEAN;
         String EBEAN_QUERY_GEN   = EBEAN;
         String EBEAN_TEST        = EBEAN;
         String HIKARI            = "+";
-        String IMMUTABLES        = "2.8.1";
+        String IMMUTABLES        = "2.8.3";
         String JACKSON_COREUTILS = "1.8";
         String JACKSON_MONEY     = "1.1.1";
         String JBOSS_LOG         = "2.1.4.Final";
@@ -72,6 +72,7 @@ public interface Deps {
         String BLAZE_JPA    = "com.blazebit:blaze-persistence-bom"                       + ':' + versioning.Platforms.Versions.BLAZE_JPA;
         String COROUTINES   = "org.jetbrains.kotlinx:kotlinx-coroutines-bom"             + ':' + versioning.Platforms.Versions.COROUTINES;
         String JACKSON      = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
+        String MICRONAUT    = "io.micronaut:micronaut-bom"                               + ':' + versioning.Platforms.Versions.MICRONAUT;
         String QUARKUS      = "io.quarkus:quarkus-bom"                                   + ':' + versioning.Platforms.Versions.QUARKUS;
         String RESTEASY     = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
         String STATEMACHINE = "org.springframework.statemachine:spring-statemachine-bom" + ':' + versioning.Platforms.Versions.STATEMACHINE;

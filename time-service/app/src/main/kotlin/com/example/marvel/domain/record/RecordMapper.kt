@@ -14,11 +14,19 @@ abstract class RecordMapper : GenericMapper<RecordEntity>() {
 
     @Mappings(
         Mapping(target = "id", ignore = true),
+        Mapping(target = "createdBy", ignore = true),
+        Mapping(target = "createdDate", ignore = true),
+        Mapping(target = "lastModifiedBy", ignore = true),
+        Mapping(target = "lastModifiedDate", ignore = true),
         Mapping(source = "recordCollectionId", target = "report.id"))
     abstract fun toEntity(source: RecordCommand.RecordCreateCommand): RecordEntity
 
     @Mappings(
         Mapping(target = "id", ignore = true),
+        Mapping(target = "createdBy", ignore = true),
+        Mapping(target = "createdDate", ignore = true),
+        Mapping(target = "lastModifiedBy", ignore = true),
+        Mapping(target = "lastModifiedDate", ignore = true),
         Mapping(source = "id", target = "report.id"))
     abstract fun toEntity(source: RecordCommand.RecordUpdateCommand): RecordEntity
 

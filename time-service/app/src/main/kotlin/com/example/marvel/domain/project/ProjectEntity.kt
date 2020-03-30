@@ -1,6 +1,6 @@
 package com.example.marvel.domain.project
 
-import com.example.marvel.domain.base.BusinessKeyIdentityOf
+import com.example.marvel.domain.base.AbstractAuditingEntity
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
@@ -9,7 +9,10 @@ import javax.persistence.Id
 
 @Entity
 @Access(PROPERTY)
-class ProjectEntity : BusinessKeyIdentityOf<String>() {
+//@DynamicUpdate
+//@SelectBeforeUpdate
+//@OptimisticLocking(type = DIRTY)
+class ProjectEntity : AbstractAuditingEntity<String>() {
     @get:
     [Id
     Column(name = "name", length = 50)]

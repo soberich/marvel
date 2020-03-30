@@ -19,7 +19,8 @@ abstract class BusinessKeyIdentityOf<T : Serializable> : IdentifiableOf<T> {
      * To allow creating transient references with default ctor and set them to `@ManyToOne` owning side.
      */
     @field:
-    [Version Access(FIELD)]
+    [Version
+    Access(FIELD)]
     private var optimisticVersion = 0
 
     /**

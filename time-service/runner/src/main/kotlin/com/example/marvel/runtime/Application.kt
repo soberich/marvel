@@ -1,18 +1,10 @@
-package com.example.marvel
+package com.example.marvel.runtime
 
-import com.example.marvel.api.EmployeeCommand
-import io.micronaut.core.annotation.Introspected
 import io.micronaut.runtime.Micronaut
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Contact
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.info.License
-
-@Introspected(classes = [
-    EmployeeCommand::class,
-    EmployeeCommand.EmployeeCreateCommand::class,
-    EmployeeCommand.EmployeeUpdateCommand::class
-])
 
 @OpenAPIDefinition(
     info = Info(
@@ -27,6 +19,6 @@ object Application {
 
     @JvmStatic
     fun main(vararg args: String) {
-        Micronaut.run(Application::class.java)
+        Micronaut.run(Application::class.java, *args)
     }
 }

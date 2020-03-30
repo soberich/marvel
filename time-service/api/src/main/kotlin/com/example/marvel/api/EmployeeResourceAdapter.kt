@@ -12,9 +12,9 @@ import javax.validation.constraints.NotNull
 /**
  * We use interfaces also for a great Micronaut / Quarkus / RestEasy capability - declarative / proxy client creation.
  * We can later take this interface and just use it, say in tests, instead of additional boilerplate with Restassured.
- * TODO: This should/could be wrapped with GRPC service by SalesForce (Reactive-GRPS).
+ * TODO: This should/could be wrapped with GRPC service by SalesForce (Reactive-GRPC).
  *    Or a more generic and proper solution is to use same interface from REST endpoint, and provide another
- *    runtime with GRPC as exchange instead REST. Presumably SalesForce (Reactive-GRPS) should allow that.
+ *    runtime with GRPC as exchange instead REST. Presumably SalesForce (Reactive-GRPC) should allow that.
  */
 interface EmployeeResourceAdapter {
 
@@ -40,7 +40,6 @@ interface EmployeeResourceAdapter {
             @NotNull @Valid employee: EmployeeCreateCommand): CompletionStage<EmployeeDetailedView>
 
     fun updateEmployee(
-            @NotNull              id: Long,
             @NotNull @Valid employee: EmployeeUpdateCommand): CompletionStage<EmployeeDetailedView>
 
 //    fun getForPeriod(
@@ -49,13 +48,11 @@ interface EmployeeResourceAdapter {
 //            @NotNull month: Month): Publisher<RecordView>
 
     fun saveWholePeriod(
-            @NotNull             id: Long,
             @NotNull @Valid records: RecordCollectionCreateCommand) : CompletionStage<RecordCollectionDetailedView>
 
     /**
      * !!No creation on PUT verb
      */
     fun adjustWholePeriod(
-            @NotNull             id: Long,
             @NotNull @Valid records: RecordCollectionUpdateCommand) : CompletionStage<RecordCollectionDetailedView>
 }

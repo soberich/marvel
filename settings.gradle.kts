@@ -29,7 +29,8 @@ pluginManagement {
 
 include(
     ":gatling",
-    ":legacy-openapi"
+    ":legacy-openapi",
+    ":shared-convention"
 )
 
 for (serviceDir in setOf("time-service")) {

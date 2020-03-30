@@ -1,28 +1,33 @@
 package com.example.marvel.domain.employee
 
+//import org.springframework.transaction.annotation.Propagation
+//import javax.transaction.Transactional
 import com.example.marvel.api.EmployeeCommand
 import com.example.marvel.api.EmployeeDetailedView
 import com.example.marvel.api.EmployeeView
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import com.example.marvel.api.RecordCollectionDetailedView
+import com.example.marvel.domain.recordcollection.RecordCollectionEntity
 import com.example.marvel.domain.recordcollection.RecordCollectionMapper
 import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import com.kumuluz.ee.rest.beans.QueryParameters
 import com.kumuluz.ee.rest.utils.JPAUtils
 import org.springframework.stereotype.Service
+import org.springframework.transaction.TransactionDefinition.TIMEOUT_DEFAULT
+import org.springframework.transaction.annotation.Isolation.DEFAULT
+import org.springframework.transaction.annotation.Propagation.REQUIRED
+import org.springframework.transaction.annotation.Transactional
 import java.util.stream.Stream
 import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
-import javax.transaction.Transactional
-import javax.transaction.Transactional.TxType.NOT_SUPPORTED
 
 /**
  * This is WIP!
  */
 @Service
-@Transactional
+@Transactional(propagation = REQUIRED, timeout = TIMEOUT_DEFAULT, readOnly = false, isolation = DEFAULT)
 class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
 //    private val employeeRepository: EmployeeRepository,
     private val empMapper: EmployeeMapper,
@@ -37,7 +42,7 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     /**
      * @implNote Stream should be open on consumer side. Transaction will close it.
      */
-    @Transactional(NOT_SUPPORTED)
+//    @Transactional(propagation = NOT_SUPPORTED, readOnly = false)
     override fun streamEmployees(): Stream<EmployeeView> =
             em.createNamedQuery("Employee.stream", EmployeeListingView::class.java)
                     .resultStream
@@ -50,16 +55,16 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     override fun createEmployee(employee: EmployeeCommand.EmployeeCreateCommand): EmployeeDetailedView =
         empMapper.toEntity(employee).also(em::persist).let(empMapper::toCreateView)
 
-    override fun updateEmployee(employeeId: Long, employee: EmployeeCommand.EmployeeUpdateCommand): EmployeeDetailedView? =
-        empMapper.toEntity(employeeId, employee).let(empMapper::toUpdateView)
+    override fun updateEmployee(employee: EmployeeCommand.EmployeeUpdateCommand): EmployeeDetailedView? =
+        empMapper.toEntity(employee.id, employee).let(empMapper::toUpdateView)
 
 //    override fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView> = employeeRepository.listForPeriod(employeeId, year.value, month)
 
-    override fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDetailedView? =
-            em.find(EmployeeEntity::class.java, employeeId)?.let { recColMapper.toCreateView(recColMapper.toEntity(it.id, records).also(em::persist)) }
+    override fun createWholePeriod(records: RecordCollectionCreateCommand): RecordCollectionDetailedView? =
+            recColMapper.toCreateView(recColMapper.toEntity(records).also(em::persist))
 
-    override fun updateWholePeriod(employeeId: Long, records: RecordCollectionUpdateCommand): RecordCollectionDetailedView? =
-            em.find(EmployeeEntity::class.java, employeeId)?.run { recColMapper.toUpdateView(recColMapper.toEntity(records.id, records).let(em::merge)) }
+    override fun updateWholePeriod(records: RecordCollectionUpdateCommand): RecordCollectionDetailedView? =
+            em.find(RecordCollectionEntity::class.java, records.id)?.let { recColMapper.toUpdateView(recColMapper.toEntity(it.id!!, records).let(em::merge)) }
 
     fun getAnyUserDemo(): EmployeeDetailedView? =
         em.createNamedQuery("Employee.detailed", EmployeeDetailedViewDefault::class.java)

@@ -21,6 +21,9 @@ import javax.persistence.OneToMany
 @Entity
 @Cacheable
 @Access(PROPERTY)
+//@DynamicUpdate
+//@SelectBeforeUpdate
+//@OptimisticLocking(type = DIRTY)
 class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     @get:
     [Column(nullable = false, updatable = false)]
@@ -40,5 +43,5 @@ class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
 
     @get:
     [OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)]
-    lateinit var records                      : List<RecordEntity>
+    var records                               : List<RecordEntity> = mutableListOf()
 }

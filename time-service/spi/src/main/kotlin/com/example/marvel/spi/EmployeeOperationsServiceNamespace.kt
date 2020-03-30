@@ -22,11 +22,11 @@ interface EmployeeOperationsServiceNamespace {
 
     fun createEmployee(employee: EmployeeCreateCommand): EmployeeDetailedView
 
-    fun updateEmployee(employeeId: Long, employee: EmployeeUpdateCommand): EmployeeDetailedView?
+    fun updateEmployee(employee: EmployeeUpdateCommand): EmployeeDetailedView?
 
 //    fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView>
 
-    fun createWholePeriod(employeeId: Long, records: RecordCollectionCreateCommand): RecordCollectionDetailedView?
+    fun createWholePeriod(records: RecordCollectionCreateCommand): RecordCollectionDetailedView?
 
-    fun updateWholePeriod(employeeId: Long, records: RecordCollectionUpdateCommand): RecordCollectionDetailedView?
+    fun updateWholePeriod(records: RecordCollectionUpdateCommand): RecordCollectionDetailedView?
 }

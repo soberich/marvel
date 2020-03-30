@@ -1,7 +1,7 @@
 package com.example.marvel.domain.record
 
 import com.example.marvel.api.RecordType
-import com.example.marvel.domain.base.BusinessKeyIdentityOf
+import com.example.marvel.domain.base.AbstractAuditingEntity
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
 import org.hibernate.annotations.Immutable
 import java.io.Serializable
@@ -33,7 +33,7 @@ import javax.persistence.Transient
 @Cacheable
 @Access(PROPERTY)
 @IdClass(RecordEntity.RecordId::class)
-class RecordEntity : BusinessKeyIdentityOf<RecordEntity.RecordId>() {
+class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
     @get:
     [Id
     Column(nullable = false, updatable = false)]

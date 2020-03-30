@@ -19,12 +19,20 @@ abstract class RecordCollectionMapper : GenericMapper<RecordCollectionEntity>() 
 
     @Mappings(
         Mapping(target = "id", ignore = true),
+        Mapping(target = "createdBy", ignore = true),
+        Mapping(target = "createdDate", ignore = true),
+        Mapping(target = "lastModifiedBy", ignore = true),
+        Mapping(target = "lastModifiedDate", ignore = true),
         Mapping(source = "employeeId", target = "employee.id"),
-        Mapping(source = "source.projectId", target = "project.id"))
-    abstract fun toEntity(employeeId: Long?, source: RecordCollectionCreateCommand): RecordCollectionEntity
+        Mapping(source = "projectId", target = "project.id"))
+    abstract fun toEntity(source: RecordCollectionCreateCommand): RecordCollectionEntity
 
     @Mappings(
         Mapping(target = "id", ignore = true),
+        Mapping(target = "createdBy", ignore = true),
+        Mapping(target = "createdDate", ignore = true),
+        Mapping(target = "lastModifiedBy", ignore = true),
+        Mapping(target = "lastModifiedDate", ignore = true),
         Mapping(source = "employeeId", target = "employee.id"),
         Mapping(source = "projectId", target = "project.id"))
     abstract fun toEntity(@Context id: Serializable, source: RecordCollectionUpdateCommand): RecordCollectionEntity
