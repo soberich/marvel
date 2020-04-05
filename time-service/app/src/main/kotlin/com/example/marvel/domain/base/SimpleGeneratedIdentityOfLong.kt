@@ -29,7 +29,7 @@ abstract class SimpleGeneratedIdentityOfLong: JpaStateTransitionAwareIdentityOf<
             parameters = [
                 Parameter(name = CONFIG_PREFER_SEQUENCE_PER_ENTITY , value = "true"),
                 Parameter(name = INITIAL_PARAM                     , value = "1"),       //"${SequenceStyleGenerator.DEFAULT_INITIAL_VALUE}"
-                Parameter(name = INCREMENT_PARAM                   , value = "25"),      //"${SequenceStyleGenerator.DEFAULT_INCREMENT_PARAM}"
+                Parameter(name = INCREMENT_PARAM                   , value = "1"),      //"${SequenceStyleGenerator.DEFAULT_INCREMENT_PARAM}"
                 Parameter(name = OPT_PARAM                         , value = "pooled")]) // org.hibernate.id.enhanced.StandardOptimizerDescriptor
     GeneratedValue(strategy = SEQUENCE, generator = "optimized-sequence")
     Column(nullable = false, updatable = false)]
