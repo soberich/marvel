@@ -1,3 +1,9 @@
+#The Goal
+
+
+The goal of this (__JVM ecosystem__) POC is to run the same production-ready source code in multiple runtimes without suffering from any portablitity issues. This will help to understand which "best practices" in writing common Spring-Boot-ish microservice application are really portable and at the same time are not an overkill. As a simple example - using one annotaations instead another may where one may be used by more frameworks and runtimes, or the opposite - avoiding vendor-locking by removing most/all vendor specific imports, etc.
+Current repository source-tree already uses quite a bleeding edge setup for JVM ecosystem. 
+
 ### Stack
  0. Java 14 with `preview`s enabled, Kotlin `1.4.M-1`. Compilation and release tagret are `Java 14` for Java and `Java 13` (highest available) for Kotlin.
  1. [Arrow-kt](https://arrow-kt.io/) ([lesser](https://arrow-kt.io/docs/0.10/optics/dsl/) in recent versions, just annotation processor, will be fully fledged in future works)
