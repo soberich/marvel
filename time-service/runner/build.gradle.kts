@@ -69,10 +69,10 @@ dependencies {
         "com.h2database:h2",
         "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
         "io.micronaut.configuration:micronaut-hibernate-jpa",
-        "io.micronaut.configuration:micronaut-hibernate-validator", //This switches to "full" Hib Valid-or https://docs.micronaut.io/2.0.0.M1/guide/index.html#beanValidation
+        "io.micronaut.configuration:micronaut-hibernate-validator", //This switches to "full" Hib Valid-or https://docs.micronaut.io/2.0.0.M2/guide/index.html#beanValidation
         "io.micronaut.configuration:micronaut-jdbc-hikari",
         "io.micronaut.data:micronaut-data-spring",
-//        "io.micronaut.kotlin:micronaut-kotlin-runtime:+" //FIXME: 1.1.0.BUILD-SNAPSHOT is not compatible with 2.0.0.M1
+//        "io.micronaut.kotlin:micronaut-kotlin-runtime:+" //FIXME: 1.1.0.BUILD-SNAPSHOT is not compatible with 2.0.0.M2
         "io.micronaut.spring:micronaut-spring-boot",
         "io.micronaut.spring:micronaut-spring-web",
         "io.micronaut:micronaut-http-client",
