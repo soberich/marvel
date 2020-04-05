@@ -1,7 +1,15 @@
-##### WIP: of #Quarkus / #Micronaut #Arrow-Kt #Vert.x #Coroutines #GRPC #Kotlin-DSL #monorepo playground
-# Execute to run app.
-## ./gradlew time-service.runner:run
+### Stack
+ 0. Java 14 with `preview`s enabled, Kotlin `1.4.M-1`. Compilation and release tagret are `Java 14` for Java and `Java 13` (highest available) for Kotlin.
+ 1. [Arrow-kt](https://arrow-kt.io/) ([lesser](https://arrow-kt.io/docs/0.10/optics/dsl/) in recent versions, just annotation processor, will be fully fledged in future works)
+ 2. [Micronaut 2.0.0.M2](https://docs.micronaut.io/2.0.0.M2/guide/) /Quarkus/Spring-Boot/JavaEE runtime respectively (1st is this brunch, others are on difeerent branches and/or in progress)
+ 3. [Immutables](http://immutables.github.io/) in __Kotlin__ sources!
+ 4. [Mapstruct](https://mapstruct.org/) mapping to immutable DTO/Projection classes integrated with Immutables.
 
+### Execute
+```
+# Run app
+./gradlew time-service.runner:run
+```
 
 #### Legacy Notes:
 
