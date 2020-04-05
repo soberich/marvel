@@ -88,7 +88,7 @@ val kotlinVersion = "1.4-M1"
     implementation("gradle.plugin.com.webcohesion.enunciate",           "enunciate-gradle",                         "+")
     implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext","gradle-idea-ext",                          "0.7")
     implementation("io.ebean",                                          "ebean-gradle-plugin",                      "+")
-    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.3.0.M3")
+    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.3.0.M4")
     implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "+")
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
     implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "+")
