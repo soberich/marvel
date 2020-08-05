@@ -5,14 +5,18 @@ package versioning
  */
 object Platforms {
     object Versions {
-        const val BLAZE_JPA    = "1.4.1"
-        const val COROUTINES   = "1.3.5-1.4-M1"
-        const val JACKSON      = "2.10.3"
-        const val QUARKUS      = "1.3.0.Final"
-        const val MICRONAUT    = "2.0.0.M2"
-        const val REACTOR      = "Dysprosium-SR5"
-        const val RESTEASY     = "4.1.1.Final"
-        const val SPRING_BOOT  = "2.3.0.M3"
-        const val STATEMACHINE = "3.0.0 M2"
+        const val BLAZE_JPA      = "1.4.1"
+        const val COROUTINES     = "1.3.5-1.4-M1"
+        const val JACKSON        = "2.11.2"//"2.10.3"
+        const val QUARKUS        = "1.3.0.Final"
+        const val MICRONAUT      = "2.0.1"
+        const val MICRONAUT_DATA = "+"
+        const val REACTOR        = "Dysprosium-SR5"
+        const val RESTEASY       = "4.1.1.Final"
+        const val SPRING_BOOT    = "2.3.2.RELEASE"
+        const val STATEMACHINE   = "3.0.0 M2"
+
+        const val JUNIT5         = "5.7.0-M1"
+        const val SPOCK          = "2.0-M2-groovy-3.0"
     }
 }

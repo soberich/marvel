@@ -4,6 +4,7 @@ import com.example.marvel.domain.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.employee.EmployeeEntity
 import com.example.marvel.domain.project.ProjectEntity
 import com.example.marvel.domain.record.RecordEntity
+import io.micronaut.core.annotation.Introspected
 import java.time.Month
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
@@ -24,6 +25,7 @@ import javax.persistence.OneToMany
 //@DynamicUpdate
 //@SelectBeforeUpdate
 //@OptimisticLocking(type = DIRTY)
+@Introspected
 class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     @get:
     [Column(nullable = false, updatable = false)]

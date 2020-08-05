@@ -3,24 +3,15 @@ package com.example.marvel.domain.record
 import com.example.marvel.api.RecordType
 import com.example.marvel.domain.base.AbstractAuditingEntity
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
+import io.micronaut.core.annotation.Introspected
 import org.hibernate.annotations.Immutable
 import java.io.Serializable
 import java.math.BigDecimal
 import java.time.LocalDate
-import javax.persistence.Access
+import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
-import javax.persistence.Cacheable
-import javax.persistence.Column
-import javax.persistence.Entity
 import javax.persistence.EnumType.STRING
-import javax.persistence.Enumerated
 import javax.persistence.FetchType.LAZY
-import javax.persistence.Id
-import javax.persistence.IdClass
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.NamedQuery
-import javax.persistence.Transient
 
 /**
  * FIXME:
@@ -33,6 +24,7 @@ import javax.persistence.Transient
 @Cacheable
 @Access(PROPERTY)
 @IdClass(RecordEntity.RecordId::class)
+@Introspected
 class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
     @get:
     [Id
@@ -66,5 +58,6 @@ class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
      * This could be a just Tuple3
      * but we push to keep hexagonal: less imports (from arrow in this layer) => better.
      */
+    @Introspected
     data class RecordId(var report: RecordCollectionEntity, var date: LocalDate = LocalDate.MIN, var type: RecordType = RecordType.OTHER) : Serializable
 }

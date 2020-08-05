@@ -2,6 +2,7 @@ package com.example.marvel.domain.employee
 
 import com.example.marvel.domain.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
+import io.micronaut.core.annotation.Introspected
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.CascadeType.ALL
@@ -30,6 +31,7 @@ import javax.persistence.UniqueConstraint
 //@DynamicUpdate
 //@SelectBeforeUpdate
 //@OptimisticLocking(type = DIRTY)
+@Introspected
 class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
     @get:
     [Column(nullable = false)]

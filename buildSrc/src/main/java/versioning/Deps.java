@@ -14,68 +14,70 @@ package versioning;
 public interface Deps {
 
     interface Versions {
-        String ACTIVATION        = "[1.1,2)";
-        String ANNOTATION        = "[1.3,2)";
-        String CDI               = "[2,3)";
-        String CONCURRENT        = "[1.1,2)";
-        String HIBERNATE         = "[5.4,6)";
-        String INJECT            = "(0,3)";
-        String JAX_RS            = "[2.1,2.2)";
-        String JAXB              = "[2.3,2.5)";
-        String JAXB_RUNTIME      = "[2.4,2.5)";
-        String JSONB             = "[1,2)";
-        String MONEY             = "[1,2)";
-        String PERSISTENCE       = "[2.2,3)";
-        String REACTIVE_STREAMS  = "[1,2)";
-        String SERVLET           = "[4,5)";
-        String TRANSACTION       = "[1.3,2)";
-        String VALIDATION        = "[2,2.1)";
+        String ACTIVATION            = "[1.1,2)";
+        String ANNOTATION            = "[1.3,2)";
+        String CDI                   = "[2,3)";
+        String CONCURRENT            = "[1.1,2)";
+        String HIBERNATE             = "[5.4,6)";
+        String HIBERNATE_JPAMODELGEN = "6.0.0.Alpha5";
+        String INJECT                = "(0,3)";
+        String JAX_RS                = "[2.1,2.2)";
+        String JAXB                  = "[2.3,2.5)";
+        String JAXB_RUNTIME          = "[2.4,2.5)";
+        String JSONB                 = "[1,2)";
+        String MONEY                 = "[1,2)";
+        String PERSISTENCE           = "[2.2,3)";
+        String REACTIVE_STREAMS      = "[1,2)";
+        String SERVLET               = "[4,5)";
+        String TRANSACTION           = "[1.3,2)";
+        String VALIDATION            = "[2,3.1)";
 
-        String ARROW             = "0.10.4";
-        String COROUTINES        = "+";
-        String EBEAN             = "12.2.1";
-        String EBEAN_ANNOTATION  = "6.11";
-        String EBEAN_PERSISTENCE = "2.2.4";
-        String EBEAN_QUERY       = EBEAN;
-        String EBEAN_QUERY_GEN   = EBEAN;
-        String EBEAN_TEST        = EBEAN;
-        String HIKARI            = "+";
-        String IMMUTABLES        = "2.8.3";
-        String JACKSON_COREUTILS = "1.8";
-        String JACKSON_MONEY     = "1.1.1";
-        String JBOSS_LOG         = "2.1.4.Final";
-        String JJWT              = "0.9.1";
-        String JSON_PATCH        = "1.9";
-        String JSR_305           = "3.0.2";
+        String ARROW                 = "0.10.5";
+        String COROUTINES            = "+";
+        String EBEAN                 = "12.2.1";
+        String EBEAN_ANNOTATION      = "6.11";
+        String EBEAN_PERSISTENCE     = "2.2.4";
+        String EBEAN_QUERY           = EBEAN;
+        String EBEAN_QUERY_GEN       = EBEAN;
+        String EBEAN_TEST            = EBEAN;
+        String HIKARI                = "+";
+        String IMMUTABLES            = "2.8.9-SNAPSHOT";
+        String JACKSON_COREUTILS     = "1.8";
+        String JACKSON_MONEY         = "1.1.1";
+        String JBOSS_LOG             = "2.1.4.Final";
+        String JJWT                  = "0.9.1";
+        String JSON_PATCH            = "1.9";
+        String JSR_305               = "3.0.2";
         //val KOTLIN: Nothing = TODO("Scripts are PRE-compiled, can't these lines from script to apply")
-        String LIQUIBASE         = "3.6.2";
-        String LIQUIBASE_GRADLE  = "2.0.1";
-        String LIQUIBASE_HIB5    = "3.6";
-        String LOMBOK            = "1.18.2";
-        String MAPSTRUCT         = "1.3.1.Final";
-        String MONETA            = "1.3";
-        String OKHTTP            = "4.0.0-rc1";
-        String OPENAPI           = "2.1.0";
-        String RESTEASY_BOOT     = "3.0.0.Final";
-        String RETROFIT2         = "2.4.0";
-        String RX2               = "2.2.10";
-        String SLF4J_API         = "1.7.25";
-        String SLF4J_JBOSS       = "1.0.4.GA";
-        String SWAGGER           = "2.0.7";
-        String VALIDATOR         = "6.1.0.Final";
-        String ZALANDO_PROBLEM   = "0.23.0";
+        String LIQUIBASE             = "3.6.2";
+        String LIQUIBASE_GRADLE      = "2.0.1";
+        String LIQUIBASE_HIB5        = "3.6";
+        String LOMBOK                = "1.18.2";
+        String MAPSTRUCT             = "1.4.0.Beta3";
+        String MONETA                = "1.3";
+        String OKHTTP                = "4.0.0-rc1";
+        String OPENAPI               = "2.1.3";
+        String RESTEASY_BOOT         = "3.0.0.Final";
+        String RETROFIT2             = "2.4.0";
+        String RX2                   = "2.2.19";
+        String SLF4J_API             = "1.7.25";
+        String SLF4J_JBOSS           = "1.0.4.GA";
+        String SWAGGER               = "2.0.7";
+        String VALIDATOR             = "7.0.0.Alpha6";
+        String ZALANDO_PROBLEM       = "0.23.0";
 
     }
 
     interface Platforms {
         //val KOTLIN: Nothing = TODO("Scripts are PRE-compiled, can't these lines from script to apply '" + "org.jetbrains.kotlin:kotlin-bom"   + ':' + Versions.KOTLIN + '\'')
-        String BLAZE_JPA    = "com.blazebit:blaze-persistence-bom"                       + ':' + versioning.Platforms.Versions.BLAZE_JPA;
-        String COROUTINES   = "org.jetbrains.kotlinx:kotlinx-coroutines-bom"             + ':' + versioning.Platforms.Versions.COROUTINES;
-        String JACKSON      = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
-        String MICRONAUT    = "io.micronaut:micronaut-bom"                               + ':' + versioning.Platforms.Versions.MICRONAUT;
-        String QUARKUS      = "io.quarkus:quarkus-bom"                                   + ':' + versioning.Platforms.Versions.QUARKUS;
-        String RESTEASY     = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
-        String STATEMACHINE = "org.springframework.statemachine:spring-statemachine-bom" + ':' + versioning.Platforms.Versions.STATEMACHINE;
+        String BLAZE_JPA      = "com.blazebit:blaze-persistence-bom"                       + ':' + versioning.Platforms.Versions.BLAZE_JPA;
+        String COROUTINES     = "org.jetbrains.kotlinx:kotlinx-coroutines-bom"             + ':' + versioning.Platforms.Versions.COROUTINES;
+        String JACKSON        = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
+        String MICRONAUT      = "io.micronaut:micronaut-bom"                               + ':' + versioning.Platforms.Versions.MICRONAUT;
+        String MICRONAUT_DATA = "io.micronaut.data:micronaut-data-bom"                     + ':' + versioning.Platforms.Versions.MICRONAUT_DATA;
+        String QUARKUS        = "io.quarkus:quarkus-bom"                                   + ':' + versioning.Platforms.Versions.QUARKUS;
+        String RESTEASY       = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
+        String STATEMACHINE   = "org.springframework.statemachine:spring-statemachine-bom" + ':' + versioning.Platforms.Versions.STATEMACHINE;
     }
 
     interface Jakarta {
@@ -155,7 +157,7 @@ public interface Deps {
         String EBEAN_QUERY_GEN             = "io.ebean:kotlin-querybean-generator"                              + ':' + Versions.EBEAN_QUERY_GEN;
         String EBEAN_TEST                  = "io.ebean:ebean-test"                                              + ':' + Versions.EBEAN_TEST;
         String HIBERNATE                   = "org.hibernate:hibernate-core"                                     + ':' + Versions.HIBERNATE;
-        String HIBERNATE_JPAMODELGEN       = "org.hibernate:hibernate-jpamodelgen"                              + ':' + Versions.HIBERNATE;
+        String HIBERNATE_JPAMODELGEN       = "org.hibernate.orm:hibernate-jpamodelgen"                          + ':' + Versions.HIBERNATE_JPAMODELGEN;
         String HIKARI                      = "com.zaxxer:HikariCP"                                              + ':' + Versions.HIKARI;
         String IMMUTABLES_VALUE            = "org.immutables:value"                                             + ':' + Versions.IMMUTABLES;
         String IMMUTABLES_BUILDER          = "org.immutables:builder"                                           + ':' + Versions.IMMUTABLES;

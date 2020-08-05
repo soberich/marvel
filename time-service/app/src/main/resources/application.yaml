@@ -43,14 +43,34 @@ jpa:
 #      - 'example.micronaut.domain'
     properties:
       hibernate:
-        format_sql: true
-        hbm2ddl:
-          auto: update
-        implicit_naming_strategy: com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
-        physical_naming_strategy: com.example.marvel.convention.jpa.naming.PhysicalNamingStrategyImpl
-        show_sql: true
-spring:
-  jpa:
-    properties:
-      hibernate:
-        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        bytecode.use_reflection_optimizer:          true
+#        cache.use_query_cache:                      true
+        cache.use_second_level_cache:               false
+        connection.characterEncoding:               utf8
+        connection.CharSet:                         utf8
+        connection.generateSimpleParameterMetadata: true
+        connection.isolation:                       2
+        connection.pool_size:                       33
+        connection.profileSQL:                      true
+        connection.handling_mode:                   DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
+        connection.rewriteBatchedStatements:        true
+        connection.useBatchMultiSend:               true
+        connection.useUnicode:                      true
+        current_session_context_class:              org.springframework.orm.hibernate5.SpringSessionContext
+        enhancer.enableLazyInitialization:          true
+        event.merge.entity_copy_observer:           log
+        format_sql:                                 true
+        generate_statistics:                        true
+        hbm2ddl.auto:                               update
+        implicit_naming_strategy:                   com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
+        jdbc.batch_size:                            33
+        jdbc.fetch_size:                            200
+        jdbc.use_streams_for_binary:                true
+        max_fetch_depth:                            5
+        physical_naming_strategy:                   com.example.marvel.convention.jpa.naming.PhysicalNamingStrategyImpl
+        query.in_clause_parameter_padding:          true
+        query.plan_parameter_metadata_max_size:     2048
+        query.substitutions:                        true 1, false 0, yes 'Y', no 'N'
+        show_sql:                                   false
+        statement_cache.size:                       100
+        use_sql_comments:                           true

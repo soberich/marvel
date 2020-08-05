@@ -7,12 +7,13 @@ import java.nio.file.Paths
 plugins {
     java
     `java-gradle-plugin`
+    `groovy-gradle-plugin`
     `kotlin-dsl`
     `build-dashboard`                                         // optional
     `help-tasks`                                              // optional
     `project-report`                                          // optional
-    id("com.github.ben-manes.versions")      version "0.28.0" // optional
-    id("se.patrikerdes.use-latest-versions") version "0.2.13" // optional
+    id("com.github.ben-manes.versions")      version "0.29.0" // optional
+//    id("se.patrikerdes.use-latest-versions") version "0.2.14" // optional
 }
 
 repositories {
@@ -51,7 +52,7 @@ tasks {
         kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs"))
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_13) } ?: JavaVersion.VERSION_13).toString()
+        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_14) } ?: JavaVersion.VERSION_14).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
@@ -66,13 +67,13 @@ tasks {
     }
 }
 
-val kotlinVersion = "1.4-M1"
+val kotlinVersion = "1.4.0-rc"
 //val kotlinVersion = KotlinVersion(1, 3, 71).toString()
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
     implementation(enforcedPlatform(kotlin("bom", kotlinVersion)))
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"         , kotlinVersion))
     /**
      * N.B. Kotlin BOM does NOT contain kapt and compiler-plugins. There is another "special" BOM
      * e.g. "org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin", but it has longer name
@@ -82,17 +83,19 @@ val kotlinVersion = "1.4-M1"
     implementation(kotlin("noarg"            , kotlinVersion))
     implementation(kotlin("sam-with-receiver", kotlinVersion))
 //    implementation(kotlin("serialization", kotlinVersion))
+//    testImplementation(kotlin("test"         , kotlinVersion))
+//    testImplementation(kotlin("test-junit"   , kotlinVersion))
     implementation("com.github.ben-manes",                              "gradle-versions-plugin",                   "0.28.0")
     implementation("com.vanniktech",                                    "gradle-dependency-graph-generator-plugin", "0.5.0")
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
     implementation("gradle.plugin.com.webcohesion.enunciate",           "enunciate-gradle",                         "+")
     implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext","gradle-idea-ext",                          "0.7")
     implementation("io.ebean",                                          "ebean-gradle-plugin",                      "+")
-    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.3.0.M4")
+    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.3.2.RELEASE")
     implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "+")
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
     implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "+")
-    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "+")
+//    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "+")
     implementation("gradle.plugin.com.btkelly",                         "gnag",                                     "+")
 }
 

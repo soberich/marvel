@@ -1,6 +1,8 @@
 import java.nio.file.Files
 import java.nio.file.Paths
 
+enableFeaturePreview("VERSION_ORDERING_V2")
+
 rootProject.name = "marvel"
 
 pluginManagement {
@@ -38,7 +40,7 @@ for (serviceDir in setOf("time-service")) {
         it.filter(Files::isDirectory)
             .forEach {
                 ":${it.fileName}"
-                    .also(::include)
+                    .also { include(it) }
                     .run(::project)
                     .apply {
                         name       = "$serviceDir.${it.fileName}"

@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.nio.file.Files
 import java.nio.file.Paths
+import versioning.Deps
 
 plugins {
     idea
@@ -25,7 +26,7 @@ tasks {
         kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_13) } ?: JavaVersion.VERSION_13).toString()
+        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_14) } ?: JavaVersion.VERSION_14).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
@@ -60,7 +61,8 @@ allOpen.annotations(
 
 noArg.annotations(
     "javax.inject.Named",
-    "javax.ws.rs.Path"
+    "javax.ws.rs.Path",
+    "io.micronaut.core.annotation.Introspected"
 )
 
 //gnag {
@@ -79,13 +81,10 @@ noArg.annotations(
 //}
 
 dependencies {
-    //BOM
     implementation(enforcedPlatform(kotlin("bom")))
-//    implementation(platform(Deps.Platforms.JACKSON))
-    //BOM
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(platform(Deps.Platforms.JACKSON))
 //    implementation(Deps.Libs.COROUTINES_JDK8)
 //    implementation(Deps.Libs.COROUTINES_REACTOR)
 
-//    implementation(Deps.Libs.JACKSON_KOTLIN)
+    implementation(Deps.Libs.JACKSON_KOTLIN)
 }

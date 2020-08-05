@@ -23,7 +23,7 @@ application {
 
 dependencies {
     arrayOf(
-        "org.scala-lang:scala-library:2.12.10",
-        "io.gatling.highcharts:gatling-charts-highcharts:3.3.0"
+        "org.scala-lang:scala-library:2.13.3",
+        "io.gatling.highcharts:gatling-charts-highcharts:3.4.0-M1"
     ).forEach(::implementation)
 }

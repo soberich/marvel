@@ -21,6 +21,7 @@ dependencies {
     ).forEach(::compileOnly)
 
     arrayOf(
+        Deps.Javax.VALIDATION,
         Deps.Jakarta.VALIDATION,
         Deps.Libs.REACTIVE_STREAMS,
         Deps.Libs.ARROW_OPTICS

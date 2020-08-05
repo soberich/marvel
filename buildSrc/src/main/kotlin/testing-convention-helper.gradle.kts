@@ -30,5 +30,8 @@ tasks.test {
 
 dependencies {
 //    testRuntimeOnly(Deps.Libs.SLF4J_JBOSS)
+
+//    testImplementation(kotlin("test"))
+//    testImplementation(kotlin("test-junit"))
     testRuntimeOnly(Deps.Libs.JBOSS_LOG)
 }
