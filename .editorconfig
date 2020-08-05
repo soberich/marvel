@@ -19,3 +19,8 @@ trim_trailing_whitespace = false
 
 [*.{ts,tsx,js,jsx,json,css,scss,yml,yaml}]
 indent_size = 2
+
+[{*.gradle.kts, *.kt, *.kts, *.main.kts}]
+ij_kotlin_import_nested_classes = true
+ij_kotlin_name_count_to_use_star_import = 100
+ij_kotlin_name_count_to_use_star_import_for_members = 100
