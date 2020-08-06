@@ -1,32 +1,37 @@
+@file:Suppress("unused", "KDocMissingDocumentation", "MemberVisibilityCanBePrivate", "SpellCheckingInspection")
+
 package com.example.marvel.convention.utils
 
+import org.intellij.lang.annotations.Language
 import java.lang.Character.toLowerCase
 import java.lang.Character.toUpperCase
-import java.util.HashSet
-import java.util.LinkedList
+import java.util.*
 import java.util.regex.Pattern
 import java.util.regex.Pattern.CASE_INSENSITIVE
 import java.util.regex.Pattern.compile
 
 /**
  * Port from java
- * TODO: Make more "kotlinish"
+ * TODO: Make even more "kotlinish"
  */
-class Inflector {
+object Inflector {
 
     private val plurals = LinkedList<Rule>()
     private val singulars = LinkedList<Rule>()
+
     /**
      * The lowercase words that are to be excluded and not processed. This map can be modified by the users via
-     * [.getUncountables].
+     * Get the set of words that are not processed by the Inflector. The resulting map is directly modifiable.
+     *
+     * @return the set of uncountable words
+     * [uncountables].
      */
-    private val uncountables = HashSet<String>()
+    val uncountables: HashSet<String> = hashSetOf()
 
-    internal inner class Rule internal constructor(protected val expression: String,
-                                                     replacement: String?) {
+    internal class Rule internal constructor(private val expression: String, replacement: String?) {
 
-        protected val expressionPattern: Pattern = compile(this.expression, CASE_INSENSITIVE)
-        protected val replacement: String = replacement ?: ""
+        private val expressionPattern: Pattern = compile(expression, CASE_INSENSITIVE)
+        private val replacement: String = replacement ?: ""
 
         /**
          * Apply the rule against the input string, returning the modified string or null if the rule didn't apply (and no
@@ -36,38 +41,20 @@ class Inflector {
          * @return the modified string if this rule applied, or null if the input was not modified by this rule
          */
         internal fun apply(input: String): String? {
-            val matcher = this.expressionPattern.matcher(input)
-            return if (!matcher.find()) null else matcher.replaceAll(this.replacement)
+            val matcher = expressionPattern.matcher(input)
+            return if (!matcher.find()) null else matcher.replaceAll(replacement)
         }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other != null && other.javaClass != this.javaClass) return false
             val rule = other as? Rule
-            return this.expression.equals(rule!!.expression, ignoreCase = true)
+            return expression.equals(rule!!.expression, ignoreCase = true)
         }
 
-        override fun hashCode(): Int {
-            return expression.hashCode()
-        }
+        override fun hashCode(): Int = expression.hashCode()
 
-        override fun toString(): String {
-            return "$expression, $replacement"
-        }
-    }
-
-    constructor() {
-        initialize()
-    }
-
-    private constructor(original: Inflector) {
-        this.plurals.addAll(original.plurals)
-        this.singulars.addAll(original.singulars)
-        this.uncountables.addAll(original.uncountables)
-    }
-
-    fun clone(): Inflector {
-        return Inflector(this)
+        override fun toString(): String = "$expression, $replacement"
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -79,20 +66,14 @@ class Inflector {
      *
      *
      * Examples:
-     *
-     * <pre>
-     * inflector.pluralize(&quot;post&quot;)               #=&gt; &quot;posts&quot;
-     * inflector.pluralize(&quot;octopus&quot;)            #=&gt; &quot;octopi&quot;
-     * inflector.pluralize(&quot;sheep&quot;)              #=&gt; &quot;sheep&quot;
-     * inflector.pluralize(&quot;words&quot;)              #=&gt; &quot;words&quot;
-     * inflector.pluralize(&quot;the blue mailman&quot;)   #=&gt; &quot;the blue mailmen&quot;
-     * inflector.pluralize(&quot;CamelOctopus&quot;)       #=&gt; &quot;CamelOctopi&quot;
-    </pre> *
-     *
-     *
-     *
-     *
-     *
+     * ```java
+     *     inflector.pluralize("post")               #=> "posts"
+     *     inflector.pluralize("octopus")            #=> "octopi"
+     *     inflector.pluralize("sheep")              #=> "sheep"
+     *     inflector.pluralize("words")              #=> "words"
+     *     inflector.pluralize("the blue mailman")   #=> "the blue mailmen"
+     *     inflector.pluralize("CamelOctopus")       #=> "CamelOctopi"
+     * ```
      *
      * Note that if the [Object.toString] is called on the supplied object, so this method works for non-strings, too.
      *
@@ -100,16 +81,7 @@ class Inflector {
      * @return the pluralized form of the word, or the word itself if it could not be pluralized
      * @see .singularize
      */
-    fun pluralize(word: Any): String {
-        val wordStr = word.toString().trim { it <= ' ' }
-        if (wordStr.isEmpty()) return wordStr
-        if (isUncountable(wordStr)) return wordStr
-        for (rule in this.plurals) {
-            val result = rule.apply(wordStr)
-            if (result != null) return result
-        }
-        return wordStr
-    }
+    fun pluralize(word: Any): String = grammaticalNumber(word, plurals)
 
     fun pluralize(word: Any?,
                   count: Int): String? {
@@ -122,22 +94,15 @@ class Inflector {
     /**
      * Returns the singular form of the word in the string.
      *
-     *
      * Examples:
-     *
-     * <pre>
-     * inflector.singularize(&quot;posts&quot;)             #=&gt; &quot;post&quot;
-     * inflector.singularize(&quot;octopi&quot;)            #=&gt; &quot;octopus&quot;
-     * inflector.singularize(&quot;sheep&quot;)             #=&gt; &quot;sheep&quot;
-     * inflector.singularize(&quot;words&quot;)             #=&gt; &quot;word&quot;
-     * inflector.singularize(&quot;the blue mailmen&quot;)  #=&gt; &quot;the blue mailman&quot;
-     * inflector.singularize(&quot;CamelOctopi&quot;)       #=&gt; &quot;CamelOctopus&quot;
-    </pre> *
-     *
-     *
-     *
-     *
-     *
+     * ```java
+     *     inflector.singularize("posts")             #=> "post"
+     *     inflector.singularize("octopi")            #=> "octopus"
+     *     inflector.singularize("sheep")             #=> "sheep"
+     *     inflector.singularize("words")             #=> "word"
+     *     inflector.singularize("the blue mailmen")  #=> "the blue mailman"
+     *     inflector.singularize("CamelOctopi")       #=> "CamelOctopus"
+     * ```
      *
      * Note that if the [Object.toString] is called on the supplied object, so this method works for non-strings, too.
      *
@@ -145,12 +110,13 @@ class Inflector {
      * @return the pluralized form of the word, or the word itself if it could not be pluralized
      * @see .pluralize
      */
-    fun singularize(word: Any?): String? {
-        if (word == null) return null
+    fun singularize(word: Any?): String? = if (word == null) null else grammaticalNumber(word, singulars)
+
+    private fun grammaticalNumber(word: Any?, rules: List<Rule>): String {
         val wordStr = word.toString().trim { it <= ' ' }
-        if (wordStr.length == 0) return wordStr
+        if (wordStr.isEmpty()) return wordStr
         if (isUncountable(wordStr)) return wordStr
-        for (rule in this.singulars) {
+        for (rule in rules) {
             val result = rule.apply(wordStr)
             if (result != null) return result
         }
@@ -177,23 +143,19 @@ class Inflector {
      * @see .camelCase
      * @see .upperCamelCase
      */
-    fun lowerCamelCase(lowerCaseAndUnderscoredWord: String,
-                       vararg delimiterChars: Char): String? {
-        return camelCase(lowerCaseAndUnderscoredWord, false, *delimiterChars)
-    }
+    fun lowerCamelCase(lowerCaseAndUnderscoredWord: String, vararg delimiterChars: Char): String? =
+        camelCase(lowerCaseAndUnderscoredWord, false, *delimiterChars)
 
     /**
      * Converts strings to UpperCamelCase. This method will also use any extra delimiter characters to identify word boundaries.
      *
-     *
      * Examples:
-     *
-     * <pre>
-     * inflector.upperCamelCase(&quot;active_record&quot;)       #=&gt; &quot;SctiveRecord&quot;
-     * inflector.upperCamelCase(&quot;first_name&quot;)          #=&gt; &quot;FirstName&quot;
-     * inflector.upperCamelCase(&quot;name&quot;)                #=&gt; &quot;Name&quot;
-     * inflector.lowerCamelCase(&quot;the-first_name&quot;,'-')  #=&gt; &quot;TheFirstName&quot;
-    </pre> *
+     * ```
+     *     inflector.upperCamelCase("active_record")       #=> "SctiveRecord"
+     *     inflector.upperCamelCase("first_name")          #=> "FirstName"
+     *     inflector.upperCamelCase("name")                #=> "Name"
+     *     inflector.lowerCamelCase("the-first_name",'-')  #=> "TheFirstName"
+     * ```
      *
      * @param lowerCaseAndUnderscoredWord the word that is to be converted to camel case
      * @param delimiterChars              optional characters that are used to delimit word boundaries
@@ -202,28 +164,23 @@ class Inflector {
      * @see .camelCase
      * @see .lowerCamelCase
      */
-    fun upperCamelCase(lowerCaseAndUnderscoredWord: String,
-                       vararg delimiterChars: Char): String? {
-        return camelCase(lowerCaseAndUnderscoredWord, true, *delimiterChars)
-    }
+    fun upperCamelCase(lowerCaseAndUnderscoredWord: String, vararg delimiterChars: Char): String? =
+        camelCase(lowerCaseAndUnderscoredWord, true, *delimiterChars)
 
     /**
      * By default, this method converts strings to UpperCamelCase. If the `uppercaseFirstLetter` argument to false,
      * then this method produces lowerCamelCase. This method will also use any extra delimiter characters to identify word
      * boundaries.
      *
-     *
      * Examples:
-     *
-     * <pre>
-     * inflector.camelCase(&quot;active_record&quot;,false)    #=&gt; &quot;activeRecord&quot;
-     * inflector.camelCase(&quot;active_record&quot;,true)     #=&gt; &quot;ActiveRecord&quot;
-     * inflector.camelCase(&quot;first_name&quot;,false)       #=&gt; &quot;firstName&quot;
-     * inflector.camelCase(&quot;first_name&quot;,true)        #=&gt; &quot;FirstName&quot;
-     * inflector.camelCase(&quot;name&quot;,false)             #=&gt; &quot;name&quot;
-     * inflector.camelCase(&quot;name&quot;,true)              #=&gt; &quot;Name&quot;
-    </pre> *
-     *
+     * ```java
+     *     inflector.camelCase("active_record",false)    #=> "activeRecord"
+     *     inflector.camelCase("active_record",true)     #=> "ActiveRecord"
+     *     inflector.camelCase("first_name",false)       #=> "firstName"
+     *     inflector.camelCase("first_name",true)        #=> "FirstName"
+     *     inflector.camelCase("name",false)             #=> "name"
+     *     inflector.camelCase("name",true)              #=> "Name"
+     * ```
      * @param lowerCaseAndUnderscoredWord the word that is to be converted to camel case
      * @param uppercaseFirstLetter        true if the first character is to be uppercased, or false if the first character is to be
      * lowercased
@@ -233,27 +190,22 @@ class Inflector {
      * @see .upperCamelCase
      * @see .lowerCamelCase
      */
-    fun camelCase(lowerCaseAndUnderscoredWord: String?,
-                  uppercaseFirstLetter: Boolean,
-                  vararg delimiterChars: Char): String? {
+    fun camelCase(lowerCaseAndUnderscoredWord: String?, uppercaseFirstLetter: Boolean, vararg delimiterChars: Char): String? {
         var lowerCaseAndUnderscoredWord: String? = lowerCaseAndUnderscoredWord ?: return null
-        lowerCaseAndUnderscoredWord = lowerCaseAndUnderscoredWord!!.trim { it <= ' ' }
+        lowerCaseAndUnderscoredWord = (lowerCaseAndUnderscoredWord ?: return null).trim { it <= ' ' }
         if (lowerCaseAndUnderscoredWord.isEmpty()) return ""
         if (uppercaseFirstLetter) {
             var result: String = lowerCaseAndUnderscoredWord
             // Replace any extra delimiters with underscores (before the underscores are converted in the next step)...
-            if (delimiterChars != null) {
-                for (delimiterChar in delimiterChars) {
-                    result = result.replace(delimiterChar, '_')
-                }
+            for (delimiterChar in delimiterChars) {
+                result = result.replace(delimiterChar, '_')
             }
 
             // Change the case at the beginning at after each underscore ...
             return replaceAllWithUppercase(result, "(^|_)(.)", 2)
 
         }
-        if (lowerCaseAndUnderscoredWord.length < 2) return lowerCaseAndUnderscoredWord
-        return "" + toLowerCase(lowerCaseAndUnderscoredWord[0]) + camelCase(lowerCaseAndUnderscoredWord, true, *delimiterChars)?.substring(1).orEmpty()
+        return if (lowerCaseAndUnderscoredWord.length < 2) lowerCaseAndUnderscoredWord else "" + toLowerCase(lowerCaseAndUnderscoredWord[0]) + camelCase(lowerCaseAndUnderscoredWord, true, *delimiterChars)?.substring(1).orEmpty()
 
     }
 
@@ -262,32 +214,28 @@ class Inflector {
      *
      *
      * Examples:
-     *
-     * <pre>
-     * inflector.underscore(&quot;activeRecord&quot;)     #=&gt; &quot;active_record&quot;
-     * inflector.underscore(&quot;ActiveRecord&quot;)     #=&gt; &quot;active_record&quot;
-     * inflector.underscore(&quot;firstName&quot;)        #=&gt; &quot;first_name&quot;
-     * inflector.underscore(&quot;FirstName&quot;)        #=&gt; &quot;first_name&quot;
-     * inflector.underscore(&quot;name&quot;)             #=&gt; &quot;name&quot;
-     * inflector.underscore(&quot;The.firstName&quot;)    #=&gt; &quot;the_first_name&quot;
-    </pre> *
+     * ```java
+     *     inflector.underscore("activeRecord")     #=> "active_record"
+     *     inflector.underscore("ActiveRecord")     #=> "active_record"
+     *     inflector.underscore("firstName")        #=> "first_name"
+     *     inflector.underscore("FirstName")        #=> "first_name"
+     *     inflector.underscore("name")             #=> "name"
+     *     inflector.underscore("The.firstName")    #=> "the_first_name"
+     * ```
      *
      * @param camelCaseWord  the camel-cased word that is to be converted;
      * @param delimiterChars optional characters that are used to delimit word boundaries (beyond capitalization)
      * @return a lower-cased version of the input, with separate words delimited by the underscore character.
      */
-    fun underscore(camelCaseWord: String?,
-                   vararg delimiterChars: Char): String? {
+    fun underscore(camelCaseWord: String?, vararg delimiterChars: Char): String? {
         if (camelCaseWord == null) return null
         var result = camelCaseWord.trim { it <= ' ' }
-        if (result.length == 0) return ""
+        if (result.isEmpty()) return ""
         result = result.replace("([A-Z]+)([A-Z][a-z])".toRegex(), "$1_$2")
         result = result.replace("([a-z\\d])([A-Z])".toRegex(), "$1_$2")
         result = result.replace('-', '_')
-        if (delimiterChars != null) {
-            for (delimiterChar in delimiterChars) {
-                result = result.replace(delimiterChar, '_')
-            }
+        for (delimiterChar in delimiterChars) {
+            result = result.replace(delimiterChar, '_')
         }
         return result.toLowerCase()
     }
@@ -298,11 +246,10 @@ class Inflector {
      * @param words the word to be capitalized
      * @return the string with the first character capitalized and the remaining characters lowercased
      */
-    fun capitalize(words: String?): String? {
-        if (words == null) return null
-        val result = words.trim { it <= ' ' }
-        if (result.length == 0) return ""
-        return if (result.length == 1) result.toUpperCase() else "" + toUpperCase(result[0]) + result.substring(1).toLowerCase()
+    fun capitalize(words: String?): String? = when (val result = words?.trim { it <= ' ' }) {
+        null -> null
+        ""   -> ""
+        else -> if (result.length == 1) result.toUpperCase() else "${toUpperCase(result[0])}${result.substring(1).toLowerCase()}"
     }
 
     /**
@@ -311,29 +258,25 @@ class Inflector {
      *
      *
      * Examples:
-     *
-     * <pre>
-     * inflector.humanize(&quot;employee_salary&quot;)       #=&gt; &quot;Employee salary&quot;
-     * inflector.humanize(&quot;authorid &quot;)             #=&gt; &quot;Author&quot;
-    </pre> *
+     * ```java
+     *    inflector.humanize("employee_salary")       #=> "Employee salary"
+     *    inflector.humanize("authorid ")             #=> "Author"
+     * ```
      *
      * @param lowerCaseAndUnderscoredWords the input to be humanized
      * @param removableTokens              optional array of tokens that are to be removed
      * @return the humanized string
      * @see .titleCase
      */
-    fun humanize(lowerCaseAndUnderscoredWords: String?,
-                 vararg removableTokens: String): String? {
+    fun humanize(lowerCaseAndUnderscoredWords: String?, vararg removableTokens: String): String? {
         if (lowerCaseAndUnderscoredWords == null) return null
         var result = lowerCaseAndUnderscoredWords.trim { it <= ' ' }
-        if (result.length == 0) return ""
+        if (result.isEmpty()) return ""
         // Remove a trailing "id" token
         result = result.replace("id$".toRegex(), "")
         // Remove all of the tokens that should be removed
-        if (removableTokens != null) {
-            for (removableToken in removableTokens) {
-                result = result.replace(removableToken.toRegex(), "")
-            }
+        for (removableToken in removableTokens) {
+            result = result.replace(removableToken.toRegex(), "")
         }
         result = result.replace("_+".toRegex(), " ") // replace all adjacent underscores with a single space
         return capitalize(result)
@@ -346,18 +289,16 @@ class Inflector {
      *
      *
      * Examples:
-     *
-     * <pre>
-     * inflector.titleCase(&quot;man from the boondocks&quot;)       #=&gt; &quot;Man From The Boondocks&quot;
-     * inflector.titleCase(&quot;x-men: the last stand&quot;)        #=&gt; &quot;X Men: The Last Stand&quot;
-    </pre> *
+     * ```java
+     *     inflector.titleCase("man from the boondocks")       #=> "Man From The Boondocks"
+     *     inflector.titleCase("x-men: the last stand")        #=> "X Men: The Last Stand"
+     * ```
      *
      * @param words           the input to be turned into title case
      * @param removableTokens optional array of tokens that are to be removed
      * @return the title-case version of the supplied words
      */
-    fun titleCase(words: String,
-                  vararg removableTokens: String): String {
+    fun titleCase(words: String, vararg removableTokens: String): String {
         var result = humanize(words, *removableTokens)
         result = replaceAllWithUppercase(result, "\\b([a-z])", 1) // change first char of each word to uppercase
         return result
@@ -367,17 +308,14 @@ class Inflector {
      * Turns a non-negative number into an ordinal string used to denote the position in an ordered sequence, such as 1st, 2nd,
      * 3rd, 4th.
      *
-     * @param number the non-negative number
+     * @param i the non-negative number
      * @return the string with the number and ordinal suffix
      */
-    fun ordinalize(number: Int): String {
-        var remainder = number % 100
-        val numberStr = Integer.toString(number)
-        if (11 <= number && number <= 13) return numberStr + "th"
-        remainder = number % 10
-        if (remainder == 1) return numberStr + "st"
-        if (remainder == 2) return numberStr + "nd"
-        return if (remainder == 3) numberStr + "rd" else numberStr + "th"
+    fun ordinalize(i: Int): String = "$i" + if (i % 100 in 11..13) "th" else when (i % 10) {
+        1    -> "st"
+        2    -> "nd"
+        3    -> "rd"
+        else -> "th"
     }
 
     // ------------------------------------------------------------------------------------------------
@@ -389,47 +327,27 @@ class Inflector {
      * [singularize][.singularize] methods.
      * @return true if the plural and singular forms of the word are the same
      */
-    fun isUncountable(word: String?): Boolean {
-        if (word == null) return false
-        val trimmedLower = word.trim { it <= ' ' }.toLowerCase()
-        return this.uncountables.contains(trimmedLower)
-    }
+    fun isUncountable(word: String?): Boolean =
+        word != null && uncountables.contains(word.trim { it <= ' ' }.toLowerCase())
 
-    /**
-     * Get the set of words that are not processed by the Inflector. The resulting map is directly modifiable.
-     *
-     * @return the set of uncountable words
-     */
-    fun getUncountables(): Set<String> {
-        return uncountables
-    }
+    fun addPluralize(@Language("RegExp") rule: String, replacement: String): Unit = plurals.addFirst(Rule(rule, replacement))
 
-    fun addPluralize(rule: String,
-                     replacement: String) {
-        val pluralizeRule = Rule(rule, replacement)
-        this.plurals.addFirst(pluralizeRule)
-    }
+    fun addSingularize(@Language("RegExp") rule: String, replacement: String): Unit = singulars.addFirst(Rule(rule, replacement))
 
-    fun addSingularize(rule: String,
-                       replacement: String) {
-        val singularizeRule = Rule(rule, replacement)
-        this.singulars.addFirst(singularizeRule)
-    }
-
-    fun addIrregular(singular: String,
-                     plural: String) {
+    @SuppressWarnings("squid:S125")
+    fun addIrregular(singular: String, plural: String) {
         //CheckArg.isNotEmpty(singular, "singular rule");
         //CheckArg.isNotEmpty(plural, "plural rule");
         val singularRemainder = if (singular.length > 1) singular.substring(1) else ""
         val pluralRemainder = if (plural.length > 1) plural.substring(1) else ""
-        addPluralize("(" + singular[0] + ")" + singularRemainder + "$", "$1$pluralRemainder")
-        addSingularize("(" + plural[0] + ")" + pluralRemainder + "$", "$1$singularRemainder")
+        addPluralize("(${singular[0]})$singularRemainder$", "$1$pluralRemainder")
+        addSingularize("(${plural[0]})$pluralRemainder$", "$1$singularRemainder")
     }
 
     fun addUncountable(vararg words: String) {
-        if (words == null || words.size == 0) return
+        if (words.isEmpty()) return
         for (word in words) {
-            if (word != null) uncountables.add(word.trim { it <= ' ' }.toLowerCase())
+            uncountables.add(word.trim { it <= ' ' }.toLowerCase())
         }
     }
 
@@ -437,12 +355,12 @@ class Inflector {
      * Completely remove all rules within this inflector.
      */
     fun clear() {
-        this.uncountables.clear()
-        this.plurals.clear()
-        this.singulars.clear()
+        uncountables.clear()
+        plurals.clear()
+        singulars.clear()
     }
 
-    protected fun initialize() {
+    init {
         val inflect = this
         inflect.addPluralize("$", "s")
         inflect.addPluralize("s$", "s")
@@ -508,32 +426,24 @@ class Inflector {
         inflect.addUncountable("equipment", "information", "rice", "money", "species", "series", "fish", "sheep")
     }
 
-    companion object {
-
-        val instance = Inflector()
-
-        /**
-         * Utility method to replace all occurrences given by the specific backreference with its uppercased form, and remove all
-         * other backreferences.
-         *
-         *
-         * The Java [regular expression processing][Pattern] does not use the preprocessing directives `\l`,
-         * `&#92;u`, `\L`, and `\U`. If so, such directives could be used in the replacement string
-         * to uppercase or lowercase the backreferences. For example, `\L1` would lowercase the first backreference, and
-         * `&#92;u3` would uppercase the 3rd backreference.
-         * @return the input string with the appropriate characters converted to upper-case
-         */
-        protected fun replaceAllWithUppercase(input: String?,
-                                              regex: String,
-                                              groupNumberToUppercase: Int): String {
-            val underscoreAndDotPattern = compile(regex)
-            val matcher = underscoreAndDotPattern.matcher(input!!)
-            val sb = StringBuffer()
-            while (matcher.find()) {
-                matcher.appendReplacement(sb, matcher.group(groupNumberToUppercase).toUpperCase())
-            }
-            matcher.appendTail(sb)
-            return sb.toString()
+    /**
+     * Utility method to replace all occurrences given by the specific backreference with its uppercased form, and remove all
+     * other backreferences.
+     *
+     * The Java [regular expression processing][Pattern] does not use the preprocessing directives `\l`,
+     * `&#92;u`, `\L`, and `\U`. If so, such directives could be used in the replacement string
+     * to uppercase or lowercase the backreferences. For example, `\L1` would lowercase the first backreference, and
+     * `&#92;u3` would uppercase the 3rd backreference.
+     * @return the input string with the appropriate characters converted to upper-case
+     */
+    private fun replaceAllWithUppercase(input: String?, regex: String, groupNumberToUppercase: Int): String {
+        val underscoreAndDotPattern = regex.toPattern()
+        val matcher = underscoreAndDotPattern.matcher(input!!)
+        val sb = StringBuffer()
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group(groupNumberToUppercase).toUpperCase())
         }
+        matcher.appendTail(sb)
+        return sb.toString()
     }
 }

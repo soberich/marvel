@@ -7,11 +7,13 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment
 import java.util.Locale.ENGLISH
 import kotlin.text.RegexOption.IGNORE_CASE
 
+
 /**
  * Port from java
  * TODO: Make Inherited entities inherit id path
  * FIXME: Replaces non-portable
  */
+//@formatter:off
 class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
 
     override fun toPhysicalTableName(id: Identifier?, ctx: JdbcEnvironment?): Identifier? {
@@ -19,8 +21,8 @@ class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
         var plural = singular.replace(ENTITIES, EMPTY)
         plural =
                 if (SEQ.matches(plural))
-                     Inflector.instance.pluralize(plural)
-                else Inflector.instance.pluralize(plural.dropLast(_SEQ.length)) + _SEQ
+                     Inflector.pluralize(plural)
+                else Inflector.pluralize(plural.dropLast(_SEQ.length)) + _SEQ
         return formatIdentifier(id, plural)
     }
 
@@ -49,3 +51,4 @@ class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
         val SEQ      = """.+(?<!_seq)$""".toRegex(IGNORE_CASE)
     }
 }
+//@formatter:on
