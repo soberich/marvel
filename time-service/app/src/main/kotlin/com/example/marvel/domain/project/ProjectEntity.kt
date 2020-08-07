@@ -15,9 +15,11 @@ import javax.persistence.Id
 //@OptimisticLocking(type = DIRTY)
 @Introspected
 class ProjectEntity : AbstractAuditingEntity<String>() {
+    //@formatter:off
     @get:
     [Id
     Column(name = "name", length = 50)]
     override lateinit var id                  : String
+    //@formatter:on
 }
 

@@ -1,6 +1,7 @@
 package com.example.marvel.openapi;
 
 import com.example.marvel.convention.serial.Json;
+import com.example.marvel.domain.employee.EmployeeEntity;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -29,15 +30,10 @@ import java.time.Period;
 import java.time.Year;
 import java.time.ZoneId;
 import java.time.temporal.Temporal;
-import java.util.Currency;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
 
 public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
@@ -89,12 +85,12 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
                 if (Number.class.isAssignableFrom(cls) || cls.isPrimitive() && type.getPropertyName().equalsIgnoreCase("version"))
                     return null;
                 if (Instant.class.isAssignableFrom(cls) || LocalDateTime.class.isAssignableFrom(cls))
-                    return new ComposedSchema().anyOf(asList(new DateTimeSchema(), new IntegerSchema().format("int64"), new NumberSchema())).example(1544391144);
+                    return new ComposedSchema().anyOf(asList(new DateTimeSchema(), new IntegerSchema().format("int64")                     , new NumberSchema())).example(1544391144);
                 if (Date.class.isAssignableFrom(cls) || LocalDate.class.isAssignableFrom(cls))
-                    return new ComposedSchema().anyOf(asList(new DateSchema(), new IntegerSchema().format("int64"), new NumberSchema())).example(1544391144);
+                    return new ComposedSchema().anyOf(asList(new DateSchema()    , new IntegerSchema().format("int64")                     , new NumberSchema())).example(1544391144);
                 if (Year.class.isAssignableFrom(cls))
                     //language=RegExp
-                    return new ComposedSchema().anyOf(asList(new StringSchema(), new IntegerSchema())).pattern("[0-9]{4}").example(2018);
+                    return new ComposedSchema().anyOf(asList(new StringSchema()  , new IntegerSchema())).pattern("[0-9]{4}").example(2018);
                 if (Period.class.isAssignableFrom(cls))
                     //language=RegExp
                     return new StringSchema().format("ISO 8601").pattern("([-+]?)P(?:([-+]?[0-9]+)Y)?(?:([-+]?[0-9]+)M)?(?:([-+]?[0-9]+)W)?(?:([-+]?[0-9]+)D)?").example("-P3Y+6M25W-15D");

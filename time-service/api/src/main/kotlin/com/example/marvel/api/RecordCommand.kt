@@ -1,53 +1,54 @@
 package com.example.marvel.api
 
 import arrow.core.ListK
-import java.math.BigDecimal
+import org.hibernate.validator.constraints.time.DurationMax
+import org.hibernate.validator.constraints.time.DurationMin
+import java.time.Duration
 import java.time.LocalDate
 import javax.validation.constraints.NotNull
 
 
 /*@optics*/ sealed class RecordCommand {
+    //@formatter:off
+    @get:
+    [NotNull]
     abstract val date                : LocalDate
+    @get:
+    [NotNull]
     abstract val type                : RecordType
-    abstract val hoursSubmitted      : BigDecimal
+    @get:
+    [NotNull
+    DurationMax(days = 1L)
+    DurationMin(minutes = 10L)]
+    abstract val hoursSubmitted      : Duration
     abstract val desc                : String?
+    @get:
+    [NotNull]
     abstract val recordCollectionId  : Long
-
-    companion object {}
+    //@formatter:on
+    companion object
 
     /*@optics*/ data class RecordCreateCommand(
-        @get:
-        [NotNull]
+        //@formatter:off
         override val date                : LocalDate,
-        @get:
-        [NotNull]
         override val type                : RecordType,
-        @get:
-        [NotNull]
-        override val hoursSubmitted      : BigDecimal,
+        override val hoursSubmitted      : Duration,
         override val desc                : String?,
-        @get:
-        [NotNull]
         override val recordCollectionId  : Long
+        //@formatter:on
     ) : RecordCommand() { companion object }
 
     /*@optics*/ data class RecordUpdateCommand(
+        //@formatter:off
         @get:
         [NotNull]
         val id                           : Long,
-        @get:
-        [NotNull]
         override val date                : LocalDate,
-        @get:
-        [NotNull]
         override val type                : RecordType,
-        @get:
-        [NotNull]
-        override val hoursSubmitted      : BigDecimal,
+        override val hoursSubmitted      : Duration,
         override val desc                : String?,
-        @get:
-        [NotNull]
         override val recordCollectionId  : Long
+        //@formatter:on
     ) : RecordCommand() { companion object }
 
     /**

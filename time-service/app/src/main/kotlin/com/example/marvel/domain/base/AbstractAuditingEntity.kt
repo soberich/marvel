@@ -36,8 +36,8 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 @Access(PROPERTY)
 @Introspected
-abstract class AbstractAuditingEntity<T : Serializable> : BusinessKeyIdentityOf<T>() {
-
+abstract class AbstractAuditingEntity<out T : Serializable> : BusinessKeyIdentityOf<T>() {
+    //@formatter:off
     @get:
     [Column(nullable = false, updatable = false, length = 50)]
     var createdBy           : String? = null
@@ -55,4 +55,5 @@ abstract class AbstractAuditingEntity<T : Serializable> : BusinessKeyIdentityOf<
     [UpdateTimestamp
     Column(nullable = false)]
     var lastModifiedDate    : Instant = Instant.now()
+    //@formatter:on
 }

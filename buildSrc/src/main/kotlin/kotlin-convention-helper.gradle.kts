@@ -29,6 +29,7 @@ tasks {
         kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_14) } ?: JavaVersion.VERSION_14).toString()
     }
     withType<JavaCompile>().configureEach {
+        //modularity.inferModulePath.set(true)
         options.apply {
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview")
@@ -60,29 +61,15 @@ allOpen.annotations(
 )
 
 noArg.annotations(
+    "io.micronaut.core.annotation.Introspected",
     "javax.inject.Named",
-    "javax.ws.rs.Path",
-    "io.micronaut.core.annotation.Introspected"
+    "javax.ws.rs.Path"
 )
-
-//gnag {
-//    isEnabled = true
-//    setFailOnError(true)
-//
-//    ktlint { isEnabled = true }
-//
-//    github {
-//        repoName("btkelly/android-svsu-acm-20131120")
-//        authToken("0000000000000")
-//        issueNumber("1")
-//        setCommentInline(true)
-//        setCommentOnSuccess(true)
-//    }
-//}
 
 dependencies {
     implementation(enforcedPlatform(kotlin("bom")))
     implementation(platform(Deps.Platforms.JACKSON))
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
 //    implementation(Deps.Libs.COROUTINES_JDK8)
 //    implementation(Deps.Libs.COROUTINES_REACTOR)
 

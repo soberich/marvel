@@ -6,6 +6,7 @@ import com.example.marvel.domain.project.ProjectEntity
 import com.example.marvel.domain.record.RecordEntity
 import io.micronaut.core.annotation.Introspected
 import java.time.Month
+import java.time.Year
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Cacheable
@@ -27,9 +28,10 @@ import javax.persistence.OneToMany
 //@OptimisticLocking(type = DIRTY)
 @Introspected
 class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
+    //@formatter:off
     @get:
     [Column(nullable = false, updatable = false)]
-    var year                                  : Int = 0
+    lateinit var year                         : Year
     @get:
     [Column(nullable = false, updatable = false)
     Enumerated(STRING)]
@@ -46,4 +48,5 @@ class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     @get:
     [OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)]
     var records                               : List<RecordEntity> = mutableListOf()
+    //@formatter:on
 }

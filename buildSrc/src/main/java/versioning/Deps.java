@@ -40,6 +40,8 @@ public interface Deps {
         String EBEAN_QUERY           = EBEAN;
         String EBEAN_QUERY_GEN       = EBEAN;
         String EBEAN_TEST            = EBEAN;
+        String GUAVA                 = "[5.4,6)";
+        String HIBERNATE_TYPES       = "2.9.+";
         String HIKARI                = "+";
         String IMMUTABLES            = "2.8.9-SNAPSHOT";
         String JACKSON_COREUTILS     = "1.8";
@@ -63,15 +65,15 @@ public interface Deps {
         String SLF4J_API             = "1.7.25";
         String SLF4J_JBOSS           = "1.0.4.GA";
         String SWAGGER               = "2.0.7";
-        String VALIDATOR             = "7.0.0.Alpha6";
+        String VALIDATOR             = "6.+";
         String ZALANDO_PROBLEM       = "0.23.0";
-
     }
 
     interface Platforms {
         //val KOTLIN: Nothing = TODO("Scripts are PRE-compiled, can't these lines from script to apply '" + "org.jetbrains.kotlin:kotlin-bom"   + ':' + Versions.KOTLIN + '\'')
         String BLAZE_JPA      = "com.blazebit:blaze-persistence-bom"                       + ':' + versioning.Platforms.Versions.BLAZE_JPA;
         String COROUTINES     = "org.jetbrains.kotlinx:kotlinx-coroutines-bom"             + ':' + versioning.Platforms.Versions.COROUTINES;
+        String GUAVA          = "com.google.guava:guava-bom"                               + ':' + versioning.Platforms.Versions.GUAVA;
         String JACKSON        = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
         String MICRONAUT      = "io.micronaut:micronaut-bom"                               + ':' + versioning.Platforms.Versions.MICRONAUT;
         String MICRONAUT_DATA = "io.micronaut.data:micronaut-data-bom"                     + ':' + versioning.Platforms.Versions.MICRONAUT_DATA;
@@ -156,8 +158,10 @@ public interface Deps {
         String EBEAN_QUERY                 = "io.ebean:ebean-querybean"                                         + ':' + Versions.EBEAN_QUERY;
         String EBEAN_QUERY_GEN             = "io.ebean:kotlin-querybean-generator"                              + ':' + Versions.EBEAN_QUERY_GEN;
         String EBEAN_TEST                  = "io.ebean:ebean-test"                                              + ':' + Versions.EBEAN_TEST;
+        String GUAVA                       = "com.google.guava:guava"                                           + ':' + versioning.Platforms.Versions.GUAVA;
         String HIBERNATE                   = "org.hibernate:hibernate-core"                                     + ':' + Versions.HIBERNATE;
         String HIBERNATE_JPAMODELGEN       = "org.hibernate.orm:hibernate-jpamodelgen"                          + ':' + Versions.HIBERNATE_JPAMODELGEN;
+        String HIBERNATE_TYPES             = "com.vladmihalcea:hibernate-types-52"                              + ':' + Versions.HIBERNATE_TYPES;
         String HIKARI                      = "com.zaxxer:HikariCP"                                              + ':' + Versions.HIKARI;
         String IMMUTABLES_VALUE            = "org.immutables:value"                                             + ':' + Versions.IMMUTABLES;
         String IMMUTABLES_BUILDER          = "org.immutables:builder"                                           + ':' + Versions.IMMUTABLES;

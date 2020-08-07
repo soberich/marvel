@@ -3,36 +3,28 @@ package com.example.marvel.domain.employee
 import com.example.marvel.domain.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
 import io.micronaut.core.annotation.Introspected
-import javax.persistence.Access
+import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.CascadeType.ALL
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Index
-import javax.persistence.NamedQueries
-import javax.persistence.NamedQuery
-import javax.persistence.OneToMany
-import javax.persistence.Table
-import javax.persistence.UniqueConstraint
 
 @NamedQueries(
     NamedQuery(name = "Employee.stream", query = "SELECT NEW com.example.marvel.domain.employee.EmployeeListingView(e.id, e.email, e.name) FROM EmployeeEntity e"),
-    NamedQuery(name = "Employee.detailed", query = "SELECT NEW com.example.marvel.domain.employee.EmployeeDetailedViewDefault(e.id, e.email, e.name) FROM EmployeeEntity e WHERE e.id = :id")
-)
+    NamedQuery(name = "Employee.detailed", query = "SELECT NEW com.example.marvel.domain.employee.EmployeeDetailedViewDefault(e.id, e.email, e.name) FROM EmployeeEntity e WHERE e.id = :id"))
 
 @Entity
 @Table(
-        indexes = [
-            Index(columnList = "email ASC, name DESC")],
-        uniqueConstraints = [
-            UniqueConstraint(columnNames = ["email"]),
-            UniqueConstraint(columnNames = ["name"])])
+    indexes = [
+        Index(columnList = "email ASC, name DESC")],
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["email"]),
+        UniqueConstraint(columnNames = ["name"])])
 @Access(PROPERTY)
 //@DynamicUpdate
 //@SelectBeforeUpdate
 //@OptimisticLocking(type = DIRTY)
 @Introspected
 class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
+    //@formatter:off
     @get:
     [Column(nullable = false)]
     lateinit var name                                  : String
@@ -41,7 +33,9 @@ class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
     lateinit var email                                 : String
 
     @get:
-    [OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)]
+    [OrderBy("year DESC, month DESC")
+    OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)]
     var records                                        : List<RecordCollectionEntity> = mutableListOf()
+    //@formatter:on
 }
 

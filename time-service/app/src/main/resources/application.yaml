@@ -63,6 +63,7 @@ jpa:
         generate_statistics:                        true
         hbm2ddl.auto:                               update
         implicit_naming_strategy:                   com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
+        integrator_provider:                        com.example.marvel.convention.jpa.type.HibernateTypesContributorIntegratorProvider
         jdbc.batch_size:                            33
         jdbc.fetch_size:                            200
         jdbc.use_streams_for_binary:                true

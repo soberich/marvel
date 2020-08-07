@@ -44,13 +44,13 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
      */
 //    @Transactional(propagation = NOT_SUPPORTED, readOnly = false)
     override fun streamEmployees(): Stream<EmployeeView> =
-            em.createNamedQuery("Employee.stream", EmployeeListingView::class.java)
-                    .resultStream
-                    .map(EmployeeView::class.java::cast)
+        em.createNamedQuery("Employee.stream", EmployeeListingView::class.java)
+            .resultStream
+            .map(EmployeeView::class.java::cast)
 
     override fun filterEmployees(filter: String): List<EmployeeView> =
-            JPAUtils.queryEntities(em, EmployeeEntity::class.java, QueryParameters.query(filter).build())
-                    .map { EmployeeListingView(it.id!!, it.name, it.email) }
+        JPAUtils.queryEntities(em, EmployeeEntity::class.java, QueryParameters.query(filter).build())
+            .map { EmployeeListingView(it.id!!, it.name, it.email) }
 
     override fun createEmployee(employee: EmployeeCommand.EmployeeCreateCommand): EmployeeDetailedView =
         empMapper.toEntity(employee).also(em::persist).let(empMapper::toCreateView)
@@ -61,10 +61,10 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
 //    override fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView> = employeeRepository.listForPeriod(employeeId, year.value, month)
 
     override fun createWholePeriod(records: RecordCollectionCreateCommand): RecordCollectionDetailedView? =
-            recColMapper.toCreateView(recColMapper.toEntity(records).also(em::persist))
+        recColMapper.toCreateView(recColMapper.toEntity(records).also(em::persist))
 
     override fun updateWholePeriod(records: RecordCollectionUpdateCommand): RecordCollectionDetailedView? =
-            em.find(RecordCollectionEntity::class.java, records.id)?.let { recColMapper.toUpdateView(recColMapper.toEntity(it.id!!, records).let(em::merge)) }
+        em.find(RecordCollectionEntity::class.java, records.id)?.let { recColMapper.toUpdateView(recColMapper.toEntity(it.id!!, records).let(em::merge)) }
 
     fun getAnyUserDemo(): EmployeeDetailedView? =
         em.createNamedQuery("Employee.detailed", EmployeeDetailedViewDefault::class.java)

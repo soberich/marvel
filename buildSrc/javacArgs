@@ -1,4 +1,5 @@
 -Xlint
+-Xlint:-preview
 -Xlint:-processing
 -Xlint:-varargs
 -Xdoclint:none

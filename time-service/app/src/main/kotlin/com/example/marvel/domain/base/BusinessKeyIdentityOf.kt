@@ -2,7 +2,6 @@ package com.example.marvel.domain.base
 
 import io.micronaut.core.annotation.Introspected
 import java.io.Serializable
-import java.util.Objects
 import javax.persistence.Access
 import javax.persistence.AccessType.FIELD
 import javax.persistence.AccessType.PROPERTY
@@ -15,10 +14,14 @@ import javax.persistence.Version
 @MappedSuperclass
 @Access(PROPERTY)
 @Introspected
-abstract class BusinessKeyIdentityOf<T : Serializable> : IdentifiableOf<T> {
+abstract class BusinessKeyIdentityOf<out T : Serializable> : IdentifiableOf<T> {
 
     /**
-     * To allow creating transient references with default ctor and set them to `@ManyToOne` owning side.
+     * Allows creating transient entity instances with default ctor and set them to `@ManyToOne` owning side
+     * considering they doesn't have any of
+     * [javax.persistence.CascadeType.PERSIST]
+     * [javax.persistence.CascadeType.MERGE]
+     * [org.hibernate.annotations.CascadeType.SAVE_UPDATE]
      */
     @field:
     [Version
@@ -35,16 +38,19 @@ abstract class BusinessKeyIdentityOf<T : Serializable> : IdentifiableOf<T> {
      *   SecurityManager screams final method overridden.
      *   So, for now we may leave these open and override them in each Entity
      */
-    override fun equals(other: Any?) = when {
+    override fun equals(other: Any?): Boolean = when {
         this === other                     -> true
         other !is BusinessKeyIdentityOf<*> -> false
         !other.canEqual(this)              -> false
-        else                               -> id  == other.id
+        else                               -> id == other.id
     }
 
-    protected open fun canEqual(other: Any) = this::class.java.isAssignableFrom(other::class.java)
+    /**
+     * This implementation is default and preferred to be overridden
+     */
+    protected open fun canEqual(other: Any): Boolean = this::class.java.isAssignableFrom(other::class.java)
 
-    override fun hashCode() = Objects.hashCode(id)
+    override fun hashCode(): Int = id.hashCode()
 
-    override fun toString() = "Entity of ${this::class.java.name} with id: $id"
+    override fun toString(): String = "Entity of ${this::class.java.name} with id: $id"
 }

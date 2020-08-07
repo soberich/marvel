@@ -7,6 +7,7 @@ plugins {
     com.webcohesion.enunciate
     `dependencies-reporting-helper`
     id("com.github.johnrengelman.shadow") version "6.0.0"
+    // FIXME: Micronaut Gradle plugin fails by now at Java 14.
 //    id("io.micronaut.application") version "1.0.0.M9"
 }
 
@@ -18,6 +19,7 @@ val developmentOnly by configurations.creating
  * JPAMODELGEN Should go first!
  * TODO: Remove Quarkus form convention default configuration to not to leak here.
  */
+// FIXME: Micronaut Gradle plugin fails by now at Java 14.
 //micronaut {
 //    version("2.0.1")
 //}
@@ -33,7 +35,7 @@ dependencies {
         "io.micronaut.spring:micronaut-spring-web-annotation",
         "io.micronaut.spring:micronaut-spring-boot-annotation",
         "io.micronaut.spring:micronaut-spring-annotation",
-        "io.micronaut.data:micronaut-data-processor:1.0.2.BUILD-SNAPSHOT",
+        "io.micronaut.data:micronaut-data-processor:1.1.3",
         "io.micronaut.configuration:micronaut-openapi",
         Deps.Libs.VALIDATOR_AP
     ).forEach(::kapt)
@@ -65,6 +67,8 @@ dependencies {
         "io.micronaut:micronaut-runtime",
         "io.micronaut:micronaut-management",
         "io.micronaut.kotlin:micronaut-kotlin-extension-functions:2.0.0"/*2.0.1.BUILD-SNAPSHOT"*/,
+//        "io.micronaut.kotlin:micronaut-ktor:2.0.0"/*2.0.1.BUILD-SNAPSHOT"*/,
+//        "io.ktor:ktor-server-netty:+",
         "io.micronaut:micronaut-inject",
         "io.micronaut.data:micronaut-data-hibernate-jpa"
     ).forEach(::implementation)
@@ -74,11 +78,11 @@ dependencies {
         platform(Deps.Platforms.MICRONAUT),
         platform(Deps.Platforms.MICRONAUT_DATA),
         project(":time-service.app"),
-        "org.webjars:swagger-ui:3.20.9",
+        "org.webjars:swagger-ui:3.30.0",
         "org.webjars:bootstrap:+",
         "org.slf4j:jul-to-slf4j:1.7.30",
-        "org.apache.logging.log4j:log4j-to-slf4j:2.13.1",
-        "ognl:ognl:3.1.12",
+        "org.apache.logging.log4j:log4j-to-slf4j:2.13.3",
+        "ognl:ognl:3.2.14",
         "io.swagger.core.v3:swagger-annotations",
         "io.micronaut:micronaut-validation",
         "io.micronaut:micronaut-spring",
@@ -102,7 +106,7 @@ dependencies {
         /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
         platform(Deps.Platforms.MICRONAUT),
         "org.slf4j:jul-to-slf4j:1.7.30",
-        "org.apache.logging.log4j:log4j-to-slf4j:2.13.1",
+        "org.apache.logging.log4j:log4j-to-slf4j:2.13.3",
         "io.micronaut:micronaut-inject-java",
         "io.micronaut.spring:micronaut-spring-web-annotation",
         "io.micronaut.spring:micronaut-spring-boot-annotation"
@@ -110,10 +114,10 @@ dependencies {
 
     arrayOf(
         kotlin("test-junit5"),
-        "org.spekframework.spek2:spek-dsl-jvm:2.0.8",
+        "org.spekframework.spek2:spek-dsl-jvm:2.0.12",
         "org.slf4j:jul-to-slf4j:1.7.30",
         "org.junit.jupiter:junit-jupiter-api",
-        "org.apache.logging.log4j:log4j-to-slf4j:2.13.1",
+        "org.apache.logging.log4j:log4j-to-slf4j:2.13.3",
         "io.mockk:mockk:1.9.3",
         "io.micronaut.test:micronaut-test-kotlintest",
         "io.micronaut.test:micronaut-test-junit5",
@@ -121,14 +125,21 @@ dependencies {
     ).forEach(::testImplementation)
 
     arrayOf(
-        "org.spekframework.spek2:spek-runner-junit5:2.0.8",
+        "org.spekframework.spek2:spek-runner-junit5:2.0.12",
         "org.junit.jupiter:junit-jupiter-engine"
     ).forEach(::testRuntimeOnly)
 }
 
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
+}
+
 application {
-    mainClass.set("com.example.marvel.runtime.Application")
-    mainClassName = "com.example.marvel.runtime.Application"
+    mainClass.set("com.example.marvel.runtime.ApplicationKt")
+    mainClassName = "com.example.marvel.runtime.ApplicationKt"
     applicationDefaultJvmArgs = listOf("-noverify", "-XX:TieredStopAtLevel=1", "-Dcom.sun.management.jmxremote")
 }
 

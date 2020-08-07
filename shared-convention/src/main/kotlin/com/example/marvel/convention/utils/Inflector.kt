@@ -8,7 +8,6 @@ import java.lang.Character.toUpperCase
 import java.util.*
 import java.util.regex.Pattern
 import java.util.regex.Pattern.CASE_INSENSITIVE
-import java.util.regex.Pattern.compile
 
 /**
  * Port from java
@@ -28,10 +27,9 @@ object Inflector {
      */
     val uncountables: HashSet<String> = hashSetOf()
 
-    internal class Rule internal constructor(private val expression: String, replacement: String?) {
+    internal class Rule internal constructor(private val expression: String, private val replacement: String) {
 
-        private val expressionPattern: Pattern = compile(expression, CASE_INSENSITIVE)
-        private val replacement: String = replacement ?: ""
+        private val expressionPattern = expression.toPattern(CASE_INSENSITIVE)
 
         /**
          * Apply the rule against the input string, returning the modified string or null if the rule didn't apply (and no
@@ -47,7 +45,7 @@ object Inflector {
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
-            if (other != null && other.javaClass != this.javaClass) return false
+            if (other != null && other::class.java != this::class.java) return false
             val rule = other as? Rule
             return expression.equals(rule!!.expression, ignoreCase = true)
         }
@@ -249,7 +247,7 @@ object Inflector {
     fun capitalize(words: String?): String? = when (val result = words?.trim { it <= ' ' }) {
         null -> null
         ""   -> ""
-        else -> if (result.length == 1) result.toUpperCase() else "${toUpperCase(result[0])}${result.substring(1).toLowerCase()}"
+        else -> if (result.length == 1) result.toUpperCase() else result.toLowerCase().capitalize()
     }
 
     /**

@@ -19,8 +19,8 @@ import javax.persistence.MappedSuperclass
  */
 @MappedSuperclass
 @Access(PROPERTY)
-abstract class SimpleGeneratedIdentityOfLong: JpaStateTransitionAwareIdentityOf<Long>() {
-
+abstract class SimpleGeneratedIdentityOfLong : JpaStateTransitionAwareIdentityOf<Long>() {
+    //@formatter:off
     @get:
     [Id
     GenericGenerator(
@@ -34,4 +34,5 @@ abstract class SimpleGeneratedIdentityOfLong: JpaStateTransitionAwareIdentityOf<
     GeneratedValue(strategy = SEQUENCE, generator = "optimized-sequence")
     Column(nullable = false, updatable = false)]
     override var id: Long? = 0L
+    //@formatter:on
 }

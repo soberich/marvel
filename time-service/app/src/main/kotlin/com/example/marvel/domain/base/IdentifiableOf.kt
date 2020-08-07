@@ -5,6 +5,9 @@ import java.io.Serializable
 /**
  * A minimal valuable identifiable.
  */
-interface IdentifiableOf<T : Serializable> {
+interface IdentifiableOf<out T : Serializable> {
+    /**
+     * id value
+     */
     val id: T?
 }

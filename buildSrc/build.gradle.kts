@@ -68,7 +68,7 @@ tasks {
 }
 
 val kotlinVersion = "1.4.0-rc"
-//val kotlinVersion = KotlinVersion(1, 3, 71).toString()
+//val kotlinVersion = KotlinVersion(1, 4, 0).toString()
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
@@ -96,7 +96,6 @@ val kotlinVersion = "1.4.0-rc"
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
     implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "+")
 //    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "+")
-    implementation("gradle.plugin.com.btkelly",                         "gnag",                                     "+")
 }
 
 /**

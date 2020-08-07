@@ -11,19 +11,19 @@ import javax.persistence.Transient
  */
 @MappedSuperclass
 @Access(PROPERTY)
-abstract class JpaStateTransitionAwareIdentityOf<T : Serializable> : AbstractAuditingEntity<T>() {
+abstract class JpaStateTransitionAwareIdentityOf<out T : Serializable> : AbstractAuditingEntity<T>() {
 
     @Suppress("JpaAttributeTypeInspection")
     @get:
     [Transient]
     private val bucketDisperser by lazy { id ?: Any() }
 
-    override fun equals(other: Any?) = when {
+    override fun equals(other: Any?): Boolean = when {
         this === other                                 -> true
         other !is JpaStateTransitionAwareIdentityOf<*> -> false
         !other.canEqual(this)                          -> false
-        else                                           -> id  == other.id
+        else                                           -> id == other.id
     }
 
-    override fun hashCode() = bucketDisperser.hashCode()
+    override fun hashCode(): Int = bucketDisperser.hashCode()
 }

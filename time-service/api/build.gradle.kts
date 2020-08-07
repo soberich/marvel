@@ -23,7 +23,8 @@ dependencies {
     arrayOf(
         Deps.Javax.VALIDATION,
         Deps.Jakarta.VALIDATION,
+        Deps.Libs.ARROW_OPTICS,
         Deps.Libs.REACTIVE_STREAMS,
-        Deps.Libs.ARROW_OPTICS
-    ).forEach(::api)
+        Deps.Libs.VALIDATOR
+        ).forEach(::api)
 }

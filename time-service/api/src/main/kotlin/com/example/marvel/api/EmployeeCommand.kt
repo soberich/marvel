@@ -13,6 +13,7 @@ import javax.validation.constraints.Positive
  */
 @Introspected
 /*@optics*/ sealed class EmployeeCommand {
+    //@formatter:off
     @get:
     [NotBlank]
     abstract val name                : String
@@ -20,22 +21,26 @@ import javax.validation.constraints.Positive
     [NotBlank
     Email(flags = [CASE_INSENSITIVE])]
     abstract val email               : String
-
+    //@formatter:on
     companion object
 
     @Introspected
     /*@optics*/ data class EmployeeCreateCommand(
+        //@formatter:off
         override val name                : String,
         override val email               : String
+        //@formatter:on
     ) : EmployeeCommand() { companion object }
 
     @Introspected
     /*@optics*/ data class EmployeeUpdateCommand(
+        //@formatter:off
         @get:
         [NotNull
         Positive]
         val id                           : Long,
         override val name                : String,
         override val email               : String
+        //@formatter:on
     ) : EmployeeCommand() { companion object }
 }
