@@ -8,6 +8,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy.IGNORE
 import org.mapstruct.ReportingPolicy.ERROR
 import org.mapstruct.ReportingPolicy.WARN
 
+//@formatter:off
 @MapperConfig(
     injectionStrategy                = CONSTRUCTOR,
     mappingInheritanceStrategy       = AUTO_INHERIT_ALL_FROM_CONFIG,
@@ -15,5 +16,7 @@ import org.mapstruct.ReportingPolicy.WARN
     nullValuePropertyMappingStrategy = IGNORE,
     typeConversionPolicy             = ERROR,
     unmappedSourcePolicy             = WARN,
-    unmappedTargetPolicy             = ERROR)
+    unmappedTargetPolicy             = ERROR,
+    uses                             = [GenericMapper::class])
 interface MapperConfig
+//@formatter:on

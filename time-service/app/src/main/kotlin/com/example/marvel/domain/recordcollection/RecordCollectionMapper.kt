@@ -4,7 +4,6 @@ import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateComm
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import com.example.marvel.api.RecordCollectionCreateView
 import com.example.marvel.api.RecordCollectionUpdateView
-import com.example.marvel.domain.GenericMapper
 import com.example.marvel.domain.MapperConfig
 import com.example.marvel.domain.employee.EmployeeMapper
 import com.example.marvel.domain.record.RecordMapper
@@ -15,7 +14,7 @@ import org.mapstruct.Mappings
 import java.io.Serializable
 
 @Mapper(config = MapperConfig::class, uses = [EmployeeMapper::class, RecordMapper::class])
-abstract class RecordCollectionMapper : GenericMapper<RecordCollectionEntity>() {
+abstract class RecordCollectionMapper {
 
     @Mappings(
         Mapping(target = "id", ignore = true),
@@ -23,8 +22,8 @@ abstract class RecordCollectionMapper : GenericMapper<RecordCollectionEntity>() 
         Mapping(target = "createdDate", ignore = true),
         Mapping(target = "lastModifiedBy", ignore = true),
         Mapping(target = "lastModifiedDate", ignore = true),
-        Mapping(source = "employeeId", target = "employee.id"),
-        Mapping(source = "projectId", target = "project.id"))
+        Mapping(source = "employeeId", target = "employee"),
+        Mapping(source = "projectId", target = "project"))
     abstract fun toEntity(source: RecordCollectionCreateCommand): RecordCollectionEntity
 
     @Mappings(

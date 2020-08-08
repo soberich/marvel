@@ -1,8 +1,7 @@
 package com.example.marvel.domain
 
-import org.mapstruct.Context
-import org.mapstruct.ObjectFactory
-import org.mapstruct.TargetType
+import com.example.marvel.domain.base.IdentifiableOf
+import org.mapstruct.*
 import java.io.Serializable
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
@@ -10,14 +9,17 @@ import javax.persistence.PersistenceContext
 /**
  * @see [https://youtrack.jetbrains.com/issue/KT-25960] for why is this not an interface and not split to, say, creator and updater.
  */
-abstract class GenericMapper<E> {
+abstract class GenericMapper {
 
     @set:
     [PersistenceContext]
-    protected open lateinit var em: EntityManager
+    internal lateinit var em: EntityManager
 
     @ObjectFactory
-    open fun @receiver:TargetType Class<E>.objectFactory(@Context id: Serializable): E = em.getReference(this, id)
+    fun <E : IdentifiableOf<Serializable>> @receiver:TargetType Class<E>.objectFactory(@Context id: Serializable): E = em.getReference(this, id)
+
+    @Mapping(target = "id")
+    fun <E : IdentifiableOf<Serializable>> @receiver:TargetType Class<E>.persistentReference(id: Serializable): E = objectFactory(id)
 
     /**
      * FIXME: Exception thrown though `@ObjectFactory` present

@@ -1,12 +1,11 @@
 package com.example.marvel.domain.project
 
-import com.example.marvel.domain.GenericMapper
 import com.example.marvel.domain.MapperConfig
 import com.example.marvel.domain.recordcollection.RecordCollectionMapper
 import org.mapstruct.Mapper
 
 @Mapper(config = MapperConfig::class, uses = [RecordCollectionMapper::class])
-abstract class ProjectMapper : GenericMapper<ProjectEntity>() {
+abstract class ProjectMapper {
 
 //    @Mappings(
 //        Mapping(target = "id", ignore = true))
