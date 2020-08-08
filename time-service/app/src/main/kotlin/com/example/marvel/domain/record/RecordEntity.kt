@@ -26,8 +26,7 @@ import javax.persistence.FetchType.LAZY
         FROM   RecordEntity p
           JOIN p.report c
         WHERE  c.id = :id
-           AND c.month = :month
-           AND c.year = :year""",
+           AND c.yearMonth = :yearMonth""",
     hints = [
         QueryHint(name = COMMENT, value = "fetch records for period"),
         QueryHint(name = READ_ONLY, value = "true")])

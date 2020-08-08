@@ -12,6 +12,7 @@ import org.hibernate.integrator.spi.IntegratorService
 import org.hibernate.jpa.boot.spi.IntegratorProvider
 import org.hibernate.service.ServiceRegistry
 import org.hibernate.type.BasicType
+import org.hibernate.type.CompositeCustomType
 import org.hibernate.type.CustomType
 import org.hibernate.type.Type
 import org.hibernate.usertype.UserType
@@ -50,6 +51,9 @@ class HibernateTypesContributorIntegratorProvider<T> : TypeContributor, Integrat
                     .map { object : /*eliminate deprecations*/CustomType(it as T, arrayOf(it.name)) {} }
                     .forEach(typeContributions::contributeType)
             }
+        typeContributions.contributeType(object :/*eliminate deprecations*/ CompositeCustomType(YearMonthType, arrayOf("yearmonth-composite")) {
+            override fun getName(): String = "yearmonth-composite"
+        })
     }
 
     /**

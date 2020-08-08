@@ -5,16 +5,15 @@ import com.example.marvel.domain.employee.EmployeeEntity
 import com.example.marvel.domain.project.ProjectEntity
 import com.example.marvel.domain.record.RecordEntity
 import io.micronaut.core.annotation.Introspected
-import java.time.Month
-import java.time.Year
+import org.hibernate.annotations.Columns
+import org.hibernate.annotations.Type
+import java.time.YearMonth
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Cacheable
 import javax.persistence.CascadeType.ALL
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.EnumType.STRING
-import javax.persistence.Enumerated
 import javax.persistence.FetchType.LAZY
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
@@ -30,12 +29,11 @@ import javax.persistence.OneToMany
 class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     //@formatter:off
     @get:
-    [Column(nullable = false, updatable = false)]
-    lateinit var year                         : Year
-    @get:
-    [Column(nullable = false, updatable = false)
-    Enumerated(STRING)]
-    lateinit var month                        : Month
+    [Type(type = "yearmonth-composite")
+    Columns(columns = [
+        Column(name = "year", nullable = false, updatable = false),
+        Column(name = "month", nullable = false, updatable = false)])]
+    lateinit var yearMonth                    : YearMonth
     @get:
     [ManyToOne(optional = false, fetch = LAZY)
     JoinColumn(updatable =false)]

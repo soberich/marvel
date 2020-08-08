@@ -33,7 +33,7 @@ class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
     lateinit var email                                 : String
 
     @get:
-    [OrderBy("year DESC, month DESC")
+    [OrderBy("yearMonth DESC")
     OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)]
     var records                                        : List<RecordCollectionEntity> = mutableListOf()
     //@formatter:on

@@ -1,8 +1,7 @@
 package com.example.marvel.api
 
 import arrow.core.ListK
-import java.time.Month
-import java.time.Year
+import java.time.YearMonth
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
@@ -11,11 +10,9 @@ import javax.validation.constraints.PastOrPresent
 /*@optics*/ sealed class RecordCollectionCommand {
     //@formatter:off
     @get:
-    [NotNull PastOrPresent]
-    abstract val year                : Year
-    @get:
-    [NotNull]
-    abstract val month               : Month
+    [NotNull
+    PastOrPresent]
+    abstract val yearMonth           : YearMonth
     @get:
     [NotNull]
     abstract val projectId           : String
@@ -30,8 +27,7 @@ import javax.validation.constraints.PastOrPresent
 
     /*@optics*/ data class RecordCollectionCreateCommand(
         //@formatter:off
-        override val year                : Year,
-        override val month               : Month,
+        override val yearMonth           : YearMonth,
         override val projectId           : String,
         override val employeeId          : Long,
         @get:
@@ -45,8 +41,7 @@ import javax.validation.constraints.PastOrPresent
         @get:
         [NotNull]
         val id                           : Long,
-        override val year                : Year,
-        override val month               : Month,
+        override val yearMonth           : YearMonth,
         override val projectId           : String,
         override val employeeId          : Long,
         @get:
