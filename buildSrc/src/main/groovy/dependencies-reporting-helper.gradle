@@ -22,12 +22,12 @@ plugins {
 dependencyGraphGenerator {
     generators = Arrays.asList(
         Generator.ALL,
-//                    def springGenerator = new Generator(
-//                "spring", // Suffix for our Gradle task.
-//                { ResolvedDependency _ -> dependency.getModuleGroup().startsWith("org.springframework") },
-//                { true }, // Include transitive dependencies.
-//                { MutableNode node, ResolvedDependency _ -> node.add(Style.FILLED, Color.rgb("#6CB23F")) },
-//            )
+        new Generator(
+            "micronaut", // Suffix for our Gradle task.
+            { ["micronaut"].any { tag -> it.moduleGroup.contains(tag) || it.moduleName.contains(tag) } },
+            { true },
+            { MutableNode node, ResolvedDependency _ -> node.add(Style.FILLED, Color.rgb("#6CB23F")) }
+        ),
         new Generator(
             "spring", // Suffix for our Gradle task.
             { ["org.springframework"].any { tag -> it.moduleGroup.contains(tag) || it.moduleName.contains(tag) } },

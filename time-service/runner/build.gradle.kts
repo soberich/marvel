@@ -7,8 +7,8 @@ plugins {
     com.webcohesion.enunciate
     `dependencies-reporting-helper`
     id("com.github.johnrengelman.shadow") version "6.0.0"
-    // FIXME: Micronaut Gradle plugin fails by now at Java 14.
-//    id("io.micronaut.application") version "1.0.0.M9"
+    // FIXME: Micronaut Gradle plugin fails by now with Kotlin 1.4.0-rc.
+//    id("io.micronaut.application")
 }
 
 repositories.jcenter()
@@ -17,30 +17,28 @@ val developmentOnly by configurations.creating
 /**
  * ORDER MATTERS!!
  * JPAMODELGEN Should go first!
- * TODO: Remove Quarkus form convention default configuration to not to leak here.
  */
-// FIXME: Micronaut Gradle plugin fails by now at Java 14.
-//micronaut {
-//    version("2.0.1")
-//}
 dependencies {
     enunciate("dk.jyskebank.tooling.enunciate:enunciate-openapi:1.1.+")
     arrayOf(
-        /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-        platform(Deps.Platforms.MICRONAUT),
-        "io.micronaut:micronaut-validation",
-        "io.micronaut:micronaut-management",
-        "io.micronaut:micronaut-inject-java",
-        "io.micronaut:micronaut-graal",
-        "io.micronaut.spring:micronaut-spring-web-annotation",
-        "io.micronaut.spring:micronaut-spring-boot-annotation",
-        "io.micronaut.spring:micronaut-spring-annotation",
-        "io.micronaut.data:micronaut-data-processor:1.1.3",
+        platform(Deps.Platforms.MICRONAUT)                              , /*TODO: uncomment for 2.x*/
         "io.micronaut.configuration:micronaut-openapi",
+        "io.micronaut.data:micronaut-data-processor:1.1.3",
+        "io.micronaut.spring:micronaut-spring-annotation",
+        "io.micronaut.spring:micronaut-spring-boot",
+        "io.micronaut.spring:micronaut-spring-boot-annotation",
+        "io.micronaut.spring:micronaut-spring-web-annotation:2.1.0",
+        "io.micronaut:micronaut-graal",
+        "io.micronaut:micronaut-inject-java:1.3.5"                 , /*TODO:drop version for 2.x*/
+        "io.micronaut:micronaut-management",
+        "io.micronaut:micronaut-validation:1.3.5"                  , /*TODO:drop version for 2.x*/
         Deps.Libs.VALIDATOR_AP
     ).forEach(::kapt)
 
+    //implementation("org.springframework.boot:spring-boot-starter:2.1.0.RELEASE")/*TODO: uncomment for 2.x*/ /*Didn't work for /routes*/
+
     arrayOf(
+        platform(Deps.Platforms.MICRONAUT)                              , /*TODO: uncomment for 2.x*/
         "org.graalvm.nativeimage:svm",
         Deps.Jakarta.CDI,
         Deps.Jakarta.SERVLET,
@@ -48,71 +46,77 @@ dependencies {
     ).forEach(::compileOnly)
 
     arrayOf(
-        /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-        platform(Deps.Platforms.MICRONAUT),
+        platform(Deps.Platforms.MICRONAUT)                              , /*TODO: uncomment for 2.x*/
         "net.java.dev.jna:jna",
         "io.micronaut:micronaut-runtime-osx",
         "io.methvin:directory-watcher"
     ).forEach { developmentOnly(it) }
 
     arrayOf(
-        /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-        platform(Deps.Platforms.MICRONAUT),
-        platform(Deps.Platforms.MICRONAUT_DATA),
+        platform(Deps.Platforms.MICRONAUT)                              , /*TODO: uncomment for 2.x*/
+        //platform(Deps.Platforms.MICRONAUT_DATA)                       , /*TODO: uncomment for 2.x*/
         project(":shared-convention"),
         project(":time-service.api"),
-        "org.springframework:spring-context",
-        "io.swagger.core.v3:swagger-annotations",
-        "io.micronaut:micronaut-validation",
-        "io.micronaut:micronaut-runtime",
-        "io.micronaut:micronaut-management",
-        "io.micronaut.kotlin:micronaut-kotlin-extension-functions:2.0.0"/*2.0.1.BUILD-SNAPSHOT"*/,
-//        "io.micronaut.kotlin:micronaut-ktor:2.0.0"/*2.0.1.BUILD-SNAPSHOT"*/,
-//        "io.ktor:ktor-server-netty:+",
+//        "io.micronaut.configuration:micronaut-micrometer-core:1.3.0"          , /*FIXME: `io.micronaut.configuration` is a pre-2.x!*/
+        "io.micronaut.data:micronaut-data-hibernate-jpa",
+        "io.micronaut.kotlin:micronaut-kotlin-extension-functions:2.0.0", /*2.0.1.BUILD-SNAPSHOT"*/
         "io.micronaut:micronaut-inject",
-        "io.micronaut.data:micronaut-data-hibernate-jpa"
+        "io.micronaut:micronaut-management",
+        "io.micronaut:micronaut-runtime",
+        "io.micronaut:micronaut-validation"                             , /*TODO:Specify 1.3.5 for 2.x with Spring*/
+        "io.swagger.core.v3:swagger-annotations",
+        "io.swagger.core.v3:swagger-annotations",
+        //"org.springframework.boot:spring-boot-starter-web:2.1.0.RELEASE",/*Didn't work for /routes*/
+        "org.springframework:spring-context"                              /*TODO: Extract to `Deps.Libs`*/
+        //"io.ktor:ktor-server-netty:+"                                 , /*TODO:Not sure*/
+        //"io.micronaut.kotlin:micronaut-ktor:2.0.0"/*2.0.1.BUILD-SNAPSHOT"*/ /*TODO: uncomment for 2.x */
     ).forEach(::implementation)
 
     arrayOf(
-        /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-        platform(Deps.Platforms.MICRONAUT),
-        platform(Deps.Platforms.MICRONAUT_DATA),
+        platform(Deps.Platforms.MICRONAUT)                              , /*TODO: uncomment for 2.x*/
+        //platform(Deps.Platforms.MICRONAUT_DATA)                                    , /*TODO: uncomment for 2.x*/
         project(":time-service.app"),
-        "org.webjars:swagger-ui:3.30.0",
-        "org.webjars:bootstrap:+",
-        "org.slf4j:jul-to-slf4j:1.7.30",
-        "org.apache.logging.log4j:log4j-to-slf4j:2.13.3",
-        "ognl:ognl:3.2.14",
-        "io.swagger.core.v3:swagger-annotations",
-        "io.micronaut:micronaut-validation",
-        "io.micronaut:micronaut-spring",
-        "io.micronaut:micronaut-inject",
-        "io.micronaut:micronaut-http-server-netty",
-        "io.micronaut:micronaut-http-server",
-        "io.micronaut:micronaut-http-client",
-        "io.micronaut.sql:micronaut-jdbc-hikari",
-        "io.micronaut.sql:micronaut-hibernate-jpa",
-        "io.micronaut.spring:micronaut-spring-web",
-        "io.micronaut.spring:micronaut-spring-boot",
-        "io.micronaut.kotlin:micronaut-kotlin-runtime:2.0.0"/*2.0.1.BUILD-SNAPSHOT"*/,
-        "io.micronaut.data:micronaut-data-spring",
-        "io.micronaut.beanvalidation:micronaut-hibernate-validator", //This switches to "full" Hib Valid-or https://docs.micronaut.io/2.0.0.M2/guide/index.html#beanValidation
-        "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
+        "ch.qos.logback:logback-classic:1.2.3",
         "com.h2database:h2",
-        "ch.qos.logback:logback-classic:1.2.3"
+        "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
+        "io.micronaut.cache:micronaut-cache-caffeine",
+        "io.micronaut.configuration:micronaut-hibernate-jpa-spring:1.4.1"            , /*FIXME: `io.micronaut.configuration` is a pre-2.x!*/
+        "io.micronaut.configuration:micronaut-hibernate-jpa:1.4.1"                   , /*FIXME: `io.micronaut.configuration` is a pre-2.x!*/
+        "io.micronaut.configuration:micronaut-hibernate-validator:1.2.0"             , /*FIXME: `configuration` is missing in group for 2.x */ /*This switches to "full" Hib Valid-or https://docs.micronaut.io/2.0.0.M2/guide/index.html#beanValidation*/
+        "io.micronaut.configuration:micronaut-jdbc-hikari:1.4.1"                     , /*FIXME: `io.micronaut.configuration` is a pre-2.x!*/
+        "io.micronaut.data:micronaut-data-spring",
+        "io.micronaut.kotlin:micronaut-kotlin-runtime:2.0.0"                         , /*2.0.1.BUILD-SNAPSHOT"*/
+        "io.micronaut.spring:micronaut-spring-boot",
+        "io.micronaut.spring:micronaut-spring-web",
+        "io.micronaut:micronaut-http-client",
+        "io.micronaut:micronaut-http-server"                                         , /*TODO:Specify 1.3.5 for 2.x with Spring*/
+        "io.micronaut:micronaut-http-server-netty"                                   , /*TODO:Specify 1.3.5 for 2.x with Spring*/
+        "io.micronaut:micronaut-inject"                                              , /*TODO:Specify 1.3.5 for 2.x with Spring*/
+        "io.micronaut:micronaut-spring"                                              , /*TODO:drop version for 2.x*/
+        "io.micronaut:micronaut-validation"                                          , /*TODO:Specify 1.3.5 for 2.x with Spring*/
+        "io.swagger.core.v3:swagger-annotations",
+        "ognl:ognl:3.2.14",
+        "org.apache.logging.log4j:log4j-to-slf4j:2.13.3",
+        "org.slf4j:jul-to-slf4j:1.7.30",
+        "org.webjars:bootstrap:+",
+        "org.webjars:swagger-ui:+"
+        //"io.micronaut.beanvalidation:micronaut-hibernate-validator"                , /*TODO: Replace `io.micronaut.configuration` one for 2.x*//* This switches to "full" Hib Valid-or https://docs.micronaut.io/2.0.0.M2/guide/index.html#beanValidation */
+        //"io.micronaut.sql:micronaut-hibernate-jpa"                                 , /*TODO: Replace `io.micronaut.configuration` one for 2.x*/
+        //"io.micronaut.sql:micronaut-jdbc-hikari"                                   , /*TODO: Replace `io.micronaut.configuration` one for 2.x*/
     ).forEach(::runtimeOnly)
 
     arrayOf(
-        /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-        platform(Deps.Platforms.MICRONAUT),
+        platform(Deps.Platforms.MICRONAUT)                              , /*TODO: uncomment for 2.x*/
         "org.slf4j:jul-to-slf4j:1.7.30",
         "org.apache.logging.log4j:log4j-to-slf4j:2.13.3",
-        "io.micronaut:micronaut-inject-java",
-        "io.micronaut.spring:micronaut-spring-web-annotation",
+        "io.micronaut:micronaut-inject-java:1.3.5",
+        "io.micronaut.spring:micronaut-spring-web-annotation:2.1.0",
+        "io.micronaut.spring:micronaut-spring-boot",
         "io.micronaut.spring:micronaut-spring-boot-annotation"
     ).forEach(::kaptTest)
 
     arrayOf(
+        platform(Deps.Platforms.MICRONAUT)                              , /*TODO: uncomment for 2.x*/
         kotlin("test-junit5"),
         "org.spekframework.spek2:spek-dsl-jvm:2.0.12",
         "org.slf4j:jul-to-slf4j:1.7.30",
@@ -125,6 +129,7 @@ dependencies {
     ).forEach(::testImplementation)
 
     arrayOf(
+        platform(Deps.Platforms.MICRONAUT)                              , /*TODO: uncomment for 2.x*/
         "org.spekframework.spek2:spek-runner-junit5:2.0.12",
         "org.junit.jupiter:junit-jupiter-engine"
     ).forEach(::testRuntimeOnly)
@@ -137,19 +142,32 @@ idea {
     }
 }
 
+//// FIXME: Micronaut Gradle plugin fails by now with Kotlin 1.4.0-rc.
+//micronaut {
+//    version("1.3.7")
+//    enableNativeImage.set(true)
+//}
+
 application {
-    mainClass.set("com.example.marvel.runtime.ApplicationKt")
+    mainClass.convention("com.example.marvel.runtime.ApplicationKt")
     mainClassName = "com.example.marvel.runtime.ApplicationKt"
     applicationDefaultJvmArgs = listOf("-noverify", "-XX:TieredStopAtLevel=1", "-Dcom.sun.management.jmxremote")
 }
 
 tasks {
+    withType<ProcessResources>().configureEach {
+        filesMatching("openapi.properties") {
+            System.setProperty("micronaut.openapi.config.file", path) //FIXME
+            expand(project.properties)
+        }
+    }
     shadowJar {
         mergeServiceFiles()
     }
     (run) {
         jvmArgs("-Dmicronaut.openapi.views.spec=rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop")
     }
+//    val developmentOnly by configurations.getting
     withType<JavaExec>().configureEach {
         classpath += developmentOnly
     }
@@ -165,17 +183,18 @@ configure(listOf(
     project(":time-service.api")
 )) {
     apply(plugin = "kotlin-convention-helper")
+//    apply(plugin = "io.micronaut.gradle.MicronautApplicationPlugin")
     dependencies {
         arrayOf(
             /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-            platform(Deps.Platforms.MICRONAUT),
-            "io.micronaut:micronaut-inject-java"
+//            platform(Deps.Platforms.MICRONAUT),
+            "io.micronaut:micronaut-inject-java:1.3.5"
         ).forEach(::kapt)
 
         arrayOf(
             /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-            platform(Deps.Platforms.MICRONAUT),
-            "io.micronaut:micronaut-inject"
+//            platform(Deps.Platforms.MICRONAUT),
+            "io.micronaut:micronaut-inject:1.3.5"
         ).forEach(::implementation)
     }
 }

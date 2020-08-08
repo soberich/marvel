@@ -22,7 +22,7 @@ import javax.persistence.FetchType.LAZY
     name = "Record.listForPeriod",
     //language=HQL
     query = """
-        SELECT NEW com.example.marvel.domain.record.RecordListingView(p.date, p.type, p.hoursSubmitted, p.desc, p.report.id)
+        SELECT NEW RecordListingView(p.date, p.type, p.hoursSubmitted, p.desc, p.report.id)
         FROM   RecordEntity p
           JOIN p.report c
         WHERE  c.id = :id
@@ -49,7 +49,7 @@ class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
     lateinit var type                         : RecordType
     @get:
     [Column(precision = 5, columnDefinition = "INT")]
-    lateinit var hoursSubmitted               : Duration
+    lateinit var hoursSubmitted               : Duration // will be stored in seconds
     var desc                                  : String? = null
     @get:
     [Id

@@ -6,6 +6,10 @@ enableFeaturePreview("VERSION_ORDERING_V2")
 rootProject.name = "marvel"
 
 pluginManagement {
+    val micronautPluginVersion: String by settings
+    plugins {
+        id("io.micronaut.application") version micronautPluginVersion
+    }
     repositories {
         gradlePluginPortal()
         mavenCentral()

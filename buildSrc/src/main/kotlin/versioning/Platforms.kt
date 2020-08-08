@@ -8,7 +8,7 @@ object Platforms {
         //@formatter:off
         const val BLAZE_JPA      = "1.4.1"
         const val COROUTINES     = "1.3.5-1.4-M1"
-        const val GUAVA          = "29.0-jre"
+        const val GUAVA          = "29.+"
         const val JACKSON        = "2.11.2"//"2.10.3"
         const val QUARKUS        = "1.3.0.Final"
         const val MICRONAUT      = "2.0.1"

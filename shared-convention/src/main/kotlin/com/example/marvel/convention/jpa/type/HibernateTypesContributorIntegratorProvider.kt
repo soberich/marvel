@@ -3,13 +3,10 @@ package com.example.marvel.convention.jpa.type
 import com.vladmihalcea.hibernate.type.util.ClassImportIntegrator
 import io.github.classgraph.ClassGraph
 import io.github.classgraph.ClassInfo
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import org.hibernate.boot.model.TypeContributions
 import org.hibernate.boot.model.TypeContributor
 import org.hibernate.integrator.spi.Integrator
-import org.hibernate.integrator.spi.IntegratorService
-import org.hibernate.jpa.boot.spi.IntegratorProvider
 import org.hibernate.service.ServiceRegistry
 import org.hibernate.type.BasicType
 import org.hibernate.type.CompositeCustomType
@@ -18,17 +15,34 @@ import org.hibernate.type.Type
 import org.hibernate.usertype.UserType
 
 
-class HibernateTypesContributorIntegratorProvider<T> : TypeContributor, IntegratorService, IntegratorProvider where T : UserType, T : Type {
+class HibernateTypesContributorIntegratorProvider<T>(
+    classImportIntegrator: Integrator = ClassImportIntegrator(
+        ClassGraph()
+            .filterClasspathElements { it.contains("marvel") }
+            .whitelistPackages("com.example.marvel")
+            .enableAnnotationInfo()
+            .removeTemporaryFilesAfterScan()
+            .scan().use { result ->
+                result
+                    .allClasses
+                    .filter { !it.isAbstract }
+                    .filter { it.hasAnnotation("io.micronaut.core.annotation.Introspected") }
+                    .filter { !it.name.endsWith("Entity") }
+                    .map(ClassInfo::loadClass)
+                    .toImmutableList()
+            })
+) : Integrator by classImportIntegrator, TypeContributor where T : UserType, T : Type {
 
     /**
      * {@inheritDoc}
      */
     @Suppress("UNCHECKED_CAST")
     override fun contribute(typeContributions: TypeContributions, serviceRegistry: ServiceRegistry) {
-        val hasPostgres = ClassGraph().whitelistClasses("org.postgresql.Driver").scan().allClasses.any()
+        val hasPostgres = ClassGraph().filterClasspathElements { it.contains("postgresql") }.whitelistClasses("org.postgresql.Driver").scan().allClasses.any()
+        val hasOracle = ClassGraph().filterClasspathElements { it.contains("oracle") || it.contains("ojdbc") }.whitelistClasses("oracle.jdbc.driver.OracleDriver").scan().allClasses.any()
         ClassGraph()
-            .whitelistPackages("com.vladmihalcea.hibernate.type")
             .filterClasspathElements { it.contains("hibernate") }
+            .whitelistPackages("com.vladmihalcea.hibernate.type")
             .removeTemporaryFilesAfterScan()
             .enableStaticFinalFieldConstantInitializerValues()
             .scan().use { result ->
@@ -39,6 +53,7 @@ class HibernateTypesContributorIntegratorProvider<T> : TypeContributor, Integrat
                         .filter { it.name.endsWith("Type") }
                         .filter { !it.name.contains("YearMonth") }
                         .filter { hasPostgres || !it.name.contains("Postgres", ignoreCase = true) }
+                        .filter { hasOracle || !it.name.contains("Oracle", ignoreCase = true) }
                         .partition { it.implementsInterface("org.hibernate.type.BasicType") }
                 basicTypes
                     .map { it.getFieldInfo("INSTANCE") }
@@ -55,24 +70,4 @@ class HibernateTypesContributorIntegratorProvider<T> : TypeContributor, Integrat
             override fun getName(): String = "yearmonth-composite"
         })
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    //FIXME: This doesn't work. Never called for some reason
-    override fun getIntegrators(): List<Integrator> = persistentListOf(ClassImportIntegrator(
-        ClassGraph()
-            .whitelistPackages("com.vladmihalcea.hibernate.type")
-            .removeTemporaryFilesAfterScan()
-            .filterClasspathElements { /*FIXME:Debug output*/println("${this::class.simpleName}#getIntegrators -> $it"); true }
-            .filterClasspathElements { it.contains("com/example/marvel/domain/") } //FIXME: this is wrong, but the method id not call anyways, which is a bigger problem
-            .scan().use { result ->
-                result
-                    .allClasses
-                    .filter { !it.isAbstract }
-                    .filter { !it.name.endsWith("Entity") }
-                    .map(ClassInfo::loadClass)
-                    .toImmutableList()
-            }
-    ))
 }

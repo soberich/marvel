@@ -1,6 +1,8 @@
 micronaut:
   application:
     name: marvel
+  metrics:
+    enabled: true
   router:
     static-resources:
       swagger:
@@ -63,7 +65,6 @@ jpa:
         generate_statistics:                        true
         hbm2ddl.auto:                               update
         implicit_naming_strategy:                   com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
-        integrator_provider:                        com.example.marvel.convention.jpa.type.HibernateTypesContributorIntegratorProvider
         jdbc.batch_size:                            33
         jdbc.fetch_size:                            200
         jdbc.use_streams_for_binary:                true
@@ -75,3 +76,9 @@ jpa:
         show_sql:                                   false
         statement_cache.size:                       100
         use_sql_comments:                           true
+endpoints:
+  all:
+    port: 8085
+    enabled:   true
+    sensitive: false
+

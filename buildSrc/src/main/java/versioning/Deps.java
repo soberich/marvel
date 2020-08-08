@@ -18,7 +18,7 @@ public interface Deps {
         String ANNOTATION            = "[1.3,2)";
         String CDI                   = "[2,3)";
         String CONCURRENT            = "[1.1,2)";
-        String HIBERNATE             = "[5.4,6)";
+        String HIBERNATE             = "5.4.19.Final"; //trying to avoid possible bug in 5.5.0-SNAPSHOT for integrating via SPI for `org.hibernate.integrator.spi.IntegratorService`
         String HIBERNATE_JPAMODELGEN = "6.0.0.Alpha5";
         String INJECT                = "(0,3)";
         String JAX_RS                = "[2.1,2.2)";
@@ -40,7 +40,6 @@ public interface Deps {
         String EBEAN_QUERY           = EBEAN;
         String EBEAN_QUERY_GEN       = EBEAN;
         String EBEAN_TEST            = EBEAN;
-        String GUAVA                 = "[5.4,6)";
         String HIBERNATE_TYPES       = "2.9.+";
         String HIKARI                = "+";
         String IMMUTABLES            = "2.8.9-SNAPSHOT";

@@ -60,10 +60,10 @@ tasks {
         }
     }
     withType<Test>().configureEach {
-        jvmArgs("--enable-preview")
+        jvmArgs("--enable-preview", "--illegal-access=warn")
     }
     withType<JavaExec>().configureEach {
-        jvmArgs("--enable-preview")
+        jvmArgs("--enable-preview", "--illegal-access=warn")
     }
 }
 
@@ -73,6 +73,7 @@ val kotlinVersion = "1.4.0-rc"
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
     implementation(enforcedPlatform(kotlin("bom", kotlinVersion)))
+    implementation(platform("com.google.guava:guava-bom:29.+")) //idea-ext uses it - it seems to stay safe to upgrade
     implementation(kotlin("stdlib-jdk8"         , kotlinVersion))
     /**
      * N.B. Kotlin BOM does NOT contain kapt and compiler-plugins. There is another "special" BOM

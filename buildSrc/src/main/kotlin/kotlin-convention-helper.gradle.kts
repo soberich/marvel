@@ -32,15 +32,15 @@ tasks {
         //modularity.inferModulePath.set(true)
         options.apply {
             isFork = true
-            forkOptions.jvmArgs = listOf("--enable-preview")
+            forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach(compilerArgs::add)
         }
     }
     withType<Test>().configureEach {
-        jvmArgs("--enable-preview")
+        jvmArgs("--enable-preview", "--illegal-access=warn")
     }
     withType<JavaExec>().configureEach {
-        jvmArgs("--enable-preview")
+        jvmArgs("--enable-preview", "--illegal-access=warn")
     }
 }
 
@@ -52,6 +52,7 @@ allOpen.annotations(
     "arrow.optics.optics",
     "io.micronaut.aop.Around",
     "io.micronaut.core.annotation.Introspected",
+    "io.micronaut.validation.Validated",
     "io.quarkus.test.junit.QuarkusTest",
     "javax.enterprise.context.ApplicationScoped",
     "javax.enterprise.context.RequestScoped",

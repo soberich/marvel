@@ -1,4 +1,18 @@
-check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 8 is required, current JVM is ${JavaVersion.current()}" }
+import org.jetbrains.gradle.ext.*
+
+check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 14 is required, current JVM is ${JavaVersion.current()}" }
+
+plugins {
+    idea
+    org.jetbrains.gradle.plugin.`idea-ext`
+}
+
+idea.project {
+    this as ExtensionAware
+    configure<ProjectSettings> {
+        doNotDetectFrameworks("spring")
+    }
+}
 
 subprojects {
     apply(plugin = "build-dashboard")

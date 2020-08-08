@@ -10,7 +10,8 @@ import java.sql.ResultSet
 import java.time.YearMonth
 
 /**
- * @author Emmanuel Bernard
+ * Non-nullable [CompositeUserType] of [YearMonth]
+ * Neither of components can be null as [YearMonth] does not make sense otherwise
  */
 object YearMonthType : CompositeUserType {
     override fun getPropertyNames(): Array<String> = arrayOf("year", "month")
@@ -23,7 +24,7 @@ object YearMonthType : CompositeUserType {
     override fun setPropertyValue(component: Any, property: Int, value: Any): Unit =
         throw UnsupportedOperationException()
 
-    override fun returnedClass(): Class<*> = String::class.java
+    override fun returnedClass(): Class<*> = YearMonth::class.java
 
     override fun equals(x: Any, y: Any): Boolean =
         x === y || (x as YearMonth).year == (y as YearMonth).year && x.monthValue == y.monthValue

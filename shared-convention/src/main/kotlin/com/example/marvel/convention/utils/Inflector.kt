@@ -343,10 +343,7 @@ object Inflector {
     }
 
     fun addUncountable(vararg words: String) {
-        if (words.isEmpty()) return
-        for (word in words) {
-            uncountables.add(word.trim { it <= ' ' }.toLowerCase())
-        }
+        if (words.isNotEmpty()) words.mapTo(uncountables) { it.trim { it <= ' ' }.toLowerCase() }
     }
 
     /**
