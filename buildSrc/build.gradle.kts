@@ -67,8 +67,8 @@ tasks {
     }
 }
 
-val kotlinVersion = "1.4.0-rc"
-//val kotlinVersion = KotlinVersion(1, 4, 0).toString()
+//val kotlinVersion = "1.4.0-rc"
+val kotlinVersion = KotlinVersion(1, 3, 72).toString()
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion

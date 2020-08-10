@@ -26,7 +26,7 @@ tasks {
         kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_14) } ?: JavaVersion.VERSION_14).toString()
+        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_13) } ?: JavaVersion.VERSION_13).toString()
     }
     withType<JavaCompile>().configureEach {
         //modularity.inferModulePath.set(true)
