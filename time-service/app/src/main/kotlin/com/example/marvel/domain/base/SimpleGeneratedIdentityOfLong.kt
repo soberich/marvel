@@ -1,5 +1,6 @@
 package com.example.marvel.domain.base
 
+import io.micronaut.core.annotation.Introspected
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
 import org.hibernate.id.enhanced.SequenceStyleGenerator.CONFIG_PREFER_SEQUENCE_PER_ENTITY
@@ -19,18 +20,19 @@ import javax.persistence.MappedSuperclass
  */
 @MappedSuperclass
 @Access(PROPERTY)
+@Introspected
 abstract class SimpleGeneratedIdentityOfLong : JpaStateTransitionAwareIdentityOf<Long>() {
     //@formatter:off
     @get:
     [Id
     GenericGenerator(
-            name = "optimized-sequence",
-            strategy = "enhanced-sequence",
-            parameters = [
-                Parameter(name = CONFIG_PREFER_SEQUENCE_PER_ENTITY , value = "true"),
-                Parameter(name = INITIAL_PARAM                     , value = "1"),       //"${SequenceStyleGenerator.DEFAULT_INITIAL_VALUE}"
-                Parameter(name = INCREMENT_PARAM                   , value = "1"),      //"${SequenceStyleGenerator.DEFAULT_INCREMENT_PARAM}"
-                Parameter(name = OPT_PARAM                         , value = "pooled")]) // org.hibernate.id.enhanced.StandardOptimizerDescriptor
+        name = "optimized-sequence",
+        strategy = "enhanced-sequence",
+        parameters = [
+            Parameter(name = CONFIG_PREFER_SEQUENCE_PER_ENTITY , value = "true"),
+            Parameter(name = INITIAL_PARAM                     , value = "1"),       //"${SequenceStyleGenerator.DEFAULT_INITIAL_VALUE}"
+            Parameter(name = INCREMENT_PARAM                   , value = "1"),      //"${SequenceStyleGenerator.DEFAULT_INCREMENT_PARAM}"
+            Parameter(name = OPT_PARAM                         , value = "pooled")]) // org.hibernate.id.enhanced.StandardOptimizerDescriptor
     GeneratedValue(strategy = SEQUENCE, generator = "optimized-sequence")
     Column(nullable = false, updatable = false)]
     override var id: Long? = 0L

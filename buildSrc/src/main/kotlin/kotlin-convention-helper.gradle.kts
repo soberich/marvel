@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import versioning.Deps
 import java.nio.file.Files
 import java.nio.file.Paths
-import versioning.Deps
 
 plugins {
     idea

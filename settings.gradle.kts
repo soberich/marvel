@@ -9,6 +9,7 @@ pluginManagement {
     val micronautPluginVersion: String by settings
     plugins {
         id("io.micronaut.application") version micronautPluginVersion
+        id("io.micronaut.library") version micronautPluginVersion
     }
     repositories {
         gradlePluginPortal()

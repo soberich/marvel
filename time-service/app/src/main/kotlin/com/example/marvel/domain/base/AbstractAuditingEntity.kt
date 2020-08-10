@@ -11,7 +11,6 @@ import javax.persistence.Column
 import javax.persistence.MappedSuperclass
 
 /**
- * NO-OP
  * FIXME: `@GeneratedValue`
  * FIXME:
  *    Caused by: java.lang.IllegalStateException: Cannot set final field private final java.lang.String com.example.marvel.domain.base.AbstractAuditingEntity.createdBy from public void com.example.marvel.domain.base.AbstractAuditingEntity.$$_hibernate_write_createdBy(java.lang.String)
