@@ -42,11 +42,6 @@ kotlinDslPluginOptions {
     jvmTarget.set((JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_13) } ?: JavaVersion.VERSION_13).toString())
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_14
-    targetCompatibility = JavaVersion.current()
-}
-
 tasks {
     withType<KotlinCompile<*>>().configureEach {
         kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs"))
@@ -85,18 +80,18 @@ val kotlinVersion = KotlinVersion(1, 3, 72).toString()
     implementation(kotlin("sam-with-receiver", kotlinVersion))
 //    implementation(kotlin("serialization", kotlinVersion))
 //    testImplementation(kotlin("test"         , kotlinVersion))
-//    testImplementation(kotlin("test-junit"   , kotlinVersion))
-    implementation("com.github.ben-manes",                              "gradle-versions-plugin",                   "0.28.0")
-    implementation("com.vanniktech",                                    "gradle-dependency-graph-generator-plugin", "0.5.0")
-    implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
-    implementation("gradle.plugin.com.webcohesion.enunciate",           "enunciate-gradle",                         "+")
-    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext","gradle-idea-ext",                          "0.7")
-    implementation("io.ebean",                                          "ebean-gradle-plugin",                      "+")
-    implementation("org.springframework.boot",                          "spring-boot-gradle-plugin",                "2.3.2.RELEASE")
-    implementation("io.swagger.core.v3",                                "swagger-gradle-plugin",                    "+")
-    implementation("gradle.plugin.com.gorylenko.gradle-git-properties", "gradle-git-properties",                    "+")
-    implementation("org.sonarsource.scanner.gradle",                    "sonarqube-gradle-plugin",                  "+")
-//    implementation("se.patrikerdes",                                    "gradle-use-latest-versions-plugin",        "+")
+//    testImplementation(kotlin("test-junit5"   , kotlinVersion))
+    implementation("com.github.ben-manes"                              , "gradle-versions-plugin"                  , "0.28.0")
+    implementation("com.vaadin"                                        , "vaadin-gradle-plugin"                    , "+")
+    implementation("com.vanniktech"                                    , "gradle-dependency-graph-generator-plugin", "0.5.0")
+    implementation("gradle.plugin.com.gorylenko.gradle-git-properties" , "gradle-git-properties"                   , "+")
+    implementation("gradle.plugin.com.webcohesion.enunciate"           , "enunciate-gradle"                        , "+")
+    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext", "gradle-idea-ext"                         , "0.7")
+    implementation("io.ebean"                                          , "ebean-gradle-plugin"                     , "+")
+    implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"                   , "+")
+    implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"                 , "+")
+    implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin"               , "2.3.2.RELEASE")
+//    implementation("se.patrikerdes"                                    , "gradle-use-latest-versions-plugin"       , "+")
 }
 
 /**

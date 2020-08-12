@@ -7,6 +7,7 @@ import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
+import kotlin.properties.Delegates
 
 @Entity
 @Access(PROPERTY)
@@ -19,7 +20,7 @@ class ProjectEntity : AbstractAuditingEntity<String>() {
     @get:
     [Id
     Column(name = "name", length = 50)]
-    override lateinit var id                  : String
+    override var id                           : String by Delegates.notNull()
     //@formatter:on
 }
 

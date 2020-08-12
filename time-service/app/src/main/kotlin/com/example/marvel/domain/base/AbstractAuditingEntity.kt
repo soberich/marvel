@@ -9,6 +9,7 @@ import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
 import javax.persistence.MappedSuperclass
+import kotlin.properties.Delegates
 
 /**
  * FIXME: `@GeneratedValue`
@@ -39,7 +40,7 @@ abstract class AbstractAuditingEntity<out T : Serializable> : BusinessKeyIdentit
     //@formatter:off
     @get:
     [Column(nullable = false, updatable = false, length = 50)]
-    var createdBy           : String? = null
+    var createdBy           : String by Delegates.notNull()
 
     @get:
     [CreationTimestamp
@@ -48,7 +49,7 @@ abstract class AbstractAuditingEntity<out T : Serializable> : BusinessKeyIdentit
 
     @get:
     [Column(nullable = false, length = 50)]
-    var lastModifiedBy      : String? = null
+    var lastModifiedBy      : String by Delegates.notNull()
 
     @get:
     [UpdateTimestamp

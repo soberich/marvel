@@ -26,5 +26,5 @@ dependencies {
         Deps.Libs.ARROW_OPTICS,
         Deps.Libs.REACTIVE_STREAMS,
         Deps.Libs.VALIDATOR
-        ).forEach(::api)
+    ).forEach(::api)
 }

@@ -13,6 +13,7 @@ import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.EnumType.STRING
 import javax.persistence.FetchType.LAZY
+import kotlin.properties.Delegates
 
 /**
  * FIXME:
@@ -42,20 +43,20 @@ class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
     @get:
     [Id
     Column(nullable = false, updatable = false)]
-    lateinit var date                         : LocalDate
+    var date                                  : LocalDate by Delegates.notNull()
     @get:
     [Id
     Enumerated(STRING)]
-    lateinit var type                         : RecordType
+    var type                                  : RecordType by Delegates.notNull()
     @get:
     [Column(precision = 5, columnDefinition = "INT")]
-    lateinit var hoursSubmitted               : Duration // will be stored in seconds
+    var hoursSubmitted                        : Duration by Delegates.notNull()// will be stored in seconds
     var desc                                  : String? = null
     @get:
     [Id
     ManyToOne(optional= false, fetch = LAZY)
     JoinColumn(updatable = false)]
-    lateinit var report                       : RecordCollectionEntity
+    var report                                : RecordCollectionEntity by Delegates.notNull()
     //@formatter:on
     @get:
     [Transient]

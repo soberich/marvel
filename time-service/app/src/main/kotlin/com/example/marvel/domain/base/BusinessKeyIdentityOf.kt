@@ -52,5 +52,5 @@ abstract class BusinessKeyIdentityOf<out T : Serializable> : IdentifiableOf<T> {
 
     override fun hashCode(): Int = id.hashCode()
 
-    override fun toString(): String = "Entity of ${this::class.java.name} with id: $id"
+    override fun toString(): String = "Entity of ${this::class.simpleName} with id: $id"
 }

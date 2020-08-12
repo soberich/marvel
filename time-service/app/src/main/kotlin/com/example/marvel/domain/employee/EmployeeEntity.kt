@@ -6,6 +6,7 @@ import io.micronaut.core.annotation.Introspected
 import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.CascadeType.ALL
+import kotlin.properties.Delegates
 
 @NamedQueries(
     NamedQuery(name = "Employee.stream", query = "SELECT NEW EmployeeListingView(e.id, e.email, e.name) FROM EmployeeEntity e"),
@@ -27,15 +28,15 @@ class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
     //@formatter:off
     @get:
     [Column(nullable = false)]
-    lateinit var name                                  : String
+    var name                                  : String by Delegates.notNull()
     @get:
     [Column(nullable = false)]
-    lateinit var email                                 : String
+    var email                                 : String by Delegates.notNull()
 
     @get:
     [OrderBy("yearMonth DESC")
     OneToMany(mappedBy = "employee", cascade = [ALL], orphanRemoval = true)]
-    var records                                        : List<RecordCollectionEntity> = mutableListOf()
+    var records                               : MutableSet<RecordCollectionEntity> = linkedSetOf()
     //@formatter:on
 }
 

@@ -135,6 +135,13 @@ dependencies {
     ).forEach(::testRuntimeOnly)
 }
 
+rootProject.idea.project {
+    this as ExtensionAware
+    configure<ProjectSettings> {
+        doNotDetectFrameworks("spring")
+    }
+}
+
 idea {
     module {
         isDownloadJavadoc = true

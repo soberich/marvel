@@ -33,8 +33,7 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     private val empMapper: EmployeeMapper,
     private val recColMapper: RecordCollectionMapper
 ) : EmployeeOperationsServiceNamespace {
-//    private val empMapper: EmployeeMapper = EmployeeMapperImpl()
-//    private val recColMapper: RecordCollectionMapper = RecordCollectionMapperImpl(empMapper, RecordMapperImpl())
+
     @set:
     [PersistenceContext]
     protected lateinit var em: EntityManager

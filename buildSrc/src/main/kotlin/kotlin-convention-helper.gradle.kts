@@ -16,11 +16,6 @@ plugins {
     org.jetbrains.gradle.plugin.`idea-ext`
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_14
-    targetCompatibility = JavaVersion.current()
-}
-
 tasks {
     withType<KotlinCompile<*>>().configureEach {
         kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))

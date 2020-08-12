@@ -8,16 +8,11 @@ import io.micronaut.core.annotation.Introspected
 import org.hibernate.annotations.Columns
 import org.hibernate.annotations.Type
 import java.time.YearMonth
-import javax.persistence.Access
+import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
-import javax.persistence.Cacheable
 import javax.persistence.CascadeType.ALL
-import javax.persistence.Column
-import javax.persistence.Entity
 import javax.persistence.FetchType.LAZY
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
+import kotlin.properties.Delegates
 
 @Entity
 @Cacheable
@@ -33,18 +28,19 @@ class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     Columns(columns = [
         Column(name = "year", nullable = false, updatable = false),
         Column(name = "month", nullable = false, updatable = false)])]
-    lateinit var yearMonth                    : YearMonth
+    var yearMonth                             : YearMonth by Delegates.notNull()
     @get:
     [ManyToOne(optional = false, fetch = LAZY)
     JoinColumn(updatable =false)]
-    lateinit var project                      : ProjectEntity
+    var project                               : ProjectEntity by Delegates.notNull()
     @get:
     [ManyToOne(optional = false, fetch = LAZY)
     JoinColumn(updatable = false)]
-    lateinit var employee                     : EmployeeEntity
+    var employee                              : EmployeeEntity by Delegates.notNull()
 
     @get:
-    [OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)]
-    var records                               : List<RecordEntity> = mutableListOf()
+    [OrderBy("date DESC")
+    OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)]
+    var records                               : MutableSet<RecordEntity> = linkedSetOf()
     //@formatter:on
 }
