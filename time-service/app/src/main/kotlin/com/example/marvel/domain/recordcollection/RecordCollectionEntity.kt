@@ -4,7 +4,6 @@ import com.example.marvel.domain.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.employee.EmployeeEntity
 import com.example.marvel.domain.project.ProjectEntity
 import com.example.marvel.domain.record.RecordEntity
-import io.micronaut.core.annotation.Introspected
 import org.hibernate.annotations.Columns
 import org.hibernate.annotations.Type
 import java.time.YearMonth
@@ -20,7 +19,6 @@ import kotlin.properties.Delegates
 //@DynamicUpdate
 //@SelectBeforeUpdate
 //@OptimisticLocking(type = DIRTY)
-@Introspected
 class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     //@formatter:off
     @get:

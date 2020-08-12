@@ -1,6 +1,5 @@
 package com.example.marvel.domain.base
 
-import io.micronaut.core.annotation.Introspected
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.io.Serializable
@@ -35,7 +34,6 @@ import kotlin.properties.Delegates
  */
 @MappedSuperclass
 @Access(PROPERTY)
-@Introspected
 abstract class AbstractAuditingEntity<out T : Serializable> : BusinessKeyIdentityOf<T>() {
     //@formatter:off
     @get:

@@ -1,7 +1,6 @@
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 14 is required, current JVM is ${JavaVersion.current()}" }
 
 plugins {
-    idea
     org.jetbrains.gradle.plugin.`idea-ext`
 }
 

@@ -3,7 +3,6 @@ package com.example.marvel.domain.record
 import com.example.marvel.api.RecordType
 import com.example.marvel.domain.base.AbstractAuditingEntity
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
-import io.micronaut.core.annotation.Introspected
 import org.hibernate.annotations.Immutable
 import org.hibernate.annotations.QueryHints.*
 import java.io.Serializable
@@ -37,7 +36,6 @@ import kotlin.properties.Delegates
 @Cacheable
 @Access(PROPERTY)
 @IdClass(RecordEntity.RecordId::class)
-@Introspected
 class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
     //@formatter:off
     @get:
@@ -72,6 +70,5 @@ class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
      * This could be a just Tuple3
      * but we push to keep hexagonal: less imports (from arrow in this layer) => better.
      */
-    @Introspected
     data class RecordId(var report: RecordCollectionEntity, var date: LocalDate = LocalDate.MIN, var type: RecordType = RecordType.OTHER) : Serializable
 }

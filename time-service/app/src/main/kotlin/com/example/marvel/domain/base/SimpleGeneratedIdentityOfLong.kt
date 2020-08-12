@@ -1,6 +1,5 @@
 package com.example.marvel.domain.base
 
-import io.micronaut.core.annotation.Introspected
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
 import org.hibernate.id.enhanced.SequenceStyleGenerator.CONFIG_PREFER_SEQUENCE_PER_ENTITY
@@ -21,7 +20,6 @@ import kotlin.properties.Delegates
  */
 @MappedSuperclass
 @Access(PROPERTY)
-@Introspected
 abstract class SimpleGeneratedIdentityOfLong : JpaStateTransitionAwareIdentityOf<Long>() {
     //@formatter:off
     @get:

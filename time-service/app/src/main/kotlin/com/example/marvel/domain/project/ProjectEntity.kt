@@ -1,7 +1,6 @@
 package com.example.marvel.domain.project
 
 import com.example.marvel.domain.base.AbstractAuditingEntity
-import io.micronaut.core.annotation.Introspected
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
@@ -14,7 +13,6 @@ import kotlin.properties.Delegates
 //@DynamicUpdate
 //@SelectBeforeUpdate
 //@OptimisticLocking(type = DIRTY)
-@Introspected
 class ProjectEntity : AbstractAuditingEntity<String>() {
     //@formatter:off
     @get:

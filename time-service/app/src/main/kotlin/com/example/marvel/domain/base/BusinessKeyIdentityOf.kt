@@ -1,6 +1,5 @@
 package com.example.marvel.domain.base
 
-import io.micronaut.core.annotation.Introspected
 import java.io.Serializable
 import javax.persistence.Access
 import javax.persistence.AccessType.FIELD
@@ -13,7 +12,6 @@ import javax.persistence.Version
  */
 @MappedSuperclass
 @Access(PROPERTY)
-@Introspected
 abstract class BusinessKeyIdentityOf<out T : Serializable> : IdentifiableOf<T> {
 
     /**

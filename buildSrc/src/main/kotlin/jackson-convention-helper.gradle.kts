@@ -26,5 +26,5 @@ dependencies {
 //        "org.zalando:jackson-datatype-money",
 //        "org.zalando:jackson-datatype-problem",
 //        Deps.Libs.MONEY
-    ).forEach(::implementation)
+    ).forEach { "implementation"(it) }
 }

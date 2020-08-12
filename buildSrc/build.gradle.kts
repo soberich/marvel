@@ -1,3 +1,5 @@
+import org.jetbrains.gradle.ext.IdeaCompilerConfiguration
+import org.jetbrains.gradle.ext.ProjectSettings
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.nio.file.Files
@@ -14,6 +16,7 @@ plugins {
     `project-report`                                          // optional
     id("com.github.ben-manes.versions")      version "0.29.0" // optional
 //    id("se.patrikerdes.use-latest-versions") version "0.2.14" // optional
+    id("org.jetbrains.gradle.plugin.idea-ext") version "0.8.1"
 }
 
 repositories {
@@ -33,6 +36,27 @@ repositories {
     maven("https://oss.sonatype.org/content/repositories/snapshots") {
         mavenContent {
             snapshotsOnly()
+        }
+    }
+}
+
+rootProject.idea {
+    module.inheritOutputDirs = false
+    targetVersion = JavaVersion.current().toString()
+    project {
+        this as ExtensionAware
+        configure<ProjectSettings> {
+            this as ExtensionAware
+            configure<IdeaCompilerConfiguration> {
+                additionalVmOptions = "${project.property("org.gradle.jvmargs")}"
+                //addNotNullAssertions = true TODO
+                parallelCompilation = true
+                useReleaseOption = true
+                javac {
+                    javacAdditionalOptions = Files.readString(Paths.get("$rootDir", "javacArgs"))
+                    preferTargetJDKCompiler = true
+                }
+            }
         }
     }
 }
@@ -86,7 +110,7 @@ val kotlinVersion = KotlinVersion(1, 3, 72).toString()
     implementation("com.vanniktech"                                    , "gradle-dependency-graph-generator-plugin", "0.5.0")
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties" , "gradle-git-properties"                   , "+")
     implementation("gradle.plugin.com.webcohesion.enunciate"           , "enunciate-gradle"                        , "+")
-    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext", "gradle-idea-ext"                         , "0.7")
+    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext", "gradle-idea-ext"                         , "0.8.1")
     implementation("io.ebean"                                          , "ebean-gradle-plugin"                     , "+")
     implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"                   , "+")
     implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"                 , "+")

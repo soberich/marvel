@@ -1,3 +1,5 @@
+import org.jetbrains.gradle.ext.IdeaCompilerConfiguration
+import org.jetbrains.gradle.ext.ProjectSettings
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import versioning.Deps
@@ -5,7 +7,6 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 plugins {
-    idea
     java //if not applied `spring-boot-runner` reports missing `annotationProcessor` configuration
     kotlin
     `kotlin-kapt`
@@ -14,6 +15,32 @@ plugins {
     `kotlin-jpa`
     `kotlin-spring`
     org.jetbrains.gradle.plugin.`idea-ext`
+}
+
+rootProject.idea {
+    module.inheritOutputDirs = false
+    targetVersion = JavaVersion.current().toString()
+    project {
+        this as ExtensionAware
+        configure<ProjectSettings> {
+            this as ExtensionAware
+            configure<IdeaCompilerConfiguration> {
+                additionalVmOptions = "${project.property("org.gradle.jvmargs")}"
+                //addNotNullAssertions = true TODO
+                parallelCompilation = true
+                useReleaseOption = true
+                javac {
+                    javacAdditionalOptions = Files.readString(Paths.get("$rootDir", "buildSrc", "javacArgs"))
+                    preferTargetJDKCompiler = true
+                }
+            }
+        }
+    }
+}
+
+idea {
+    module.inheritOutputDirs = false
+    targetVersion = JavaVersion.current().toString()
 }
 
 tasks {
@@ -28,7 +55,7 @@ tasks {
         options.apply {
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
-            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach(compilerArgs::add)
+            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach { compilerArgs.add(it) } //ant (e.i. Ittellij driven build) can't compile ambiguous function reference
         }
     }
     withType<Test>().configureEach {

@@ -1,6 +1,5 @@
 package com.example.marvel.domain.base
 
-import io.micronaut.core.annotation.Introspected
 import java.io.Serializable
 import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
@@ -12,7 +11,6 @@ import javax.persistence.Transient
  */
 @MappedSuperclass
 @Access(PROPERTY)
-@Introspected
 abstract class JpaStateTransitionAwareIdentityOf<out T : Serializable> : AbstractAuditingEntity<T>() {
 
     @Suppress("JpaAttributeTypeInspection")
