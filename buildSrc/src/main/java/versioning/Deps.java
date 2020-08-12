@@ -79,6 +79,8 @@ public interface Deps {
         String QUARKUS        = "io.quarkus:quarkus-bom"                                   + ':' + versioning.Platforms.Versions.QUARKUS;
         String RESTEASY       = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
         String STATEMACHINE   = "org.springframework.statemachine:spring-statemachine-bom" + ':' + versioning.Platforms.Versions.STATEMACHINE;
+
+        String JUNIT5         = "org.junit:junit-bom"                                      + ':' + versioning.Platforms.Versions.JUNIT5;
     }
 
     interface Jakarta {

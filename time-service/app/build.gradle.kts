@@ -3,6 +3,7 @@ import versioning.Deps
 plugins {
     `java-library`
     `kotlin-convention-helper`
+    `testing-convention-helper`
 }
 
 repositories.jcenter()

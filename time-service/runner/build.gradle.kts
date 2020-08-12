@@ -65,7 +65,6 @@ dependencies {
         "io.micronaut:micronaut-runtime",
         "io.micronaut:micronaut-validation"                              , /*TODO:Specify 1.3.7 for 2.x with Spring*/
         "io.swagger.core.v3:swagger-annotations",
-        "io.swagger.core.v3:swagger-annotations",
         //"org.springframework.boot:spring-boot-starter-web:2.1.0.RELEASE",/*Didn't work for /routes*/
         "org.springframework:spring-context"                              /*TODO: Extract to `Deps.Libs`*/
         //"io.ktor:ktor-server-netty:+"                                  , /*TODO:Not sure*/
@@ -116,22 +115,13 @@ dependencies {
     ).forEach(::kaptTest)
 
     arrayOf(
-        platform(Deps.Platforms.MICRONAUT)                               , /*TODO: uncomment for 2.x*/
-        kotlin("test-junit5"),
-        "org.spekframework.spek2:spek-dsl-jvm:2.0.12",
-        "org.slf4j:jul-to-slf4j:1.7.30",
-        "org.junit.jupiter:junit-jupiter-api",
-        "org.apache.logging.log4j:log4j-to-slf4j:2.13.3",
-        "io.mockk:mockk:1.9.3",
+        platform(Deps.Platforms.MICRONAUT),
         "io.micronaut.test:micronaut-test-kotlintest",
-        "io.micronaut.test:micronaut-test-junit5",
-        "io.kotlintest:kotlintest-runner-junit5:3.3.2"
+        "io.micronaut.test:micronaut-test-junit5"
     ).forEach(::testImplementation)
 
     arrayOf(
-        platform(Deps.Platforms.MICRONAUT)                               , /*TODO: uncomment for 2.x*/
-        "org.spekframework.spek2:spek-runner-junit5:2.0.12",
-        "org.junit.jupiter:junit-jupiter-engine"
+        platform(Deps.Platforms.MICRONAUT)
     ).forEach(::testRuntimeOnly)
 }
 
