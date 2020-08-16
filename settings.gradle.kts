@@ -8,10 +8,12 @@ rootProject.name = "marvel"
 pluginManagement {
     val micronautPluginVersion: String by settings
     val ideaExtPluginVersion  : String by settings
+    val shadowPluginVersion   : String by settings
     plugins {
         id("io.micronaut.application")             version micronautPluginVersion
         id("io.micronaut.library")                 version micronautPluginVersion
         id("org.jetbrains.gradle.plugin.idea-ext") version ideaExtPluginVersion
+        id("com.github.johnrengelman.shadow")      version shadowPluginVersion
     }
     repositories {
         gradlePluginPortal()

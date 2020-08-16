@@ -21,15 +21,15 @@ dependencies {
      * need to explicitly have it here
      * 'buildSrc:compileKotlin' prints "w: Consider providing an explicit dependency on kotlin-reflect 1.4 to prevent strange errors"
      */
-    implementation(kotlin("reflect"))
-    implementation(kotlin("stdlib"))
-    implementation(kotlin("stdlib-jdk7"))
-    implementation(kotlin("stdlib-jdk8"))
+    //implementation(kotlin("reflect"))
+    //implementation(kotlin("stdlib"))
+    //implementation(kotlin("stdlib-jdk7"))
+    //implementation(kotlin("stdlib-jdk8"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
     implementation("org.jetbrains.kotlinx:atomicfu:0.14.4")
-//    implementation("com.github.Kotlin:kotlinx-io:master-SNAPSHOT")
-//    implementation(Deps.Libs.COROUTINES_REACTOR)
+    //implementation("com.github.Kotlin:kotlinx-io:master-SNAPSHOT")
+    //implementation(Deps.Libs.COROUTINES_REACTOR)
 }
 
 tasks {
@@ -70,6 +70,7 @@ allOpen.annotations(
     "javax.enterprise.context.RequestScoped",
     "javax.inject.Named",
     "javax.ws.rs.Path",
+    "org.springframework.boot.autoconfigure.SpringBootApplication",
     "org.springframework.web.bind.annotation.RestController"
 )
 

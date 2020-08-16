@@ -44,10 +44,11 @@ jackson:
   bean-introspection-module: true
 jpa:
   default:
+#spring.jpa:
 #    packages-to-scan:
 #      - 'example.micronaut.domain'
+    open-in-view: false
     properties:
-      hibernate:
         bytecode.use_reflection_optimizer:          true
 #        cache.use_query_cache:                      true
         cache.use_second_level_cache:               false

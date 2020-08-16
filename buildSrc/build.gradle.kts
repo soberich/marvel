@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import org.gradle.api.plugins.ExtensionAware as EA
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 14 is required, current JVM is ${JavaVersion.current()}" }
 
@@ -36,9 +37,11 @@ repositories {
     }
 }
 
-val kotlinVersion       : String by project
-val guavaVersion        : String by project
-val ideaExtPluginVersion: String by project
+val guavaVersion         : String by project
+val ideaExtPluginVersion : String by project
+val kotlinVersion        : String by project
+val springBootVersion    : String by project
+val versionsPluginVersion: String by project
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
@@ -48,22 +51,22 @@ val ideaExtPluginVersion: String by project
      * need to explicitly have it here
      * 'buildSrc:compileKotlin' prints "w: Consider providing an explicit dependency on kotlin-reflect 1.4 to prevent strange errors"
      */
-    implementation(kotlin("reflect"))
-    implementation(kotlin("stdlib"))
-    implementation(kotlin("stdlib-jdk7"))
-    implementation(kotlin("stdlib-jdk8"))
+    //implementation(kotlin("reflect"))
+    //implementation(kotlin("stdlib"))
+    //implementation(kotlin("stdlib-jdk7"))
+    //implementation(kotlin("stdlib-jdk8"))
     /*
      * N.B. Kotlin BOM does NOT contain kapt and compiler-plugins. There is another "special" BOM
      * e.g. "org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin", but it has longer name
      */
-    implementation(kotlin("gradle-plugin"    , kotlinVersion))
-    implementation(kotlin("allopen"          , kotlinVersion))
-    implementation(kotlin("noarg"            , kotlinVersion))
-    implementation(kotlin("sam-with-receiver", kotlinVersion))
+    implementation(kotlin("gradle-plugin"                , kotlinVersion))
+    implementation(kotlin("allopen"                      , kotlinVersion))
+    implementation(kotlin("noarg"                        , kotlinVersion))
+    implementation(kotlin("sam-with-receiver"            , kotlinVersion))
     //implementation(kotlin("serialization", kotlinVersion))
     //testImplementation(kotlin("test"         , kotlinVersion))
     //testImplementation(kotlin("test-junit5"   , kotlinVersion))
-    implementation("com.github.ben-manes"                              , "gradle-versions-plugin"                  , "0.28.0")
+    implementation("com.github.ben-manes"                              , "gradle-versions-plugin"                  , versionsPluginVersion)
     implementation("com.vaadin"                                        , "vaadin-gradle-plugin"                    , "+")
     implementation("com.vanniktech"                                    , "gradle-dependency-graph-generator-plugin", "0.5.0")
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties" , "gradle-git-properties"                   , "+")
@@ -73,32 +76,24 @@ val ideaExtPluginVersion: String by project
     implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"                   , "+")
     implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"                     , "$kotlinVersion-rc")
     implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"                 , "+")
-    implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin"               , "2.3.2.RELEASE")
+    implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin"               , springBootVersion)
     //implementation("se.patrikerdes"                                    , "gradle-use-latest-versions-plugin"       , "+")
-}
-
-rootProject.idea {
-    project {
-        this as ExtensionAware
-        configure<ProjectSettings> {
-            this as ExtensionAware
-            configure<IdeaCompilerConfiguration> {
-                additionalVmOptions = "${project.property("org.gradle.jvmargs")}"
-                //addNotNullAssertions = true TODO
-                parallelCompilation = true
-                useReleaseOption = true
-                javac {
-                    javacAdditionalOptions = Files.readString(Paths.get("$rootDir", "javacArgs"))
-                    preferTargetJDKCompiler = true
-                }
-            }
-        }
-    }
 }
 
 kotlinDslPluginOptions {
     experimentalWarning.set(false)
     jvmTarget.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_13).toString())
+}
+
+((idea.project as EA).the<ProjectSettings>() as EA).configure<IdeaCompilerConfiguration> {
+    additionalVmOptions = "${project.property("org.gradle.jvmargs")}"
+    //addNotNullAssertions = true TODO
+    parallelCompilation = true
+    useReleaseOption = true
+    javac {
+        javacAdditionalOptions = Files.readString(Paths.get("$rootDir", "javacArgs"))
+        preferTargetJDKCompiler = true
+    }
 }
 
 tasks {

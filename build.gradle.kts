@@ -32,6 +32,7 @@ subprojects {
         jcenter()
         maven("https://repository.jboss.org/nexus/content/repositories/public")
         maven("https://repo.spring.io/milestone")
+        maven("https://kotlin.bintray.com/kotlinx")
         maven("https://dl.bintray.com/micronaut/core-releases-local") {
             content {
                 includeGroupByRegex("io\\.micronaut.*")
