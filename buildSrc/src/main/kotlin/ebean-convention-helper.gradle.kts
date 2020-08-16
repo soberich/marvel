@@ -1,12 +1,10 @@
 import versioning.Deps
 
 plugins {
-    java
     idea
+    java
     io.ebean
 }
-
-ebean.debugLevel = 2
 
 dependencies {
     "kapt"(Deps.Libs.EBEAN_ANNOTATION)
@@ -46,3 +44,6 @@ dependencies {
 
     testImplementation(Deps.Libs.EBEAN_TEST)
 }
+
+ebean.debugLevel = 2
+

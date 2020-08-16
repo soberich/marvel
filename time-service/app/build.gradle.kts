@@ -1,6 +1,7 @@
 import versioning.Deps
 
 plugins {
+    idea
     `java-library`
     `kotlin-convention-helper`
     `testing-convention-helper`
@@ -8,17 +9,21 @@ plugins {
 
 repositories.jcenter()
 
-/**
- * ORDER MATTERS!!
- * JPAMODELGEN Should go first!
- * TODO: Remove Quarkus form convention default configuration to not to leak here.
- */
 dependencies {
-    arrayOf(
+    /*
+     * ORDER MATTERS!!
+     * JPAMODELGEN better go first!
+     * For IDEA based build (Ant) this has to be in `annotationProcessor`
+     */
+    listOf(
         Deps.Libs.HIBERNATE_JPAMODELGEN,
         Deps.Libs.MAPSTRUCT_AP,
         Deps.Libs.VALIDATOR_AP
-    ).forEach(::kapt)
+    ).asSequence()
+    .onEach(::annotationProcessor)
+    .onEach(::testAnnotationProcessor)
+    .onEach(::kapt)
+    .forEach(::kaptTest)
 
     arrayOf(
         Deps.Jakarta.INJECT,

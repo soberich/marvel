@@ -20,11 +20,11 @@ import org.springframework.context.annotation.Primary
 //import javax.enterprise.inject.Produces
 //import javax.inject.Singleton
 
-@Introspected(classes = [
-    EmployeeCommand::class,
-    EmployeeCommand.EmployeeCreateCommand::class,
-    EmployeeCommand.EmployeeUpdateCommand::class
-])
+//@Introspected(classes = [
+//    EmployeeCommand::class,
+//    EmployeeCommand.EmployeeCreateCommand::class,
+//    EmployeeCommand.EmployeeUpdateCommand::class
+//])
 
 //@ApplicationScoped
 @Configuration(proxyBeanMethods = false)

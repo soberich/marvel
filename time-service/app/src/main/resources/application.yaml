@@ -2,6 +2,9 @@ micronaut:
   application:
     name: marvel
   metrics:
+    binders:
+      jdbc:
+        enabled: true
     enabled: true
   router:
     static-resources:

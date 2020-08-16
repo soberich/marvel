@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE
 import javax.validation.constraints.Positive
 
 /**
- * Thid aggregate does't have `ID` in body, but it rather comes from path or param passes for request as essential param.
+ * This aggregate doesn't have `ID` in body, but it rather comes from path or param passes for request as essential param.
  * This enables us to address on later stages more complex concerns like ABAC, as we don't need to deser before dispatching request.
  */
 /*@optics*/ sealed class EmployeeCommand {

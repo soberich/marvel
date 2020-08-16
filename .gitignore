@@ -6,6 +6,7 @@
 /build/resources/test/static/**
 /src/test/javascript/coverage/
 .bitrise*
+/**/.kotlintest/
 
 ######################
 # Node

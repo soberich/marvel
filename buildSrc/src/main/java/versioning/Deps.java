@@ -32,7 +32,7 @@ public interface Deps {
         String TRANSACTION           = "[1.3,2)";
         String VALIDATION            = "[2,3.1)";
 
-        String ARROW                 = "0.10.5";
+        String ARROW                 = "0.11.0-SNAPSHOT";
         String COROUTINES            = "+";
         String EBEAN                 = "12.2.1";
         String EBEAN_ANNOTATION      = "6.11";
@@ -70,13 +70,14 @@ public interface Deps {
 
     interface Platforms {
         //val KOTLIN: Nothing = TODO("Scripts are PRE-compiled, can't these lines from script to apply '" + "org.jetbrains.kotlin:kotlin-bom"   + ':' + Versions.KOTLIN + '\'')
+        String ARROW          = "io.arrow-kt:arrow-stack"                                  + ':' + versioning.Platforms.Versions.ARROW;
         String BLAZE_JPA      = "com.blazebit:blaze-persistence-bom"                       + ':' + versioning.Platforms.Versions.BLAZE_JPA;
         String COROUTINES     = "org.jetbrains.kotlinx:kotlinx-coroutines-bom"             + ':' + versioning.Platforms.Versions.COROUTINES;
         String GUAVA          = "com.google.guava:guava-bom"                               + ':' + versioning.Platforms.Versions.GUAVA;
         String JACKSON        = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
         String MICRONAUT      = "io.micronaut:micronaut-bom"                               + ':' + versioning.Platforms.Versions.MICRONAUT;
         String MICRONAUT_DATA = "io.micronaut.data:micronaut-data-bom"                     + ':' + versioning.Platforms.Versions.MICRONAUT_DATA;
-        String QUARKUS        = "io.quarkus:quarkus-bom"                                   + ':' + versioning.Platforms.Versions.QUARKUS;
+        String QUARKUS        = "io.quarkus:quarkus-universe-bom"                          + ':' + versioning.Platforms.Versions.QUARKUS;
         String RESTEASY       = "org.jboss.resteasy:resteasy-bom"                          + ':' + versioning.Platforms.Versions.RESTEASY;
         String STATEMACHINE   = "org.springframework.statemachine:spring-statemachine-bom" + ':' + versioning.Platforms.Versions.STATEMACHINE;
 
@@ -116,39 +117,9 @@ public interface Deps {
     }
 
     interface Libs {
-        //Meta `apt`
-        String ARROW_META                                  = "io.arrow-kt:arrow-meta"                                  + ':' + Versions.ARROW;
-        String ARROW_ANNOTATIONS                           = "io.arrow-kt:arrow-annotations"                           + ':' + Versions.ARROW;
-        //Very core
-        String ARROW_SYNTAX                                = "io.arrow-kt:arrow-syntax"                                + ':' + Versions.ARROW;
-        String ARROW_TYPECLASSES                           = "io.arrow-kt:arrow-typeclasses"                           + ':' + Versions.ARROW;
-        //Aggregation of `core` + `extensions`
-        String ARROW_CORE                                  = "io.arrow-kt:arrow-core"                                  + ':' + Versions.ARROW;
-        String ARROW_EXTRAS                                = "io.arrow-kt:arrow-extras"                                + ':' + Versions.ARROW;
-        String ARROW_EFFECTS                               = "io.arrow-kt:arrow-effects"                               + ':' + Versions.ARROW;
-        String ARROW_EFFECTS_KOTLINX_COROUTINES            = "io.arrow-kt:arrow-effects-kotlinx-coroutines"            + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_REACTOR                       = "io.arrow-kt:arrow-effects-reactor"                       + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_RX2                           = "io.arrow-kt:arrow-effects-rx2"                           + ':' + Versions.ARROW; //optional
-        String ARROW_GENERIC                               = "io.arrow-kt:arrow-generic"                               + ':' + Versions.ARROW;
-        String ARROW_OPTICS                                = "io.arrow-kt:arrow-optics"                                + ':' + Versions.ARROW;
-        //these are same but broken down to two artifacts
-        String ARROW_CORE_DATA                             = "io.arrow-kt:arrow-core-data"                             + ':' + Versions.ARROW;
-        String ARROW_CORE_EXTENSIONS                       = "io.arrow-kt:arrow-core-extensions"                       + ':' + Versions.ARROW;
-        String ARROW_EXTRAS_DATA                           = "io.arrow-kt:arrow-extras-data"                           + ':' + Versions.ARROW;
-        String ARROW_EXTRAS_EXTENSIONS                     = "io.arrow-kt:arrow-extras-extensions"                     + ':' + Versions.ARROW;
-        String ARROW_EFFECTS_DATA                          = "io.arrow-kt:arrow-effects-data"                          + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_EXTENSIONS                    = "io.arrow-kt:arrow-effects-extensions"                    + ':' + Versions.ARROW; //optional
-        //these are same but more broken down to two artifacts
-        String ARROW_EFFECTS_IO_EXTENSIONS                 = "io.arrow-kt:arrow-effects-io-extensions"                 + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_KOTLINX_COROUTINES_DATA       = "io.arrow-kt:arrow-effects-kotlinx-coroutines-data"       + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_KOTLINX_COROUTINES_EXTENSIONS = "io.arrow-kt:arrow-effects-kotlinx-coroutines-extensions" + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_REACTOR_DATA                  = "io.arrow-kt:arrow-effects-reactor-data"                  + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_REACTOR_EXTENSIONS            = "io.arrow-kt:arrow-effects-reactor-extensions"            + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_RX2_DATA                      = "io.arrow-kt:arrow-effects-rx2-data"                      + ':' + Versions.ARROW; //optional
-        String ARROW_EFFECTS_RX2_EXTENSIONS                = "io.arrow-kt:arrow-effects-rx2-extensions"                + ':' + Versions.ARROW; //optional
-        String ARROW_OPTICS_CORE                           = "io.arrow-kt:arrow-optics-core"                           + ':' + Versions.ARROW; //optional
-        String ARROW_OPTICS_MTL                            = "io.arrow-kt:arrow-optics-mtl"                            + ':' + Versions.ARROW; //optional
-        //Other
+        String ARROW_META                  = "io.arrow-kt:arrow-meta"                                           + ':' + Versions.ARROW;
+        String ARROW_ANNOTATIONS           = "io.arrow-kt:arrow-annotations"                                    + ':' + Versions.ARROW;
+        String ARROW_OPTICS                = "io.arrow-kt:arrow-optics"                                         + ':' + Versions.ARROW;
         String COROUTINES_JDK8             = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8"                    + ':' + Versions.COROUTINES;
         String COROUTINES_REACTOR          = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor"                 + ':' + Versions.COROUTINES;
         String COROUTINES_RXJAVA2          = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2"                     + ':' + Versions.COROUTINES;
@@ -166,22 +137,7 @@ public interface Deps {
         String HIKARI                      = "com.zaxxer:HikariCP"                                              + ':' + Versions.HIKARI;
         String IMMUTABLES_VALUE            = "org.immutables:value"                                             + ':' + Versions.IMMUTABLES;
         String IMMUTABLES_BUILDER          = "org.immutables:builder"                                           + ':' + Versions.IMMUTABLES;
-        String JACKSON_AFTERBURNER         = "com.fasterxml.jackson.module:jackson-module-afterburner"          + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_ANNOTATIONS         = "com.fasterxml.jackson.core:jackson-annotations"                   + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_CORE                = "com.fasterxml.jackson.core:jackson-core"                          + ':' + versioning.Platforms.Versions.JACKSON;
         String JACKSON_COREUTILS           = "com.github.fge:jackson-coreutils"                                 + ':' + Versions.JACKSON_COREUTILS;
-        String JACKSON_DATABIND            = "com.fasterxml.jackson.core:jackson-databind"                      + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_HPPC                = "com.fasterxml.jackson.datatype:jackson-datatype-hppc"             + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_JAXB_ANNOTATIONS    = "com.fasterxml.jackson.module:jackson-module-jaxb-annotations"     + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_JAXRS_BASE          = "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base"                   + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_JAXRS_JSON_PROVIDER = "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider"          + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_JDK8                = "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"             + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_JSON_ORG            = "com.fasterxml.jackson.datatype:jackson-datatype-json-org"         + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_JSR310              = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"           + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_KOTLIN              = "com.fasterxml.jackson.module:jackson-module-kotlin"               + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_MONEY               = "org.zalando:jackson-datatype-money"                               + ':' + Versions.JACKSON_MONEY;
-        String JACKSON_MR_BEAN             = "com.fasterxml.jackson.module:jackson-module-mrbean"               + ':' + versioning.Platforms.Versions.JACKSON;
-        String JACKSON_PARAMETER           = "com.fasterxml.jackson.module:jackson-module-parameter-names"      + ':' + versioning.Platforms.Versions.JACKSON;
         String JBOSS_LOG                   = "org.jboss.logmanager:jboss-logmanager"                            + ':' + Versions.JBOSS_LOG;
         String JJWT                        = "io.jsonwebtoken:jjwt"                                             + ':' + Versions.JJWT;
         String JSON_PATCH                  = "com.github.fge:json-patch"                                        + ':' + Versions.JSON_PATCH;

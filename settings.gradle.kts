@@ -7,18 +7,15 @@ rootProject.name = "marvel"
 
 pluginManagement {
     val micronautPluginVersion: String by settings
+    val ideaExtPluginVersion  : String by settings
     plugins {
-        id("io.micronaut.application") version micronautPluginVersion
-        id("io.micronaut.library") version micronautPluginVersion
+        id("io.micronaut.application")             version micronautPluginVersion
+        id("io.micronaut.library")                 version micronautPluginVersion
+        id("org.jetbrains.gradle.plugin.idea-ext") version ideaExtPluginVersion
     }
     repositories {
         gradlePluginPortal()
-        mavenCentral()
-        maven("https://dl.bintray.com/kotlin/kotlin-eap") {
-            content {
-                includeGroup("org.jetbrains.kotlin")
-            }
-        }
+        jcenter()
         maven("https://oss.sonatype.org/content/repositories/snapshots") {
             mavenContent {
                 snapshotsOnly()

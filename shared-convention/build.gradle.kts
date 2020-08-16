@@ -1,6 +1,7 @@
 import versioning.Deps
 
 plugins {
+    idea
     `java-library`
     `jackson-convention-helper`
     `kotlin-convention-helper`

@@ -1,8 +1,14 @@
 import io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.YAML
 
 plugins {
+    idea
     `documentation-convention-helper`
     `jackson-convention-helper`
+}
+
+dependencies {
+    implementation(project(":shared-convention"))
+    implementation(project(":time-service.app"))
 }
 
 tasks.resolve {
@@ -18,9 +24,4 @@ tasks.resolve {
     //Don't need it in jaxrs as Quarkus don't need Application class
 //    readerClass                = "com.example.marvel.openapi.ApplicationPathReader"
     resourcePackages           = setOf("com.example.marvel.domain.employee", "com.example.marvel.api")
-}
-
-dependencies {
-    implementation(project(":shared-convention"))
-    implementation(project(":time-service.app"))
 }

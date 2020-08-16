@@ -1,9 +1,0 @@
-#!/usr/bin/java --class-path ./lib/* --source 12
-
-import java.util.Arrays;
-
-public class Hello {
-    public static void main(String... args) {
-        System.out.println("Hello = " + Arrays.toString(args));
-    }
-}

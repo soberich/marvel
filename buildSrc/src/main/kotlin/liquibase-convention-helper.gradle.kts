@@ -11,7 +11,7 @@ val liquibase: Configuration by configurations.creating
 
 dependencies {
     liquibase(Deps.Libs.LIQUIBASE_HIB5)
-    /**
+    /*
      * TODO: This is just a quick fix to enable logging with [org.liquibase.gradle.OutputEnablingLiquibaseRunner] while making changelog. Consider use the plugin
      *              Consider use the plugin
      * FIXME: BUT with [org.liquibase.gradle.OutputEnablingLiquibaseRunner] there is this constant error...

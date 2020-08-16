@@ -1,5 +1,3 @@
-import org.jetbrains.gradle.ext.IdeaCompilerConfiguration
-import org.jetbrains.gradle.ext.ProjectSettings
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import versioning.Deps
@@ -14,33 +12,24 @@ plugins {
     `kotlin-noarg`
     `kotlin-jpa`
     `kotlin-spring`
-    org.jetbrains.gradle.plugin.`idea-ext`
+    //org.jetbrains.dokka
 }
 
-rootProject.idea {
-    module.inheritOutputDirs = false
-    targetVersion = JavaVersion.current().toString()
-    project {
-        this as ExtensionAware
-        configure<ProjectSettings> {
-            this as ExtensionAware
-            configure<IdeaCompilerConfiguration> {
-                additionalVmOptions = "${project.property("org.gradle.jvmargs")}"
-                //addNotNullAssertions = true TODO
-                parallelCompilation = true
-                useReleaseOption = true
-                javac {
-                    javacAdditionalOptions = Files.readString(Paths.get("$rootDir", "buildSrc", "javacArgs"))
-                    preferTargetJDKCompiler = true
-                }
-            }
-        }
-    }
-}
+dependencies {
+    implementation(enforcedPlatform(kotlin("bom")))
+    /*
+     * need to explicitly have it here
+     * 'buildSrc:compileKotlin' prints "w: Consider providing an explicit dependency on kotlin-reflect 1.4 to prevent strange errors"
+     */
+    implementation(kotlin("reflect"))
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib-jdk7"))
+    implementation(kotlin("stdlib-jdk8"))
 
-idea {
-    module.inheritOutputDirs = false
-    targetVersion = JavaVersion.current().toString()
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
+    implementation("org.jetbrains.kotlinx:atomicfu:0.14.4")
+//    implementation("com.github.Kotlin:kotlinx-io:master-SNAPSHOT")
+//    implementation(Deps.Libs.COROUTINES_REACTOR)
 }
 
 tasks {
@@ -48,14 +37,14 @@ tasks {
         kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = (JavaVersion.current().takeUnless { it.isCompatibleWith(JavaVersion.VERSION_13) } ?: JavaVersion.VERSION_13).toString()
+        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString()
     }
     withType<JavaCompile>().configureEach {
         //modularity.inferModulePath.set(true)
         options.apply {
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
-            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach { compilerArgs.add(it) } //ant (e.i. Ittellij driven build) can't compile ambiguous function reference
+            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach { compilerArgs.add(it) } //Ant (e.i. Ittellij driven build) can't compile ambiguous function reference
         }
     }
     withType<Test>().configureEach {
@@ -67,6 +56,7 @@ tasks {
 }
 
 kapt.javacOptions {
+    option("--release", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString())
     Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach(::option)
 }
 
@@ -88,13 +78,3 @@ noArg.annotations(
     "javax.inject.Named",
     "javax.ws.rs.Path"
 )
-
-dependencies {
-    implementation(enforcedPlatform(kotlin("bom")))
-    implementation(platform(Deps.Platforms.JACKSON))
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
-//    implementation(Deps.Libs.COROUTINES_JDK8)
-//    implementation(Deps.Libs.COROUTINES_REACTOR)
-
-    implementation(Deps.Libs.JACKSON_KOTLIN)
-}

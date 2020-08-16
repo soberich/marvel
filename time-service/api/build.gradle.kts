@@ -1,6 +1,7 @@
 import versioning.Deps
 
 plugins {
+    idea
     `java-library`
     `kotlin-convention-helper`
 }
@@ -8,11 +9,18 @@ plugins {
 repositories.jcenter()
 
 dependencies {
-    arrayOf(
+    /*
+     * For IDEA based build (Ant) this has to be in `annotationProcessor`
+     */
+    listOf(
         Deps.Libs.ARROW_META,
         Deps.Libs.IMMUTABLES_VALUE,
         Deps.Libs.VALIDATOR_AP
-    ).forEach(::kapt)
+    ).asSequence()
+    .onEach(::annotationProcessor)
+    .onEach(::testAnnotationProcessor)
+    .onEach(::kapt)
+    .forEach(::kaptTest)
 
     arrayOf(
         Deps.Libs.ARROW_ANNOTATIONS,

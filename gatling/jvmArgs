@@ -1,3 +1,4 @@
+-XX:+IgnoreUnrecognizedVMOptions
 -Djava.net.preferIPv4Stack=true
 -Djava.net.preferIPv6Addresses=false
 -Xmx1G
@@ -10,3 +11,9 @@
 -XX:G1HeapRegionSize=16m
 -XX:InitiatingHeapOccupancyPercent=75
 -XX:MaxGCPauseMillis=30
+-XshowSettings:vm
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=./tmp/java_pid<pid>.hprof
+-showversion
+--enable-preview
+--illegal-access=warn

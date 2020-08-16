@@ -326,7 +326,7 @@ object Inflector {
      * @return true if the plural and singular forms of the word are the same
      */
     fun isUncountable(word: String?): Boolean =
-        word != null && uncountables.contains(word.trim { it <= ' ' }.toLowerCase())
+        word != null && word.trim { it <= ' ' }.toLowerCase() in uncountables
 
     fun addPluralize(@Language("RegExp") rule: String, replacement: String): Unit = plurals.addFirst(Rule(rule, replacement))
 

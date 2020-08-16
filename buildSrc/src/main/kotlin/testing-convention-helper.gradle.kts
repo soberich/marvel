@@ -7,12 +7,38 @@ import versioning.Deps
 
 plugins {
     java
+    id("kotlin-convention-helper")
 }
 
-tasks.test {
+dependencies {
+
+    listOf(
+        platform(Deps.Platforms.JUNIT5)
+    ).asSequence()
+    .onEach(::testImplementation)
+    .forEach(::testRuntimeOnly)
+
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit5"))
+    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
+    testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("junit:junit")
+    testImplementation("org.apache.logging.log4j:log4j-to-slf4j:2.13.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.slf4j:jul-to-slf4j:1.7.30")
+    testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.12")
+
+    testRuntimeOnly(Deps.Libs.JBOSS_LOG)
+    testRuntimeOnly(Deps.Libs.SLF4J_JBOSS)
+    //testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine") //TODO
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.12")
+}
+
+tasks.withType<Test>().configureEach {
     //@formatter:off
     useJUnitPlatform()
-    maxParallelForks = if (Runtime.getRuntime().availableProcessors() / 2 < 1) 1 else Runtime.getRuntime().availableProcessors() / 2
+    maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
     setForkEvery(100)
     reports {
         html    .isEnabled = true
@@ -28,23 +54,4 @@ tasks.test {
         showStandardStreams = true
     }
     //@formatter:on
-}
-
-dependencies {
-    testImplementation(platform(Deps.Platforms.JUNIT5))
-    testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit5"))
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
-    testImplementation("io.mockk:mockk:1.10.0")
-    testImplementation("org.apache.logging.log4j:log4j-to-slf4j:2.13.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.slf4j:jul-to-slf4j:1.7.30")
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.12")
-
-    testRuntimeOnly(Deps.Libs.JBOSS_LOG)
-    testRuntimeOnly(Deps.Libs.SLF4J_JBOSS)
-    testRuntimeOnly(platform(Deps.Platforms.JUNIT5))
-    //testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine") TODO
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.12")
 }

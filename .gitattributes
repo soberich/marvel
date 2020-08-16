@@ -7,6 +7,8 @@
 # The above will handle all files NOT found below
 # These files are text and should be normalized (Convert crlf => lf)
 
+# Explicitly declare text files we want to always be normalized and converted
+# to native line endings on checkout.
 *.bash          text eol=lf
 *.bat           text eol=crlf
 *.cmd           text eol=crlf

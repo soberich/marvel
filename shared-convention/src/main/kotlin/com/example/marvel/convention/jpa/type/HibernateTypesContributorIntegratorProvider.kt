@@ -18,7 +18,7 @@ import org.hibernate.usertype.UserType
 class HibernateTypesContributorIntegratorProvider<T>(
     classImportIntegrator: Integrator = ClassImportIntegrator(
         ClassGraph()
-            .filterClasspathElements { it.contains("marvel") }
+            .filterClasspathElements { "marvel" in it }
             .whitelistPackages("com.example.marvel")
             .enableAnnotationInfo()
             .removeTemporaryFilesAfterScan()
@@ -26,7 +26,7 @@ class HibernateTypesContributorIntegratorProvider<T>(
                 result
                     .allClasses
                     .filter { !it.isAbstract }
-                    .filter { it.hasAnnotation("io.micronaut.core.annotation.Introspected") }
+                    //.filter { it.hasAnnotation("io.micronaut.core.annotation.Introspected") }
                     .filter { !it.name.endsWith("Entity") }
                     .map(ClassInfo::loadClass)
                     .toImmutableList()
@@ -38,10 +38,10 @@ class HibernateTypesContributorIntegratorProvider<T>(
      */
     @Suppress("UNCHECKED_CAST")
     override fun contribute(typeContributions: TypeContributions, serviceRegistry: ServiceRegistry) {
-        val hasPostgres = ClassGraph().filterClasspathElements { it.contains("postgresql") }.whitelistClasses("org.postgresql.Driver").scan().allClasses.any()
-        val hasOracle = ClassGraph().filterClasspathElements { it.contains("oracle") || it.contains("ojdbc") }.whitelistClasses("oracle.jdbc.driver.OracleDriver").scan().allClasses.any()
+        val hasPostgres = ClassGraph().filterClasspathElements { "postgresql" in it }.whitelistClasses("org.postgresql.Driver").scan().allClasses.any()
+        val hasOracle = ClassGraph().filterClasspathElements { "oracle" in it || "ojdbc" in it }.whitelistClasses("oracle.jdbc.driver.OracleDriver").scan().allClasses.any()
         ClassGraph()
-            .filterClasspathElements { it.contains("hibernate") }
+            .filterClasspathElements { "hibernate" in it }
             .whitelistPackages("com.vladmihalcea.hibernate.type")
             .removeTemporaryFilesAfterScan()
             .enableStaticFinalFieldConstantInitializerValues()
@@ -51,7 +51,7 @@ class HibernateTypesContributorIntegratorProvider<T>(
                         .filter { !it.isAbstract }
                         .filter { !it.packageName.endsWith(".util") }
                         .filter { it.name.endsWith("Type") }
-                        .filter { !it.name.contains("YearMonth") }
+                        .filter { "YearMonth" !in it.name }
                         .filter { hasPostgres || !it.name.contains("Postgres", ignoreCase = true) }
                         .filter { hasOracle || !it.name.contains("Oracle", ignoreCase = true) }
                         .partition { it.implementsInterface("org.hibernate.type.BasicType") }
