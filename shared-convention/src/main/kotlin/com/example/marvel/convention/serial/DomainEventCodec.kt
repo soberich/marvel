@@ -25,6 +25,6 @@
 //    override fun decodeFromWire(pos: Int, buffer: Buffer): Any =
 //            JsonObject(buffer.getString(pos + 4, pos + 4 + buffer.getInt(pos))).mapTo(Any::class.java)
 //    override fun transform(o: Any): Any = o
-//    override fun name(): String = this::class.java.simpleName
+//    override fun name(): String = this::class.simpleName
 //    override fun systemCodecID(): Byte = -1
 //}

@@ -23,12 +23,28 @@ plugins {
 
 subprojects {
     apply(plugin = "build-dashboard")
-    apply(plugin = "help-tasks")
     apply(plugin = "dependencies-reporting-helper")
+    apply(plugin = "help-tasks")
 
     description = "${name.replace('-', ' ').toUpperCase()} of Native Quarkus/Micronaut Arrow-Kt Vert.x Coroutines GRPC Kotlin-DSL app"
 
+//    plugins.withType<JavaLibraryPlugin>().configureEach {
+//        configure<JavaPluginExtension> {
+//            modularity.inferModulePath.set(true)
+//        }
+//    }
+//    plugins.withType<JavaPlugin>().configureEach {
+//        configure<JavaPluginExtension> {
+//            modularity.inferModulePath.set(true)
+//        }
+//    }
+
     repositories {
+        maven("file://$rootDir/repo") {
+            content {
+                includeGroup("org.jetbrains.kotlinx")
+            }
+        }
         jcenter()
         maven("https://repository.jboss.org/nexus/content/repositories/public")
         maven("https://repo.spring.io/milestone")

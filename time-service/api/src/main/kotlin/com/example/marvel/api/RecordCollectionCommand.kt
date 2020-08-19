@@ -1,6 +1,6 @@
 package com.example.marvel.api
 
-import arrow.core.ListK
+//import arrow.core.ListK
 import java.time.YearMonth
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
@@ -21,7 +21,7 @@ import javax.validation.constraints.PastOrPresent
     abstract val employeeId          : Long
     @get:
     [NotEmpty]
-    abstract val records             : ListK<@Valid RecordCommand>
+    abstract val records             : List/*K*/<@Valid RecordCommand>
     //@formatter:on
     companion object
 
@@ -32,7 +32,7 @@ import javax.validation.constraints.PastOrPresent
         override val employeeId          : Long,
         @get:
         [NotEmpty]
-        override val records             : ListK<@Valid RecordCommand.RecordCreateCommand>
+        override val records             : List/*K*/<@Valid RecordCommand.RecordCreateCommand>
         //@formatter:on
     ) : RecordCollectionCommand() { companion object }
 
@@ -46,13 +46,13 @@ import javax.validation.constraints.PastOrPresent
         override val employeeId          : Long,
         @get:
         [NotEmpty]
-        override val records             : ListK<@Valid RecordCommand.RecordUpdateCommand>
+        override val records             : List/*K*/<@Valid RecordCommand.RecordUpdateCommand>
         //@formatter:on
     ) : RecordCollectionCommand() { companion object }
 
     /**
      * no-op
      */
-    /*@optics*/ data class RecordCollectionCommands(val reports: ListK<RecordCollectionCommand>) : List<RecordCollectionCommand> by reports { companion object }
+    ///*@optics*/ data class RecordCollectionCommands(val reports: List/*K*/<RecordCollectionCommand>) : List<RecordCollectionCommand> by reports { companion object }
 }
 

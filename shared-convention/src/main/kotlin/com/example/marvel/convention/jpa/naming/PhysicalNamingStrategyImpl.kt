@@ -32,7 +32,7 @@ class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
     override fun toPhysicalColumnName  (id: Identifier?, ctx: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalColumnName(id, ctx))
 
     internal fun formatIdentifier(id: Identifier?, name: String? = id?.text): Identifier? = name?.run {
-        replace(CAMEL, SNAKE).toLowerCase(ENGLISH).let {
+        replace(CAMEL, SNAKE).toLowerCase(ENGLISH).let<String, Identifier?> {
             return if (it != name) Identifier.toIdentifier(it, id?.isQuoted ?: false)
             else id
         }

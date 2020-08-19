@@ -43,3 +43,5 @@ dependencies {
         "org.springframework:spring-context:+" //TODO: Extract to `Deps.Libs`
     ).forEach(::implementation)
 }
+
+idea.module.isDownloadSources = true

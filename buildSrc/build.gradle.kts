@@ -14,9 +14,9 @@ plugins {
     `java-gradle-plugin`
     `groovy-gradle-plugin`
     `kotlin-dsl`
-    `build-dashboard`                                         // optional
-    `help-tasks`                                              // optional
-    `project-report`                                          // optional
+    `build-dashboard`                              // optional
+    `help-tasks`                                   // optional
+    `project-report`                               // optional
     id("com.github.ben-manes.versions")
     id("org.jetbrains.gradle.plugin.idea-ext")
 }
@@ -36,6 +36,8 @@ repositories {
         }
     }
 }
+
+val ideaActive = System.getProperty("idea.active") == "true"
 
 val guavaVersion         : String by project
 val ideaExtPluginVersion : String by project
@@ -64,8 +66,6 @@ val versionsPluginVersion: String by project
     implementation(kotlin("noarg"                        , kotlinVersion))
     implementation(kotlin("sam-with-receiver"            , kotlinVersion))
     //implementation(kotlin("serialization", kotlinVersion))
-    //testImplementation(kotlin("test"         , kotlinVersion))
-    //testImplementation(kotlin("test-junit5"   , kotlinVersion))
     implementation("com.github.ben-manes"                              , "gradle-versions-plugin"                  , versionsPluginVersion)
     implementation("com.vaadin"                                        , "vaadin-gradle-plugin"                    , "+")
     implementation("com.vanniktech"                                    , "gradle-dependency-graph-generator-plugin", "0.5.0")
@@ -105,6 +105,8 @@ tasks {
     }
     withType<JavaCompile>().configureEach {
         options.apply {
+            isFork = true
+            forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
             Files.lines(Paths.get("$rootDir", "javacArgs")).forEach(compilerArgs::add)
         }
     }

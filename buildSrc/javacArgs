@@ -5,7 +5,7 @@
 -Xdoclint:none
 -Xdiags:verbose
 -parameters
--Amapstruct.defaultComponentModel=spring
+-Amapstruct.defaultComponentModel=jsr330
 -AaddSuppressWarningsAnnotation=true
 -Amicronaut.processing.incremental=true
 -Amicronaut.processing.annotations=com.example.*

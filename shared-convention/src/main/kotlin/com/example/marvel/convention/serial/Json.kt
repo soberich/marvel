@@ -35,7 +35,6 @@ object Json {
                     FAIL_ON_IGNORED_PROPERTIES,
                     FAIL_ON_NULL_FOR_PRIMITIVES,
                     FAIL_ON_NUMBERS_FOR_ENUMS,
-                    FAIL_ON_NUMBERS_FOR_ENUMS,
                     FAIL_ON_READING_DUP_TREE_KEY,
                     FAIL_ON_UNKNOWN_PROPERTIES,
                     READ_ENUMS_USING_TO_STRING

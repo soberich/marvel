@@ -1,7 +1,6 @@
 package com.example.marvel.openapi;
 
 import com.example.marvel.convention.serial.Json;
-import com.example.marvel.domain.employee.EmployeeEntity;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -10,30 +9,17 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.integration.api.ObjectMapperProcessor;
-import io.swagger.v3.oas.models.media.ComposedSchema;
-import io.swagger.v3.oas.models.media.DateSchema;
-import io.swagger.v3.oas.models.media.DateTimeSchema;
-import io.swagger.v3.oas.models.media.EmailSchema;
-import io.swagger.v3.oas.models.media.FileSchema;
-import io.swagger.v3.oas.models.media.IntegerSchema;
-import io.swagger.v3.oas.models.media.NumberSchema;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.media.*;
 
 import javax.ws.rs.core.StreamingOutput;
 import java.lang.reflect.ParameterizedType;
 import java.nio.ByteBuffer;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.Year;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.temporal.Temporal;
 import java.util.*;
 
 import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 
 public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {

@@ -30,10 +30,10 @@ tasks {
          */
         targetCompatibility = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString()
         options.apply {
-            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).majorVersion.toInt())
+            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString().toInt())
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
-            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach { compilerArgs.add(it) } //Ant (e.i. Ittellij driven build) can't compile ambiguous function reference
+            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach { compilerArgs.add(it) } //Ant (e.i. Intellij driven build) can't compile ambiguous function reference
         }
         scalaCompileOptions.apply {
             isForce = true
@@ -53,6 +53,7 @@ tasks {
 }
 
 application {
+    mainClass.convention("io.gatling.app.Gatling")
     mainClassName = "io.gatling.app.Gatling"
     applicationDefaultJvmArgs = Files.readAllLines(Paths.get("$projectDir", "jvmArgs"))
 }

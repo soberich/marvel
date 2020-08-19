@@ -1,6 +1,6 @@
 package com.example.marvel.api
 
-import arrow.core.ListK
+//import arrow.core.ListK
 import org.hibernate.validator.constraints.time.DurationMax
 import org.hibernate.validator.constraints.time.DurationMin
 import java.time.Duration
@@ -54,7 +54,7 @@ import javax.validation.constraints.NotNull
     /**
      * no-op
      */
-    /*@optics*/ data class RecordRequests(val records: ListK<RecordCommand>) : List<RecordCommand> by records { companion object }
+    ///*@optics*/ data class RecordRequests(val records: List/*K*/<RecordCommand>) : List<RecordCommand> by records { companion object }
 }
 
 

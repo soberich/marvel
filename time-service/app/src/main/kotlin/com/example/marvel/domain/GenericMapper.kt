@@ -1,15 +1,23 @@
 package com.example.marvel.domain
 
 import com.example.marvel.domain.base.IdentifiableOf
-import org.mapstruct.*
+import org.mapstruct.Context
+import org.mapstruct.Mapping
+import org.mapstruct.ObjectFactory
+import org.mapstruct.TargetType
 import java.io.Serializable
+import javax.inject.Named
+import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
 /**
- * @see [https://youtrack.jetbrains.com/issue/KT-25960] for why is this not an interface and not split to, say, creator and updater.
+ * **see** [Jetbrains Issue Tracker](https://youtrack.jetbrains.com/issue/KT-25960)
+ * for why is this not an interface and not split to, say, creator and updater.
  */
-abstract class GenericMapper {
+@Named
+@Singleton
+class GenericMapper {
 
     @set:
     [PersistenceContext]

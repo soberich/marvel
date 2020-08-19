@@ -7,3 +7,5 @@ plugins {
 dependencies {
     api(project(":time-service.api"))
 }
+
+idea.module.isDownloadSources = true

@@ -11,6 +11,7 @@ package versioning;
  *     String JACKSON   = "com.fasterxml.jackson:jackson-databind" + ':' + Versions.JACKSON = "com.fasterxml.jackson:jackson-databind:{@value versioning.Platforms.Versions#JACKSON}"
  * }</pre>
  */
+@SuppressWarnings("squid:S1214")
 public interface Deps {
 
     interface Versions {
@@ -119,6 +120,7 @@ public interface Deps {
     interface Libs {
         String ARROW_META                  = "io.arrow-kt:arrow-meta"                                           + ':' + Versions.ARROW;
         String ARROW_ANNOTATIONS           = "io.arrow-kt:arrow-annotations"                                    + ':' + Versions.ARROW;
+        String ARROW_CORE_DATA             = "io.arrow-kt:arrow-core-data"                                      + ':' + Versions.ARROW;
         String ARROW_OPTICS                = "io.arrow-kt:arrow-optics"                                         + ':' + Versions.ARROW;
         String COROUTINES_JDK8             = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8"                    + ':' + Versions.COROUTINES;
         String COROUTINES_REACTOR          = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor"                 + ':' + Versions.COROUTINES;

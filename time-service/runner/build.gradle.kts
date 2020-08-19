@@ -39,7 +39,7 @@ dependencies {
     .onEach(::kapt)
     .onEach(::kaptTest)
     .onEach(::compileOnly)
-    .onEach { developmentOnly(it) }
+    .onEach(::developmentOnly)
     .onEach(::implementation)
     .onEach(::runtimeOnly)
     .onEach(::testImplementation)
@@ -80,7 +80,19 @@ dependencies {
         "net.java.dev.jna:jna",
         "io.micronaut:micronaut-runtime-osx",
         "io.methvin:directory-watcher"
-    ).forEach { developmentOnly(it) }
+    ).forEach(::developmentOnly)
+
+    constraints {
+        implementation("org.springframework.boot:spring-boot-starter") {
+            because("The only way to make use of Micronaut 2.x")
+        }
+        implementation("org.springframework:spring-context:5.3.0-M2") {
+            because("The only way to make use of Micronaut 2.x")
+        }
+        implementation("org.springframework:spring-core:5.3.0-M2") {
+            because("The only way to make use of Micronaut 2.x")
+        }
+    }
 
     arrayOf(
         project(":shared-convention"),
@@ -98,10 +110,6 @@ dependencies {
         //"io.ktor:ktor-server-netty
         //"io.micronaut.kotlin:micronaut-ktor:2.0.0"/*2.0.1.BUILD-
     ).forEach(::implementation)
-
-    implementation("org.springframework.boot:spring-boot-starter") { isForce = true }
-    implementation("org.springframework:spring-context:5.3.0-M2") { isForce = true }
-    implementation("org.springframework:spring-core:5.3.0-M2") { isForce = true }
 
     arrayOf(
         project(":time-service.app"),
@@ -149,6 +157,8 @@ dependencies {
 
 (rootProject.idea.project as EA).the<ProjectSettings>().doNotDetectFrameworks("spring")
 
+idea.module.isDownloadSources = true
+
 //// FIXME: Micronaut Gradle plugin fails by now with Kotlin 1.4.0-rc.
 //micronaut {
 //    version("1.3.7")
@@ -156,6 +166,7 @@ dependencies {
 //}
 
 application {
+    mainModule.convention("com.example.marvel.runtime")
     mainClass.convention("com.example.marvel.runtime.ApplicationKt")
     mainClassName = "com.example.marvel.runtime.ApplicationKt"
     applicationDefaultJvmArgs = listOf("-noverify", "-XX:TieredStopAtLevel=1", "-Dcom.sun.management.jmxremote")

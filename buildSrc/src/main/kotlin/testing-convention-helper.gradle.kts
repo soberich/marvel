@@ -20,7 +20,7 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
+//    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation("junit:junit")
     testImplementation("org.apache.logging.log4j:log4j-to-slf4j:2.13.3")

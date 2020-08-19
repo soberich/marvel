@@ -20,12 +20,16 @@ import org.springframework.transaction.annotation.Propagation.REQUIRED
 import org.springframework.transaction.annotation.Transactional
 import java.util.stream.Stream
 import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
 /**
  * This is WIP!
  */
+@Named
+@Singleton
 @Service
 @Transactional(propagation = REQUIRED, timeout = TIMEOUT_DEFAULT, readOnly = false, isolation = DEFAULT)
 class EmployeeBlockingServiceNamespaceImpl @Inject constructor(

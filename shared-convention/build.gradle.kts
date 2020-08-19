@@ -15,7 +15,13 @@ dependencies {
         Deps.Libs.HIBERNATE,
         Deps.Libs.HIBERNATE_TYPES,
         Deps.Libs.RX2,
-        "com.google.guava:guava",
         "io.github.classgraph:classgraph:+"
     ).forEach(::api)
+
+    api("com.google.guava:guava") {
+        exclude("com.google.code.findbugs", "jsr305")
+    }
 }
+
+java.modularity.inferModulePath.set(true)
+idea.module.isDownloadSources = true

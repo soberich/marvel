@@ -13,7 +13,8 @@ dependencies {
      * For IDEA based build (Ant) this has to be in `annotationProcessor`
      */
     listOf(
-        Deps.Libs.ARROW_META,
+        Deps.Javax.ANNOTATION, //JPMS
+        //Deps.Libs.ARROW_META, //FIXME
         Deps.Libs.IMMUTABLES_VALUE,
         Deps.Libs.VALIDATOR_AP
     ).asSequence()
@@ -23,16 +24,23 @@ dependencies {
     .forEach(::kaptTest)
 
     arrayOf(
-        Deps.Libs.ARROW_ANNOTATIONS,
+        //Deps.Libs.ARROW_ANNOTATIONS, //FIXME
         Deps.Libs.IMMUTABLES_BUILDER,
         Deps.Libs.IMMUTABLES_VALUE + ":annotations"
     ).forEach(::compileOnly)
 
     arrayOf(
-        Deps.Javax.VALIDATION,
         Deps.Jakarta.VALIDATION,
-        Deps.Libs.ARROW_OPTICS,
+        //Deps.Libs.ARROW_OPTICS, //FIXME
         Deps.Libs.REACTIVE_STREAMS,
         Deps.Libs.VALIDATOR
     ).forEach(::api)
 }
+
+configurations.all { //FIXME: JPMS
+    exclude("com.google.code.findbugs", "jsr305")
+}
+
+//kapt.javacOptions {
+//    option("--module-path", sourceSets.main.get().compileClasspath.asPath)
+//}

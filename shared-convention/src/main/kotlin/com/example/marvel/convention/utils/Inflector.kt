@@ -4,7 +4,6 @@ package com.example.marvel.convention.utils
 
 import org.intellij.lang.annotations.Language
 import java.lang.Character.toLowerCase
-import java.lang.Character.toUpperCase
 import java.util.*
 import java.util.regex.Pattern
 import java.util.regex.Pattern.CASE_INSENSITIVE
@@ -189,11 +188,11 @@ object Inflector {
      * @see .lowerCamelCase
      */
     fun camelCase(lowerCaseAndUnderscoredWord: String?, uppercaseFirstLetter: Boolean, vararg delimiterChars: Char): String? {
-        var lowerCaseAndUnderscoredWord: String? = lowerCaseAndUnderscoredWord ?: return null
-        lowerCaseAndUnderscoredWord = (lowerCaseAndUnderscoredWord ?: return null).trim { it <= ' ' }
-        if (lowerCaseAndUnderscoredWord.isEmpty()) return ""
+        var lowerCaseAndUnderscoredWordTmp: String? = lowerCaseAndUnderscoredWord ?: return null
+        lowerCaseAndUnderscoredWordTmp = (lowerCaseAndUnderscoredWordTmp ?: return null).trim { it <= ' ' }
+        if (lowerCaseAndUnderscoredWordTmp.isEmpty()) return ""
         if (uppercaseFirstLetter) {
-            var result: String = lowerCaseAndUnderscoredWord
+            var result: String = lowerCaseAndUnderscoredWordTmp
             // Replace any extra delimiters with underscores (before the underscores are converted in the next step)...
             for (delimiterChar in delimiterChars) {
                 result = result.replace(delimiterChar, '_')
@@ -203,7 +202,7 @@ object Inflector {
             return replaceAllWithUppercase(result, "(^|_)(.)", 2)
 
         }
-        return if (lowerCaseAndUnderscoredWord.length < 2) lowerCaseAndUnderscoredWord else "" + toLowerCase(lowerCaseAndUnderscoredWord[0]) + camelCase(lowerCaseAndUnderscoredWord, true, *delimiterChars)?.substring(1).orEmpty()
+        return if (lowerCaseAndUnderscoredWordTmp.length < 2) lowerCaseAndUnderscoredWordTmp else "" + toLowerCase(lowerCaseAndUnderscoredWordTmp[0]) + camelCase(lowerCaseAndUnderscoredWordTmp, true, *delimiterChars)?.substring(1).orEmpty()
 
     }
 
@@ -431,7 +430,7 @@ object Inflector {
      * `&#92;u3` would uppercase the 3rd backreference.
      * @return the input string with the appropriate characters converted to upper-case
      */
-    private fun replaceAllWithUppercase(input: String?, regex: String, groupNumberToUppercase: Int): String {
+    private fun replaceAllWithUppercase(input: String?, @Language("RegExp") regex: String, groupNumberToUppercase: Int): String {
         val underscoreAndDotPattern = regex.toPattern()
         val matcher = underscoreAndDotPattern.matcher(input!!)
         val sb = StringBuffer()

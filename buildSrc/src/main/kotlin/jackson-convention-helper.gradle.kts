@@ -1,3 +1,4 @@
+import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
 import versioning.Deps
 
 plugins {
@@ -6,7 +7,7 @@ plugins {
 
 dependencies {
     arrayOf(
-        platform(Deps.Platforms.JACKSON),
+        enforcedPlatform(Deps.Platforms.JACKSON),
         "com.fasterxml.jackson.core:jackson-annotations",
         "com.fasterxml.jackson.core:jackson-core",
         "com.fasterxml.jackson.core:jackson-databind",
@@ -16,14 +17,14 @@ dependencies {
         "com.fasterxml.jackson.datatype:jackson-datatype-jsr310",
         "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base",
         "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider",
-        //"com.fasterxml.jackson.module:jackson-module-afterburner",
+        "com.fasterxml.jackson.module:jackson-module-afterburner"
         //"com.fasterxml.jackson.module:jackson-module-jaxb-annotations",
         //"com.fasterxml.jackson.module:jackson-module-mrbean",
         //"com.fasterxml.jackson.module:jackson-module-parameter-names"
         //"com.github.fge:jackson-coreutils",
-        "org.jdbi.jackson-contrib:jackson-module-blackbird:0.0.1"
+        //"org.jdbi.jackson-contrib:jackson-module-blackbird:0.0.1"
         //"org.zalando:jackson-datatype-money",
         //"org.zalando:jackson-datatype-problem"
         //Deps.Libs.MONEY
-    ).forEach { "implementation"(it) }
+    ).forEach { IMPLEMENTATION_CONFIGURATION_NAME(it) }
 }

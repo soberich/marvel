@@ -32,11 +32,15 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
 import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 
 
 /**
  * Named imports used for program composition to be more self-documented
  */
+@Named
+@Singleton
 @RestController("/api")
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
 @Transactional(propagation = Propagation.REQUIRED, timeout = TransactionDefinition.TIMEOUT_DEFAULT, readOnly = false, isolation = Isolation.DEFAULT)

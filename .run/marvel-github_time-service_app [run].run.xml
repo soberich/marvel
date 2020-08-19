@@ -4,7 +4,7 @@
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$/time-service/runner" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value="-S --no-build-cache" />
+      <option name="scriptParameters" value="-S" />
       <option name="taskDescriptions">
         <list />
       </option>

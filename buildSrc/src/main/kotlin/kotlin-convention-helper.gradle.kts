@@ -26,25 +26,27 @@ dependencies {
     //implementation(kotlin("stdlib-jdk7"))
     //implementation(kotlin("stdlib-jdk8"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
     implementation("org.jetbrains.kotlinx:atomicfu:0.14.4")
-    //implementation("com.github.Kotlin:kotlinx-io:master-SNAPSHOT")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:0.2.0")
     //implementation(Deps.Libs.COROUTINES_REACTOR)
 }
 
 tasks {
     withType<KotlinCompile<*>>().configureEach {
+        kotlinOptions.languageVersion = "1.4"
         kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))
     }
     withType<KotlinJvmCompile>().configureEach {
         kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString()
     }
     withType<JavaCompile>().configureEach {
-        //modularity.inferModulePath.set(true)
         options.apply {
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
-            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach { compilerArgs.add(it) } //Ant (e.i. Ittellij driven build) can't compile ambiguous function reference
+            targetCompatibility = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString()
+            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString().toInt())
+            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach { compilerArgs.add(it) } //Ant (e.i. Intellij driven build) can't compile ambiguous function reference
         }
     }
     withType<Test>().configureEach {
@@ -74,8 +76,11 @@ allOpen.annotations(
     "org.springframework.web.bind.annotation.RestController"
 )
 
-noArg.annotations(
-    "io.micronaut.core.annotation.Introspected",
-    "javax.inject.Named",
-    "javax.ws.rs.Path"
-)
+noArg {
+    invokeInitializers = true // run `init {...}` blocks
+    annotations(
+        "io.micronaut.core.annotation.Introspected",
+        "javax.inject.Named",
+        "javax.ws.rs.Path"
+    )
+}
