@@ -1,6 +1,7 @@
 package com.example.marvel.domain.record
 
 import com.example.marvel.api.RecordType
+import com.example.marvel.convention.serial.Json.DEFAULT_CLOCK
 import com.example.marvel.domain.base.AbstractAuditingEntity
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
 import org.hibernate.annotations.Immutable
@@ -20,11 +21,11 @@ import kotlin.properties.Delegates
  */
 @NamedQuery(
     name = "Record.listForPeriod",
-    //language=HQL
+    //language=JPA QL
     query = """
-        SELECT NEW RecordListingView(p.date, p.type, p.hoursSubmitted, p.desc, p.report.id)
-        FROM   RecordEntity p
-          JOIN p.report c
+        SELECT NEW RecordListingView(r.version, r.date, r.type, r.hoursSubmitted, r.desc, r.report.id)
+        FROM   RecordEntity r
+          JOIN r.report c
         WHERE  c.id = :id
            AND c.yearMonth = :yearMonth""",
     hints = [
@@ -44,17 +45,18 @@ class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
     var date                                  : LocalDate by Delegates.notNull()
     @get:
     [Id
-    Enumerated(STRING)]
+    Enumerated(STRING)
+    Column(nullable = false, updatable = false)]
     var type                                  : RecordType by Delegates.notNull()
     @get:
-    [Column(precision = 5, columnDefinition = "INT")]
+    [Column(nullable = false)]
     var hoursSubmitted                        : Duration by Delegates.notNull()// will be stored in seconds
     var desc                                  : String? = null
     @get:
     [Id
     ManyToOne(optional= false, fetch = LAZY)
-    JoinColumn(updatable = false)]
-    var report                                : RecordCollectionEntity by Delegates.notNull()
+    JoinColumn(nullable = false, updatable = false)]
+    var report                                : RecordCollectionEntity? = null
     //@formatter:on
     @get:
     [Transient]
@@ -67,8 +69,9 @@ class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
         }
 
     /**
-     * This could be a just Tuple3
-     * but we push to keep hexagonal: less imports (from arrow in this layer) => better.
+     * 18/08/2018: This could be a just Tuple3
+     * but we push to keep hexagonal: less imports (from arrow-kt in this layer) => better.
      */
-    data class RecordId(var report: RecordCollectionEntity, var date: LocalDate = LocalDate.MIN, var type: RecordType = RecordType.OTHER) : Serializable
+//    @Embeddable //FIXME: Annotation is just a trick to apply kotlin compiler plugins
+    data class RecordId(var report: RecordCollectionEntity? = null, var date: LocalDate = LocalDate.now(DEFAULT_CLOCK), var type: RecordType = RecordType.OTHER) : Serializable
 }

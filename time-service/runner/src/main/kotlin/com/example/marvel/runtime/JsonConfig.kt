@@ -1,12 +1,23 @@
 package com.example.marvel.runtime
 
-import com.example.marvel.api.EmployeeCommand
 import com.example.marvel.convention.jpa.naming.PhysicalNamingStrategyImpl
 import com.example.marvel.convention.serial.Json
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.jackson.*
+import io.ktor.metrics.micrometer.*
+import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
+import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.micronaut.context.annotation.Replaces
-import io.micronaut.core.annotation.Introspected
 import io.micronaut.data.hibernate.naming.DefaultPhysicalNamingStrategy
+import io.micronaut.ktor.KtorApplicationBuilder
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -28,13 +39,28 @@ import org.springframework.context.annotation.Primary
 
 //@ApplicationScoped
 @Configuration(proxyBeanMethods = false)
-class JsonConfig {
+class JsonConfig : KtorApplicationBuilder({
+    install(ContentNegotiation) {
+        register(ContentType.Application.Json, JacksonConverter(Json.CONFIGURED_MAPPER))
+    }
+    install(MicrometerMetrics) {
+        registry = SimpleMeterRegistry()
+        meterBinders = listOf(
+            ClassLoaderMetrics(),
+            JvmMemoryMetrics(),
+            JvmGcMetrics(),
+            ProcessorMetrics(),
+            JvmThreadMetrics(),
+            FileDescriptorMetrics()
+        )
+    }
+}) {
 
     @get:
     [Bean
     Primary
     Replaces(ObjectMapper::class)]
-    val objectMapper: ObjectMapper get() = Json.configuredBuilder.build()
+    val objectMapper: ObjectMapper get() = Json.CONFIGURED_MAPPER
 
     @get:
     [Bean

@@ -1,17 +1,23 @@
 package com.example.marvel.runtime
 
-import io.micronaut.runtime.mnRun
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Contact
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.info.License
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.event.ApplicationPreparedEvent
-import org.springframework.boot.runApplication
 import org.springframework.context.ApplicationListener
 import org.springframework.context.ConfigurableApplicationContext.*
 import org.springframework.context.annotation.EnableLoadTimeWeaving
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver
+import javax.inject.Named
+import javax.inject.Singleton
+import io.ktor.server.netty.NettyApplicationEngine
+import io.micronaut.ktor.*
+import io.micronaut.ktor.runApplication        as runKtor
+//import io.micronaut.runtime.mnRun              as runMicronautHttp
+//import org.springframework.boot.runApplication as runSpringApplication
+import org.slf4j.LoggerFactory
 
 @OpenAPIDefinition(
     info = Info(
@@ -26,13 +32,25 @@ import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver
         )
     )
 )
+@Named
+@Singleton
 @SpringBootApplication(proxyBeanMethods = false)
 @EnableLoadTimeWeaving
-object Application
+class Application : KtorApplication<NettyApplicationEngine.Configuration>({
+    applicationEngineEnvironment {
+        log = LoggerFactory.getLogger(Application::class.java)
+    }
+
+    applicationEngine {
+        workerGroupSize = 10
+    }
+})
 
 fun main(vararg args: String) {
-    mnRun<Application>(*args)
-//    runApplication<Application>(*args) {
+    runKtor(arrayOf(*args))
+//    runMicronautHttp<Application>(*args)
+
+//    runSpringApplication<Application>(*args) {
 //        addListeners(ApplicationListener<ApplicationPreparedEvent?> {
 //            it.applicationContext.beanFactory.registerSingleton(LOAD_TIME_WEAVER_BEAN_NAME, InstrumentationLoadTimeWeaver())
 //        })

@@ -3,9 +3,7 @@ package com.example.marvel.api
 //import arrow.core.ListK
 import java.time.YearMonth
 import javax.validation.Valid
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.PastOrPresent
+import javax.validation.constraints.*
 
 /*@optics*/ sealed class RecordCollectionCommand {
     //@formatter:off
@@ -13,12 +11,6 @@ import javax.validation.constraints.PastOrPresent
     [NotNull
     PastOrPresent]
     abstract val yearMonth           : YearMonth
-    @get:
-    [NotNull]
-    abstract val projectId           : String
-    @get:
-    [NotNull]
-    abstract val employeeId          : Long
     @get:
     [NotEmpty]
     abstract val records             : List/*K*/<@Valid RecordCommand>
@@ -28,25 +20,35 @@ import javax.validation.constraints.PastOrPresent
     /*@optics*/ data class RecordCollectionCreateCommand(
         //@formatter:off
         override val yearMonth           : YearMonth,
-        override val projectId           : String,
-        override val employeeId          : Long,
+        @get:
+        [NotBlank]
+        val projectId                    : String,
+        @get:
+        [NotNull
+        Positive]
+        val employeeId                   : Long,
         @get:
         [NotEmpty]
-        override val records             : List/*K*/<@Valid RecordCommand.RecordCreateCommand>
+        override val records             : List/*K*/<RecordCommand.RecordCreateCommand>
         //@formatter:on
     ) : RecordCollectionCommand() { companion object }
 
     /*@optics*/ data class RecordCollectionUpdateCommand(
         //@formatter:off
         @get:
-        [NotNull]
+        [NotNull
+        Positive]
         val id                           : Long,
+        @get:
+        [NotNull
+        PositiveOrZero]
+        val version                      : Int,
         override val yearMonth           : YearMonth,
-        override val projectId           : String,
-        override val employeeId          : Long,
+//        override val projectId           : String,
+//        override val employeeId          : Long,
         @get:
         [NotEmpty]
-        override val records             : List/*K*/<@Valid RecordCommand.RecordUpdateCommand>
+        override val records             : List/*K*/<RecordCommand.RecordUpdateCommand>
         //@formatter:on
     ) : RecordCollectionCommand() { companion object }
 

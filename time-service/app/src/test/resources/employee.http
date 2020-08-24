@@ -1,0 +1,78 @@
+###
+GET http://{{address}}:{{port}}/api/employee
+
+### Correct new employee
+POST http://{{address}}:{{port}}/api/employee
+Content-Type: application/json
+
+{
+  "name" : "Employee {{$randomInt}}",
+  "email": "employee{{$randomInt}}@example.com"
+}
+
+###
+PUT http://{{address}}:{{port}}/api/employee
+Content-Type: application/json
+
+{
+  "id"     : 1,
+  "version": 1,
+  "name"   : "Employee22 {{$randomInt}}",
+  "email"  : "employee{{$randomInt}}@example.com"
+}
+
+###
+GET http://{{address}}:{{port}}/api/employee/{{id}}/records?yearMonth=2020-11
+
+###
+POST http://{{address}}:{{port}}/api/employee/records
+Content-Type: application/json
+
+{
+  "yearMonth" : [2020, 2],
+  "projectId" : "project",
+  "employeeId": 1,
+  "records"   : [
+    {
+      "date"                : {{$timestamp}},
+      "type"                : "KILOMETRES",
+      "hoursSubmitted"      : 3600,
+      "desc"                : null,
+      "recordCollectionId"  : 1
+    }
+  ]
+}
+
+###
+PUT http://{{address}}:{{port}}/api/employee/records
+Content-Type: application/json
+
+{
+  "id"        : 1,
+  "version"   : 1,
+  "yearMonth" : [2020, 1],
+  "projectId" : "project",
+  "employeeId": 1,
+  "records"   : [
+    {
+      "date"                : [
+          4377896,
+          1,
+          18
+      ],
+      "type"                : "KILOMETRES",
+      "hoursSubmitted"      : 3600,
+      "desc"                : "TESTST2TSTSTSTS1",
+      "recordCollectionId"  : 1,
+      "version"  : 1
+    }
+  ]
+}
+
+###
+POST http://{{address}}:{{port}}/api/project
+Content-Type: application/json
+
+{
+  "name": "project"
+}

@@ -5,9 +5,12 @@ import com.example.marvel.api.EmployeeCommand.EmployeeUpdateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import org.reactivestreams.Publisher
+import java.time.YearMonth
 import java.util.concurrent.CompletionStage
 import javax.validation.Valid
+import javax.validation.constraints.Future
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.PastOrPresent
 
 /**
  * We use interfaces also for a great Micronaut / Quarkus / RestEasy capability - declarative / proxy client creation.
@@ -42,10 +45,9 @@ interface EmployeeResourceAdapter {
     fun updateEmployee(
             @NotNull @Valid employee: EmployeeUpdateCommand): CompletionStage<EmployeeDetailedView>
 
-//    fun getForPeriod(
-//            @NotNull    id: Long,
-//            @NotNull  year: Int,
-//            @NotNull month: Month): Publisher<RecordView>
+    fun getForPeriod(
+            @NotNull                       id: Long,
+            @NotNull @PastOrPresent yearMonth: YearMonth): Publisher<RecordView>
 
     fun saveWholePeriod(
             @NotNull @Valid records: RecordCollectionCreateCommand) : CompletionStage<RecordCollectionDetailedView>

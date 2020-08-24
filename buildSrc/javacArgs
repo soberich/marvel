@@ -5,10 +5,12 @@
 -Xdoclint:none
 -Xdiags:verbose
 -parameters
--Amapstruct.defaultComponentModel=jsr330
 -AaddSuppressWarningsAnnotation=true
--Amicronaut.processing.incremental=true
+-Amapstruct.defaultComponentModel=jsr330
+-Amapstruct.defaultInjectionStrategy=constructor
+-Amapstruct.verbose=true
 -Amicronaut.processing.annotations=com.example.*
+-Amicronaut.processing.incremental=true
 -verbose
 -XprintRounds
 -XprintProcessorInfo

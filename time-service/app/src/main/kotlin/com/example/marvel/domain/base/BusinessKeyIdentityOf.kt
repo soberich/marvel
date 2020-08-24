@@ -4,6 +4,7 @@ import java.io.Serializable
 import javax.persistence.Access
 import javax.persistence.AccessType.FIELD
 import javax.persistence.AccessType.PROPERTY
+import javax.persistence.Column
 import javax.persistence.MappedSuperclass
 import javax.persistence.Version
 
@@ -23,8 +24,9 @@ abstract class BusinessKeyIdentityOf<out T : Serializable> : IdentifiableOf<T> {
      */
     @field:
     [Version
-    Access(FIELD)]
-    private var optimisticVersion = 0
+    Access(FIELD)
+    Column(updatable = false)]
+    var version = 0
 
     /**
      *       final override fun equals(other: Any?) = ...
@@ -50,5 +52,5 @@ abstract class BusinessKeyIdentityOf<out T : Serializable> : IdentifiableOf<T> {
 
     override fun hashCode(): Int = id.hashCode()
 
-    override fun toString(): String = "Entity of ${this::class.simpleName} with id: $id"
+    override fun toString(): String = "Entity of type ${this::class.simpleName} with id: $id"
 }

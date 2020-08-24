@@ -6,6 +6,8 @@ import java.time.YearMonth
 
 data class RecordCollectionDetailedViewDefault(
     //@formatter:off
+    override val id                           : Long,
+    override val version                      : Int,
     override val yearMonth                    : YearMonth,
     override val projectId                    : String,
     override val employeeId                   : Long,

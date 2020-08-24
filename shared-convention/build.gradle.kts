@@ -5,6 +5,7 @@ plugins {
     `java-library`
     `jackson-convention-helper`
     `kotlin-convention-helper`
+    id("io.micronaut.library")
 }
 
 repositories.jcenter()

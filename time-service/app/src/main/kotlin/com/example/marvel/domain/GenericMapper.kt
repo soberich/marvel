@@ -1,15 +1,13 @@
 package com.example.marvel.domain
 
 import com.example.marvel.domain.base.IdentifiableOf
-import org.mapstruct.Context
-import org.mapstruct.Mapping
-import org.mapstruct.ObjectFactory
-import org.mapstruct.TargetType
+import org.mapstruct.*
 import java.io.Serializable
 import javax.inject.Named
 import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+
 
 /**
  * **see** [Jetbrains Issue Tracker](https://youtrack.jetbrains.com/issue/KT-25960)
@@ -21,13 +19,15 @@ class GenericMapper {
 
     @set:
     [PersistenceContext]
-    internal lateinit var em: EntityManager
+    protected lateinit var em: EntityManager
 
     @ObjectFactory
-    fun <E : IdentifiableOf<Serializable>> @receiver:TargetType Class<E>.objectFactory(@Context id: Serializable): E = em.getReference(this, id)
+    fun <E : IdentifiableOf<Serializable>> @receiver:TargetType Class<E>.objectFactory(@Context id: Serializable?): E? =
+        id?.let { em.getReference(this, it) }
 
     @Mapping(target = "id")
-    fun <E : IdentifiableOf<Serializable>> @receiver:TargetType Class<E>.persistentReference(id: Serializable): E = objectFactory(id)
+    fun <E : IdentifiableOf<Serializable>> @receiver:TargetType Class<E>.persistentReference(id: Serializable?): E? =
+        id?.let { em.find(this, it) ?: em.getReference(this, it) }
 
     /**
      * FIXME: Exception thrown though `@ObjectFactory` present

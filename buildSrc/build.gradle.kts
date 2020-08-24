@@ -4,7 +4,9 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.nio.file.Files
 import java.nio.file.Path
+import java.lang.Boolean
 import java.nio.file.Paths
+import kotlin.streams.asSequence
 import org.gradle.api.plugins.ExtensionAware as EA
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 14 is required, current JVM is ${JavaVersion.current()}" }
@@ -37,7 +39,7 @@ repositories {
     }
 }
 
-val ideaActive = System.getProperty("idea.active") == "true"
+val ideaActive = Boolean.getBoolean("idea.active")
 
 val guavaVersion         : String by project
 val ideaExtPluginVersion : String by project
@@ -55,6 +57,7 @@ val versionsPluginVersion: String by project
      */
     //implementation(kotlin("reflect"))
     //implementation(kotlin("stdlib"))
+    //implementation(kotlin("stdlib-common"))
     //implementation(kotlin("stdlib-jdk7"))
     //implementation(kotlin("stdlib-jdk8"))
     /*
@@ -74,7 +77,7 @@ val versionsPluginVersion: String by project
     implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext", "gradle-idea-ext"                         , ideaExtPluginVersion)
     implementation("io.ebean"                                          , "ebean-gradle-plugin"                     , "+")
     implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"                   , "+")
-    implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"                     , "$kotlinVersion-rc")
+    implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"                     , "1.4.0-rc")
     implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"                 , "+")
     implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin"               , springBootVersion)
     //implementation("se.patrikerdes"                                    , "gradle-use-latest-versions-plugin"       , "+")
@@ -98,16 +101,19 @@ kotlinDslPluginOptions {
 
 tasks {
     withType<KotlinCompile<*>>().configureEach {
-        kotlinOptions.freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs"))
+        kotlinOptions {
+            languageVersion = "${KotlinVersion.CURRENT.major}.${KotlinVersion.CURRENT.minor}"
+            freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs")).filterNot(String::isNullOrBlank)
+        }
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString()
+        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_13).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
-            Files.lines(Paths.get("$rootDir", "javacArgs")).forEach(compilerArgs::add)
+            Files.lines(Paths.get("$rootDir", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::add)
         }
     }
     withType<Test>().configureEach {

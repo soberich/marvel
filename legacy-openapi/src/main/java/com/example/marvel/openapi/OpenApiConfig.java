@@ -47,7 +47,7 @@ public class OpenApiConfig implements ModelConverter, ObjectMapperProcessor {
                 "java.lang.Void"
             );
 
-    private static final JsonMapper mapper = Json.getConfiguredBuilder().build();
+    private static final JsonMapper mapper = Json.CONFIGURED_MAPPER;
 
     @Override
     public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {

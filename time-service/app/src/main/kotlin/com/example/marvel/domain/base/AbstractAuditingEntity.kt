@@ -1,5 +1,6 @@
 package com.example.marvel.domain.base
 
+import com.example.marvel.convention.serial.Json.DEFAULT_CLOCK
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.io.Serializable
@@ -38,20 +39,20 @@ abstract class AbstractAuditingEntity<out T : Serializable> : BusinessKeyIdentit
     //@formatter:off
     @get:
     [Column(nullable = false, updatable = false, length = 50)]
-    var createdBy           : String by Delegates.notNull()
+    var createdBy           : String = "ADMIN"/*by Delegates.notNull()*/
 
     @get:
     [CreationTimestamp
     Column(nullable = false, updatable = false)]
-    var createdDate         : Instant = Instant.now()
+    var createdDate         : Instant = Instant.now(DEFAULT_CLOCK)
 
     @get:
     [Column(nullable = false, length = 50)]
-    var lastModifiedBy      : String by Delegates.notNull()
+    var lastModifiedBy      : String  = "ADMIN"/*by Delegates.notNull()*/
 
     @get:
     [UpdateTimestamp
     Column(nullable = false)]
-    var lastModifiedDate    : Instant = Instant.now()
+    var lastModifiedDate    : Instant = Instant.now(DEFAULT_CLOCK)
     //@formatter:on
 }

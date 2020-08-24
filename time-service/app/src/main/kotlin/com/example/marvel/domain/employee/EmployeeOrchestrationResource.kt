@@ -3,32 +3,18 @@ package com.example.marvel.domain.employee
 //import com.example.marvel.convention.serial.DomainEventCodec
 //import io.vertx.core.eventbus.EventBus
 //import io.vertx.kotlin.core.json.jsonObjectOf
+import com.example.marvel.api.*
 import com.example.marvel.api.EmployeeCommand.EmployeeCreateCommand
 import com.example.marvel.api.EmployeeCommand.EmployeeUpdateCommand
-import com.example.marvel.api.EmployeeDetailedView
-import com.example.marvel.api.EmployeeResourceAdapter
-import com.example.marvel.api.EmployeeView
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
-import com.example.marvel.api.RecordCollectionDetailedView
 import com.example.marvel.convention.utils.RxStreams
+import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import org.springframework.http.MediaType
-import org.springframework.transaction.TransactionDefinition
-import org.springframework.transaction.annotation.Isolation
-import org.springframework.transaction.annotation.Propagation
-import org.springframework.transaction.annotation.Transactional
-//import org.springframework.transaction.TransactionDefinition
-//import org.springframework.transaction.annotation.Isolation
-//import org.springframework.transaction.annotation.Propagation
-//import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.web.bind.annotation.*
+import java.time.YearMonth
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
 import javax.inject.Inject
@@ -42,9 +28,10 @@ import javax.inject.Singleton
 @Named
 @Singleton
 @RestController("/api")
-@RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-@Transactional(propagation = Propagation.REQUIRED, timeout = TransactionDefinition.TIMEOUT_DEFAULT, readOnly = false, isolation = Isolation.DEFAULT)
-class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ private val employees: EmployeeBlockingServiceNamespaceImpl) : EmployeeResourceAdapter {
+@RequestMapping(produces = [APPLICATION_JSON_VALUE], consumes = [APPLICATION_JSON_VALUE])
+//@Transactional(propagation = REQUIRED, timeout = TIMEOUT_DEFAULT, readOnly = false, isolation = DEFAULT)
+class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ private val employees: EmployeeOperationsServiceNamespace) :
+    EmployeeResourceAdapter {
 
     /**
      * Could move to ctor
@@ -69,6 +56,7 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
 //        eventBus?.registerCodec(DomainEventCodec())
 //    }
 
+//    @Transactional(propagation = NOT_SUPPORTED, readOnly = true)
     @GetMapping("/employee", produces = ["application/stream+json"])
     override fun getEmployees(): Flowable<EmployeeView> =
         RxStreams.fromCallable(employees::streamEmployees).toFlowable(BackpressureStrategy.MISSING)
@@ -82,33 +70,44 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
 
     @PostMapping("/employee")
     override fun createEmployee(
-        @RequestBody employee: EmployeeCreateCommand): CompletionStage<EmployeeDetailedView> {
+        @RequestBody employee: EmployeeCreateCommand
+    ): CompletionStage<EmployeeDetailedView> {
         val createEmployee = employees.createEmployee(employee)
         return CompletableFuture.completedFuture(createEmployee)
     }
 
     @PutMapping("/employee")
     override fun updateEmployee(
-        @RequestBody employee: EmployeeUpdateCommand): CompletionStage<EmployeeDetailedView> = CompletableFuture.supplyAsync {
+        @RequestBody employee: EmployeeUpdateCommand
+    ): CompletionStage<EmployeeDetailedView> = CompletableFuture.supplyAsync {
         employees.updateEmployee(employee)
     }
 
-//    @GetMapping("/employee/{id:[1-9][0-9]*}/records")
-//    override fun getForPeriod(
-//        @PathVariable("id") id: Long,
-//        @RequestParam("year") year: Int,
-//        @RequestParam("month") month: Month): Flowable<RecordView> =
-//        Flowable.fromIterable(Iterable(employees.listForPeriod(id, Year.of(year), month)::iterator))
+    @GetMapping("/employee/{id:[1-9][0-9]*}/records")
+    override fun getForPeriod(
+        @PathVariable("id") id: Long,
+        @RequestParam("yearMonth") yearMonth: YearMonth
+    ): Flowable<RecordView> =
+        Flowable.fromIterable(
+            Iterable(
+                employees.listForPeriod(
+                    id,
+                    yearMonth
+                )::iterator
+            )
+        ) //TODO: remove SAM helper on Kotlin 1.4+
 
     @PostMapping("/employee/records")
     override fun saveWholePeriod(
-        @RequestBody records: RecordCollectionCreateCommand): CompletionStage<RecordCollectionDetailedView> = CompletableFuture.supplyAsync {
-        employees.createWholePeriod(records) ?: throw RuntimeException()
+        @RequestBody records: RecordCollectionCreateCommand
+    ): CompletionStage<RecordCollectionDetailedView> = CompletableFuture.supplyAsync {
+        employees.createWholePeriod(records) ?: throw RuntimeException("Input is incorrect!")
     }
 
     @PutMapping("/employee/records")
     override fun adjustWholePeriod(
-        @RequestBody records: RecordCollectionUpdateCommand): CompletionStage<RecordCollectionDetailedView> = CompletableFuture.supplyAsync {
-        employees.updateWholePeriod(records) ?: throw RuntimeException()
+        @RequestBody records: RecordCollectionUpdateCommand
+    ): CompletionStage<RecordCollectionDetailedView> = CompletableFuture.supplyAsync {
+        employees.updateWholePeriod(records) ?: throw RuntimeException("Report with id ${records.id} was not found!")
     }
 }

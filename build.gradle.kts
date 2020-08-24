@@ -28,16 +28,17 @@ subprojects {
 
     description = "${name.replace('-', ' ').toUpperCase()} of Native Quarkus/Micronaut Arrow-Kt Vert.x Coroutines GRPC Kotlin-DSL app"
 
-//    plugins.withType<JavaLibraryPlugin>().configureEach {
-//        configure<JavaPluginExtension> {
-//            modularity.inferModulePath.set(true)
-//        }
-//    }
-//    plugins.withType<JavaPlugin>().configureEach {
-//        configure<JavaPluginExtension> {
-//            modularity.inferModulePath.set(true)
-//        }
-//    }
+    plugins.withType<JavaLibraryPlugin>().configureEach {
+//
+        configure<JavaPluginExtension> {
+            modularity.inferModulePath.set(true)
+        }
+    }
+    plugins.withType<JavaPlugin>().configureEach {
+        configure<JavaPluginExtension> {
+            modularity.inferModulePath.set(true)
+        }
+    }
 
     repositories {
         maven("file://$rootDir/repo") {

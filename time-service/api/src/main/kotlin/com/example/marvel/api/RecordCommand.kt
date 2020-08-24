@@ -6,6 +6,8 @@ import org.hibernate.validator.constraints.time.DurationMin
 import java.time.Duration
 import java.time.LocalDate
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Positive
+import javax.validation.constraints.PositiveOrZero
 
 
 /*@optics*/ sealed class RecordCommand {
@@ -23,7 +25,8 @@ import javax.validation.constraints.NotNull
     abstract val hoursSubmitted      : Duration
     abstract val desc                : String?
     @get:
-    [NotNull]
+    [NotNull
+    Positive]
     abstract val recordCollectionId  : Long
     //@formatter:on
     companion object
@@ -41,8 +44,9 @@ import javax.validation.constraints.NotNull
     /*@optics*/ data class RecordUpdateCommand(
         //@formatter:off
         @get:
-        [NotNull]
-        val id                           : Long,
+        [NotNull
+        PositiveOrZero]
+        val version                      : Int,
         override val date                : LocalDate,
         override val type                : RecordType,
         override val hoursSubmitted      : Duration,

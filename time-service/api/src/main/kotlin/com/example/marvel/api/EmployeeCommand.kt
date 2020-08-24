@@ -1,10 +1,7 @@
 package com.example.marvel.api
 
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
+import javax.validation.constraints.*
 import javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE
-import javax.validation.constraints.Positive
 
 /**
  * This aggregate doesn't have `ID` in body, but it rather comes from path or param passes for request as essential param.
@@ -35,6 +32,10 @@ import javax.validation.constraints.Positive
         [NotNull
         Positive]
         val id                           : Long,
+        @get:
+        [NotNull
+        PositiveOrZero]
+        val version                      : Int,
         override val name                : String,
         override val email               : String
         //@formatter:on

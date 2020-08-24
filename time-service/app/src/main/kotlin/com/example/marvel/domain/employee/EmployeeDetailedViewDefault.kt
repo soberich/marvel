@@ -8,6 +8,7 @@ import com.example.marvel.api.EmployeeDetailedView
 data class EmployeeDetailedViewDefault(
     //@formatter:off
     override val id                           : Long,
+    override val version                      : Int,
     override val name                         : String,
     override val email                        : String
     //@formatter:on

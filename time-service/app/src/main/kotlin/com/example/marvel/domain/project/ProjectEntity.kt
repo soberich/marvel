@@ -1,12 +1,12 @@
 package com.example.marvel.domain.project
 
 import com.example.marvel.domain.base.AbstractAuditingEntity
-import javax.persistence.Access
+import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
 import kotlin.properties.Delegates
+
+@NamedQueries(
+    NamedQuery(name = "Project.stream", query = "SELECT NEW ProjectListingView(e.id, e.version) FROM ProjectEntity e"))
 
 @Entity
 @Access(PROPERTY)

@@ -1,23 +1,18 @@
 package com.example.marvel.domain.employee
 
-//import org.springframework.transaction.annotation.Propagation
-//import javax.transaction.Transactional
-import com.example.marvel.api.EmployeeCommand
-import com.example.marvel.api.EmployeeDetailedView
-import com.example.marvel.api.EmployeeView
+import com.example.marvel.api.*
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
-import com.example.marvel.api.RecordCollectionDetailedView
+import com.example.marvel.domain.record.RecordListingView
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
+import com.example.marvel.domain.recordcollection.RecordCollectionEntity_
 import com.example.marvel.domain.recordcollection.RecordCollectionMapper
 import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import com.kumuluz.ee.rest.beans.QueryParameters
 import com.kumuluz.ee.rest.utils.JPAUtils
+import io.micronaut.spring.tx.annotation.Transactional
 import org.springframework.stereotype.Service
-import org.springframework.transaction.TransactionDefinition.TIMEOUT_DEFAULT
-import org.springframework.transaction.annotation.Isolation.DEFAULT
-import org.springframework.transaction.annotation.Propagation.REQUIRED
-import org.springframework.transaction.annotation.Transactional
+import java.time.YearMonth
 import java.util.stream.Stream
 import javax.inject.Inject
 import javax.inject.Named
@@ -31,7 +26,7 @@ import javax.persistence.PersistenceContext
 @Named
 @Singleton
 @Service
-@Transactional(propagation = REQUIRED, timeout = TIMEOUT_DEFAULT, readOnly = false, isolation = DEFAULT)
+@Transactional
 class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
 //    private val employeeRepository: EmployeeRepository,
     private val empMapper: EmployeeMapper,
@@ -43,17 +38,29 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     protected lateinit var em: EntityManager
 
     /**
-     * @implNote Stream should be open on consumer side. Transaction will close it.
+     * Stream should be open on consumer side. Transaction will close it.
      */
-//    @Transactional(propagation = NOT_SUPPORTED, readOnly = false)
+    @Transactional(readOnly = true)
     override fun streamEmployees(): Stream<EmployeeView> =
         em.createNamedQuery("Employee.stream", EmployeeListingView::class.java)
-            .resultStream
+            //FIXME: Only Quarkus currently supports `resultStream` due to reactive transaction propagation.
+            .resultList.stream()
             .map(EmployeeView::class.java::cast)
+
+//    //FIXME: Only Quarkus currently supports this.
+//    /**
+//     *
+//     * Stream should be open on consumer side. Transaction will close it.
+//     */
+//    @Transactional(propagation = SUPPORTS, readOnly = true)
+//    override fun streamEmployees(): Stream<EmployeeView> =
+//        em.createNamedQuery("Employee.stream", EmployeeListingView::class.java)
+//            .resultStream
+//            .map(EmployeeView::class.java::cast)
 
     override fun filterEmployees(filter: String): List<EmployeeView> =
         JPAUtils.queryEntities(em, EmployeeEntity::class.java, QueryParameters.query(filter).build())
-            .map { EmployeeListingView(it.id!!, it.name, it.email) }
+            .map { EmployeeListingView(it.id!!, it.version, it.name, it.email) }
 
     override fun createEmployee(employee: EmployeeCommand.EmployeeCreateCommand): EmployeeDetailedView =
         empMapper.toEntity(employee).also(em::persist).let(empMapper::toCreateView)
@@ -61,13 +68,16 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     override fun updateEmployee(employee: EmployeeCommand.EmployeeUpdateCommand): EmployeeDetailedView? =
         empMapper.toEntity(employee.id, employee).let(empMapper::toUpdateView)
 
-//    override fun listForPeriod(employeeId: Long, year: Year, month: Month): List<RecordView> = employeeRepository.listForPeriod(employeeId, year.value, month)
+    override fun listForPeriod(employeeId: Long, yearMonth: YearMonth): List<RecordView> =
+        em.createNamedQuery("Record.listForPeriod", RecordListingView::class.java)
+            .setParameter(RecordCollectionEntity_.YEAR_MONTH, yearMonth)
+            .resultList
 
     override fun createWholePeriod(records: RecordCollectionCreateCommand): RecordCollectionDetailedView? =
         recColMapper.toCreateView(recColMapper.toEntity(records).also(em::persist))
 
     override fun updateWholePeriod(records: RecordCollectionUpdateCommand): RecordCollectionDetailedView? =
-        em.find(RecordCollectionEntity::class.java, records.id)?.let { recColMapper.toUpdateView(recColMapper.toEntity(it.id!!, records).let(em::merge)) }
+        em.find(RecordCollectionEntity::class.java, records.id)?.let { recColMapper.toUpdateView(recColMapper.toEntity(it, records).also(em::persist)) }
 
     fun getAnyUserDemo(): EmployeeDetailedView? =
         em.createNamedQuery("Employee.detailed", EmployeeDetailedViewDefault::class.java)

@@ -1,0 +1,302 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+import versioning.Deps
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.hibernate:hibernate-gradle-plugin:5.4.20.Final"
+    }
+}
+
+plugins {
+    id 'idea'
+    id 'java'
+    id 'application'
+    id 'kotlin-convention-helper'
+    id 'jackson-convention-helper'
+    id 'io.micronaut.application'
+    id 'dependencies-reporting-helper'
+    //id 'com.webcohesion.enunciate'
+    id 'com.github.johnrengelman.shadow'
+}
+apply plugin: 'org.hibernate.orm'
+
+
+repositories.jcenter()
+
+dependencies {
+    //enunciate('dk.jyskebank.tooling.enunciate:enunciate-openapi:1.1.+')
+
+    /*
+     * ORDER MATTERS!!
+     * JPAMODELGEN better go first!
+     * For IDEA based build (Ant) this has to be in `annotationProcessor`
+     */
+    annotationProcessor     enforcedPlatform(Deps.Platforms.KTOR)
+    annotationProcessor     platform(Deps.Platforms.MICRONAUT)
+    annotationProcessor     platform(Deps.Platforms.MICRONAUT_DATA)
+    annotationProcessor     platform(SpringBootPlugin.BOM_COORDINATES)
+    testAnnotationProcessor enforcedPlatform(Deps.Platforms.KTOR)
+    testAnnotationProcessor platform(Deps.Platforms.MICRONAUT)
+    testAnnotationProcessor platform(Deps.Platforms.MICRONAUT_DATA)
+    testAnnotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
+    kapt                    enforcedPlatform(Deps.Platforms.KTOR)
+    kapt                    platform(Deps.Platforms.MICRONAUT)
+    kapt                    platform(Deps.Platforms.MICRONAUT_DATA)
+    kapt                    platform(SpringBootPlugin.BOM_COORDINATES)
+    kaptTest                enforcedPlatform(Deps.Platforms.KTOR)
+    kaptTest                platform(Deps.Platforms.MICRONAUT)
+    kaptTest                platform(Deps.Platforms.MICRONAUT_DATA)
+    kaptTest                platform(SpringBootPlugin.BOM_COORDINATES)
+    compileOnly             enforcedPlatform(Deps.Platforms.KTOR)
+    compileOnly             platform(Deps.Platforms.MICRONAUT)
+    compileOnly             platform(Deps.Platforms.MICRONAUT_DATA)
+    compileOnly             platform(SpringBootPlugin.BOM_COORDINATES)
+    developmentOnly         enforcedPlatform(Deps.Platforms.KTOR)
+    developmentOnly         platform(Deps.Platforms.MICRONAUT)
+    developmentOnly         platform(Deps.Platforms.MICRONAUT_DATA)
+    developmentOnly         platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation          enforcedPlatform(Deps.Platforms.KTOR)
+    implementation          platform(Deps.Platforms.MICRONAUT)
+    implementation          platform(Deps.Platforms.MICRONAUT_DATA)
+    implementation          platform(SpringBootPlugin.BOM_COORDINATES)
+    runtimeOnly             enforcedPlatform(Deps.Platforms.KTOR)
+    runtimeOnly             platform(Deps.Platforms.MICRONAUT)
+    runtimeOnly             platform(Deps.Platforms.MICRONAUT_DATA)
+    runtimeOnly             platform(SpringBootPlugin.BOM_COORDINATES)
+    testImplementation      enforcedPlatform(Deps.Platforms.KTOR)
+    testImplementation      platform(Deps.Platforms.MICRONAUT)
+    testImplementation      platform(Deps.Platforms.MICRONAUT_DATA)
+    testImplementation      platform(SpringBootPlugin.BOM_COORDINATES)
+    // we have to fixup deps coming from plugins as well for `testRuntimeOnly`
+    testRuntimeOnly         enforcedPlatform(Deps.Platforms.KTOR)
+    testRuntimeOnly         platform(Deps.Platforms.MICRONAUT)
+    testRuntimeOnly         platform(Deps.Platforms.MICRONAUT_DATA)
+    testRuntimeOnly         platform(SpringBootPlugin.BOM_COORDINATES)
+
+
+    /*
+     * For IDEA based build (Ant) this has to be in `annotationProcessor`
+     */
+    annotationProcessor     project(':time-service.app')
+    annotationProcessor     project(':shared-convention')
+    annotationProcessor     project(':time-service.api')
+    annotationProcessor     'io.micronaut.configuration:micronaut-openapi'
+    annotationProcessor     'io.micronaut.data:micronaut-data-processor'
+    annotationProcessor     'io.micronaut.spring:micronaut-spring-annotation'
+    annotationProcessor     'io.micronaut.spring:micronaut-spring-boot'
+    annotationProcessor     'io.micronaut.spring:micronaut-spring-boot-annotation'
+    annotationProcessor     'io.micronaut.spring:micronaut-spring-web-annotation'
+    annotationProcessor     'io.micronaut:micronaut-graal'
+    annotationProcessor     'io.micronaut:micronaut-inject-java'
+    annotationProcessor     'io.micronaut:micronaut-management'
+    annotationProcessor     'io.micronaut:micronaut-validation'
+    annotationProcessor     'org.springframework:spring-core'
+    annotationProcessor     Deps.Libs.VALIDATOR_AP
+
+    testAnnotationProcessor project(':time-service.app')
+    testAnnotationProcessor project(':shared-convention')
+    testAnnotationProcessor project(':time-service.api')
+    testAnnotationProcessor 'io.micronaut.configuration:micronaut-openapi'
+    testAnnotationProcessor 'io.micronaut.data:micronaut-data-processor'
+    testAnnotationProcessor 'io.micronaut.spring:micronaut-spring-annotation'
+    testAnnotationProcessor 'io.micronaut.spring:micronaut-spring-boot'
+    testAnnotationProcessor 'io.micronaut.spring:micronaut-spring-boot-annotation'
+    testAnnotationProcessor 'io.micronaut.spring:micronaut-spring-web-annotation'
+    testAnnotationProcessor 'io.micronaut:micronaut-graal'
+    testAnnotationProcessor 'io.micronaut:micronaut-inject-java'
+    testAnnotationProcessor 'io.micronaut:micronaut-management'
+    testAnnotationProcessor 'io.micronaut:micronaut-validation'
+    testAnnotationProcessor 'org.springframework:spring-core'
+    testAnnotationProcessor Deps.Libs.VALIDATOR_AP
+
+    kapt                    project(':time-service.app')
+    kapt                    project(':shared-convention')
+    kapt                    project(':time-service.api')
+    kapt                    'io.micronaut.configuration:micronaut-openapi'
+    kapt                    'io.micronaut.data:micronaut-data-processor'
+    kapt                    'io.micronaut.spring:micronaut-spring-annotation'
+    kapt                    'io.micronaut.spring:micronaut-spring-boot'
+    kapt                    'io.micronaut.spring:micronaut-spring-boot-annotation'
+    kapt                    'io.micronaut.spring:micronaut-spring-web-annotation'
+    kapt                    'io.micronaut:micronaut-graal'
+    kapt                    'io.micronaut:micronaut-inject-java'
+    kapt                    'io.micronaut:micronaut-management'
+    kapt                    'io.micronaut:micronaut-validation'
+    kapt                    'org.springframework:spring-core'
+    kapt                    Deps.Libs.VALIDATOR_AP
+
+    kaptTest                project(':time-service.app')
+    kaptTest                project(':shared-convention')
+    kaptTest                project(':time-service.api')
+    kaptTest                'io.micronaut.configuration:micronaut-openapi'
+    kaptTest                'io.micronaut.data:micronaut-data-processor'
+    kaptTest                'io.micronaut.spring:micronaut-spring-annotation'
+    kaptTest                'io.micronaut.spring:micronaut-spring-boot'
+    kaptTest                'io.micronaut.spring:micronaut-spring-boot-annotation'
+    kaptTest                'io.micronaut.spring:micronaut-spring-web-annotation'
+    kaptTest                'io.micronaut:micronaut-graal'
+    kaptTest                'io.micronaut:micronaut-inject-java'
+    kaptTest                'io.micronaut:micronaut-management'
+    kaptTest                'io.micronaut:micronaut-validation'
+    kaptTest                'org.springframework:spring-core'
+    kaptTest                Deps.Libs.VALIDATOR_AP
+
+    compileOnly             'org.graalvm.nativeimage:svm'
+    compileOnly             Deps.Jakarta.CDI
+    compileOnly             Deps.Jakarta.SERVLET
+    compileOnly             Deps.Libs.SLF4J_API
+
+    developmentOnly         'net.java.dev.jna:jna'
+    developmentOnly         'io.micronaut:micronaut-runtime-osx'
+    developmentOnly         'io.methvin:directory-watcher'
+
+//    implementation('org.springframework.boot:spring-boot-starter') { force = true }
+    implementation('org.springframework:spring-context:5.3.0-M2') { force = true }
+    implementation('org.springframework:spring-tx:5.3.0-M2') { force = true }
+    implementation('org.springframework:spring-core:5.3.0-M2') { force = true }
+
+    implementation          project(':time-service.app')
+    implementation          project(':shared-convention')
+    implementation          project(':time-service.api')
+    implementation          Deps.Libs.COROUTINES_JDK8
+    implementation          Deps.Libs.COROUTINES_RXJAVA2
+    implementation          'io.ktor:ktor-metrics-micrometer'
+    implementation          'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation          'io.ktor:ktor-jackson'
+    implementation          'io.ktor:ktor-server-netty'
+    implementation          'io.micronaut.data:micronaut-data-hibernate-jpa'
+    implementation          'io.micronaut.kotlin:micronaut-kotlin-extension-functions'
+    implementation          'io.micronaut.micrometer:micronaut-micrometer-core'
+    implementation          'io.micronaut:micronaut-inject'
+    implementation          'io.micronaut:micronaut-management'
+    implementation          'io.micronaut:micronaut-runtime'
+    implementation          'io.micronaut:micronaut-validation'
+    implementation          'io.swagger.core.v3:swagger-annotations'
+    implementation          'org.springframework.boot:spring-boot-autoconfigure'
+    implementation          'io.micronaut.kotlin:micronaut-ktor'
+    implementation          'io.micronaut.sql:micronaut-hibernate-jpa'
+    implementation          'io.micronaut.sql:micronaut-hibernate-jpa-spring'
+    implementation          'io.micronaut.spring:micronaut-spring'
+    implementation          'org.springframework:spring-jdbc'
+
+    //TODO: `runtimeOnly`
+    implementation          project(':time-service.app')
+    implementation          'ch.qos.logback:logback-classic'
+    implementation          'com.h2database:h2'
+    implementation          'com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3'
+    implementation          'io.micronaut.beanvalidation:micronaut-hibernate-validator'
+    implementation          'io.micronaut.cache:micronaut-cache-caffeine'
+    implementation          'io.micronaut.data:micronaut-data-spring'
+    implementation          'io.micronaut.kotlin:micronaut-kotlin-runtime'
+    implementation          'io.micronaut.spring:micronaut-spring'
+    implementation          'io.micronaut.spring:micronaut-spring-boot'
+    implementation          'io.micronaut.spring:micronaut-spring-web'
+    implementation          'io.micronaut.sql:micronaut-hibernate-jpa'
+    implementation          'io.micronaut.sql:micronaut-hibernate-jpa-spring'
+    implementation          'io.micronaut.sql:micronaut-jdbc-hikari'
+    implementation          'io.micronaut:micronaut-http-client'
+    implementation          'io.micronaut:micronaut-http-server'
+//  implementation            'io.micronaut:micronaut-http-server-netty'
+    implementation          'io.micronaut:micronaut-inject'
+    implementation          'org.springframework:spring-jdbc'
+    implementation          'io.swagger.core.v3:swagger-annotations'
+    implementation          'net.bytebuddy:byte-buddy:1.10.14'
+    implementation          'ognl:ognl:3.2.14'
+    implementation          'org.apache.logging.log4j:log4j-to-slf4j:2.13.3'
+    implementation          'org.slf4j:jul-to-slf4j:1.7.30'
+    implementation          'org.springframework.boot:spring-boot-starter-web'
+    implementation          'org.springframework:spring-webmvc'
+    implementation          'org.webjars:bootstrap:+'
+    implementation          'org.webjars:swagger-ui:+'
+
+    testAnnotationProcessor 'org.slf4j:jul-to-slf4j:1.7.30'
+    testAnnotationProcessor 'org.apache.logging.log4j:log4j-to-slf4j:2.13.3'
+
+    kaptTest                'org.slf4j:jul-to-slf4j:1.7.30'
+    kaptTest                'org.apache.logging.log4j:log4j-to-slf4j:2.13.3'
+
+    testImplementation      'io.micronaut.test:micronaut-test-kotlintest'
+    testImplementation      'io.micronaut.test:micronaut-test-junit5'
+}
+
+rootProject.idea {
+    project {
+        settings {
+            doNotDetectFrameworks('spring')
+        }
+    }
+}
+
+idea.module.downloadSources = true
+
+hibernate {
+    enhance {
+        enableLazyInitialization = true
+        enableDirtyTracking = true
+        enableAssociationManagement = true
+        enableExtendedEnhancement = false
+    }
+}
+
+application {
+    //mainModule.convention('com.example.marvel.runtime')
+    mainClass = 'com.example.marvel.runtime.ApplicationKt'
+    mainClassName = 'com.example.marvel.runtime.ApplicationKt'
+    applicationDefaultJvmArgs = ['-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote']
+}
+
+tasks.withType(ProcessResources).configureEach {
+    filesMatching('openapi.properties') {
+        System.setProperty('micronaut.openapi.config.file', path) //FIXME
+        expand(project.properties)
+    }
+}
+tasks.withType(ShadowJar).configureEach {
+    mergeServiceFiles()
+}
+tasks.named('run', JavaExec) {
+    it.jvmArgs('-Dmicronaut.openapi.views.spec=rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop')
+}
+tasks.withType(JavaExec).configureEach {
+    classpath += configurations.developmentOnly
+}
+tasks.withType(Test).configureEach {
+    classpath += configurations.developmentOnly
+    useJUnitPlatform()
+    exclude('**/Native*')
+}
+
+configure([
+    project(':time-service.app'),
+    project(':time-service.api')
+]) {
+
+//    p.plugins {
+//        id 'io.micronaut.library'
+//        id 'kotlin-convention-helper'
+//    }
+
+//    apply plugin: 'io.micronaut.library'
+    apply plugin: 'kotlin-convention-helper'
+
+    dependencies {
+        annotationProcessor     platform(Deps.Platforms.MICRONAUT)
+        testAnnotationProcessor platform(Deps.Platforms.MICRONAUT)
+        kapt                    platform(Deps.Platforms.MICRONAUT)
+        kaptTest                platform(Deps.Platforms.MICRONAUT)
+        implementation          platform(Deps.Platforms.MICRONAUT)
+        runtimeOnly             platform(Deps.Platforms.MICRONAUT)
+        testImplementation      platform(Deps.Platforms.MICRONAUT)
+        testRuntimeOnly         platform(Deps.Platforms.MICRONAUT)
+
+        annotationProcessor     'io.micronaut:micronaut-inject-java'
+        testAnnotationProcessor 'io.micronaut:micronaut-inject-java'
+        kapt                    'io.micronaut:micronaut-inject-java'
+        kaptTest                'io.micronaut:micronaut-inject-java'
+    }
+}

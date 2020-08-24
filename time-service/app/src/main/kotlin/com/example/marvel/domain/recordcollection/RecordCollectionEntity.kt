@@ -4,6 +4,7 @@ import com.example.marvel.domain.base.SimpleGeneratedIdentityOfLong
 import com.example.marvel.domain.employee.EmployeeEntity
 import com.example.marvel.domain.project.ProjectEntity
 import com.example.marvel.domain.record.RecordEntity
+import org.hibernate.annotations.BatchSize
 import org.hibernate.annotations.Columns
 import org.hibernate.annotations.Type
 import java.time.YearMonth
@@ -29,16 +30,28 @@ class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     var yearMonth                             : YearMonth by Delegates.notNull()
     @get:
     [ManyToOne(optional = false, fetch = LAZY)
-    JoinColumn(updatable =false)]
+    JoinColumn(nullable = false, updatable = false)]
     var project                               : ProjectEntity by Delegates.notNull()
     @get:
     [ManyToOne(optional = false, fetch = LAZY)
-    JoinColumn(updatable = false)]
+    JoinColumn(nullable = false, updatable = false)]
     var employee                              : EmployeeEntity by Delegates.notNull()
 
     @get:
     [OrderBy("date DESC")
-    OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)]
-    var records                               : MutableSet<RecordEntity> = linkedSetOf()
+    OneToMany(mappedBy = "report", cascade = [ALL], orphanRemoval = true)
+    BatchSize(size = 31)]
+    var records                               : MutableSet<RecordEntity> = LinkedHashSet(31)
     //@formatter:on
+
+    fun addRecord(record: RecordEntity): RecordCollectionEntity {
+        record.report = this
+        records.add(record)
+        return this
+    }
+
+    fun removeRecord(record: RecordEntity) {
+        record.report = null
+        records.add(record)
+    }
 }

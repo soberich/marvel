@@ -36,7 +36,7 @@ micronaut:
       enabled: true
 datasources:
   default:
-    url: ${JDBC_URL:`jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE`}
+    url: ${JDBC_URL:`jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_UPPER=FALSE`}
     username: ${JDBC_USER:sa}
     password: ${JDBC_PASSWORD:""}
     driverClassName: ${JDBC_DRIVER:org.h2.Driver}
@@ -46,28 +46,32 @@ jpa:
   default:
 #spring.jpa:
 #    packages-to-scan:
-#      - 'example.micronaut.domain'
+#      - 'com.example.marvel.domain'
     open-in-view: false
     properties:
+      hibernate:
         bytecode.use_reflection_optimizer:          true
 #        cache.use_query_cache:                      true
         cache.use_second_level_cache:               false
         connection.characterEncoding:               utf8
         connection.CharSet:                         utf8
         connection.generateSimpleParameterMetadata: true
+        connection.handling_mode:                   DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
         connection.isolation:                       2
         connection.pool_size:                       33
         connection.profileSQL:                      true
-        connection.handling_mode:                   DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
         connection.rewriteBatchedStatements:        true
         connection.useBatchMultiSend:               true
         connection.useUnicode:                      true
         current_session_context_class:              org.springframework.orm.hibernate5.SpringSessionContext
+#        current_session_context_class:              io.micronaut.transaction.hibernate5.MicronautSessionContext
+        enhancer.enableAssociationManagement:       true
+        enhancer.enableDirtyTracking:               true
         enhancer.enableLazyInitialization:          true
         event.merge.entity_copy_observer:           log
         format_sql:                                 true
         generate_statistics:                        true
-        hbm2ddl.auto:                               update
+        hbm2ddl.auto:                               drop-and-create
         implicit_naming_strategy:                   com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
         jdbc.batch_size:                            33
         jdbc.fetch_size:                            200

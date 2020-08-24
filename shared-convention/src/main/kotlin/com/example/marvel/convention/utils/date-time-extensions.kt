@@ -1,6 +1,6 @@
 @file:
 [JvmName("DateTimeConverterUtils")
-Suppress("NOTHING_TO_INLINE")]
+Suppress("NOTHING_TO_INLINE", "unused")]
 
 package com.example.marvel.convention.utils
 

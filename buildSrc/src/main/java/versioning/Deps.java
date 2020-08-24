@@ -76,6 +76,7 @@ public interface Deps {
         String COROUTINES     = "org.jetbrains.kotlinx:kotlinx-coroutines-bom"             + ':' + versioning.Platforms.Versions.COROUTINES;
         String GUAVA          = "com.google.guava:guava-bom"                               + ':' + versioning.Platforms.Versions.GUAVA;
         String JACKSON        = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
+        String KTOR           = "io.ktor:ktor-bom"                                         + ':' + versioning.Platforms.Versions.KTOR;
         String MICRONAUT      = "io.micronaut:micronaut-bom"                               + ':' + versioning.Platforms.Versions.MICRONAUT;
         String MICRONAUT_DATA = "io.micronaut.data:micronaut-data-bom"                     + ':' + versioning.Platforms.Versions.MICRONAUT_DATA;
         String QUARKUS        = "io.quarkus:quarkus-universe-bom"                          + ':' + versioning.Platforms.Versions.QUARKUS;

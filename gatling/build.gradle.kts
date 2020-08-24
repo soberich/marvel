@@ -1,6 +1,7 @@
 import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
 import java.nio.file.Files
 import java.nio.file.Paths
+import kotlin.streams.asSequence
 
 plugins {
     idea
@@ -33,7 +34,7 @@ tasks {
             release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString().toInt())
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
-            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).forEach { compilerArgs.add(it) } //Ant (e.i. Intellij driven build) can't compile ambiguous function reference
+            Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
         scalaCompileOptions.apply {
             isForce = true

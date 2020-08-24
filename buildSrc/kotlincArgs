@@ -1,6 +1,5 @@
 -java-parameters
 -progressive
--verbose
 -version
 -Xallow-result-return-type
 -Xeffect-system
@@ -9,6 +8,7 @@
 -Xjsr305=strict
 -Xjvm-default=compatibility
 -Xnew-inference
+-Xopt-in=kotlin.time.ExperimentalTime
 -Xpolymorphic-signature
 -Xuse-experimental=kotlin.contracts.ExperimentalContracts
 -Xuse-experimental=kotlin.Experimental

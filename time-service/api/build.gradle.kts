@@ -13,7 +13,6 @@ dependencies {
      * For IDEA based build (Ant) this has to be in `annotationProcessor`
      */
     listOf(
-        Deps.Javax.ANNOTATION, //JPMS
         //Deps.Libs.ARROW_META, //FIXME
         Deps.Libs.IMMUTABLES_VALUE,
         Deps.Libs.VALIDATOR_AP
@@ -36,11 +35,3 @@ dependencies {
         Deps.Libs.VALIDATOR
     ).forEach(::api)
 }
-
-configurations.all { //FIXME: JPMS
-    exclude("com.google.code.findbugs", "jsr305")
-}
-
-//kapt.javacOptions {
-//    option("--module-path", sourceSets.main.get().compileClasspath.asPath)
-//}

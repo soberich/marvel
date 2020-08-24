@@ -7,10 +7,11 @@ import java.time.LocalDate
 
 data class RecordDetailedViewDefault(
     //@formatter:off
-    override val date                : LocalDate,
-    override val type                : RecordType,
-    override val hoursSubmitted      : Duration,
-    override val desc                : String?,
-    override val recordCollectionId  : Long
+    override val version                      : Int,
+    override val date                         : LocalDate,
+    override val type                         : RecordType,
+    override val hoursSubmitted               : Duration,
+    override val desc                         : String?,
+    override val recordCollectionId           : Long
     //@formatter:on
 ) : RecordDetailedView

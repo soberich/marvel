@@ -7,6 +7,7 @@ import java.time.LocalDate
 
 data class RecordListingView(
     //@formatter:off
+    override val version             : Int,
     override val date                : LocalDate,
     override val type                : RecordType,
     override val hoursSubmitted      : Duration,
