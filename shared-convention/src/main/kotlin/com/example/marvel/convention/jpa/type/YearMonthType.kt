@@ -35,8 +35,8 @@ object YearMonthType : CompositeUserType {
         YearMonth.of(SHORT.nullSafeGet(rs, names[0], session).toUShort().toInt(), BYTE.nullSafeGet(rs, names[1], session).toUByte().toInt())
 
     override fun nullSafeSet(st: PreparedStatement, value: Any, index: Int, session: SharedSessionContractImplementor) {
-        SHORT.nullSafeSet(st, (value as YearMonth).year.toUShort(), index, session)
-        BYTE.nullSafeSet(st, value.monthValue.toUByte(), index + 1, session)
+        SHORT.nullSafeSet(st, (value as YearMonth).year.toUShort().toShort(), index, session)
+        BYTE.nullSafeSet(st, value.monthValue.toUByte().toByte(), index + 1, session)
     }
 
     override fun deepCopy(value: Any): Any = YearMonth.of((value as YearMonth).year, value.monthValue)
