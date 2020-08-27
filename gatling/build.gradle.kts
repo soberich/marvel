@@ -54,7 +54,7 @@ tasks {
 }
 
 application {
-    mainClass.convention("io.gatling.app.Gatling")
-    mainClassName = "io.gatling.app.Gatling"
+    mainClass.set("io.gatling.app.Gatling")
+    mainClassName = mainClass.get()
     applicationDefaultJvmArgs = Files.readAllLines(Paths.get("$projectDir", "jvmArgs"))
 }

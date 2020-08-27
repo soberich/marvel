@@ -6,19 +6,6 @@ enableFeaturePreview("VERSION_ORDERING_V2")
 rootProject.name = "marvel"
 
 pluginManagement {
-    val bytebuddyVersion      : String by settings
-    val ideaExtPluginVersion  : String by settings
-    val jlinkPluginVersion    : String by settings
-    val micronautPluginVersion: String by settings
-    val shadowPluginVersion   : String by settings
-    plugins {
-        id("com.github.johnrengelman.shadow")        version shadowPluginVersion
-        id("io.micronaut.application")               version micronautPluginVersion
-        id("io.micronaut.library")                   version micronautPluginVersion
-        id("net.bytebuddy.byte-buddy-gradle-plugin") version bytebuddyVersion
-        id("org.beryx.jlink")                        version jlinkPluginVersion
-        id("org.jetbrains.gradle.plugin.idea-ext")   version ideaExtPluginVersion
-    }
     repositories {
         gradlePluginPortal()
         jcenter()
@@ -38,9 +25,10 @@ pluginManagement {
 }
 
 include(
+    ":convention",
     ":gatling",
     ":legacy-openapi",
-    ":shared-convention"
+    ":shared"
 )
 
 for (serviceDir in setOf("time-service")) {

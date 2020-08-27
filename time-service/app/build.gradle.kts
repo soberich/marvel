@@ -5,7 +5,7 @@ plugins {
     `java-library`
     `kotlin-convention-helper`
     `testing-convention-helper`
-    id("io.micronaut.library")
+    //io.micronaut.library
 }
 
 repositories.jcenter()
@@ -16,16 +16,28 @@ dependencies {
      * JPAMODELGEN better go first!
      * For IDEA based build (Ant) this has to be in `annotationProcessor`
      */
-//    annotationProcessor("io.micronaut.data:micronaut-data-processor")
-//    kapt("io.micronaut.data:micronaut-data-processor")
-    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
-    implementation("io.micronaut.sql:micronaut-hibernate-jpa")
+    //annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    //kapt("io.micronaut.data:micronaut-data-processor")
+//    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+//    implementation("io.micronaut.sql:micronaut-hibernate-jpa")
     implementation("io.micronaut.spring:micronaut-spring")
+
     listOf(
+        platform(project(":convention"))
+    ).asSequence()
+    .onEach(::annotationProcessor)
+    .onEach(::kapt)
+    .onEach(::compileOnly)
+    .onEach(::api)
+    .onEach(::runtimeOnly)
+    .onEach(::testAnnotationProcessor)
+    .forEach(::kaptTest)
+
+    listOf(
+        Deps.Jakarta.PERSISTENCE,
         Deps.Libs.HIBERNATE_JPAMODELGEN,
         Deps.Libs.MAPSTRUCT_AP,
-        Deps.Libs.VALIDATOR_AP,
-        Deps.Javax.PERSISTENCE
+        Deps.Libs.VALIDATOR_AP
     ).asSequence()
     .onEach(::annotationProcessor)
     .onEach(::testAnnotationProcessor)
@@ -41,7 +53,7 @@ dependencies {
     ).forEach(::compileOnly)
 
     arrayOf(
-        project(":shared-convention"),
+        project(":shared"),
         project(":time-service.api"),
         project(":time-service.spi"),
         "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
@@ -49,45 +61,6 @@ dependencies {
         "org.springframework:spring-web:+",    //TODO: Extract to `Deps.Libs`
         "org.springframework:spring-context:+" //TODO: Extract to `Deps.Libs`
     ).forEach(::implementation)
-
-    arrayOf(
-        "io.micronaut:micronaut-inject-java"
-    ).asSequence()
-        .onEach(::annotationProcessor)
-        .onEach(::testAnnotationProcessor)
-        .onEach(::kapt)
-        .onEach(::kaptTest)
-
-
-    arrayOf(
-        "io.micronaut:micronaut-inject"
-    ).forEach(::implementation)
-
-        listOf(
-            /*even though Deps.Libs may contain strict version this enforces proper platform recommendations*/
-            platform(Deps.Platforms.MICRONAUT)
-        ).asSequence()
-        .onEach(::annotationProcessor)
-        .onEach(::testAnnotationProcessor)
-        .onEach(::kapt)
-        .onEach(::kaptTest)
-//        .onEach(::compileOnly)
-        .onEach(::implementation)
-        .onEach(::runtimeOnly)
-        .onEach(::testImplementation)
-        .forEach(::testRuntimeOnly) // we have : fixup deps coming from plugins as well for `testRuntimeOnly`
-
-        arrayOf(
-            "io.micronaut:micronaut-inject-java"
-        ).asSequence()
-        .onEach(::annotationProcessor)
-        .onEach(::testAnnotationProcessor)
-        .onEach(::kapt)
-        .onEach(::kaptTest)
-
-        arrayOf(
-            "io.micronaut:micronaut-inject"
-        ).forEach(::implementation)
 }
 
 idea.module.isDownloadSources = true

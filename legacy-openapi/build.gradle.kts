@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":shared-convention"))
+    implementation(project(":shared"))
     implementation(project(":time-service.app"))
 }
 

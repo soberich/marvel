@@ -1,10 +1,6 @@
 import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
 import versioning.Deps
 
-plugins {
-    java
-}
-
 dependencies {
     arrayOf(
         enforcedPlatform(Deps.Platforms.JACKSON),

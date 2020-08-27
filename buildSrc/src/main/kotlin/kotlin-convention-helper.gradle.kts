@@ -9,8 +9,7 @@ import kotlin.streams.asSequence
 
 plugins {
     java //if not applied `spring-boot-runner` reports missing `annotationProcessor` configuration
-    kotlin
-    //org.jetbrains.kotlin.jvm
+    kotlin //org.jetbrains.kotlin.jvm
     `kotlin-kapt`
     `kotlin-allopen`
     `kotlin-noarg`
@@ -20,7 +19,7 @@ plugins {
     //org.jetbrains.dokka
 }
 
-public val mrjar9: Configuration by configurations.creating
+val mrjar9: Configuration by configurations.creating
 
 
 dependencies {

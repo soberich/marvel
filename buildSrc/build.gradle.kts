@@ -1,10 +1,12 @@
+@file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+
 import org.jetbrains.gradle.ext.IdeaCompilerConfiguration
 import org.jetbrains.gradle.ext.ProjectSettings
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import java.lang.Boolean
 import java.nio.file.Files
 import java.nio.file.Path
-import java.lang.Boolean
 import java.nio.file.Paths
 import kotlin.streams.asSequence
 import org.gradle.api.plugins.ExtensionAware as EA
@@ -41,11 +43,17 @@ repositories {
 
 val ideaActive = Boolean.getBoolean("idea.active")
 
-val guavaVersion         : String by project
-val ideaExtPluginVersion : String by project
-val kotlinVersion        : String by project
-val springBootVersion    : String by project
-val versionsPluginVersion: String by project
+val byteBuddyVersion      : String by project
+val guavaVersion          : String by project
+val hibernateVersion      : String by project
+val ideaExtPluginVersion  : String by project
+val jlinkPluginVersion    : String by project
+val kotlinVersion         : String by project
+val micronautPluginVersion: String by project
+val shadowPluginVersion   : String by project
+val spotBugsPluginVersion : String by project
+val springBootVersion     : String by project
+val versionsPluginVersion : String by project
 
 /*plugins'*/ dependencies {
     //noinspection DifferentKotlinGradleVersion
@@ -70,13 +78,20 @@ val versionsPluginVersion: String by project
     implementation(kotlin("sam-with-receiver"            , kotlinVersion))
     //implementation(kotlin("serialization", kotlinVersion))
     implementation("com.github.ben-manes"                              , "gradle-versions-plugin"                  , versionsPluginVersion)
+    implementation("com.github.jengelman.gradle.plugins"               , "shadow"                                  , shadowPluginVersion)
     implementation("com.vaadin"                                        , "vaadin-gradle-plugin"                    , "+")
     implementation("com.vanniktech"                                    , "gradle-dependency-graph-generator-plugin", "0.5.0")
+    /*TODO: Apparently, these plugins needs PRs to remove `gradle.plugin` from group. Looks amateur*/
+    implementation("gradle.plugin.com.github.spotbugs.snom"            , "spotbugs-gradle-plugin"                  , spotBugsPluginVersion)
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties" , "gradle-git-properties"                   , "+")
     implementation("gradle.plugin.com.webcohesion.enunciate"           , "enunciate-gradle"                        , "+")
+    implementation("gradle.plugin.net.bytebuddy"                       , "byte-buddy-gradle-plugin"                , byteBuddyVersion)
     implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext", "gradle-idea-ext"                         , ideaExtPluginVersion)
     implementation("io.ebean"                                          , "ebean-gradle-plugin"                     , "+")
+    implementation("io.micronaut.gradle"                               , "micronaut-gradle-plugin"                 , micronautPluginVersion)
     implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"                   , "+")
+    implementation("org.beryx"                                         , "badass-jlink-plugin"                     , jlinkPluginVersion)
+    implementation("org.hibernate"                                     , "hibernate-gradle-plugin"                 , hibernateVersion)
     implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"                     , "1.4.0-rc")
     implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"                 , "+")
     implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin"               , springBootVersion)

@@ -9,12 +9,31 @@ plugins {
 repositories.jcenter()
 
 dependencies {
+
+    listOf(
+        platform(project(":convention"))
+    ).asSequence()
+    .onEach(::annotationProcessor)
+    .onEach(::kapt)
+    .onEach(::compileOnly)
+    .onEach(::api)
+    .onEach(::runtimeOnly)
+    .onEach(::testAnnotationProcessor)
+    .forEach(::kaptTest)
+
+    api("com.blazebit:blaze-persistence-core-api")
+    api("com.blazebit:blaze-persistence-integration-jackson")
+    api("com.blazebit:blaze-persistence-jpa-criteria-api")
+    runtimeOnly("com.blazebit:blaze-persistence-core-impl")
+    runtimeOnly("com.blazebit:blaze-persistence-integration-hibernate-5.4")
+    runtimeOnly("com.blazebit:blaze-persistence-jpa-criteria-impl")
+
     /*
      * For IDEA based build (Ant) this has to be in `annotationProcessor`
      */
     listOf(
-        //Deps.Libs.ARROW_META, //FIXME
-        Deps.Libs.IMMUTABLES_VALUE,
+        "com.blazebit:blaze-persistence-entity-view-processor",
+        "org.immutables:value",
         Deps.Libs.VALIDATOR_AP
     ).asSequence()
     .onEach(::annotationProcessor)
@@ -24,8 +43,8 @@ dependencies {
 
     arrayOf(
         //Deps.Libs.ARROW_ANNOTATIONS, //FIXME
-        Deps.Libs.IMMUTABLES_BUILDER,
-        Deps.Libs.IMMUTABLES_VALUE + ":annotations"
+        "org.immutables:builder",
+        "org.immutables:value:annotations"
     ).forEach(::compileOnly)
 
     arrayOf(

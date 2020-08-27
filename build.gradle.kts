@@ -1,7 +1,9 @@
 import org.jetbrains.gradle.ext.IdeaCompilerConfiguration
 import org.jetbrains.gradle.ext.ProjectSettings
+import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 import org.gradle.api.plugins.ExtensionAware as EA
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 14 is required, current JVM is ${JavaVersion.current()}" }
@@ -9,6 +11,14 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At leas
 plugins {
     org.jetbrains.gradle.plugin.`idea-ext`
 }
+
+val props = FileInputStream("$rootDir/buildSrc/gradle.properties").use {
+    Properties().apply { load(it) }
+}
+
+props.stringPropertyNames()
+    .associateWith { props.getProperty(it) }
+    .forEach { project.ext.set(it.key, it.value) }
 
 ((idea.project as EA).the<ProjectSettings>() as EA).configure<IdeaCompilerConfiguration> {
     additionalVmOptions = "${project.property("org.gradle.jvmargs")}"
@@ -29,7 +39,6 @@ subprojects {
     description = "${name.replace('-', ' ').toUpperCase()} of Native Quarkus/Micronaut Arrow-Kt Vert.x Coroutines GRPC Kotlin-DSL app"
 
     plugins.withType<JavaLibraryPlugin>().configureEach {
-//
         configure<JavaPluginExtension> {
             modularity.inferModulePath.set(true)
         }
@@ -41,9 +50,12 @@ subprojects {
     }
 
     repositories {
-        maven("file://$rootDir/repo") {
-            content {
-                includeGroup("org.jetbrains.kotlinx")
+        exclusiveContent {
+            forRepository {
+                maven("file://$rootDir/repo")
+            }
+            filter {
+                includeModule("org.jetbrains.kotlinx", "kotlinx-io-jvm")
             }
         }
         jcenter()

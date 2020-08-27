@@ -100,6 +100,7 @@ TODO            text
 # These files are binary and should be left untouched
 # (binary is a macro for -text -diff)
 *.class         binary
+*.gpg           binary
 *.gif           binary
 *.ico           binary
 *.jar           binary

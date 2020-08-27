@@ -2,7 +2,7 @@ plugins {
     idea
     `java-library`
     `kotlin-convention-helper`
-    id("io.micronaut.library")
+    //io.micronaut.library
 }
 
 dependencies {

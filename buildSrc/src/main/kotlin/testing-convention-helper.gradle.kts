@@ -20,6 +20,10 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
+    /**
+     * @sample [https://github.com/spotbugs/spotbugs-gradle-plugin/blob/master/src/test/java/com/github/spotbugs/snom/SpotBugsPluginTest.java]
+     */
+    testImplementation("com.tngtech.archunit:archunit-junit5:0.14.1")
 //    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation("junit:junit")

@@ -1,16 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import versioning.Deps
-
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.hibernate:hibernate-gradle-plugin:5.4.20.Final"
-    }
-}
 
 plugins {
     id 'idea'
@@ -22,9 +11,8 @@ plugins {
     id 'dependencies-reporting-helper'
     //id 'com.webcohesion.enunciate'
     id 'com.github.johnrengelman.shadow'
+    id 'org.hibernate.orm'
 }
-apply plugin: 'org.hibernate.orm'
-
 
 repositories.jcenter()
 
@@ -36,54 +24,22 @@ dependencies {
      * JPAMODELGEN better go first!
      * For IDEA based build (Ant) this has to be in `annotationProcessor`
      */
-    annotationProcessor     enforcedPlatform(Deps.Platforms.KTOR)
-    annotationProcessor     platform(Deps.Platforms.MICRONAUT)
-    annotationProcessor     platform(Deps.Platforms.MICRONAUT_DATA)
-    annotationProcessor     platform(SpringBootPlugin.BOM_COORDINATES)
-    testAnnotationProcessor enforcedPlatform(Deps.Platforms.KTOR)
-    testAnnotationProcessor platform(Deps.Platforms.MICRONAUT)
-    testAnnotationProcessor platform(Deps.Platforms.MICRONAUT_DATA)
-    testAnnotationProcessor platform(SpringBootPlugin.BOM_COORDINATES)
-    kapt                    enforcedPlatform(Deps.Platforms.KTOR)
-    kapt                    platform(Deps.Platforms.MICRONAUT)
-    kapt                    platform(Deps.Platforms.MICRONAUT_DATA)
-    kapt                    platform(SpringBootPlugin.BOM_COORDINATES)
-    kaptTest                enforcedPlatform(Deps.Platforms.KTOR)
-    kaptTest                platform(Deps.Platforms.MICRONAUT)
-    kaptTest                platform(Deps.Platforms.MICRONAUT_DATA)
-    kaptTest                platform(SpringBootPlugin.BOM_COORDINATES)
-    compileOnly             enforcedPlatform(Deps.Platforms.KTOR)
-    compileOnly             platform(Deps.Platforms.MICRONAUT)
-    compileOnly             platform(Deps.Platforms.MICRONAUT_DATA)
-    compileOnly             platform(SpringBootPlugin.BOM_COORDINATES)
-    developmentOnly         enforcedPlatform(Deps.Platforms.KTOR)
-    developmentOnly         platform(Deps.Platforms.MICRONAUT)
-    developmentOnly         platform(Deps.Platforms.MICRONAUT_DATA)
-    developmentOnly         platform(SpringBootPlugin.BOM_COORDINATES)
-    implementation          enforcedPlatform(Deps.Platforms.KTOR)
-    implementation          platform(Deps.Platforms.MICRONAUT)
-    implementation          platform(Deps.Platforms.MICRONAUT_DATA)
-    implementation          platform(SpringBootPlugin.BOM_COORDINATES)
-    runtimeOnly             enforcedPlatform(Deps.Platforms.KTOR)
-    runtimeOnly             platform(Deps.Platforms.MICRONAUT)
-    runtimeOnly             platform(Deps.Platforms.MICRONAUT_DATA)
-    runtimeOnly             platform(SpringBootPlugin.BOM_COORDINATES)
-    testImplementation      enforcedPlatform(Deps.Platforms.KTOR)
-    testImplementation      platform(Deps.Platforms.MICRONAUT)
-    testImplementation      platform(Deps.Platforms.MICRONAUT_DATA)
-    testImplementation      platform(SpringBootPlugin.BOM_COORDINATES)
-    // we have to fixup deps coming from plugins as well for `testRuntimeOnly`
-    testRuntimeOnly         enforcedPlatform(Deps.Platforms.KTOR)
-    testRuntimeOnly         platform(Deps.Platforms.MICRONAUT)
-    testRuntimeOnly         platform(Deps.Platforms.MICRONAUT_DATA)
-    testRuntimeOnly         platform(SpringBootPlugin.BOM_COORDINATES)
-
+    annotationProcessor     platform(project(':convention'))
+    kapt                    platform(project(':convention'))
+    compileOnly             platform(project(':convention'))
+    developmentOnly         platform(project(':convention'))
+    implementation          platform(project(':convention'))
+    runtimeOnly             platform(project(':convention'))
+    testAnnotationProcessor platform(project(':convention'))
+    kaptTest                platform(project(':convention'))
+    testImplementation      platform(project(':convention'))
+    testRuntimeOnly         platform(project(':convention'))
 
     /*
      * For IDEA based build (Ant) this has to be in `annotationProcessor`
      */
     annotationProcessor     project(':time-service.app')
-    annotationProcessor     project(':shared-convention')
+    annotationProcessor     project(':shared')
     annotationProcessor     project(':time-service.api')
     annotationProcessor     'io.micronaut.configuration:micronaut-openapi'
     annotationProcessor     'io.micronaut.data:micronaut-data-processor'
@@ -99,7 +55,7 @@ dependencies {
     annotationProcessor     Deps.Libs.VALIDATOR_AP
 
     testAnnotationProcessor project(':time-service.app')
-    testAnnotationProcessor project(':shared-convention')
+    testAnnotationProcessor project(':shared')
     testAnnotationProcessor project(':time-service.api')
     testAnnotationProcessor 'io.micronaut.configuration:micronaut-openapi'
     testAnnotationProcessor 'io.micronaut.data:micronaut-data-processor'
@@ -115,7 +71,7 @@ dependencies {
     testAnnotationProcessor Deps.Libs.VALIDATOR_AP
 
     kapt                    project(':time-service.app')
-    kapt                    project(':shared-convention')
+    kapt                    project(':shared')
     kapt                    project(':time-service.api')
     kapt                    'io.micronaut.configuration:micronaut-openapi'
     kapt                    'io.micronaut.data:micronaut-data-processor'
@@ -131,7 +87,7 @@ dependencies {
     kapt                    Deps.Libs.VALIDATOR_AP
 
     kaptTest                project(':time-service.app')
-    kaptTest                project(':shared-convention')
+    kaptTest                project(':shared')
     kaptTest                project(':time-service.api')
     kaptTest                'io.micronaut.configuration:micronaut-openapi'
     kaptTest                'io.micronaut.data:micronaut-data-processor'
@@ -161,7 +117,7 @@ dependencies {
     implementation('org.springframework:spring-core:5.3.0-M2') { force = true }
 
     implementation          project(':time-service.app')
-    implementation          project(':shared-convention')
+    implementation          project(':shared')
     implementation          project(':time-service.api')
     implementation          Deps.Libs.COROUTINES_JDK8
     implementation          Deps.Libs.COROUTINES_RXJAVA2
@@ -246,7 +202,7 @@ hibernate {
 application {
     //mainModule.convention('com.example.marvel.runtime')
     mainClass = 'com.example.marvel.runtime.ApplicationKt'
-    mainClassName = 'com.example.marvel.runtime.ApplicationKt'
+    mainClassName = 'com.example.marvel.runtime.ApplicationKt' //FIXME: Shadow plugin uses older Gradle Tooling API, there is no `mainClass` prop
     applicationDefaultJvmArgs = ['-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote']
 }
 
