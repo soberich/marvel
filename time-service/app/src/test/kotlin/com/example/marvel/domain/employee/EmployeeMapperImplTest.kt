@@ -3,11 +3,9 @@ package com.example.marvel.domain.employee
 import com.example.marvel.api.EmployeeCommand.EmployeeCreateCommand
 import com.example.marvel.api.EmployeeCommand.EmployeeUpdateCommand
 import com.example.marvel.domain.GenericMapper
-import com.example.marvel.domain.tmp.EmployeeMapperImpl
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import java.io.Serializable
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -57,7 +55,7 @@ class EmployeeMapperImplTest {
     @Test
     fun `Given _ when toEntity(Serializable, EmployeeUpdateCommand) then _`() {
         // Given
-        val id = mockk<Serializable>()
+        val id = mockk<Long>()
         val source = mockk<EmployeeUpdateCommand>()
 
         // When
@@ -70,7 +68,7 @@ class EmployeeMapperImplTest {
     @Test
     fun `Given _ when toEntity(Serializable, EmployeeUpdateCommand) then throws exception`() {
         // Given
-        val id = mockk<Serializable>()
+        val id = mockk<Long>()
         val source = mockk<EmployeeUpdateCommand>()
         val expectedException = Exception()
         lateinit var actualException: Exception

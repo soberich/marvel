@@ -7,10 +7,6 @@ import javax.persistence.AccessType.PROPERTY
 import javax.persistence.CascadeType.ALL
 import kotlin.properties.Delegates
 
-@NamedQueries(
-    NamedQuery(name = "Employee.stream", query = "SELECT NEW EmployeeListingView(e.id, e.version, e.email, e.name) FROM EmployeeEntity e"),
-    NamedQuery(name = "Employee.detailed", query = "SELECT NEW EmployeeDetailedViewDefault(e.id, e.version, e.email, e.name) FROM EmployeeEntity e WHERE e.id = :id"))
-
 @Entity
 @Table(
     indexes = [

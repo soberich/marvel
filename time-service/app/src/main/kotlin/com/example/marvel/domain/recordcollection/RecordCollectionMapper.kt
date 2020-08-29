@@ -37,7 +37,7 @@ abstract class RecordCollectionMapper {
         Mapping(ignore = true     , target = "project"),
         Mapping(source = "records", target = "records"  , qualifiedByName = ["recordChildIgnoresParent"]))
     @IgnoreAuditInfo
-    abstract fun toEntity(@MappingTarget target: RecordCollectionEntity, source: RecordCollectionUpdateCommand): RecordCollectionEntity
+    abstract fun toEntity(source: RecordCollectionUpdateCommand, @MappingTarget target: RecordCollectionEntity): RecordCollectionEntity
 
     @Named("recordChildIgnoresParent")
     @Mappings(

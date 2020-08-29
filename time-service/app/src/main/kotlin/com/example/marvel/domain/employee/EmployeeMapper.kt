@@ -9,7 +9,6 @@ import org.mapstruct.Context
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Mappings
-import java.io.Serializable
 import kotlin.annotation.AnnotationRetention.BINARY
 
 @Mapper(config = MapperConfig::class)

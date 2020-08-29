@@ -15,7 +15,7 @@ object Platforms {
         const val KTOR           = "1.4.0"
         const val MICRONAUT      = "2.0.1"
         const val MICRONAUT_DATA = "+"
-        const val QUARKUS        = "1.7.0.Final"
+        const val QUARKUS        = "1.7.1.Final"
         const val RESTEASY       = "4.1.1.Final"
         const val SPRING_BOOT    = "2.3.2.RELEASE"
 

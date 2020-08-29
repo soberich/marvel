@@ -9,6 +9,10 @@ import org.junit.Before
 class RecordCollectionDetailedViewDefaultTest {
     private lateinit var cut: RecordCollectionDetailedViewDefault
 
+    private val id = 0L
+
+    private val version = 1
+
     @MockK
     lateinit var yearMonth: YearMonth
 
@@ -21,7 +25,7 @@ class RecordCollectionDetailedViewDefaultTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        cut = RecordCollectionDetailedViewDefault(yearMonth, projectId, employeeId, records)
+        cut = RecordCollectionDetailedViewDefault(id, version, yearMonth, projectId, employeeId, records)
     }
 
 }

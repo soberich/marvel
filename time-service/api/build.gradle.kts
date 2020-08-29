@@ -21,18 +21,10 @@ dependencies {
     .onEach(::testAnnotationProcessor)
     .forEach(::kaptTest)
 
-    api("com.blazebit:blaze-persistence-core-api")
-    api("com.blazebit:blaze-persistence-integration-jackson")
-    api("com.blazebit:blaze-persistence-jpa-criteria-api")
-    runtimeOnly("com.blazebit:blaze-persistence-core-impl")
-    runtimeOnly("com.blazebit:blaze-persistence-integration-hibernate-5.4")
-    runtimeOnly("com.blazebit:blaze-persistence-jpa-criteria-impl")
-
     /*
      * For IDEA based build (Ant) this has to be in `annotationProcessor`
      */
     listOf(
-        "com.blazebit:blaze-persistence-entity-view-processor",
         "org.immutables:value",
         Deps.Libs.VALIDATOR_AP
     ).asSequence()

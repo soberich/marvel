@@ -209,7 +209,7 @@ class EmployeeBlockingServiceNamespaceImplTest {
         // Given
 
         // When
-        val actualValue = cut.getAnyUserDemo()
+//        val actualValue = cut.getAnyUserDemo()
 
         // Then
         TODO("Define assertions")
@@ -223,7 +223,7 @@ class EmployeeBlockingServiceNamespaceImplTest {
 
         // When
         try {
-            cut.getAnyUserDemo()
+//            cut.getAnyUserDemo()
         } catch (exception: Exception) {
             actualException = exception
         }

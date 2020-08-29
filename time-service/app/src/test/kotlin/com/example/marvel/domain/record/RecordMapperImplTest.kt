@@ -3,7 +3,6 @@ package com.example.marvel.domain.record
 import com.example.marvel.api.RecordCommand.RecordCreateCommand
 import com.example.marvel.api.RecordCommand.RecordUpdateCommand
 import com.example.marvel.domain.GenericMapper
-import com.example.marvel.domain.tmp.RecordMapperImpl
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk

@@ -27,7 +27,8 @@ val resteasyVersion     : String by project
 
 dependencies {
     api(platform("io.arrow-kt"                      + ':' +"arrow-stack"             + ':' + arrowVersion))
-    api(platform("com.blazebit"                     + ':' +"blaze-persistence-bom"   + ':' + blazeJpaVersion))
+    //FIXME: Report Gradle team that without `enforced...`  1.5.0-Alpha5 is chosen over 1.5.0-SNAPSHOT (
+    api(enforcedPlatform("com.blazebit"                     + ':' +"blaze-persistence-bom"   + ':' + blazeJpaVersion))
     api(platform("org.jetbrains.kotlinx"            + ':' +"kotlinx-coroutines-bom"  + ':' + coroutinesVersion))
     api(platform("com.google.guava"                 + ':' +"guava-bom"               + ':' + guavaVersion))
     api(platform("org.immutables"                   + ':' +"bom"                     + ':' + immutablesVersion))

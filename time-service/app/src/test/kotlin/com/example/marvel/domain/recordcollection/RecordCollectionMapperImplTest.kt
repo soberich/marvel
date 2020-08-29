@@ -4,7 +4,6 @@ import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateComm
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
 import com.example.marvel.domain.GenericMapper
 import com.example.marvel.domain.record.RecordMapper
-import com.example.marvel.domain.tmp.RecordCollectionMapperImpl
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
@@ -61,11 +60,11 @@ class RecordCollectionMapperImplTest {
     @Test
     fun `Given _ when toEntity(Serializable, RecordCollectionUpdateCommand) then _`() {
         // Given
-        val id = mockk<Serializable>()
         val source = mockk<RecordCollectionUpdateCommand>()
+        val target = mockk<RecordCollectionEntity>()
 
         // When
-        val actualValue = cut.toEntity(id, source)
+        val actualValue = cut.toEntity(source, target)
 
         // Then
         TODO("Define assertions")
@@ -74,14 +73,15 @@ class RecordCollectionMapperImplTest {
     @Test
     fun `Given _ when toEntity(Serializable, RecordCollectionUpdateCommand) then throws exception`() {
         // Given
-        val id = mockk<Serializable>()
+        val id = mockk<Long>()
         val source = mockk<RecordCollectionUpdateCommand>()
+        val target = mockk<RecordCollectionEntity>()
         val expectedException = Exception()
         lateinit var actualException: Exception
 
         // When
         try {
-            cut.toEntity(id, source)
+            cut.toEntity(source, target)
         } catch (exception: Exception) {
             actualException = exception
         }

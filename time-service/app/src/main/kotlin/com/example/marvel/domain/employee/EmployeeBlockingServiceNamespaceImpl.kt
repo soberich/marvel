@@ -1,5 +1,8 @@
 package com.example.marvel.domain.employee
 
+import com.blazebit.persistence.CriteriaBuilderFactory
+import com.blazebit.persistence.view.EntityViewManager
+import com.blazebit.persistence.view.EntityViewSetting
 import com.example.marvel.api.*
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
@@ -19,6 +22,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.persistence.PersistenceUnit
 
 /**
  * This is WIP!
@@ -37,15 +41,25 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     [PersistenceContext]
     protected lateinit var em: EntityManager
 
+    @set:
+    [PersistenceContext]
+    protected lateinit var evm: EntityViewManager
+
+    @field:
+    [PersistenceUnit]
+    protected var cbf: CriteriaBuilderFactory? = null
+
     /**
      * Stream should be open on consumer side. Transaction will close it.
      */
     @Transactional(readOnly = true)
     override fun streamEmployees(): Stream<EmployeeView> =
-        em.createNamedQuery("Employee.stream", EmployeeListingView::class.java)
-            //FIXME: Only Quarkus currently supports `resultStream` due to reactive transaction propagation.
-            .resultList.stream()
-            .map(EmployeeView::class.java::cast)
+        evm.applySetting(
+            EntityViewSetting.create(EmployeeListingView::class.java), /*null*/
+            cbf?.create(em, EmployeeEntity::class.java)
+        )//FIXME: Only Quarkus currently supports `resultStream` due to reactive transaction propagation.
+        .resultList.stream()
+        .map(EmployeeView::class.java::cast)
 
 //    //FIXME: Only Quarkus currently supports this.
 //    /**
@@ -60,7 +74,15 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
 
     override fun filterEmployees(filter: String): List<EmployeeView> =
         JPAUtils.queryEntities(em, EmployeeEntity::class.java, QueryParameters.query(filter).build())
-            .map { EmployeeListingView(it.id!!, it.version, it.name, it.email) }
+            .map {
+                evm
+                    .createBuilder(EmployeeListingView::class.java)
+                    .with(EmployeeListingView_.id, it.id)
+                    .with(EmployeeListingView_.version, it.version)
+                    .with(EmployeeListingView_.email, it.email)
+                    .with(EmployeeListingView_.name, it.name)
+                    .build()
+            }
 
     override fun createEmployee(employee: EmployeeCommand.EmployeeCreateCommand): EmployeeDetailedView =
         empMapper.toEntity(employee).also(em::persist).let(empMapper::toCreateView)
@@ -77,12 +99,12 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
         recColMapper.toCreateView(recColMapper.toEntity(records).also(em::persist))
 
     override fun updateWholePeriod(records: RecordCollectionUpdateCommand): RecordCollectionDetailedView? =
-        em.find(RecordCollectionEntity::class.java, records.id)?.let { recColMapper.toUpdateView(recColMapper.toEntity(it, records).also(em::persist)) }
-
-    fun getAnyUserDemo(): EmployeeDetailedView? =
-        em.createNamedQuery("Employee.detailed", EmployeeDetailedViewDefault::class.java)
-            .setParameter(EmployeeEntity_.ID, Math.random().toLong() % 5)
-            .singleResult
+        em.find(RecordCollectionEntity::class.java, records.id)?.let { recColMapper.toUpdateView(recColMapper.toEntity(records, it).also(em::persist)) }
+//
+//    fun getAnyUserDemo(): EmployeeDetailedView? =
+//        em.createNamedQuery("Employee.detailed", EmployeeDetailedViewDefault::class.java)
+//            .setParameter(EmployeeEntity_.ID, Math.random().toLong() % 5)
+//            .singleResult
 
 //
 //    /**
