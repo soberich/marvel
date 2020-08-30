@@ -6,9 +6,9 @@ import com.blazebit.persistence.view.EntityViewSetting
 import com.example.marvel.api.*
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
+import com.example.marvel.domain.record.RecordEntity
 import com.example.marvel.domain.record.RecordListingView
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
-import com.example.marvel.domain.recordcollection.RecordCollectionEntity_
 import com.example.marvel.domain.recordcollection.RecordCollectionMapper
 import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import com.kumuluz.ee.rest.beans.QueryParameters
@@ -21,8 +21,6 @@ import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
 import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
-import javax.persistence.PersistenceUnit
 
 /**
  * This is WIP!
@@ -91,9 +89,13 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
         empMapper.toEntity(employee.id, employee).let(empMapper::toUpdateView)
 
     override fun listForPeriod(employeeId: Long, yearMonth: YearMonth): List<RecordView> =
-        em.createNamedQuery("Record.listForPeriod", RecordListingView::class.java)
-            .setParameter(RecordCollectionEntity_.YEAR_MONTH, yearMonth)
-            .resultList
+    emptyList()//FIXME:
+//        evm.applySetting(
+//            EntityViewSetting.create(RecordListingView::class.java),
+//            cbf?.create(em, RecordEntity::class.java)
+//                .where()
+//        )//FIXME: Only Quarkus currently supports `resultStream` due to reactive transaction propagation.
+//        .resultList
 
     override fun createWholePeriod(records: RecordCollectionCreateCommand): RecordCollectionDetailedView? =
         recColMapper.toCreateView(recColMapper.toEntity(records).also(em::persist))

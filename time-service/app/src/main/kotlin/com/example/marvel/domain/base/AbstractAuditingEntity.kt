@@ -9,7 +9,6 @@ import javax.persistence.Access
 import javax.persistence.AccessType.PROPERTY
 import javax.persistence.Column
 import javax.persistence.MappedSuperclass
-import kotlin.properties.Delegates
 
 /**
  * FIXME: `@GeneratedValue`

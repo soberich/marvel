@@ -1,17 +1,14 @@
 package com.example.marvel.domain.record
 
+import com.blazebit.persistence.view.EntityView
+import com.blazebit.persistence.view.IdMapping
+import com.blazebit.persistence.view.Mapping
 import com.example.marvel.api.RecordDetailedView
-import com.example.marvel.api.RecordType
-import java.time.Duration
-import java.time.LocalDate
 
-data class RecordDetailedViewDefault(
-    //@formatter:off
-    override val version                      : Int,
-    override val date                         : LocalDate,
-    override val type                         : RecordType,
-    override val hoursSubmitted               : Duration,
-    override val desc                         : String?,
-    override val recordCollectionId           : Long
-    //@formatter:on
-) : RecordDetailedView
+@EntityView(RecordEntity::class)
+interface RecordDetailedViewDefault : RecordDetailedView {
+    @get:IdMapping("this")
+    val id                           : RecordIdView
+    @get:Mapping("report.id")
+    override val recordCollectionId  : Long
+}

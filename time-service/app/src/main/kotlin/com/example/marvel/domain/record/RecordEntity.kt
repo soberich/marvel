@@ -15,29 +15,12 @@ import javax.persistence.EnumType.STRING
 import javax.persistence.FetchType.LAZY
 import kotlin.properties.Delegates
 
-/**
- * FIXME:
- *  N.B. The `date` is purposefully left first - to check the wrong way.
- */
-@NamedQuery(
-    name = "Record.listForPeriod",
-    //language=JPA QL
-    query = """
-        SELECT NEW RecordListingView(r.version, r.date, r.type, r.hoursSubmitted, r.desc, r.report.id)
-        FROM   RecordEntity r
-          JOIN r.report c
-        WHERE  c.id = :id
-           AND c.yearMonth = :yearMonth""",
-    hints = [
-        QueryHint(name = COMMENT, value = "fetch records for period"),
-        QueryHint(name = READ_ONLY, value = "true")])
-
 @Entity
 @Immutable
 @Cacheable
 @Access(PROPERTY)
 @IdClass(RecordEntity.RecordId::class)
-class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
+class RecordEntity : GenericTypeMask() {
     //@formatter:off
     @get:
     [Id
@@ -72,6 +55,7 @@ class RecordEntity : AbstractAuditingEntity<RecordEntity.RecordId>() {
      * 18/08/2018: This could be a just Tuple3
      * but we push to keep hexagonal: less imports (from arrow-kt in this layer) => better.
      */
-//    @Embeddable //FIXME: Annotation is just a trick to apply kotlin compiler plugins
+    @Suppress("JpaAttributeTypeInspection")
+    @Embeddable //FIXME: Annotation is just a trick to apply kotlin compiler plugins
     data class RecordId(var report: RecordCollectionEntity? = null, var date: LocalDate = LocalDate.now(DEFAULT_CLOCK), var type: RecordType = RecordType.OTHER) : Serializable
 }

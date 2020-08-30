@@ -6,6 +6,8 @@ plugins {
     `kotlin-convention-helper`
 }
 
+//FIXME: This project supposed to be multiplatform
+
 repositories.jcenter()
 
 dependencies {

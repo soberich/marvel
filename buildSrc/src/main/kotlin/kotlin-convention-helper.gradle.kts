@@ -105,13 +105,16 @@ tasks {
 
 }
 
-kapt.javacOptions {
-    //option("--module-path", sourceSets.main.get().compileClasspath.asPath)
-    option("-target", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
-    option("--release", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
-    Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(::option)
+kapt {
+    correctErrorTypes = true
+    javacOptions {
+        //option("--module-path", sourceSets.main.get().compileClasspath.asPath)
+        option("-target", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
+        option("--release", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
+        Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank)
+            .forEach(::option)
+    }
 }
-
 allOpen.annotations(
     "arrow.optics.optics",
     "io.micronaut.aop.Around",
