@@ -5,15 +5,12 @@ import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
 import kotlin.properties.Delegates
 
-@NamedQueries(
-    NamedQuery(name = "Project.stream", query = "SELECT NEW ProjectListingView(e.id, e.version) FROM ProjectEntity e"))
-
 @Entity
 @Access(PROPERTY)
 //@DynamicUpdate
 //@SelectBeforeUpdate
 //@OptimisticLocking(type = DIRTY)
-class ProjectEntity : AbstractAuditingEntity<String>() {
+class ProjectEntity : GenericTypeMask() {
     //@formatter:off
     @get:
     [Id

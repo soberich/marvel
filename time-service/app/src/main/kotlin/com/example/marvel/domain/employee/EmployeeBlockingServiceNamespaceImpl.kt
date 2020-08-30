@@ -6,8 +6,6 @@ import com.blazebit.persistence.view.EntityViewSetting
 import com.example.marvel.api.*
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
-import com.example.marvel.domain.record.RecordEntity
-import com.example.marvel.domain.record.RecordListingView
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
 import com.example.marvel.domain.recordcollection.RecordCollectionMapper
 import com.example.marvel.spi.EmployeeOperationsServiceNamespace
@@ -45,7 +43,7 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
 
     @set:
     [Inject]
-    protected var cbf: CriteriaBuilderFactory? = null
+    protected lateinit var cbf: CriteriaBuilderFactory
 
     /**
      * Stream should be open on consumer side. Transaction will close it.
@@ -54,7 +52,7 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     override fun streamEmployees(): Stream<EmployeeView> =
         evm.applySetting(
             EntityViewSetting.create(EmployeeListingView::class.java), /*null*/
-            cbf?.create(em, EmployeeEntity::class.java)
+            cbf.create(em, EmployeeEntity::class.java)
         )//FIXME: Only Quarkus currently supports `resultStream` due to reactive transaction propagation.
         .resultList.stream()
         .map(EmployeeView::class.java::cast)
