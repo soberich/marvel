@@ -21,10 +21,12 @@ dependencies {
     api("com.vladmihalcea:hibernate-types-52:2.9.+")
     api("io.github.classgraph:classgraph:+")
     api("io.reactivex.rxjava2:rxjava:2.2.19")
+    //trying to avoid possible bug in 5.5.0-SNAPSHOT for integrating via SPI for `org.hibernate.integrator.spi.IntegratorService`
     api("org.hibernate:hibernate-core:$hibernateVersion")
 
     api("com.google.guava:guava") {
         exclude("com.google.code.findbugs", "jsr305")
+        because("FindBugs is legacy. SpotBugs preferred.")
     }
 }
 

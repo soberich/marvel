@@ -21,7 +21,6 @@ public interface Deps {
         String ANNOTATION            = "[1.3,2)";
         String CDI                   = "[2,3)";
         String CONCURRENT            = "[1.1,2)";
-        String HIBERNATE             = "5.4.20.Final"; //trying to avoid possible bug in 5.5.0-SNAPSHOT for integrating via SPI for `org.hibernate.integrator.spi.IntegratorService`
         String HIBERNATE_JPAMODELGEN = "6.0.0.Alpha5";
         String INJECT                = "(0,3)";
         String JAX_RS                = "[2.1,2.2)";
@@ -115,7 +114,6 @@ public interface Deps {
         String EBEAN_QUERY                 = "io.ebean:ebean-querybean"                                         + ':' + Versions.EBEAN_QUERY;
         String EBEAN_QUERY_GEN             = "io.ebean:kotlin-querybean-generator"                              + ':' + Versions.EBEAN_QUERY_GEN;
         String EBEAN_TEST                  = "io.ebean:ebean-test"                                              + ':' + Versions.EBEAN_TEST;
-        String HIBERNATE                   = "org.hibernate:hibernate-core"                                     + ':' + Versions.HIBERNATE;
         String HIBERNATE_JPAMODELGEN       = "org.hibernate.orm:hibernate-jpamodelgen"                          + ':' + Versions.HIBERNATE_JPAMODELGEN;
         String HIBERNATE_TYPES             = "com.vladmihalcea:hibernate-types-52"                              + ':' + Versions.HIBERNATE_TYPES;
         String IMMUTABLES_VALUE            = "org.immutables:value"                                             + ':' + Versions.IMMUTABLES;

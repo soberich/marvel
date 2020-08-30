@@ -21,7 +21,7 @@ dependencies {
 //    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
 //    implementation("io.micronaut.sql:micronaut-hibernate-jpa")
     //FIXME: this is tiny artifact, yet there is bug which prevents using `spring-tx`
-    implementation("io.micronaut.spring:micronaut-spring")
+    implementation("io.micronaut.spring:micronaut-spring") //19 Kb
 
     listOf(
         platform(project(":convention"))
@@ -55,16 +55,8 @@ dependencies {
         Deps.Libs.MAPSTRUCT
     ).forEach(::compileOnly)
 
-    api("com.blazebit:blaze-persistence-core-api")
-    api("com.blazebit:blaze-persistence-integration-jackson")
-    api("com.blazebit:blaze-persistence-jpa-criteria-api")
-    api("com.blazebit:blaze-persistence-entity-view-api")
-    api("com.blazebit:blaze-persistence-integration-hibernate-base")
-
-    api("com.blazebit:blaze-persistence-entity-view-impl")
-    api("com.blazebit:blaze-persistence-core-impl")
-    api("com.blazebit:blaze-persistence-integration-hibernate-5.4")
-    api("com.blazebit:blaze-persistence-jpa-criteria-impl")
+    api("com.blazebit:blaze-persistence-core-api") //105 Kb
+    api("com.blazebit:blaze-persistence-entity-view-api") // 136 Kb
 
     arrayOf(
         project(":shared"),

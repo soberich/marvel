@@ -183,14 +183,15 @@ dependencies {
     testImplementation      'io.micronaut.test:micronaut-test-kotlintest'
     testImplementation      'io.micronaut.test:micronaut-test-junit5'
 
-    implementation("com.blazebit:blaze-persistence-core-api")
-    implementation("com.blazebit:blaze-persistence-integration-jackson")
-    implementation("com.blazebit:blaze-persistence-jpa-criteria-api")
-    implementation("com.blazebit:blaze-persistence-entity-view-api")
-    implementation("com.blazebit:blaze-persistence-entity-view-impl")
-    implementation("com.blazebit:blaze-persistence-core-impl")
-    implementation("com.blazebit:blaze-persistence-integration-hibernate-5.4")
-    implementation("com.blazebit:blaze-persistence-jpa-criteria-impl")
+//    implementation("com.blazebit:blaze-persistence-core-api")
+//    implementation("com.blazebit:blaze-persistence-integration-jackson")
+//    implementation("com.blazebit:blaze-persistence-jpa-criteria-api")
+//    implementation("com.blazebit:blaze-persistence-entity-view-api")
+
+    runtimeOnly("com.blazebit:blaze-persistence-entity-view-impl")
+    runtimeOnly("com.blazebit:blaze-persistence-core-impl")
+    runtimeOnly("com.blazebit:blaze-persistence-integration-hibernate-5.4")
+    runtimeOnly("com.blazebit:blaze-persistence-jpa-criteria-impl")
 }
 
 rootProject.idea {

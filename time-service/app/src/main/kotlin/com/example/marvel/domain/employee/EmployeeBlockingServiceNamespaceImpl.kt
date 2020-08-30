@@ -38,15 +38,15 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
 ) : EmployeeOperationsServiceNamespace {
 
     @set:
-    [PersistenceContext]
+    [Inject]
     protected lateinit var em: EntityManager
 
     @set:
-    [PersistenceContext]
+    [Inject]
     protected lateinit var evm: EntityViewManager
 
-    @field:
-    [PersistenceUnit]
+    @set:
+    [Inject]
     protected var cbf: CriteriaBuilderFactory? = null
 
     /**
