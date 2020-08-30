@@ -3,6 +3,7 @@ package com.example.marvel.domain
 import com.example.marvel.domain.base.IdentifiableOf
 import org.mapstruct.*
 import java.io.Serializable
+import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
 import javax.persistence.EntityManager
@@ -18,7 +19,7 @@ import javax.persistence.PersistenceContext
 class GenericMapper {
 
     @set:
-    [PersistenceContext]
+    [Inject]
     protected lateinit var em: EntityManager
 
     @ObjectFactory

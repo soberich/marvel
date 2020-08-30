@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Lazy
 import org.springframework.context.annotation.Scope
 import javax.inject.Inject
 import javax.persistence.EntityManagerFactory
-import javax.persistence.PersistenceUnit
 
 
 @Configuration
