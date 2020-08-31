@@ -2,7 +2,6 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
-import org.gradle.kotlin.dsl.invoke
 import versioning.Deps
 
 plugins {
@@ -12,11 +11,8 @@ plugins {
 
 dependencies {
 
-    listOf(
-        platform(Deps.Platforms.JUNIT5)
-    ).asSequence()
-    .onEach(::testImplementation)
-    .forEach(::testRuntimeOnly)
+    testImplementation(platform(Deps.Platforms.JUNIT5))
+    testRuntimeOnly(platform(Deps.Platforms.JUNIT5))
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))

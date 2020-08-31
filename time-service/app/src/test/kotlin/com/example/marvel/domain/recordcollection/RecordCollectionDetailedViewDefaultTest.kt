@@ -25,7 +25,7 @@ class RecordCollectionDetailedViewDefaultTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        cut = RecordCollectionDetailedViewDefault(id, version, yearMonth, projectId, employeeId, records)
+//        cut = RecordCollectionDetailedViewDefault(id, version, yearMonth, projectId, employeeId, records)
     }
 
 }

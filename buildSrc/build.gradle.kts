@@ -41,7 +41,11 @@ repositories {
     }
 }
 
+gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS_FULL
+
 val ideaActive = Boolean.getBoolean("idea.active")
+
+val CI = System.getenv("CI") != null
 
 val byteBuddyVersion      : String by project
 val guavaVersion          : String by project
@@ -77,6 +81,8 @@ val versionsPluginVersion : String by project
     implementation(kotlin("noarg"                        , kotlinVersion))
     implementation(kotlin("sam-with-receiver"            , kotlinVersion))
     //implementation(kotlin("serialization", kotlinVersion))
+    implementation(gradleKotlinDsl()) //FOR IDEA compilation
+    implementation("org.apache.logging.log4j:log4j-core:2.11.0") //FOR IDEA compilation
     implementation("com.github.ben-manes"                              , "gradle-versions-plugin"                  , versionsPluginVersion)
     implementation("com.github.jengelman.gradle.plugins"               , "shadow"                                  , shadowPluginVersion)
     implementation("com.vaadin"                                        , "vaadin-gradle-plugin"                    , "+")
@@ -118,6 +124,7 @@ tasks {
     withType<KotlinCompile<*>>().configureEach {
         kotlinOptions {
             languageVersion = "${KotlinVersion.CURRENT.major}.${KotlinVersion.CURRENT.minor}"
+            apiVersion = languageVersion
             freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs")).filterNot(String::isNullOrBlank)
         }
     }
@@ -128,7 +135,9 @@ tasks {
         options.apply {
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
-            Files.lines(Paths.get("$rootDir", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::add)
+            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString().toInt())
+            targetCompatibility = release.get().toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
+            Files.lines(Paths.get("$rootDir", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
     }
     withType<Test>().configureEach {

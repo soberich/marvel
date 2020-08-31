@@ -23,6 +23,7 @@
 -Xpolymorphic-signature
 -Xuse-mixed-named-arguments
 -XXLanguage:+FunctionalInterfaceConversion
+-XXLanguage:+ReferencesToSyntheticJavaProperties
 -XXLanguage:+SamConversionForKotlinFunctions
 -XXLanguage:+SamConversionPerArgument
 -Xjavac-arguments=--enable-preview

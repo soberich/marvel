@@ -1,4 +1,3 @@
-import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.streams.asSequence
@@ -27,13 +26,13 @@ tasks {
     withType<ScalaCompile>().configureEach {
         /*
          * For IDEA based build (Ant) this `targetCompatibility` shas to be set to the desired value,
-         * otherwise will be inherited from project regardles `release` set
+         * otherwise will be inherited from project regardless `release` set
          */
-        targetCompatibility = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString()
         options.apply {
-            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString().toInt())
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
+            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString().toInt())
+            targetCompatibility = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
         scalaCompileOptions.apply {

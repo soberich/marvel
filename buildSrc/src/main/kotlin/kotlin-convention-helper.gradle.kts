@@ -1,15 +1,12 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
-import org.jetbrains.kotlin.gradle.internal.KaptTask
-import versioning.Deps
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.spi.ToolProvider
 import kotlin.streams.asSequence
 
 plugins {
     java //if not applied `spring-boot-runner` reports missing `annotationProcessor` configuration
-    kotlin //org.jetbrains.kotlin.jvm
+    kotlin
     `kotlin-kapt`
     `kotlin-allopen`
     `kotlin-noarg`
@@ -18,9 +15,6 @@ plugins {
     `kotlin-sam-with-receiver`
     //org.jetbrains.dokka
 }
-
-val mrjar9: Configuration by configurations.creating
-
 
 dependencies {
     implementation(enforcedPlatform(kotlin("bom")))
@@ -54,7 +48,7 @@ tasks {
                     ).forEach(args::plusAssign)
                     "1.4"
                 } else "${KotlinVersion.CURRENT.major}.${KotlinVersion.CURRENT.minor}"
-
+            apiVersion = languageVersion
             freeCompilerArgs = args.filterNot(String::isNullOrBlank)
         }
     }
@@ -66,6 +60,7 @@ tasks {
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
             release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString().toInt())
+            targetCompatibility = release.get().toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
     }
@@ -75,46 +70,18 @@ tasks {
     withType<JavaExec>().configureEach {
         jvmArgs("--enable-preview", "--illegal-access=warn")
     }
-
-    afterEvaluate {
-        withType<KaptTask>().configureEach {
-            val mrjar9 by configurations
-            mrjar9.files.forEach { mrjar9Jar ->
-                val destDir = file("$buildDir/mrjar9")
-                delete(destDir)
-                mkdir(destDir)
-                copy {
-                    from(zipTree(mrjar9Jar))
-                    into(destDir)
-                }
-                val v9Dir = destDir.toPath().resolve("META-INF/versions/9").toFile()
-                copy {
-                    from(v9Dir)
-                    into(destDir)
-                }
-                delete(v9Dir)
-
-                delete(mrjar9Jar)
-                val jarExec = ToolProvider.findFirst( "jar" ).get()
-                val result = jarExec.run(System.out, System.err,
-                    "-cf", "$mrjar9Jar", "-C", destDir.path, ".")
-                println("Fixed $mrjar9Jar")
-            }
-        }
-    }
-
 }
 
 kapt {
     correctErrorTypes = true
     javacOptions {
-        //option("--module-path", sourceSets.main.get().compileClasspath.asPath)
+//        option("--processor-module-path", sourceSets.main.get().compileClasspath.asPath)
         option("-target", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
         option("--release", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
-        Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank)
-            .forEach(::option)
+        Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(::option)
     }
 }
+
 allOpen.annotations(
     "arrow.optics.optics",
     "io.micronaut.aop.Around",

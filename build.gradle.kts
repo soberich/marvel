@@ -12,6 +12,8 @@ plugins {
     org.jetbrains.gradle.plugin.`idea-ext`
 }
 
+gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS_FULL
+
 val props = FileInputStream("$rootDir/buildSrc/gradle.properties").use {
     Properties().apply { load(it) }
 }
