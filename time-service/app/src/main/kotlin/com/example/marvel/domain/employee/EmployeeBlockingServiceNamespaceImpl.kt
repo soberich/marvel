@@ -2,7 +2,6 @@ package com.example.marvel.domain.employee
 
 import com.blazebit.persistence.CriteriaBuilderFactory
 import com.blazebit.persistence.view.EntityViewManager
-import com.blazebit.persistence.view.EntityViewSetting
 import com.example.marvel.api.*
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
 import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
@@ -51,7 +50,7 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     @Transactional(readOnly = true)
     override fun streamEmployees(): Stream<EmployeeView> =
         evm.applySetting(
-            EntityViewSetting.create(EmployeeListingView::class.java), /*null*/
+            EmployeeListingView_.createSettingInit(), /*null*/
             cbf.create(em, EmployeeEntity::class.java)
         )//FIXME: Only Quarkus currently supports `resultStream` due to reactive transaction propagation.
         .resultList.stream()

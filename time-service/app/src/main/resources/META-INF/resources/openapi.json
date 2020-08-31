@@ -1,0 +1,462 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "Generated API",
+    "version" : "1.0"
+  },
+  "paths" : {
+    "/api/employee" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FlowableEmployeeView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EmployeeUpdateCommand"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EmployeeDetailedView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EmployeeCreateCommand"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EmployeeDetailedView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/employee/records" : {
+      "put" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RecordCollectionUpdateCommand"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RecordCollectionDetailedView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RecordCollectionCreateCommand"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RecordCollectionDetailedView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/employee/{id}/records" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        }, {
+          "name" : "yearMonth",
+          "in" : "query",
+          "schema" : {
+            "type" : "object"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FlowableRecordView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FlowableProjectView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProjectUpdateCommand"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProjectDetailedView"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProjectCreateCommand"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProjectDetailedView"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ProjectCreateCommand" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ProjectDetailedView" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }
+      },
+      "FlowableProjectView" : {
+        "type" : "object"
+      },
+      "ProjectUpdateCommand" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }
+      },
+      "RecordUpdateCommand" : {
+        "type" : "object",
+        "properties" : {
+          "date" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "desc" : {
+            "type" : "string"
+          },
+          "hoursSubmitted" : {
+            "format" : "duration",
+            "type" : "string",
+            "example" : "P1D"
+          },
+          "recordCollectionId" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "type" : {
+            "$ref" : "#/components/schemas/RecordType"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }
+      },
+      "RecordType" : {
+        "enum" : [ "EDUCATION", "HOLIDAY_AVAILABLE", "HOURS_WORKED", "ILLNESS", "KILOMETRES", "LEAVE", "OTHER", "OVERTIME", "STAND_BY" ],
+        "type" : "string"
+      },
+      "RecordCollectionUpdateCommand" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "records" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RecordUpdateCommand"
+            }
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "yearMonth" : {
+            "type" : "object"
+          }
+        }
+      },
+      "RecordDetailedView" : {
+        "type" : "object",
+        "properties" : {
+          "date" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "desc" : {
+            "type" : "string"
+          },
+          "hoursSubmitted" : {
+            "format" : "duration",
+            "type" : "string",
+            "example" : "P1D"
+          },
+          "recordCollectionId" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "type" : {
+            "$ref" : "#/components/schemas/RecordType"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }
+      },
+      "RecordCollectionDetailedView" : {
+        "type" : "object",
+        "properties" : {
+          "employeeId" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "id" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "projectId" : {
+            "type" : "string"
+          },
+          "records" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RecordDetailedView"
+            }
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "yearMonth" : {
+            "type" : "object"
+          }
+        }
+      },
+      "EmployeeCreateCommand" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "EmployeeDetailedView" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }
+      },
+      "FlowableEmployeeView" : {
+        "type" : "object"
+      },
+      "FlowableRecordView" : {
+        "type" : "object"
+      },
+      "RecordCreateCommand" : {
+        "type" : "object",
+        "properties" : {
+          "date" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "desc" : {
+            "type" : "string"
+          },
+          "hoursSubmitted" : {
+            "format" : "duration",
+            "type" : "string",
+            "example" : "P1D"
+          },
+          "recordCollectionId" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "type" : {
+            "$ref" : "#/components/schemas/RecordType"
+          }
+        }
+      },
+      "RecordCollectionCreateCommand" : {
+        "type" : "object",
+        "properties" : {
+          "employeeId" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "projectId" : {
+            "type" : "string"
+          },
+          "records" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RecordCreateCommand"
+            }
+          },
+          "yearMonth" : {
+            "type" : "object"
+          }
+        }
+      },
+      "EmployeeUpdateCommand" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }
+      }
+    }
+  }
+}

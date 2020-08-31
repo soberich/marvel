@@ -5,6 +5,7 @@ plugins {
     `java-library`
     `kotlin-convention-helper`
     `testing-convention-helper`
+    `maven-publish`
     //io.micronaut.library
 }
 
@@ -57,16 +58,33 @@ dependencies {
 
     api("com.blazebit:blaze-persistence-core-api") //105 Kb
     api("com.blazebit:blaze-persistence-entity-view-api") // 136 Kb
+    api("io.smallrye:smallrye-open-api-maven-plugin:2.0.8") // 136 Kb
 
     arrayOf(
         project(":shared"),
         project(":time-service.api"),
         project(":time-service.spi"),
         "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
-        "org.springframework:spring-tx:+",     //TODO: Extract to `Deps.Libs`
-        "org.springframework:spring-web:+",    //TODO: Extract to `Deps.Libs`
-        "org.springframework:spring-context:+" //TODO: Extract to `Deps.Libs`
+        "org.springframework:spring-tx:(0,)",     //TODO: Extract to `Deps.Libs`
+        "org.springframework:spring-web:(0,)",    //TODO: Extract to `Deps.Libs`
+        "org.springframework:spring-context:(0,)" //TODO: Extract to `Deps.Libs`
     ).forEach(::implementation)
 }
 
 idea.module.isDownloadSources = true
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+}

@@ -12,6 +12,7 @@ object Platforms {
         const val GUAVA          = "29.+"
         const val IMMUTABLES     = "2.8.9-SNAPSHOT"
         const val JACKSON        = "2.11.2"//"2.10.3"
+        const val JAXB           = "3.0.0-M4"
         const val KTOR           = "1.4.0"
         const val MICRONAUT      = "2.0.1"
         const val MICRONAUT_DATA = "+"

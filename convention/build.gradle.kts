@@ -77,8 +77,16 @@ javaPlatform.allowDependencies()
 
 publishing {
     publications {
-        create<MavenPublication>("myPlatform") {
+        create<MavenPublication>("marvelPlatform") {
             from(components["javaPlatform"])
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionResult()
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
         }
     }
 }

@@ -24,8 +24,8 @@ import javax.validation.constraints.NotNull
  */
 @Named
 @Singleton
-@RestController("/api")
-@RequestMapping(produces = [APPLICATION_JSON_VALUE], consumes = [APPLICATION_JSON_VALUE])
+@RestController
+@RequestMapping("/api", produces = [APPLICATION_JSON_VALUE], consumes = [APPLICATION_JSON_VALUE])
 class ProjectOrchestrationResource @Inject constructor(
     private val projects: ProjectOperationsServiceNamespace
 ) : ProjectResourceAdapter {

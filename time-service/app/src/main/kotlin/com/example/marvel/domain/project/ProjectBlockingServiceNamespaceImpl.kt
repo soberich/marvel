@@ -2,7 +2,6 @@ package com.example.marvel.domain.project
 
 import com.blazebit.persistence.CriteriaBuilderFactory
 import com.blazebit.persistence.view.EntityViewManager
-import com.blazebit.persistence.view.EntityViewSetting
 import com.example.marvel.api.ProjectCommand
 import com.example.marvel.api.ProjectDetailedView
 import com.example.marvel.api.ProjectView
@@ -37,7 +36,7 @@ class ProjectBlockingServiceNamespaceImpl @Inject constructor(
 
     override fun streamProjects(): Stream<ProjectView> =
         evm.applySetting(
-            EntityViewSetting.create(ProjectListingView::class.java), /*null*/
+            ProjectListingView_.createSettingInit(), /*null*/
             cbf.create(em, ProjectEntity::class.java)
         )//FIXME: Only Quarkus currently supports `resultStream` due to reactive transaction propagation.
         .resultList.stream()

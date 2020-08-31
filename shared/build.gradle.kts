@@ -5,7 +5,8 @@ plugins {
     `java-library`
     `jackson-convention-helper`
     `kotlin-convention-helper`
-    io.micronaut.library
+    //io.micronaut.library
+    `maven-publish`
 }
 
 repositories.jcenter()
@@ -18,8 +19,8 @@ dependencies {
     ).asSequence()
     .forEach(::api)
 
-    api("com.vladmihalcea:hibernate-types-52:2.9.+")
-    api("io.github.classgraph:classgraph:+")
+    api("com.vladmihalcea:hibernate-types-52:[2.9,2.10)")
+    api("io.github.classgraph:classgraph:(0,)")
     api("io.reactivex.rxjava2:rxjava:2.2.19")
     //trying to avoid possible bug in 5.5.0-SNAPSHOT for integrating via SPI for `org.hibernate.integrator.spi.IntegratorService`
     api("org.hibernate:hibernate-core:$hibernateVersion")
@@ -32,3 +33,19 @@ dependencies {
 
 java.modularity.inferModulePath.set(true)
 idea.module.isDownloadSources = true
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+}

@@ -12,6 +12,7 @@ plugins {
     //id 'com.webcohesion.enunciate'
     id 'com.github.johnrengelman.shadow'
     id 'org.hibernate.orm'
+    //id 'org.springframework.boot'
 }
 
 repositories.jcenter()

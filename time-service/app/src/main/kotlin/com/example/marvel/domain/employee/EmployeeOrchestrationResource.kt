@@ -14,6 +14,7 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestMethod.*
 import java.time.YearMonth
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
@@ -27,8 +28,8 @@ import javax.inject.Singleton
  */
 @Named
 @Singleton
-@RestController("/api")
-@RequestMapping(produces = [APPLICATION_JSON_VALUE], consumes = [APPLICATION_JSON_VALUE])
+@RestController
+@RequestMapping(value = ["/api"], produces = [APPLICATION_JSON_VALUE], consumes = [APPLICATION_JSON_VALUE])
 //@Transactional(propagation = REQUIRED, timeout = TIMEOUT_DEFAULT, readOnly = false, isolation = DEFAULT)
 class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ private val employees: EmployeeOperationsServiceNamespace) :
     EmployeeResourceAdapter {
@@ -57,7 +58,8 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
 //    }
 
 //    @Transactional(propagation = NOT_SUPPORTED, readOnly = true)
-    @GetMapping("/employee", produces = ["application/stream+json"])
+    @RequestMapping(value = ["/employee"], produces = ["application/stream+json"], method = [GET])
+    @GetMapping(value = ["/employee"], produces = ["application/stream+json"])
     override fun getEmployees(): Flowable<EmployeeView> =
         RxStreams.fromCallable(employees::streamEmployees).toFlowable(BackpressureStrategy.MISSING)
 //                    .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
@@ -68,7 +70,8 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
 //            Flowable.fromIterable(employees.filterEmployees(request.queryString))
 //                    .doFinally { eventBus?.publish("any.address", jsonObjectOf("pojo event" to """example \"EmployeeCreatedEvent\"""")) }
 
-    @PostMapping("/employee")
+    @RequestMapping(value = ["/employee"], method = [POST])
+    @PostMapping(value = ["/employee"])
     override fun createEmployee(
         @RequestBody employee: EmployeeCreateCommand
     ): CompletionStage<EmployeeDetailedView> {
@@ -76,14 +79,16 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
         return CompletableFuture.completedFuture(createEmployee)
     }
 
-    @PutMapping("/employee")
+    @RequestMapping(value = ["/employee"], method = [PUT])
+    @PutMapping(value = ["/employee"])
     override fun updateEmployee(
         @RequestBody employee: EmployeeUpdateCommand
     ): CompletionStage<EmployeeDetailedView> = CompletableFuture.supplyAsync {
         employees.updateEmployee(employee)
     }
 
-    @GetMapping("/employee/{id:[1-9][0-9]*}/records")
+    @RequestMapping(value = ["/employee/{id:[1-9][0-9]*}/records"], method = [GET])
+    @GetMapping(value = ["/employee/{id:[1-9][0-9]*}/records"])
     override fun getForPeriod(
         @PathVariable("id") id: Long,
         @RequestParam("yearMonth") yearMonth: YearMonth
@@ -97,14 +102,16 @@ class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ priva
             )
         ) //TODO: remove SAM helper on Kotlin 1.4+
 
-    @PostMapping("/employee/records")
+    @RequestMapping(value = ["/employee/records"], method = [POST])
+    @PostMapping(value = ["/employee/records"])
     override fun saveWholePeriod(
         @RequestBody records: RecordCollectionCreateCommand
     ): CompletionStage<RecordCollectionDetailedView> = CompletableFuture.supplyAsync {
         employees.createWholePeriod(records) ?: throw RuntimeException("Input is incorrect!")
     }
 
-    @PutMapping("/employee/records")
+    @RequestMapping(value = ["/employee/records"], method = [PUT])
+    @PutMapping(value = ["/employee/records"])
     override fun adjustWholePeriod(
         @RequestBody records: RecordCollectionUpdateCommand
     ): CompletionStage<RecordCollectionDetailedView> = CompletableFuture.supplyAsync {

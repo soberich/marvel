@@ -25,7 +25,7 @@ public interface Deps {
         String INJECT                = "(0,3)";
         String JAX_RS                = "[2.1,2.2)";
         String JAXB                  = "[2.3,2.5)";
-        String JAXB_RUNTIME          = "[2.4,2.5)";
+        String JAXB_RUNTIME          = "[2.3,2.5)";
         String JSR_305               = "[3,5)";
         String JSONB                 = "[1,2)";
         String MONEY                 = "[1,2)";
@@ -51,7 +51,7 @@ public interface Deps {
         String OPENAPI               = "2.1.3";
         String SLF4J_API             = "1.7.25";
         String SLF4J_JBOSS           = "1.0.4.GA";
-        String VALIDATOR             = "6.+";
+        String VALIDATOR             = "[6,7)";
     }
 
     interface Platforms {
@@ -62,6 +62,8 @@ public interface Deps {
         String GUAVA          = "com.google.guava:guava-bom"                               + ':' + versioning.Platforms.Versions.GUAVA;
         String IMMUTABLES     = "org.immutables:bom"                                       + ':' + versioning.Platforms.Versions.IMMUTABLES;
         String JACKSON        = "com.fasterxml.jackson:jackson-bom"                        + ':' + versioning.Platforms.Versions.JACKSON;
+        String JAXB           = "org.glassfish.jaxb:jaxb-bom"                              + ':' + versioning.Platforms.Versions.JAXB;
+        String JAXB_RUNTIME   = "com.sun.xml.bind:jaxb-bom"                                + ':' + versioning.Platforms.Versions.JAXB;
         String KTOR           = "io.ktor:ktor-bom"                                         + ':' + versioning.Platforms.Versions.KTOR;
         String MICRONAUT      = "io.micronaut:micronaut-bom"                               + ':' + versioning.Platforms.Versions.MICRONAUT;
         String MICRONAUT_DATA = "io.micronaut.data:micronaut-data-bom"                     + ':' + versioning.Platforms.Versions.MICRONAUT_DATA;

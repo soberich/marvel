@@ -20,7 +20,7 @@ servers:
       address:
         default: localhost
       port:
-        default: 8080
+        default: "8080"
       base:
         default: ""
 paths:
