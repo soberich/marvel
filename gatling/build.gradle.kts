@@ -12,8 +12,8 @@ repositories.jcenter()
 
 dependencies {
     arrayOf(
-        "org.scala-lang:scala-library:2.13.3",
-        "org.scala-lang:scala-compiler:2.13.3",
+        "org.scala-lang:scala-library:2.12.10",
+        "org.scala-lang:scala-compiler:2.12.10",
         "io.gatling.highcharts:gatling-charts-highcharts:3.4.0-M1"
     ).forEach(::implementation)
 }
@@ -46,7 +46,7 @@ tasks {
     (run) {
         file("$buildDir/reports/gatling").mkdirs()
         args = listOf(
-            "-s", "com.example.marvel.gatling.AddressGatlingTest",
+            "-s", "org.openapitools.client.api.DefaultApiSimulation",
             "-rf", "$buildDir/reports/gatling"
         )
     }
@@ -57,3 +57,5 @@ application {
     mainClassName = mainClass.get()
     applicationDefaultJvmArgs = Files.readAllLines(Paths.get("$projectDir", "jvmArgs"))
 }
+
+java.modularity.inferModulePath.set(false)

@@ -1,4 +1,5 @@
 -XX:+IgnoreUnrecognizedVMOptions
+-Dio.netty.tryReflectionSetAccessible=true
 -Djava.net.preferIPv4Stack=true
 -Djava.net.preferIPv6Addresses=false
 -Xmx1G

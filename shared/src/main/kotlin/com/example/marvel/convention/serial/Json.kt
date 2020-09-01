@@ -48,5 +48,6 @@ object Json {
                 ALLOW_FINAL_FIELDS_AS_MUTATORS,
                 DEFAULT_VIEW_INCLUSION
             ).disable(FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(FAIL_ON_EMPTY_BEANS)
             .build()
 }

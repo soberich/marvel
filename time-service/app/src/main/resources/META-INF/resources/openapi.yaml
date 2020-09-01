@@ -77,8 +77,10 @@ paths:
           type: integer
       - name: yearMonth
         in: query
+        required: true
         schema:
-          type: object
+          format: date
+          type: integer
       responses:
         "200":
           description: OK
@@ -138,6 +140,12 @@ components:
           type: integer
     FlowableProjectView:
       type: object
+      properties:
+        name:
+          type: string
+        version:
+          format: int32
+          type: integer
     ProjectUpdateCommand:
       type: object
       properties:
@@ -192,7 +200,8 @@ components:
           format: int32
           type: integer
         yearMonth:
-          type: object
+          format: date
+          type: integer
     RecordDetailedView:
       type: object
       properties:
@@ -232,7 +241,8 @@ components:
           format: int32
           type: integer
         yearMonth:
-          type: object
+          format: date
+          type: integer
     EmployeeCreateCommand:
       type: object
       properties:
@@ -255,8 +265,34 @@ components:
           type: integer
     FlowableEmployeeView:
       type: object
+      properties:
+        email:
+          type: string
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        version:
+          format: int32
+          type: integer
     FlowableRecordView:
       type: object
+      properties:
+        date:
+          format: date
+          type: string
+        desc:
+          type: string
+        hoursSubmitted:
+          format: duration
+          type: string
+          example: P1D
+        recordCollectionId:
+          format: int64
+          type: integer
+        type:
+          $ref: '#/components/schemas/RecordType'
     RecordCreateCommand:
       type: object
       properties:
@@ -287,7 +323,8 @@ components:
           items:
             $ref: '#/components/schemas/RecordCreateCommand'
         yearMonth:
-          type: object
+          format: date
+          type: integer
     EmployeeUpdateCommand:
       type: object
       properties:
