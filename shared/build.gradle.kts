@@ -20,7 +20,7 @@ dependencies {
     .forEach(::api)
 
     api("com.vladmihalcea:hibernate-types-52:[2.9,2.10)")
-    api("io.github.classgraph:classgraph:(0,)")
+    api("io.github.classgraph:classgraph:+")
     api("io.reactivex.rxjava2:rxjava:2.2.19")
     //trying to avoid possible bug in 5.5.0-SNAPSHOT for integrating via SPI for `org.hibernate.integrator.spi.IntegratorService`
     api("org.hibernate:hibernate-core:$hibernateVersion")

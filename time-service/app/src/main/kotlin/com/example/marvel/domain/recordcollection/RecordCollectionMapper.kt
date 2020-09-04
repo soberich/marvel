@@ -1,10 +1,6 @@
 package com.example.marvel.domain.recordcollection
 
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
-import com.example.marvel.api.RecordCollectionCreateView
-import com.example.marvel.api.RecordCollectionUpdateView
-import com.example.marvel.api.RecordCommand
+import com.example.marvel.api.*
 import com.example.marvel.domain.IgnoreAuditInfo
 import com.example.marvel.domain.MapperConfig
 import com.example.marvel.domain.employee.EmployeeMapper
@@ -44,22 +40,22 @@ abstract class RecordCollectionMapper {
         Mapping(ignore = true, target = "version"),
         Mapping(ignore = true, target = "report"))
     @RecordMapper.RecordToEntity
-    abstract fun toEntity(source: RecordCommand.RecordCreateCommand): RecordEntity
+    abstract fun toEntity(source: RecordCreateCommand): RecordEntity
 
     @Named("recordChildIgnoresParent")
     @Mappings(
         Mapping(ignore = true, target = "version"),
         Mapping(ignore = true, target = "report"))
     @RecordMapper.RecordToEntity
-    abstract fun toEntity(source: RecordCommand.RecordUpdateCommand): RecordEntity
+    abstract fun toEntity(source: RecordUpdateCommand): RecordEntity
 
     @Named("recordChildIgnoresParent")
     @IterableMapping(qualifiedByName = ["recordChildIgnoresParent"])
-    abstract fun toEntityCreate(source: List<RecordCommand.RecordCreateCommand>): MutableSet<RecordEntity>
+    abstract fun toEntityCreate(source: List<RecordCreateCommand>): MutableSet<RecordEntity>
 
     @Named("recordChildIgnoresParent")
     @IterableMapping(qualifiedByName = ["recordChildIgnoresParent"])
-    abstract fun toEntityUpdate(source: List<RecordCommand.RecordUpdateCommand>): MutableSet<RecordEntity>
+    abstract fun toEntityUpdate(source: List<RecordUpdateCommand>): MutableSet<RecordEntity>
 
     @AfterMapping
     open fun syncParent(@MappingTarget target: RecordCollectionEntity) = target.records.forEach { it.report = target }

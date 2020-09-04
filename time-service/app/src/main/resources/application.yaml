@@ -1,3 +1,6 @@
+spring:
+  jpa:
+    open-session-in-view: false
 micronaut:
   application:
     name: marvel

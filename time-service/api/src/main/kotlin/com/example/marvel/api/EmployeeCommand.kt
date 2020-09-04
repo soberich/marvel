@@ -1,5 +1,6 @@
 package com.example.marvel.api
 
+import io.micronaut.core.annotation.Introspected
 import javax.validation.constraints.*
 import javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE
 
@@ -18,26 +19,28 @@ import javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE
     abstract val email               : String
     //@formatter:on
     companion object
-
-    /*@optics*/ data class EmployeeCreateCommand(
-        //@formatter:off
-        override val name                : String,
-        override val email               : String
-        //@formatter:on
-    ) : EmployeeCommand() { companion object }
-
-    /*@optics*/ data class EmployeeUpdateCommand(
-        //@formatter:off
-        @get:
-        [NotNull
-        Positive]
-        val id                           : Long,
-        @get:
-        [NotNull
-        PositiveOrZero]
-        val version                      : Int,
-        override val name                : String,
-        override val email               : String
-        //@formatter:on
-    ) : EmployeeCommand() { companion object }
 }
+
+@Introspected
+/*@optics*/ data class EmployeeCreateCommand(
+    //@formatter:off
+    override val name                : String,
+    override val email               : String
+    //@formatter:on
+) : EmployeeCommand() { companion object }
+
+@Introspected
+/*@optics*/ data class EmployeeUpdateCommand(
+    //@formatter:off
+    @get:
+    [NotNull
+    Positive]
+    val id                           : Long,
+    @get:
+    [NotNull
+    PositiveOrZero]
+    val version                      : Int,
+    override val name                : String,
+    override val email               : String
+    //@formatter:on
+) : EmployeeCommand() { companion object }

@@ -1,13 +1,12 @@
 package com.example.marvel.domain.recordcollection
 
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
+import com.example.marvel.api.RecordCollectionCreateCommand
+import com.example.marvel.api.RecordCollectionUpdateCommand
 import com.example.marvel.domain.GenericMapper
 import com.example.marvel.domain.record.RecordMapper
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import java.io.Serializable
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

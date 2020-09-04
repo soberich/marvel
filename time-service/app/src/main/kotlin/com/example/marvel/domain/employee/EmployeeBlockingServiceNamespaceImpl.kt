@@ -3,21 +3,22 @@ package com.example.marvel.domain.employee
 import com.blazebit.persistence.CriteriaBuilderFactory
 import com.blazebit.persistence.view.EntityViewManager
 import com.example.marvel.api.*
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
+import com.example.marvel.api.RecordCollectionCreateCommand
+import com.example.marvel.api.RecordCollectionUpdateCommand
 import com.example.marvel.domain.recordcollection.RecordCollectionEntity
 import com.example.marvel.domain.recordcollection.RecordCollectionMapper
 import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import com.kumuluz.ee.rest.beans.QueryParameters
 import com.kumuluz.ee.rest.utils.JPAUtils
-import io.micronaut.spring.tx.annotation.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.YearMonth
 import java.util.stream.Stream
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
 import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 /**
  * This is WIP!
@@ -33,7 +34,7 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
 ) : EmployeeOperationsServiceNamespace {
 
     @set:
-    [Inject]
+    [PersistenceContext]
     protected lateinit var em: EntityManager
 
     @set:
@@ -79,10 +80,10 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
                     .build()
             }
 
-    override fun createEmployee(employee: EmployeeCommand.EmployeeCreateCommand): EmployeeDetailedView =
+    override fun createEmployee(employee: EmployeeCreateCommand): EmployeeDetailedView =
         empMapper.toEntity(employee).also(em::persist).let(empMapper::toCreateView)
 
-    override fun updateEmployee(employee: EmployeeCommand.EmployeeUpdateCommand): EmployeeDetailedView? =
+    override fun updateEmployee(employee: EmployeeUpdateCommand): EmployeeDetailedView? =
         empMapper.toEntity(employee.id, employee).let(empMapper::toUpdateView)
 
     override fun listForPeriod(employeeId: Long, yearMonth: YearMonth): List<RecordView> =

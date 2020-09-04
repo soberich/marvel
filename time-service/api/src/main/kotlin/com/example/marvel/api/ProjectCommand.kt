@@ -1,5 +1,6 @@
 package com.example.marvel.api
 
+import io.micronaut.core.annotation.Introspected
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.PositiveOrZero
@@ -16,19 +17,22 @@ import javax.validation.constraints.PositiveOrZero
     //@formatter:on
     companion object
 
-    /*@optics*/ data class ProjectCreateCommand(
-        //@formatter:off
-        override val name                : String
-        //@formatter:on
-    ) : ProjectCommand() { companion object }
-
-    /*@optics*/ data class ProjectUpdateCommand(
-        //@formatter:off
-        override val name                : String,
-        @get:
-        [NotNull
-        PositiveOrZero]
-        val version                      : Int
-        //@formatter:on
-    ) : ProjectCommand() { companion object }
 }
+
+@Introspected
+/*@optics*/ data class ProjectCreateCommand(
+    //@formatter:off
+    override val name                : String
+    //@formatter:on
+) : ProjectCommand() { companion object }
+
+@Introspected
+/*@optics*/ data class ProjectUpdateCommand(
+    //@formatter:off
+    override val name                : String,
+    @get:
+    [NotNull
+    PositiveOrZero]
+    val version                      : Int
+    //@formatter:on
+) : ProjectCommand() { companion object }

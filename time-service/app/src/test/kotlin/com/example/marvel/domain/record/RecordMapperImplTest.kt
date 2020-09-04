@@ -1,7 +1,7 @@
 package com.example.marvel.domain.record
 
-import com.example.marvel.api.RecordCommand.RecordCreateCommand
-import com.example.marvel.api.RecordCommand.RecordUpdateCommand
+import com.example.marvel.api.RecordCreateCommand
+import com.example.marvel.api.RecordUpdateCommand
 import com.example.marvel.domain.GenericMapper
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK

@@ -1,6 +1,5 @@
 package com.example.marvel.domain.project
 
-import com.example.marvel.domain.base.AbstractAuditingEntity
 import javax.persistence.*
 import javax.persistence.AccessType.PROPERTY
 import kotlin.properties.Delegates

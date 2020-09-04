@@ -24,15 +24,16 @@ scala {
 
 tasks {
     withType<ScalaCompile>().configureEach {
-        /*
-         * For IDEA based build (Ant) this `targetCompatibility` shas to be set to the desired value,
-         * otherwise will be inherited from project regardless `release` set
-         */
         options.apply {
             isFork = true
             forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
-            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString().toInt())
-            targetCompatibility = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
+            //FIXME: Stopped working, no idea why.
+            //release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString().toInt())
+            /*
+             * For IDEA based build (Ant) this `targetCompatibility` shas to be set to the desired value,
+             * otherwise will be inherited from project regardless `release` set
+             */
+            //targetCompatibility = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
         scalaCompileOptions.apply {

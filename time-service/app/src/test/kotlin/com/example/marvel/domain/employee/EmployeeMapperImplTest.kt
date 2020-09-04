@@ -1,7 +1,7 @@
 package com.example.marvel.domain.employee
 
-import com.example.marvel.api.EmployeeCommand.EmployeeCreateCommand
-import com.example.marvel.api.EmployeeCommand.EmployeeUpdateCommand
+import com.example.marvel.api.EmployeeCreateCommand
+import com.example.marvel.api.EmployeeUpdateCommand
 import com.example.marvel.domain.GenericMapper
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK

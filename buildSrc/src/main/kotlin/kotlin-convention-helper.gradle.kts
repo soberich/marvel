@@ -75,8 +75,14 @@ tasks {
 kapt {
     correctErrorTypes = true
     javacOptions {
-//        option("--processor-module-path", sourceSets.main.get().compileClasspath.asPath)
-        option("-target", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
+        //option("--processor-module-path", sourceSets.main.get().compileClasspath.asPath)
+        /**
+         * `--source` (N.B. `-source` with one dash does not work!) option to prevent warning from KotlinPluginWrapper about "source version `VERSION_14` been higher than max `SOURCE_11`"
+         * `--target` (N.B. `-target` with one dash does not work!) for consistency with `--source` so it does not cause doubts on why is one set and other is not.
+         * `--release` is the latest introduced and supported by Gradle version, yet, `kotlinc` seems to ignore it, again to about ambiguity.
+         */
+        option("--source",  JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
+        option("--target",  JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
         option("--release", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
         Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(::option)
     }

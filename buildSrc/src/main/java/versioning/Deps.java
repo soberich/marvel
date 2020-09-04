@@ -48,6 +48,7 @@ public interface Deps {
         String LIQUIBASE_GRADLE      = "2.0.1";
         String LIQUIBASE_HIB5        = "3.6";
         String MAPSTRUCT             = "1.4.0.Beta3";
+        //String MAPSTRUCT             = "1.4.0.CR1";
         String OPENAPI               = "2.1.3";
         String SLF4J_API             = "1.7.25";
         String SLF4J_JBOSS           = "1.0.4.GA";

@@ -1,11 +1,11 @@
 package com.example.marvel.spi
 
-import com.example.marvel.api.EmployeeCommand.EmployeeCreateCommand
-import com.example.marvel.api.EmployeeCommand.EmployeeUpdateCommand
+import com.example.marvel.api.EmployeeCreateCommand
+import com.example.marvel.api.EmployeeUpdateCommand
 import com.example.marvel.api.EmployeeDetailedView
 import com.example.marvel.api.EmployeeView
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
+import com.example.marvel.api.RecordCollectionCreateCommand
+import com.example.marvel.api.RecordCollectionUpdateCommand
 import com.example.marvel.api.RecordCollectionDetailedView
 import com.example.marvel.api.RecordView
 import java.time.YearMonth

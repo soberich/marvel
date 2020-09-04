@@ -1,7 +1,7 @@
 package com.example.marvel.spi
 
-import com.example.marvel.api.ProjectCommand.ProjectCreateCommand
-import com.example.marvel.api.ProjectCommand.ProjectUpdateCommand
+import com.example.marvel.api.ProjectCreateCommand
+import com.example.marvel.api.ProjectUpdateCommand
 import com.example.marvel.api.ProjectDetailedView
 import com.example.marvel.api.ProjectView
 import java.util.stream.Stream

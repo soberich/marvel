@@ -1,6 +1,7 @@
 package com.example.marvel.api
 
 //import arrow.core.ListK
+import io.micronaut.core.annotation.Introspected
 import org.hibernate.validator.constraints.time.DurationMax
 import org.hibernate.validator.constraints.time.DurationMin
 import java.time.Duration
@@ -8,7 +9,6 @@ import java.time.LocalDate
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Positive
 import javax.validation.constraints.PositiveOrZero
-
 
 /*@optics*/ sealed class RecordCommand {
     //@formatter:off
@@ -31,36 +31,37 @@ import javax.validation.constraints.PositiveOrZero
     //@formatter:on
     companion object
 
-    /*@optics*/ data class RecordCreateCommand(
-        //@formatter:off
-        override val date                : LocalDate,
-        override val type                : RecordType,
-        override val hoursSubmitted      : Duration,
-        override val desc                : String?,
-        override val recordCollectionId  : Long
-        //@formatter:on
-    ) : RecordCommand() { companion object }
-
-    /*@optics*/ data class RecordUpdateCommand(
-        //@formatter:off
-        @get:
-        [NotNull
-        PositiveOrZero]
-        val version                      : Int,
-        override val date                : LocalDate,
-        override val type                : RecordType,
-        override val hoursSubmitted      : Duration,
-        override val desc                : String?,
-        override val recordCollectionId  : Long
-        //@formatter:on
-    ) : RecordCommand() { companion object }
-
     /**
      * no-op
      */
     ///*@optics*/ data class RecordRequests(val records: List/*K*/<RecordCommand>) : List<RecordCommand> by records { companion object }
 }
 
+@Introspected
+/*@optics*/ data class RecordCreateCommand(
+    //@formatter:off
+    override val date                : LocalDate,
+    override val type                : RecordType,
+    override val hoursSubmitted      : Duration,
+    override val desc                : String?,
+    override val recordCollectionId  : Long
+    //@formatter:on
+) : RecordCommand() { companion object }
+
+@Introspected
+/*@optics*/ data class RecordUpdateCommand(
+    //@formatter:off
+    @get:
+    [NotNull
+    PositiveOrZero]
+    val version                      : Int,
+    override val date                : LocalDate,
+    override val type                : RecordType,
+    override val hoursSubmitted      : Duration,
+    override val desc                : String?,
+    override val recordCollectionId  : Long
+    //@formatter:on
+) : RecordCommand() { companion object }
 
 
 ///**

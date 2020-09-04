@@ -1,8 +1,6 @@
 package com.example.marvel.domain.project
 
-import com.example.marvel.api.ProjectCommand
-import com.example.marvel.api.ProjectCreateView
-import com.example.marvel.api.ProjectUpdateView
+import com.example.marvel.api.*
 import com.example.marvel.domain.IgnoreAuditInfo
 import com.example.marvel.domain.MapperConfig
 import com.example.marvel.domain.recordcollection.RecordCollectionMapper
@@ -18,11 +16,11 @@ abstract class ProjectMapper {
         Mapping(ignore = true  , target = "version"),
         Mapping(source = "name", target = "id"))
     @IgnoreAuditInfo
-    abstract fun toEntity(source: ProjectCommand.ProjectCreateCommand): ProjectEntity
+    abstract fun toEntity(source: ProjectCreateCommand): ProjectEntity
 
     @Mapping(source = "name", target = "id")
     @IgnoreAuditInfo
-    abstract fun toEntity(@Context id: String, source: ProjectCommand.ProjectUpdateCommand): ProjectEntity
+    abstract fun toEntity(@Context id: String, source: ProjectUpdateCommand): ProjectEntity
 
     @Mapping(source = "id", target = "name")
     abstract fun toCreateView(source: ProjectEntity): ProjectCreateView

@@ -1,10 +1,12 @@
 -java-parameters
 -progressive
 -version
+-Xadd-light-debug=disable
 -Xallow-result-return-type
 -Xeffect-system
 -Xemit-jvm-type-annotations
 -Xinline-classes
+-Xjavac-arguments=--enable-preview
 -Xjsr305=strict
 -Xjvm-default=compatibility
 -Xnew-inference
@@ -26,4 +28,3 @@
 -XXLanguage:+ReferencesToSyntheticJavaProperties
 -XXLanguage:+SamConversionForKotlinFunctions
 -XXLanguage:+SamConversionPerArgument
--Xjavac-arguments=--enable-preview

@@ -11,7 +11,10 @@ import com.example.marvel.domain.record.RecordIdView
 import com.example.marvel.domain.record.RecordListingView
 import com.example.marvel.domain.recordcollection.RecordCollectionDetailedViewDefault
 import com.example.marvel.domain.recordcollection.RecordCollectionListingView
+import io.micronaut.core.annotation.Introspected
+import org.immutables.value.Generated
 import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_SINGLETON
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
@@ -19,7 +22,10 @@ import org.springframework.context.annotation.Scope
 import javax.inject.Inject
 import javax.persistence.EntityManagerFactory
 
-
+@Introspected(
+    packages = ["com.example.marvel.api"],
+    includedAnnotations = [Metadata::class, Generated::class])
+@EntityScan("com.example")
 @Configuration
 class BlazePersistenceConfiguration {
 

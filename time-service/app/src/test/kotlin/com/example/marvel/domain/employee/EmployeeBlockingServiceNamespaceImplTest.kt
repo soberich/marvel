@@ -1,8 +1,9 @@
 package com.example.marvel.domain.employee
 
-import com.example.marvel.api.EmployeeCommand
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionCreateCommand
-import com.example.marvel.api.RecordCollectionCommand.RecordCollectionUpdateCommand
+import com.example.marvel.api.EmployeeCreateCommand
+import com.example.marvel.api.EmployeeUpdateCommand
+import com.example.marvel.api.RecordCollectionCreateCommand
+import com.example.marvel.api.RecordCollectionUpdateCommand
 import com.example.marvel.domain.recordcollection.RecordCollectionMapper
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
@@ -87,7 +88,7 @@ class EmployeeBlockingServiceNamespaceImplTest {
     @Test
     fun `Given _ when createEmployee then _`() {
         // Given
-        val employee = mockk<EmployeeCommand.EmployeeCreateCommand>()
+        val employee = mockk<EmployeeCreateCommand>()
 
         // When
         val actualValue = cut.createEmployee(employee)
@@ -99,7 +100,7 @@ class EmployeeBlockingServiceNamespaceImplTest {
     @Test
     fun `Given _ when createEmployee then throws exception`() {
         // Given
-        val employee = mockk<EmployeeCommand.EmployeeCreateCommand>()
+        val employee = mockk<EmployeeCreateCommand>()
         val expectedException = Exception()
         lateinit var actualException: Exception
 
@@ -117,7 +118,7 @@ class EmployeeBlockingServiceNamespaceImplTest {
     @Test
     fun `Given _ when updateEmployee then _`() {
         // Given
-        val employee = mockk<EmployeeCommand.EmployeeUpdateCommand>()
+        val employee = mockk<EmployeeUpdateCommand>()
 
         // When
         val actualValue = cut.updateEmployee(employee)
@@ -129,7 +130,7 @@ class EmployeeBlockingServiceNamespaceImplTest {
     @Test
     fun `Given _ when updateEmployee then throws exception`() {
         // Given
-        val employee = mockk<EmployeeCommand.EmployeeUpdateCommand>()
+        val employee = mockk<EmployeeUpdateCommand>()
         val expectedException = Exception()
         lateinit var actualException: Exception
 

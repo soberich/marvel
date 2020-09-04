@@ -14,7 +14,7 @@ object Platforms {
         const val JACKSON        = "2.11.2"//"2.10.3"
         const val JAXB           = "3.0.0-M4"
         const val KTOR           = "1.4.0"
-        const val MICRONAUT      = "2.0.1"
+        const val MICRONAUT      = "1.3.7"
         const val MICRONAUT_DATA = "+"
         const val QUARKUS        = "1.7.1.Final"
         const val RESTEASY       = "4.1.1.Final"
