@@ -1,7 +1,6 @@
 package com.example.marvel.api
 
 //import arrow.core.ListK
-import io.micronaut.core.annotation.Introspected
 import org.hibernate.validator.constraints.time.DurationMax
 import org.hibernate.validator.constraints.time.DurationMin
 import java.time.Duration
@@ -37,7 +36,6 @@ import javax.validation.constraints.PositiveOrZero
     ///*@optics*/ data class RecordRequests(val records: List/*K*/<RecordCommand>) : List<RecordCommand> by records { companion object }
 }
 
-@Introspected
 /*@optics*/ data class RecordCreateCommand(
     //@formatter:off
     override val date                : LocalDate,
@@ -48,7 +46,6 @@ import javax.validation.constraints.PositiveOrZero
     //@formatter:on
 ) : RecordCommand() { companion object }
 
-@Introspected
 /*@optics*/ data class RecordUpdateCommand(
     //@formatter:off
     @get:

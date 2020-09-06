@@ -5,7 +5,6 @@ plugins {
     `java-library`
     `kotlin-convention-helper`
     `maven-publish`
-    //io.micronaut.library
 }
 
 //FIXME: This project supposed to be multiplatform
@@ -20,6 +19,7 @@ dependencies {
     .onEach(::annotationProcessor)
     .onEach(::kapt)
     .onEach(::compileOnly)
+    .onEach(::compileOnlyApi)
     .onEach(::api)
     .onEach(::runtimeOnly)
     .onEach(::testAnnotationProcessor)
@@ -47,8 +47,7 @@ dependencies {
         Deps.Jakarta.VALIDATION,
         //Deps.Libs.ARROW_OPTICS, //FIXME
         Deps.Libs.REACTIVE_STREAMS,
-        Deps.Libs.VALIDATOR,
-        "io.micronaut:micronaut-core"
+        Deps.Libs.VALIDATOR
     ).forEach(::api)
 }
 

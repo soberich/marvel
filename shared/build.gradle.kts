@@ -5,7 +5,6 @@ plugins {
     `java-library`
     `jackson-convention-helper`
     `kotlin-convention-helper`
-    //io.micronaut.library
     `maven-publish`
 }
 

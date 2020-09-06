@@ -5,9 +5,10 @@ import com.blazebit.persistence.view.IdMapping
 import com.blazebit.persistence.view.Mapping
 import com.example.marvel.api.RecordCollectionDetailedView
 import com.example.marvel.domain.record.RecordDetailedViewDefault
+import org.hibernate.engine.spi.Managed
 
 @EntityView(RecordCollectionEntity::class)
-interface RecordCollectionDetailedViewDefault : RecordCollectionDetailedView {
+interface RecordCollectionDetailedViewDefault : RecordCollectionDetailedView, Managed {
     @get:IdMapping
     override val id: Long
     @get:Mapping("project.id")

@@ -1,6 +1,3 @@
-spring:
-  jpa:
-    open-session-in-view: false
 micronaut:
   application:
     name: marvel
@@ -47,11 +44,7 @@ jackson:
   bean-introspection-module: true
 jpa:
   default:
-#spring.jpa:
-#    packages-to-scan:
-#      - 'com.example.marvel.domain'
-    open-in-view: false
-    properties:
+    properties: &jpa
       hibernate:
         bytecode.use_reflection_optimizer:          true
 #        cache.use_query_cache:                      true
@@ -93,3 +86,7 @@ endpoints:
     enabled:   true
     sensitive: false
 
+spring:
+  jpa:
+    open-session-in-view: false
+    properties: *jpa

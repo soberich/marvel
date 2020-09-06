@@ -52,6 +52,7 @@ subprojects {
     }
 
     repositories {
+        gradlePluginPortal()
         exclusiveContent {
             forRepository {
                 maven("file://$rootDir/repo")

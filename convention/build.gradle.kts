@@ -5,7 +5,6 @@ import versioning.Deps
 plugins {
     `java-platform`
     org.springframework.boot apply false
-    //io.micronaut.library
     `maven-publish`
 }
 
@@ -36,7 +35,8 @@ dependencies {
     api(platform("io.ktor"                          + ':' +"ktor-bom"                + ':' + ktorVersion))
     api(platform("io.micronaut"                     + ':' +"micronaut-bom"           + ':' + micronautVersion))
     api(platform("io.micronaut.data"                + ':' +"micronaut-data-bom"      + ':' + micronautDataVersion))
-    api(platform("io.quarkus"                       + ':' +"quarkus-universe-bom"    + ':' + quarkusVersion))
+    api(platform("io.quarkus"                       + ':' +"quarkus-bom"             + ':' + quarkusVersion))
+    //api(platform("io.quarkus"                       + ':' +"quarkus-universe-bom"    + ':' + quarkusVersion))
     api(platform("org.jboss.resteasy"               + ':' +"resteasy-bom"            + ':' + resteasyVersion))
     api(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
 

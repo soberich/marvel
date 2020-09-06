@@ -91,6 +91,7 @@ val versionsPluginVersion : String by project
     implementation("gradle.plugin.com.github.spotbugs.snom"            , "spotbugs-gradle-plugin"                  , spotBugsPluginVersion)
     implementation("gradle.plugin.com.gorylenko.gradle-git-properties" , "gradle-git-properties"                   , "+")
     implementation("gradle.plugin.com.webcohesion.enunciate"           , "enunciate-gradle"                        , "+")
+    //implementation("gradle.plugin.io.quarkus"                          , "quarkus-gradle-plugin"                   , quarkusVersion)
     implementation("gradle.plugin.net.bytebuddy"                       , "byte-buddy-gradle-plugin"                , byteBuddyVersion)
     implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext", "gradle-idea-ext"                         , ideaExtPluginVersion)
     implementation("io.ebean"                                          , "ebean-gradle-plugin"                     , "+")
@@ -129,7 +130,7 @@ tasks {
         }
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_13).toString()
+        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {

@@ -1,7 +1,6 @@
 package com.example.marvel.api
 
 //import arrow.core.ListK
-import io.micronaut.core.annotation.Introspected
 import java.time.YearMonth
 import javax.validation.Valid
 import javax.validation.constraints.*
@@ -24,7 +23,6 @@ import javax.validation.constraints.*
     ///*@optics*/ data class RecordCollectionCommands(val reports: List/*K*/<RecordCollectionCommand>) : List<RecordCollectionCommand> by reports { companion object }
 }
 
-@Introspected
 /*@optics*/ data class RecordCollectionCreateCommand(
     //@formatter:off
     override val yearMonth           : YearMonth,
@@ -41,7 +39,6 @@ import javax.validation.constraints.*
     //@formatter:on
 ) : RecordCollectionCommand() { companion object }
 
-@Introspected
 /*@optics*/ data class RecordCollectionUpdateCommand(
     //@formatter:off
     @get:

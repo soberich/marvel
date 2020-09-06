@@ -1,3 +1,4 @@
+import org.hibernate.orm.tooling.gradle.EnhanceExtension
 import versioning.Deps
 
 plugins {
@@ -6,6 +7,7 @@ plugins {
     `kotlin-convention-helper`
     `testing-convention-helper`
     `maven-publish`
+    //org.hibernate.orm
 }
 
 repositories.jcenter()
@@ -61,7 +63,24 @@ dependencies {
 }
 
 idea.module.isDownloadSources = true
-
+// FIXME
+//hibernate {
+//    enhance(closureOf<EnhanceExtension> {
+//        enableLazyInitialization    = true
+//        enableDirtyTracking         = true
+//        enableAssociationManagement = true
+//        enableExtendedEnhancement   = false
+//    })
+//}
+//tasks.register("enhance", org.hibernate.orm.tooling.gradle.EnhanceTask::class) {
+//    setSourceSets(project.sourceSets.main.get())
+//    options(closureOf<EnhanceExtension> {
+//        enableLazyInitialization    = true
+//        enableDirtyTracking         = true
+//        enableAssociationManagement = true
+//        enableExtendedEnhancement   = false
+//    })
+//}
 publishing {
     publications {
         create<MavenPublication>("maven") {

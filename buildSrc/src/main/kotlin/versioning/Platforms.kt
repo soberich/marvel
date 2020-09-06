@@ -18,7 +18,6 @@ object Platforms {
         const val MICRONAUT_DATA = "+"
         const val QUARKUS        = "1.7.1.Final"
         const val RESTEASY       = "4.1.1.Final"
-        const val SPRING_BOOT    = "2.3.2.RELEASE"
 
         const val JUNIT5         = "5.7.0-M1"
         const val SPOCK          = "2.0-M2-groovy-3.0"

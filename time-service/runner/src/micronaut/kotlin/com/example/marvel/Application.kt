@@ -1,13 +1,16 @@
 package com.example.marvel
 
-import org.springframework.boot.runApplication as runSpringApplication
+//import io.ktor.server.netty.NettyApplicationEngine
+//import io.micronaut.ktor.*
+//import io.micronaut.ktor.runApplication        as runKtor
+import io.micronaut.runtime.mnRun              as runMicronautHttp
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Contact
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.info.License
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.EnableLoadTimeWeaving
+import javax.inject.Named
+import javax.inject.Singleton
 
 
 @OpenAPIDefinition(
@@ -20,10 +23,10 @@ import org.springframework.context.annotation.EnableLoadTimeWeaving
             url = "http://gigantic-server.com",
             name = "soberich",
             email = "soberich@gigagantic-server.com")))
-@SpringBootApplication(proxyBeanMethods = false)
-@EnableLoadTimeWeaving
+@Named
+@Singleton
 class Application
 
 fun main(vararg args: String) {
-    runSpringApplication<Application>(*args)
+    runMicronautHttp<Application>(*args)
 }

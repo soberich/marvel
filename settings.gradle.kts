@@ -15,6 +15,10 @@ pluginManagement {
             }
         }
     }
+    plugins {
+        val quarkusVersion: String by settings
+        id("io.quarkus") version quarkusVersion
+    }
     resolutionStrategy {
         eachPlugin {
             if (requested.id.id == "kotlinx-serialization") {

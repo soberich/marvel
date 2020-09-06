@@ -3,7 +3,6 @@ plugins {
     `java-library`
     `kotlin-convention-helper`
     `maven-publish`
-    //io.micronaut.library
 }
 
 dependencies {
