@@ -21,7 +21,7 @@ import org.springframework.context.annotation.EnableLoadTimeWeaving
             name = "soberich",
             email = "soberich@gigagantic-server.com")))
 @SpringBootApplication(proxyBeanMethods = false)
-@EnableLoadTimeWeaving
+//@EnableLoadTimeWeaving
 class Application
 
 fun main(vararg args: String) {

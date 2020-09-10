@@ -81,6 +81,7 @@ idea.module.isDownloadSources = true
 //        enableExtendedEnhancement   = false
 //    })
 //}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {

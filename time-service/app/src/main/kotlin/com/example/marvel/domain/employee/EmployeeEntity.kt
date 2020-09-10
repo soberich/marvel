@@ -22,9 +22,13 @@ class EmployeeEntity : SimpleGeneratedIdentityOfLong() {
     //@formatter:off
     @get:
     [Column(nullable = false)]
+    @delegate:
+    [Transient]
     var name                                  : String by Delegates.notNull()
     @get:
     [Column(nullable = false)]
+    @delegate:
+    [Transient]
     var email                                 : String by Delegates.notNull()
 
     @get:

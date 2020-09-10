@@ -16,6 +16,8 @@ abstract class JpaStateTransitionAwareIdentityOf<out T : Serializable> : Abstrac
     @Suppress("JpaAttributeTypeInspection")
     @get:
     [Transient]
+    @delegate:
+    [Transient]
     private val bucketDisperser by lazy { id ?: Any() }
 
     override fun equals(other: Any?): Boolean = when {

@@ -1,5 +1,6 @@
 ###
 GET http://{{address}}:{{port}}/api/employee
+Content-Type: application/stream+json
 
 ### Correct new employee
 POST http://{{address}}:{{port}}/api/employee

@@ -4,8 +4,6 @@ plugins {
     org.sonarqube
 }
 
-jacoco.toolVersion = "0.8.5"
-
 tasks.jacocoTestReport {
     reports {
         xml.isEnabled = true

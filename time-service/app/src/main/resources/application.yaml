@@ -1,5 +1,5 @@
 micronaut:
-  application:
+  application: &app
     name: marvel
   metrics:
     binders:
@@ -37,15 +37,15 @@ micronaut:
 datasources:
   default:
     url: ${JDBC_URL:`jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_UPPER=FALSE`}
-    username: ${JDBC_USER:sa}
-    password: ${JDBC_PASSWORD:""}
-    driverClassName: ${JDBC_DRIVER:org.h2.Driver}
+    username: &db-user ${JDBC_USER:sa}
+    password: &db-pass ${JDBC_PASSWORD:""}
+    driver-class-name: ${JDBC_DRIVER:org.h2.Driver}
 jackson:
   bean-introspection-module: true
 jpa:
   default:
     properties: &jpa
-      hibernate:
+      hibernate: &conn-props
         bytecode.use_reflection_optimizer:          true
 #        cache.use_query_cache:                      true
         cache.use_second_level_cache:               false
@@ -61,19 +61,19 @@ jpa:
         connection.useUnicode:                      true
         current_session_context_class:              org.springframework.orm.hibernate5.SpringSessionContext
 #        current_session_context_class:              io.micronaut.transaction.hibernate5.MicronautSessionContext
-        enhancer.enableAssociationManagement:       true
-        enhancer.enableDirtyTracking:               true
-        enhancer.enableLazyInitialization:          true
+        #enhancer.enableAssociationManagement:       true
+        #enhancer.enableDirtyTracking:               true
+        #enhancer.enableLazyInitialization:          true
         event.merge.entity_copy_observer:           log
         format_sql:                                 true
-        generate_statistics:                        true
-        hbm2ddl.auto:                               drop-and-create
-        implicit_naming_strategy:                   com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
+        generate_statistics: &stats                 true
+        hbm2ddl.auto: &hbm2ddl                      drop-and-create
+        implicit_naming_strategy: &implicit         com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
         jdbc.batch_size:                            33
         jdbc.fetch_size:                            200
         jdbc.use_streams_for_binary:                true
         max_fetch_depth:                            5
-        physical_naming_strategy:                   com.example.marvel.convention.jpa.naming.PhysicalNamingStrategyImpl
+        physical_naming_strategy: &physical         com.example.marvel.convention.jpa.naming.PhysicalNamingStrategyImpl
         query.in_clause_parameter_padding:          true
         query.plan_parameter_metadata_max_size:     2048
         query.substitutions:                        true 1, false 0, yes 'Y', no 'N'
@@ -87,6 +87,51 @@ endpoints:
     sensitive: false
 
 spring:
+  application:
+    <<: *app
+  datasource:
+    url: &db-url ${JDBC_URL:jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_UPPER=FALSE}
+    username: *db-user
+    password: *db-pass
   jpa:
     open-session-in-view: false
     properties: *jpa
+
+quarkus:
+  application:
+    <<: *app
+  datasource:
+    db-kind: h2 #this is essential!
+    jdbc:
+      url: *db-url
+    username: *db-user
+    password: *db-pass
+  hibernate-orm:
+    database:
+      generation: *hbm2ddl
+    implicit-naming-strategy: *implicit
+    metrics:
+      enabled: *stats
+    physical-naming-strategy: *physical
+  log:
+    category:
+      "io.quarkus.category":
+        level: INFO
+      "io.quarkus.arc.processor":
+        level: DEBUG
+      "org.hibernate.SQL":
+        level: TRACE
+      "org.hibernate.resource.jdbc":
+        level: TRACE
+      "org.hibernate.persister.entity":
+        level: DEBUG
+      "org.hibernate.type.descriptor.sql":
+        level: TRACE
+      "org.hibernate.loader.plan.build.spi":
+        level: TRACE
+      "org.hibernate.engine.internal.Cascade":
+        level: TRACE
+      "org.mariadb.jdbc.internal.logging.ProtocolLoggingProxy":
+        level: TRACE
+    console:
+      color: true

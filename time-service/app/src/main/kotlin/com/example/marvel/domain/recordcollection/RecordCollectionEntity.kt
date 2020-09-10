@@ -27,14 +27,20 @@ class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     Columns(columns = [
         Column(name = "year", nullable = false, updatable = false),
         Column(name = "month", nullable = false, updatable = false)])]
+    @delegate:
+    [Transient]
     var yearMonth                             : YearMonth by Delegates.notNull()
     @get:
     [ManyToOne(optional = false, fetch = LAZY)
     JoinColumn(nullable = false, updatable = false)]
+    @delegate:
+    [Transient]
     var project                               : ProjectEntity by Delegates.notNull()
     @get:
     [ManyToOne(optional = false, fetch = LAZY)
     JoinColumn(nullable = false, updatable = false)]
+    @delegate:
+    [Transient]
     var employee                              : EmployeeEntity by Delegates.notNull()
 
     @get:

@@ -19,7 +19,7 @@ class HibernateTypesContributorIntegratorProvider<T>(
     classImportIntegrator: Integrator = ClassImportIntegrator(
         ClassGraph()
             //.filterClasspathElements { "marvel" in it } //very unrelyable filtering without knowing exact location
-            .whitelistPackages("com.example.marvel")
+            .whitelistPackages("com.example.marvel.fixme.please")
             .enableAnnotationInfo()
             .removeTemporaryFilesAfterScan()
             .scan().use { result ->

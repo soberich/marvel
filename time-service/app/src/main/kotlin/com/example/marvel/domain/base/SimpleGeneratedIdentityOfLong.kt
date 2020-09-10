@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.SEQUENCE
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
+import javax.persistence.Transient
 import kotlin.properties.Delegates
 
 /**
@@ -34,7 +35,9 @@ abstract class SimpleGeneratedIdentityOfLong : JpaStateTransitionAwareIdentityOf
             Parameter(name = OPT_PARAM                         , value = "pooled")]) // org.hibernate.id.enhanced.StandardOptimizerDescriptor
     GeneratedValue(strategy = SEQUENCE, generator = "optimized-sequence")
     Column(nullable = false, updatable = false)]
-    override var id: Long? by Delegates.vetoable(0L) {_, _, newValue ->
+    @delegate:
+    [Transient]
+    override var id: Long? by Delegates.vetoable(0L) { _, _, newValue ->
         requireNotNull(newValue) { "${this::class.simpleName} can't be assigned $newValue id" } > 0L
     }
     //@formatter:on

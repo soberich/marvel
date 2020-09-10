@@ -14,6 +14,8 @@ class ProjectEntity : GenericTypeMask() {
     @get:
     [Id
     Column(name = "name", length = 50)]
+    @delegate:
+    [Transient]
     override var id                           : String by Delegates.notNull()
     //@formatter:on
 }

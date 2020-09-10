@@ -21,9 +21,10 @@ import javax.inject.Singleton
 @Singleton
 @RestController
 @RequestMapping("/api", produces = [APPLICATION_JSON_VALUE], consumes = [APPLICATION_JSON_VALUE])
-class ProjectOrchestrationResource @Inject constructor(
-    private val projects: ProjectOperationsServiceNamespace
-) : ProjectResourceAdapter {
+class ProjectOrchestrationResource : ProjectResourceAdapter {
+
+    @set:Inject
+    protected lateinit var projects: ProjectOperationsServiceNamespace
 
     @GetMapping("/project", produces = ["application/stream+json"])
     override fun getProjects(): Flowable<ProjectView> =

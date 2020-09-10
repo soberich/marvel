@@ -14,6 +14,7 @@ plugins {
     `kotlin-spring`
     `kotlin-sam-with-receiver`
     //org.jetbrains.dokka
+    org.kordamp.gradle.jandex
 }
 
 dependencies {
@@ -53,7 +54,7 @@ tasks {
         }
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString()
+        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(if (KotlinVersion.CURRENT.isAtLeast(1, 4)) JavaVersion.VERSION_14 else JavaVersion.VERSION_13).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
@@ -79,13 +80,28 @@ kapt {
         /**
          * `--source` (N.B. `-source` with one dash does not work!) option to prevent warning from KotlinPluginWrapper about "source version `VERSION_14` been higher than max `SOURCE_11`"
          * `--target` (N.B. `-target` with one dash does not work!) for consistency with `--source` so it does not cause doubts on why is one set and other is not.
-         * `--release` is the latest introduced and supported by Gradle version, yet, `kotlinc` seems to ignore it, again to about ambiguity.
+         * `--release` is the latest introduced and supported by Gradle version, yet, `kotlinc` seems to ignore it, again to avoid ambiguity.
          */
         option("--source",  JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
         option("--target",  JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
         option("--release", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
         Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(::option)
     }
+}
+
+noArg {
+//    invokeInitializers = true // run `init {...}` blocks
+    annotations(
+        "io.micronaut.core.annotation.Introspected",
+        "javax.inject.Named",
+        //`kotlin-jpa`
+        "javax.persistence.Embeddable",
+        "javax.persistence.Entity",
+        "javax.persistence.MappedSuperclass",
+        //`kotlin-jpa`
+        "javax.ws.rs.Path",
+        "org.springframework.web.bind.annotation.RestController"
+    )
 }
 
 allOpen.annotations(
@@ -97,16 +113,21 @@ allOpen.annotations(
     "javax.enterprise.context.ApplicationScoped",
     "javax.enterprise.context.RequestScoped",
     "javax.inject.Named",
+    "javax.ws.rs.ext.Provider",
     "javax.ws.rs.Path",
+    //`kotlin-jpa`
+    "javax.persistence.Entity",
+    "javax.persistence.MappedSuperclass",
+    "javax.persistence.Embeddable",
+    //`kotlin-jpa`
+    //`kotlin-spring`
     "org.springframework.boot.autoconfigure.SpringBootApplication",
-    "org.springframework.web.bind.annotation.RestController"
+    "org.springframework.boot.test.context.SpringBootTest",
+    "org.springframework.cache.annotation.Cacheable",
+    "org.springframework.scheduling.annotation.Async",
+    "org.springframework.stereotype.Component",
+    "org.springframework.transaction.annotation.Transactional"
+    //`kotlin-spring`
 )
 
-noArg {
-    invokeInitializers = true // run `init {...}` blocks
-    annotations(
-        "io.micronaut.core.annotation.Introspected",
-        "javax.inject.Named",
-        "javax.ws.rs.Path"
-    )
-}
+

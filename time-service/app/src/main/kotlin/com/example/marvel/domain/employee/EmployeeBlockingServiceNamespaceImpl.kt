@@ -11,7 +11,6 @@ import com.example.marvel.spi.EmployeeOperationsServiceNamespace
 import com.kumuluz.ee.rest.beans.QueryParameters
 import com.kumuluz.ee.rest.utils.JPAUtils
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.time.YearMonth
 import java.util.stream.Stream
 import javax.inject.Inject
@@ -19,6 +18,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.transaction.Transactional
 
 /**
  * This is WIP!
@@ -33,7 +33,7 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     private val recColMapper: RecordCollectionMapper
 ) : EmployeeOperationsServiceNamespace {
 
-    @set:
+    @field:
     [PersistenceContext]
     protected lateinit var em: EntityManager
 
@@ -48,7 +48,7 @@ class EmployeeBlockingServiceNamespaceImpl @Inject constructor(
     /**
      * Stream should be open on consumer side. Transaction will close it.
      */
-    @Transactional(readOnly = true)
+    @Transactional
     override fun streamEmployees(): Stream<EmployeeView> =
         evm.applySetting(
             EmployeeListingView_.createSettingInit(), /*null*/

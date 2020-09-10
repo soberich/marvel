@@ -5,13 +5,13 @@ import com.blazebit.persistence.view.EntityViewManager
 import com.example.marvel.api.*
 import com.example.marvel.spi.ProjectOperationsServiceNamespace
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.util.stream.Stream
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import javax.transaction.Transactional
 
 @Named
 @Singleton
@@ -21,8 +21,8 @@ class ProjectBlockingServiceNamespaceImpl @Inject constructor(
     private val projectMapper: ProjectMapper
 ) : ProjectOperationsServiceNamespace {
 
-    @set:
-    [Inject PersistenceContext]
+    @field:
+    [PersistenceContext]
     protected lateinit var em: EntityManager
 
     @set:

@@ -25,14 +25,20 @@ class RecordEntity : GenericTypeMask() {
     @get:
     [Id
     Column(nullable = false, updatable = false)]
+    @delegate:
+    [Transient]
     var date                                  : LocalDate by Delegates.notNull()
     @get:
     [Id
     Enumerated(STRING)
     Column(nullable = false, updatable = false)]
+    @delegate:
+    [Transient]
     var type                                  : RecordType by Delegates.notNull()
     @get:
     [Column(nullable = false)]
+    @delegate:
+    [Transient]
     var hoursSubmitted                        : Duration by Delegates.notNull()// will be stored in seconds
     var desc                                  : String? = null
     @get:

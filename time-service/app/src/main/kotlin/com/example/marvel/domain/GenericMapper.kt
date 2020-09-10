@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext
 @Singleton
 class GenericMapper {
 
-    @set:
+    @field:
     [PersistenceContext]
     protected lateinit var em: EntityManager
 

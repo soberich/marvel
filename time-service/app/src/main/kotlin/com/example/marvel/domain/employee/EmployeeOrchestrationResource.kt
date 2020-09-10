@@ -30,10 +30,12 @@ import javax.inject.Singleton
 @Singleton
 @RestController
 @RequestMapping(value = ["/api"], produces = [APPLICATION_JSON_VALUE], consumes = [APPLICATION_JSON_VALUE])
-//@Transactional(propagation = REQUIRED, timeout = TIMEOUT_DEFAULT, readOnly = false, isolation = DEFAULT)
-class EmployeeOrchestrationResource @Inject constructor(/*VX: VertxBare,*/ private val employees: EmployeeOperationsServiceNamespace) :
+class EmployeeOrchestrationResource(/*VX: VertxBare,*/) :
     EmployeeResourceAdapter {
 
+    @set:
+    [Inject]
+    protected lateinit var employees: EmployeeOperationsServiceNamespace
     /**
      * Could move to ctor
      */

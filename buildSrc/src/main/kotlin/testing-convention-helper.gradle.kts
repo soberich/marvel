@@ -6,6 +6,7 @@ import versioning.Deps
 
 plugins {
     java
+    jacoco
     id("kotlin-convention-helper")
 }
 
@@ -16,23 +17,46 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit5"))
+
+    testCompileOnly("junit:junit")
     /**
      * @sample [https://github.com/spotbugs/spotbugs-gradle-plugin/blob/master/src/test/java/com/github/spotbugs/snom/SpotBugsPluginTest.java]
      */
     testImplementation("com.tngtech.archunit:archunit-junit5:0.14.1")
 //    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
     testImplementation("io.mockk:mockk:1.10.0")
-    testImplementation("junit:junit")
     testImplementation("org.apache.logging.log4j:log4j-to-slf4j:2.13.3")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.slf4j:jul-to-slf4j:1.7.30")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.12")
+    testImplementation("io.rest-assured:kotlin-extensions:[4.3,5)")
 
     testRuntimeOnly(Deps.Libs.JBOSS_LOG)
     testRuntimeOnly(Deps.Libs.SLF4J_JBOSS)
-    //testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine") //TODO
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.12")
+}
+
+jvm {
+    // Share the test report data to be aggregated for the whole project
+    createOutgoingElements("binaryTestRuntimeElements") {
+        providesAttributes {
+            documentation("test-report-data")
+        }
+        tasks.withType<Test>().configureEach {
+            artifact(binaryResultsDirectory)
+        }
+    }
+    // Share the test report data to be aggregated for the whole project
+    createOutgoingElements("coverageDataElements") {
+        providesAttributes {
+            documentation("jacoco-coverage-data")
+        }
+        tasks.withType<Test>().configureEach {
+            extensions.findByType<JacocoTaskExtension>()?.destinationFile?.run(::artifact)
+        }
+    }
 }
 
 tasks.withType<Test>().configureEach {
