@@ -30,7 +30,7 @@ pluginManagement {
 
 include(
     ":convention",
-    ":gatling",
+    //":gatling",
     ":legacy-openapi",
     ":shared"
 )
