@@ -1,16 +1,12 @@
 package com.example.marvel
 
-//import io.ktor.server.netty.NettyApplicationEngine
-//import io.micronaut.ktor.*
-//import io.micronaut.ktor.runApplication        as runKtor
 import io.micronaut.runtime.mnRun              as runMicronautHttp
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Contact
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.info.License
-import javax.inject.Named
-import javax.inject.Singleton
+import org.springframework.boot.autoconfigure.SpringBootApplication
 
 
 @OpenAPIDefinition(
@@ -23,8 +19,8 @@ import javax.inject.Singleton
             url = "http://gigantic-server.com",
             name = "soberich",
             email = "soberich@gigagantic-server.com")))
-@Named
-@Singleton
+@SpringBootApplication(proxyBeanMethods = false)
+//@EnableLoadTimeWeaving
 class Application
 
 fun main(vararg args: String) {

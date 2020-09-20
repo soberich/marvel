@@ -35,7 +35,7 @@ import javax.persistence.EntityManagerFactory
     ]
 )
 @EntityScan("com.example")
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class BlazePersistenceConfiguration {
 
     @set:
