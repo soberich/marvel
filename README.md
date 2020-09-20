@@ -1,25 +1,37 @@
-# Micronaut on KTOR
----
-#The Goal
+# Polymorphic project runnable with (Quarkus, Micronaut, KTOR, Spring Boot)
+
+### Supported features:
++ Project [LOOM](https://jdk.java.net/loom/) (implies Java 16)
++ Java 14-16 + `preview` features (thought not needed as major source langusage in Kotlin)
++ Gradle 6.7+ [`jvm-ecosystem`](https://github.com/gradle/gradle/pull/13650) plugin and [`toolchain`](https://docs.gradle.org/nightly/userguide/toolchains.html) cross compilation/runtime support
++ Blaze-Persistence recently released compile-time [`@EntityView`s feature](https://persistence.blazebit.com/documentation/1.5/entity-view/manual/en_US/index.html#annotation-processor)
+
+### Libraries
+1. [Immutables](http://immutables.github.io/) in __Kotlin__ sources!
+2. [Mapstruct](https://mapstruct.org/) mapping to immutable DTO/Projection classes integrated with Immutables.
+3. [Arrow-kt](https://arrow-kt.io/) ([lesser](https://arrow-kt.io/docs/0.10/optics/dsl/) in recent versions, just annotation processor, will be fully fledged in future works)
+
+### Future plans
+Some planned key features
+1. GraphQL support for all platform (e.g. with [JPA projections](https://www.slideshare.net/blazebitbeikov/blazepersistence-graphql-high-performance-querying-and-relay-pagination-javavienna-16122019))
+
+# The Goal
+The goal of this (__JVM ecosystem__) POC is to run the same production-ready source code in multiple runtimes without suffering from any portability issues. This will help to understand which "best practices" in writing common Spring-Boot-ish microservice application are really portable and at the same time are not an overkill. As a simple example - using one annotaations instead another may where one may be used by more frameworks and runtimes, or the opposite - avoiding vendor-locking by removing most/all vendor specific imports, etc.
+The current repository source-tree already uses quite a bleeding edge setup for JVM ecosystem. 
 
 
-The goal of this (__JVM ecosystem__) POC is to run the same production-ready source code in multiple runtimes without suffering from any portablitity issues. This will help to understand which "best practices" in writing common Spring-Boot-ish microservice application are really portable and at the same time are not an overkill. As a simple example - using one annotaations instead another may where one may be used by more frameworks and runtimes, or the opposite - avoiding vendor-locking by removing most/all vendor specific imports, etc.
-Current repository source-tree already uses quite a bleeding edge setup for JVM ecosystem. 
-
-### Stack
- 0. Java 14 with `preview`s enabled, Kotlin `1.4.M-1`. Compilation and release tagret are `Java 14` for Java and `Java 13` (highest available) for Kotlin.
- 1. [Arrow-kt](https://arrow-kt.io/) ([lesser](https://arrow-kt.io/docs/0.10/optics/dsl/) in recent versions, just annotation processor, will be fully fledged in future works)
- 2. [Micronaut 2.0.0.M2](https://docs.micronaut.io/2.0.0.M2/guide/) /Quarkus/Spring-Boot/JavaEE runtime respectively (1st is this brunch, others are on difeerent branches and/or in progress)
- 3. [Immutables](http://immutables.github.io/) in __Kotlin__ sources!
- 4. [Mapstruct](https://mapstruct.org/) mapping to immutable DTO/Projection classes integrated with Immutables.
-
-### Execute
+## RUN
+```shell script
+#Micronaut
+./gradlew run
+#Quarkus
+./gradlew quarkusDev #(you need to execute this command twice! Ctrl+C after first startup failure, and execute again)
+#Spring
+./gradlew bootRun
 ```
-# Run app
-./gradlew time-service.runner:run
-```
 
-#### Legacy Notes:
+# Legacy Notes:
+________
 
  - Quarkus _strictly_ requires `beans.xml` in every subproject/module.
  - Quarkus in some cases requires a subproject/module to have an `src/main/java` folder (even if empty) otherwise the build fails.
