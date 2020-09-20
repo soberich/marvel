@@ -7,7 +7,6 @@
 -Xemit-jvm-type-annotations
 -Xexpect-actual-linker
 -Xinline-classes
--Xjavac-arguments=--enable-preview
 -Xjsr305=strict
 -Xjvm-default=compatibility
 -Xmulti-platform
@@ -30,3 +29,4 @@
 -XXLanguage:+ReferencesToSyntheticJavaProperties
 -XXLanguage:+SamConversionForKotlinFunctions
 -XXLanguage:+SamConversionPerArgument
+-XXLanguage:+VariableDeclarationInWhenSubject

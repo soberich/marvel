@@ -94,7 +94,7 @@ spring:
     username: *db-user
     password: *db-pass
   jpa:
-    open-session-in-view: false
+    open-in-view: false
     properties: *jpa
 
 quarkus:

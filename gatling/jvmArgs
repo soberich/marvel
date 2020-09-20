@@ -16,5 +16,4 @@
 -XX:+HeapDumpOnOutOfMemoryError
 -XX:HeapDumpPath=./tmp/java_pid<pid>.hprof
 -showversion
---enable-preview
 --illegal-access=warn

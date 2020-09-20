@@ -34,7 +34,7 @@ dependencies {
     api(platform("com.fasterxml.jackson"            + ':' +"jackson-bom"             + ':' + jacksonVersion))
     api(platform("io.ktor"                          + ':' +"ktor-bom"                + ':' + ktorVersion))
     api(platform("io.micronaut"                     + ':' +"micronaut-bom"           + ':' + micronautVersion))
-    api(platform("io.micronaut.data"                + ':' +"micronaut-data-bom"      + ':' + micronautDataVersion))
+    //api(platform("io.micronaut.data"                + ':' +"micronaut-data-bom"      + ':' + micronautDataVersion))
     api(platform("io.quarkus"                       + ':' +"quarkus-bom"             + ':' + quarkusVersion))
     //api(platform("io.quarkus"                       + ':' +"quarkus-universe-bom"    + ':' + quarkusVersion))
     api(platform("org.jboss.resteasy"               + ':' +"resteasy-bom"            + ':' + resteasyVersion))
@@ -76,6 +76,7 @@ dependencies {
 javaPlatform.allowDependencies()
 
 publishing {
+    repositories.maven("https://maven.pkg.github.com/soberich/marvel")
     publications {
         create<MavenPublication>("marvelPlatform") {
             from(components["javaPlatform"])

@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.findKaptConfiguration
+import versioning.Deps
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.streams.asSequence
@@ -18,21 +20,25 @@ plugins {
 }
 
 dependencies {
-    implementation(enforcedPlatform(kotlin("bom")))
-    /*
-     * need to explicitly have it here
-     * 'buildSrc:compileKotlin' prints "w: Consider providing an explicit dependency on kotlin-reflect 1.4 to prevent strange errors"
-     */
-    //implementation(kotlin("reflect"))
-    //implementation(kotlin("stdlib"))
-    //implementation(kotlin("stdlib-common"))
-    //implementation(kotlin("stdlib-jdk7"))
-    //implementation(kotlin("stdlib-jdk8"))
+    project.the<SourceSetContainer>().configureEach {
+        if ("test" !in name && "Test" !in name) {
+            implementationConfigurationName(enforcedPlatform(kotlin("bom")))
+            /*
+             * need to explicitly have it here
+             * 'buildSrc:compileKotlin' prints "w: Consider providing an explicit dependency on kotlin-reflect 1.4 to prevent strange errors"
+             */
+            //implementationConfigurationName(kotlin("reflect"))
+            //implementationConfigurationName(kotlin("stdlib"))
+            //implementationConfigurationName(kotlin("stdlib-common"))
+            //implementationConfigurationName(kotlin("stdlib-jdk7"))
+            //implementationConfigurationName(kotlin("stdlib-jdk8"))
 
-    implementation("org.jetbrains.kotlinx:atomicfu:0.14.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:0.2.0")
-    //implementation(Deps.Libs.COROUTINES_REACTOR)
+            implementationConfigurationName("org.jetbrains.kotlinx:atomicfu:0.14.4")
+            implementationConfigurationName("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
+            implementationConfigurationName("org.jetbrains.kotlinx:kotlinx-io-jvm:0.2.0")
+            //implementationConfigurationName(Deps.Libs.COROUTINES_REACTOR)
+        }
+    }
 }
 
 tasks {
@@ -59,17 +65,17 @@ tasks {
     withType<JavaCompile>().configureEach {
         options.apply {
             isFork = true
-            forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
+            forkOptions.jvmArgs = listOf("--illegal-access=warn")
             release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString().toInt())
             targetCompatibility = release.get().toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
     }
     withType<Test>().configureEach {
-        jvmArgs("--enable-preview", "--illegal-access=warn")
+        jvmArgs("--illegal-access=warn")
     }
     withType<JavaExec>().configureEach {
-        jvmArgs("--enable-preview", "--illegal-access=warn")
+        jvmArgs("--illegal-access=warn")
     }
 }
 

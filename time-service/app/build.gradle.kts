@@ -83,6 +83,7 @@ idea.module.isDownloadSources = true
 //}
 
 publishing {
+    repositories.maven("https://maven.pkg.github.com/soberich/marvel")
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])

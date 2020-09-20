@@ -11,13 +11,11 @@ import java.nio.file.Paths
 import kotlin.streams.asSequence
 import org.gradle.api.plugins.ExtensionAware as EA
 
-check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 14 is required, current JVM is ${JavaVersion.current()}" }
-
 plugins {
     java
     `java-gradle-plugin`
-    `groovy-gradle-plugin`
-    `kotlin-dsl`
+    //`groovy-gradle-plugin`
+    `kotlin-dsl`//                                   version "1.4.0"
     `build-dashboard`                              // optional
     `help-tasks`                                   // optional
     `project-report`                               // optional
@@ -82,7 +80,8 @@ val versionsPluginVersion : String by project
     implementation(kotlin("sam-with-receiver"            , kotlinVersion))
     //implementation(kotlin("serialization", kotlinVersion))
     implementation(gradleKotlinDsl()) //FOR IDEA compilation
-    implementation("org.apache.logging.log4j:log4j-core:2.11.0") //FOR IDEA compilation
+    implementation("org.apache.logging.log4j:log4j-core:2.11.0") //FOR JPS compilation
+    //implementation("org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin:$kotlinVersion") //FOR IDEA compilation
     implementation("com.github.ben-manes"                              , "gradle-versions-plugin"                  , versionsPluginVersion)
     implementation("com.github.jengelman.gradle.plugins"               , "shadow"                                  , shadowPluginVersion)
     implementation("com.vaadin"                                        , "vaadin-gradle-plugin"                    , "+")
@@ -131,22 +130,22 @@ tasks {
         }
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString()
+        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_13).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
             isFork = true
-            forkOptions.jvmArgs = listOf("--enable-preview", "--illegal-access=warn")
+            forkOptions.jvmArgs = listOf("--illegal-access=warn")
             release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString().toInt())
             targetCompatibility = release.get().toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
             Files.lines(Paths.get("$rootDir", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
     }
     withType<Test>().configureEach {
-        jvmArgs("--enable-preview", "--illegal-access=warn")
+        jvmArgs("--illegal-access=warn")
     }
     withType<JavaExec>().configureEach {
-        jvmArgs("--enable-preview", "--illegal-access=warn")
+        jvmArgs("--illegal-access=warn")
     }
 }
 

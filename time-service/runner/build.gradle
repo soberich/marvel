@@ -11,7 +11,7 @@ plugins {
     id 'kotlin-convention-helper'
     id 'jackson-convention-helper'
     //id 'io.micronaut.application' // FIXME: `org.springframework.boot` also adds `developmentOnly` so Gradle fails.
-    id 'dependencies-reporting-helper'
+    //id 'dependencies-reporting-helper' //FIXME: groovy won't run on java 16
     //id 'com.webcohesion.enunciate'
     id 'com.github.johnrengelman.shadow'
     //id 'org.hibernate.orm'
@@ -44,6 +44,17 @@ configurations {
     micronautDevelopmentOnly
     quarkusDevelopmentOnly
     springDevelopmentOnly.extendsFrom(configurations.developmentOnly)
+}
+
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(16))
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile).configureEach {
+    it.options.release.set(14)
+}
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    it.kotlinOptions.jdkHome = javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(16))
+    }.get().executablePath.asFile.parentFile.parent
+    it.kotlinOptions.jvmTarget = "14"
 }
 
 dependencies {
@@ -112,6 +123,17 @@ dependencies {
     micronautImplementation          (project(':time-service.api'))
     micronautImplementation          (project(':time-service.app'))
 
+    kaptMicronaut          (project(':time-service.api')) {
+        capabilities {
+            requireCapability("${project.group}:${project(':time-service.api').name}-micronaut")
+        }
+    }
+    kaptMicronaut          (project(':time-service.app')) {
+        capabilities {
+            requireCapability("${project.group}:${project(':time-service.app').name}-micronaut")
+        }
+    }
+
     micronautImplementation          (project(':time-service.api')) {
         capabilities {
             requireCapability("${project.group}:${project(':time-service.api').name}-micronaut")
@@ -178,7 +200,10 @@ dependencies {
     springImplementation             'org.springframework.boot:spring-boot-starter-actuator'
     springImplementation             'org.springframework.boot:spring-boot-starter-data-jpa'
     springImplementation             'org.springframework.boot:spring-boot-starter-validation'
-    springImplementation             'org.springframework.boot:spring-boot-starter-web'
+    springImplementation             ('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    springImplementation 'org.springframework.boot:spring-boot-starter-jetty'
 
     springImplementation             'org.aspectj:aspectjrt'
     springImplementation             'org.aspectj:aspectjweaver'
@@ -256,7 +281,7 @@ application {
     //mainModule.convention('com.example.marvel.runtime')
     mainClass                 = 'com.example.marvel.ApplicationKt'
     mainClassName             = 'com.example.marvel.ApplicationKt' //FIXME: Shadow plugin uses older Gradle Tooling API, there is no `mainClass` prop
-    applicationDefaultJvmArgs = ['-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote', '--enable-preview', '--illegal-access=warn']
+    applicationDefaultJvmArgs = ['-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote', '--illegal-access=warn']
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -283,6 +308,9 @@ tasks.named(ApplicationPlugin.TASK_RUN_NAME, JavaExec).configure {
 }
 tasks.withType(JavaExec).configureEach {
     classpath += configurations.developmentOnly
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
 }
 tasks.withType(ShadowJar).configureEach {
     mergeServiceFiles()
@@ -291,8 +319,12 @@ tasks.withType(Test).configureEach {
     classpath += configurations.developmentOnly
     useJUnitPlatform()
     exclude('**/Native*')
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
 }
 publishing {
+    repositories.maven { url 'https://maven.pkg.github.com/soberich/marvel' }
     publications {
         bootJava(MavenPublication) {
             artifact tasks.named(SpringBootPlugin.BOOT_JAR_TASK_NAME)
@@ -325,10 +357,10 @@ configure([
     }
 
     dependencies {
-        kapt                    'io.micronaut.data:micronaut-data-processor'          // In theory should allow `javax.transaction.Transactional` usage.
+        kapt/*Micronaut*/                    'io.micronaut.data:micronaut-data-processor'          // In theory should allow `javax.transaction.Transactional` usage.
 
-        kapt                    'io.micronaut.spring:micronaut-spring-web-annotation' // Allows Spring MVC annotations to be processes.
-        kapt                    'io.micronaut:micronaut-inject-java' // Allows Spring MVC annotations to be processes.
+        kapt/*Micronaut*/                    'io.micronaut.spring:micronaut-spring-web-annotation' // Allows Spring MVC annotations to be processes.
+        kapt/*Micronaut*/                    'io.micronaut:micronaut-inject-java' // Allows Spring MVC annotations to be processes.
 
         micronautImplementation          'io.micronaut:micronaut-inject'
 

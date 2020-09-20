@@ -6,8 +6,6 @@ import java.nio.file.Paths
 import java.util.*
 import org.gradle.api.plugins.ExtensionAware as EA
 
-check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) { "At least Java 14 is required, current JVM is ${JavaVersion.current()}" }
-
 plugins {
     `jvm-ecosystem`
     org.jetbrains.gradle.plugin.`idea-ext`
@@ -36,7 +34,7 @@ props.stringPropertyNames()
 
 subprojects {
     apply(plugin = "build-dashboard")
-    apply(plugin = "dependencies-reporting-helper")
+//    apply(plugin = "dependencies-reporting-helper") //FIXME: groovy won't run on java 16
     apply(plugin = "help-tasks")
 
     description = "${name.replace('-', ' ').toUpperCase()} of Native Quarkus/Micronaut Arrow-Kt Vert.x Coroutines GRPC Kotlin-DSL app"
