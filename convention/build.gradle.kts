@@ -76,18 +76,72 @@ dependencies {
 javaPlatform.allowDependencies()
 
 publishing {
-    repositories.maven("https://maven.pkg.github.com/soberich/marvel")
+    repositories {
+        mavenLocal()
+        maven("https://maven.pkg.github.com/soberich/marvel").credentials{
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key")  as String? ?: System.getenv("TOKEN")
+        }
+        maven("https://api.bintray.com/content/soberich/maven/com.github.soberich.marvel:$name/$version;publish=1;override=1;").credentials {
+            username = System.getenv("BINTRAY_USER")
+            password = System.getenv("BINTRAY_API_KEY")
+        }
+    }
     publications {
         create<MavenPublication>("marvelPlatform") {
+            groupId = "com.github.soberich.marvel"
             from(components["javaPlatform"])
+            if ("SNAPSHOT" in version.toString())
+                 withoutBuildIdentifier()
+            else withBuildIdentifier()
             versionMapping {
                 usage("java-api") {
                     fromResolutionResult()
                 }
-                usage("java-runtime") {
-                    fromResolutionResult()
+            }
+            pom {
+                withXml {
+                    asNode().apply {
+                        appendNode("repositories").appendNode("repository").apply {
+                            appendNode("id", "spring-milestone")
+                            appendNode("url", "https://repo.spring.io/milestone")
+                        }
+                    }
+                }
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("soberich")
+                        email.set("25544967+soberich@users.noreply.github.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:[fetch=]https://github.com/soberich/marvel.git[push=]git://github.com/soberich/marvel.git")
+                    developerConnection.set("scm:git:[fetch=]git://github.com/soberich/marvel.git[push=]ssh://github.com/soberich/marvel.git")
+                    url.set("https://github.com/soberich/marvel")
                 }
             }
+        }
+    }
+}
+
+tasks.withType<PublishToMavenRepository>().configureEach {
+    val odlValue: String? = System.getProperty("org.gradle.internal.publish.checksums.insecure")
+    doFirst {
+        if ("SNAPSHOT" in version.toString())
+             System.setProperty("org.gradle.internal.publish.checksums.insecure", "true")
+        else System.setProperty("org.gradle.internal.publish.checksums.insecure", "false")
+    }
+    doLast {
+        if (odlValue != System.getProperty("org.gradle.internal.publish.checksums.insecure")) {
+            if (odlValue != null)
+                 System.setProperty("org.gradle.internal.publish.checksums.insecure", odlValue)
+            else System.clearProperty("org.gradle.internal.publish.checksums.insecure")
         }
     }
 }

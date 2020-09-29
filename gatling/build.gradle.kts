@@ -33,7 +33,7 @@ tasks {
              * For IDEA based build (Ant) this `targetCompatibility` shas to be set to the desired value,
              * otherwise will be inherited from project regardless `release` set
              */
-            //targetCompatibility = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
+            //targetCompatibility = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString() //FOR JPS compilation  TODO: Remove
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
         scalaCompileOptions.apply {

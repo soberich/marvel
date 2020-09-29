@@ -13,10 +13,8 @@ repositories.jcenter()
 val hibernateVersion: String by project
 
 dependencies {
-    listOf(
-        platform(project(":convention"))
-    ).asSequence()
-    .forEach(::api)
+
+    api(platform(project(":convention")))
 
     api("com.vladmihalcea:hibernate-types-52:[2.9,2.10)")
     api("io.github.classgraph:classgraph:+")

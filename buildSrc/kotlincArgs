@@ -2,13 +2,14 @@
 -progressive
 -version
 -Xadd-light-debug=disable
+-Xallow-kotlin-package
 -Xallow-result-return-type
 -Xeffect-system
 -Xemit-jvm-type-annotations
 -Xexpect-actual-linker
 -Xinline-classes
 -Xjsr305=strict
--Xjvm-default=compatibility
+-Xjvm-default=all
 -Xmulti-platform
 -Xnew-inference
 -Xopt-in=kotlin.contracts.ExperimentalContracts
@@ -24,6 +25,7 @@
 -Xopt-in=kotlinx.coroutines.InternalCoroutinesApi
 -Xopt-in=kotlinx.coroutines.ObsoleteCoroutinesApi
 -Xpolymorphic-signature
+-Xuse-ir
 -Xuse-mixed-named-arguments
 -XXLanguage:+FunctionalInterfaceConversion
 -XXLanguage:+ReferencesToSyntheticJavaProperties

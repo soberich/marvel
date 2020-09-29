@@ -88,6 +88,7 @@ subprojects {
         maven("https://jitpack.io") {
             content {
                 includeGroup("com.github.Kotlin")
+                includeGroup("io.smallrye")
             }
         }
     }

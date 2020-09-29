@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
-import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.findKaptConfiguration
 import versioning.Deps
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.streams.asSequence
+import kotlin.KotlinVersion
 
 plugins {
     java //if not applied `spring-boot-runner` reports missing `annotationProcessor` configuration
@@ -20,23 +20,13 @@ plugins {
 }
 
 dependencies {
-    project.the<SourceSetContainer>().configureEach {
-        if ("test" !in name && "Test" !in name) {
-            implementationConfigurationName(enforcedPlatform(kotlin("bom")))
-            /*
-             * need to explicitly have it here
-             * 'buildSrc:compileKotlin' prints "w: Consider providing an explicit dependency on kotlin-reflect 1.4 to prevent strange errors"
-             */
-            //implementationConfigurationName(kotlin("reflect"))
-            //implementationConfigurationName(kotlin("stdlib"))
-            //implementationConfigurationName(kotlin("stdlib-common"))
-            //implementationConfigurationName(kotlin("stdlib-jdk7"))
-            //implementationConfigurationName(kotlin("stdlib-jdk8"))
-
-            implementationConfigurationName("org.jetbrains.kotlinx:atomicfu:0.14.4")
-            implementationConfigurationName("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
-            implementationConfigurationName("org.jetbrains.kotlinx:kotlinx-io-jvm:0.2.0")
-            //implementationConfigurationName(Deps.Libs.COROUTINES_REACTOR)
+    kotlin.sourceSets.configureEach {
+        dependencies {
+            implementation(enforcedPlatform(kotlin("bom")))
+            implementation("org.jetbrains.kotlinx:atomicfu:0.14.4")
+            implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:0.2.0")
+            //implementation(Deps.Libs.COROUTINES_REACTOR)
         }
     }
 }
@@ -44,19 +34,9 @@ dependencies {
 tasks {
     withType<KotlinCompile<*>>().configureEach {
         kotlinOptions {
-            val args = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs"))
-            val kotlinVersion: String? by project
-            languageVersion =
-                if (true == kotlinVersion?.startsWith("1.4")) {
-                    //override few args
-                    arrayOf(
-                        "-Xjvm-default=all",
-                        "-Xuse-ir"
-                    ).forEach(args::plusAssign)
-                    "1.4"
-                } else "${KotlinVersion.CURRENT.major}.${KotlinVersion.CURRENT.minor}"
+            languageVersion = "${KotlinVersion.CURRENT.major}.${KotlinVersion.CURRENT.minor}"
             apiVersion = languageVersion
-            freeCompilerArgs = args.filterNot(String::isNullOrBlank)
+            freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "buildSrc", "kotlincArgs")).filterNot(String::isNullOrBlank)
         }
     }
     withType<KotlinJvmCompile>().configureEach {
@@ -67,7 +47,7 @@ tasks {
             isFork = true
             forkOptions.jvmArgs = listOf("--illegal-access=warn")
             release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString().toInt())
-            targetCompatibility = release.get().toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
+            targetCompatibility = release.get().toString() //FOR JPS compilation  TODO: Remove
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
     }
@@ -96,7 +76,7 @@ kapt {
 }
 
 noArg {
-//    invokeInitializers = true // run `init {...}` blocks
+    invokeInitializers = true // run `init {...}` blocks
     annotations(
         "io.micronaut.core.annotation.Introspected",
         "javax.inject.Named",

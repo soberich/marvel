@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.createAptConfigurationIfNeeded
 import versioning.Deps
 
 plugins {
@@ -12,43 +13,33 @@ plugins {
 repositories.jcenter()
 
 dependencies {
+    kotlin.sourceSets.configureEach {
+        dependencies {
 
-    listOf(
-        platform(project(":convention"))
-    ).asSequence()
-    .onEach(::annotationProcessor)
-    .onEach(::kapt)
-    .onEach(::compileOnly)
-    .onEach(::compileOnlyApi)
-    .onEach(::api)
-    .onEach(::runtimeOnly)
-    .onEach(::testAnnotationProcessor)
-    .forEach(::kaptTest)
+            //FIXME: Kotlin plugin doen't have this new api
+            val compileOnlyApiName = project.sourceSets[name].compileOnlyApiConfigurationName
+            val compileOnlyApi     = configurations.findByName(compileOnlyApiName)
+            val kapt               = createAptConfigurationIfNeeded(project, name).name
 
-    /*
-     * For IDEA based build (Ant) this has to be in `annotationProcessor`
-     */
-    listOf(
-        "org.immutables:value",
-        Deps.Libs.VALIDATOR_AP
-    ).asSequence()
-    .onEach(::annotationProcessor)
-    .onEach(::testAnnotationProcessor)
-    .onEach(::kapt)
-    .forEach(::kaptTest)
+            kapt                  (platform(project(":convention")))
+            compileOnly           (platform(project(":convention")))
+            compileOnlyApi?.invoke(platform(project(":convention")))
+            api                   (platform(project(":convention")))
+            runtimeOnly           (platform(project(":convention")))
 
-    arrayOf(
-        //Deps.Libs.ARROW_ANNOTATIONS, //FIXME
-        "org.immutables:builder",
-        "org.immutables:value:annotations"
-    ).forEach(::compileOnlyApi)
+            kapt                  ("org.immutables:value")
+            kapt                  (Deps.Libs.VALIDATOR_AP)
 
-    arrayOf(
-        Deps.Jakarta.VALIDATION,
-        //Deps.Libs.ARROW_OPTICS, //FIXME
-        Deps.Libs.REACTIVE_STREAMS,
-        Deps.Libs.VALIDATOR
-    ).forEach(::api)
+            //compileOnlyApi?.invoke(Deps.Libs.ARROW_ANNOTATIONS) //FIXME
+            compileOnlyApi?.invoke("org.immutables:builder")
+            compileOnlyApi?.invoke("org.immutables:value:annotations")
+
+            api                   (Deps.Jakarta.VALIDATION)
+            //api                   (Deps.Libs.ARROW_OPTICS) //FIXME
+            api                   (Deps.Libs.REACTIVE_STREAMS)
+            api                   (Deps.Libs.VALIDATOR)
+        }
+    }
 }
 
 publishing {

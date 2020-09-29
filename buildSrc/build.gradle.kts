@@ -13,12 +13,10 @@ import org.gradle.api.plugins.ExtensionAware as EA
 
 plugins {
     java
-    `java-gradle-plugin`
-    //`groovy-gradle-plugin`
-    `kotlin-dsl`//                                   version "1.4.0"
-    `build-dashboard`                              // optional
-    `help-tasks`                                   // optional
-    `project-report`                               // optional
+    `kotlin-dsl`
+    `build-dashboard`                             // optional
+    `help-tasks`                                  // optional
+    `project-report`                              // optional
     id("com.github.ben-manes.versions")
     id("org.jetbrains.gradle.plugin.idea-ext")
 }
@@ -79,35 +77,48 @@ val versionsPluginVersion : String by project
     implementation(kotlin("noarg"                        , kotlinVersion))
     implementation(kotlin("sam-with-receiver"            , kotlinVersion))
     //implementation(kotlin("serialization", kotlinVersion))
-    implementation(gradleKotlinDsl()) //FOR IDEA compilation
-    implementation("org.apache.logging.log4j:log4j-core:2.11.0") //FOR JPS compilation
-    //implementation("org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin:$kotlinVersion") //FOR IDEA compilation
-    implementation("com.github.ben-manes"                              , "gradle-versions-plugin"                  , versionsPluginVersion)
-    implementation("com.github.jengelman.gradle.plugins"               , "shadow"                                  , shadowPluginVersion)
-    implementation("com.vaadin"                                        , "vaadin-gradle-plugin"                    , "+")
-    implementation("com.vanniktech"                                    , "gradle-dependency-graph-generator-plugin", "0.5.0")
+    implementation(gradleKotlinDsl()) //FOR JPS compilation  TODO: Remove
+    implementation("org.apache.logging.log4j:log4j-core:2.11.0") //FOR JPS compilation  TODO: Remove
+    //implementation("org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin:$kotlinVersion") //FOR JPS compilation  TODO: Remove
+    implementation("com.github.ben-manes"                              , "gradle-versions-plugin"   , versionsPluginVersion)
+    implementation("com.github.jengelman.gradle.plugins"               , "shadow"                   , shadowPluginVersion)
+    implementation("com.vaadin"                                        , "vaadin-gradle-plugin"     , "+")
+    implementation("com.jfrog.bintray.gradle"                          , "gradle-bintray-plugin"    , "+")
     /*TODO: Apparently, these plugins needs PRs to remove `gradle.plugin` from group. Looks amateur*/
-    implementation("gradle.plugin.com.github.spotbugs.snom"            , "spotbugs-gradle-plugin"                  , spotBugsPluginVersion)
-    implementation("gradle.plugin.com.gorylenko.gradle-git-properties" , "gradle-git-properties"                   , "+")
-    implementation("gradle.plugin.com.webcohesion.enunciate"           , "enunciate-gradle"                        , "+")
-    //implementation("gradle.plugin.io.quarkus"                          , "quarkus-gradle-plugin"                   , quarkusVersion)
-    implementation("gradle.plugin.net.bytebuddy"                       , "byte-buddy-gradle-plugin"                , byteBuddyVersion)
-    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext", "gradle-idea-ext"                         , ideaExtPluginVersion)
-    implementation("io.ebean"                                          , "ebean-gradle-plugin"                     , "+")
-    implementation("io.micronaut.gradle"                               , "micronaut-gradle-plugin"                 , micronautPluginVersion)
-    implementation("org.kordamp.gradle"                                , "jandex-gradle-plugin"                    , "+")
-    implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"                   , "+")
-    implementation("org.beryx"                                         , "badass-jlink-plugin"                     , jlinkPluginVersion)
-    implementation("org.hibernate"                                     , "hibernate-gradle-plugin"                 , hibernateVersion)
-    implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"                     , "1.4.0")
-    implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"                 , "+")
-    implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin"               , springBootVersion)
+    implementation("gradle.plugin.com.github.spotbugs.snom"            , "spotbugs-gradle-plugin"   , spotBugsPluginVersion)
+    implementation("gradle.plugin.com.gorylenko.gradle-git-properties" , "gradle-git-properties"    , "+")
+    implementation("gradle.plugin.com.webcohesion.enunciate"           , "enunciate-gradle"         , "+")
+    //implementation("gradle.plugin.io.quarkus"                          , "quarkus-gradle-plugin"    , quarkusVersion)
+    implementation("gradle.plugin.net.bytebuddy"                       , "byte-buddy-gradle-plugin" , byteBuddyVersion)
+    implementation("gradle.plugin.org.jetbrains.gradle.plugin.idea-ext", "gradle-idea-ext"          , ideaExtPluginVersion)
+    implementation("io.ebean"                                          , "ebean-gradle-plugin"      , "+")
+    implementation("io.micronaut.gradle"                               , "micronaut-gradle-plugin"  , micronautPluginVersion)
+    implementation("org.kordamp.gradle"                                , "jandex-gradle-plugin"     , "+")
+    implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"    , "+")
+    implementation("org.beryx"                                         , "badass-jlink-plugin"      , jlinkPluginVersion)
+    implementation("org.hibernate"                                     , "hibernate-gradle-plugin"  , hibernateVersion)
+    implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"      , "1.4.0")
+    implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"  , "+")
+    implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin", springBootVersion)
     //implementation("se.patrikerdes"                                    , "gradle-use-latest-versions-plugin"       , "+")
 }
 
 kotlinDslPluginOptions {
     experimentalWarning.set(false)
-    jvmTarget.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_13).toString())
+    jvmTarget.set(JavaVersion.current().coerceAtMost(if (KotlinVersion.CURRENT.isAtLeast(1, 4)) JavaVersion.VERSION_14 else JavaVersion.VERSION_13).toString())
+}
+
+afterEvaluate {
+    kotlinDslPluginOptions {
+        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+            kotlinOptions {
+                jvmTarget = JavaVersion.current().coerceAtMost(if (KotlinVersion.CURRENT.isAtLeast(1, 4)) JavaVersion.VERSION_14 else JavaVersion.VERSION_13).toString()
+                languageVersion = "${KotlinVersion.CURRENT.major}.${KotlinVersion.CURRENT.minor}"
+                apiVersion = languageVersion
+                freeCompilerArgs = Files.readAllLines(Paths.get("$rootDir", "kotlincArgs")).filterNot(String::isNullOrBlank)
+            }
+        }
+    }
 }
 
 ((idea.project as EA).the<ProjectSettings>() as EA).configure<IdeaCompilerConfiguration> {
@@ -130,14 +141,15 @@ tasks {
         }
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_13).toString()
+        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(if (KotlinVersion.CURRENT.isAtLeast(1, 4)) JavaVersion.VERSION_14 else JavaVersion.VERSION_13).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
             isFork = true
             forkOptions.jvmArgs = listOf("--illegal-access=warn")
             release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString().toInt())
-            targetCompatibility = release.get().toString() //Not affecting compilation. For IDEA integration only.  TODO: Remove
+            targetCompatibility = release.get().toString() //FOR JPS compilation  TODO: Remove
+
             Files.lines(Paths.get("$rootDir", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
     }
@@ -155,7 +167,7 @@ tasks {
 gradlePlugin {
     plugins {
         Files.walk(Paths.get("$rootDir", "src", "main")).use {
-            it.filter(Files::isRegularFile)
+            it.filter { Files.isRegularFile(it) }
                 .filter { it.fileName.toString().substringBeforeLast(".").endsWith("Plugin") }
                 .map(Path::toAbsolutePath)
                 .forEach { absolutePluginPath ->

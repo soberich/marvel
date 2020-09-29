@@ -37,7 +37,7 @@ include(
 
 for (serviceDir in setOf("time-service")) {
     Files.list(Paths.get("$rootDir", serviceDir)).use {
-        it.filter(Files::isDirectory)
+        it.filter { Files.isDirectory(it) }
             .forEach {
                 ":${it.fileName}"
                     .also { include(it) }

@@ -1,4 +1,5 @@
 import org.hibernate.orm.tooling.gradle.EnhanceExtension
+import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.createAptConfigurationIfNeeded
 import versioning.Deps
 
 plugins {
@@ -13,53 +14,40 @@ plugins {
 repositories.jcenter()
 
 dependencies {
-    listOf(
-        platform(project(":convention"))
-    ).asSequence()
-    .onEach(::annotationProcessor)
-    .onEach(::kapt)
-    .onEach(::compileOnly)
-    .onEach(::api)
-    .onEach(::runtimeOnly)
-    .onEach(::testAnnotationProcessor)
-    .forEach(::kaptTest)
+    kotlin.sourceSets.configureEach {
+        dependencies {
 
-    /*
-     * ORDER MATTERS!!
-     * JPAMODELGEN better go first!
-     * For IDEA based build (Ant) this has to be in `annotationProcessor`
-     */
-    listOf(
-        "com.blazebit:blaze-persistence-entity-view-processor",
-        "com.blazebit:blaze-persistence-core-api",
-        Deps.Jakarta.PERSISTENCE,
-        Deps.Libs.HIBERNATE_JPAMODELGEN,
-        Deps.Libs.MAPSTRUCT_AP,
-        Deps.Libs.VALIDATOR_AP
-    ).asSequence()
-    .onEach(::annotationProcessor)
-    .onEach(::testAnnotationProcessor)
-    .onEach(::kapt)
-    .forEach(::kaptTest)
+            //FIXME: Kotlin plugin doen't have this new api
+            val kapt = createAptConfigurationIfNeeded(project, name).name
 
-    arrayOf(
-        Deps.Jakarta.INJECT,
-        Deps.Jakarta.PERSISTENCE,
-        Deps.Libs.MAPSTRUCT
-    ).forEach(::compileOnly)
+            kapt          (platform(project(":convention")))
+            compileOnly   (platform(project(":convention")))
+            api           (platform(project(":convention")))
+            runtimeOnly   (platform(project(":convention")))
 
-    api("com.blazebit:blaze-persistence-core-api") //105 Kb
-    api("com.blazebit:blaze-persistence-entity-view-api") // 136 Kb
+            kapt          ("com.blazebit:blaze-persistence-entity-view-processor")
+            kapt          ("com.blazebit:blaze-persistence-core-api")
+            kapt          (Deps.Jakarta.PERSISTENCE)
+            kapt          (Deps.Libs.HIBERNATE_JPAMODELGEN)
+            kapt          (Deps.Libs.MAPSTRUCT_AP)
+            kapt          (Deps.Libs.VALIDATOR_AP)
 
-    arrayOf(
-        project(":shared"),
-        project(":time-service.api"),
-        project(":time-service.spi"),
-        "com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3",
-        "org.springframework:spring-tx:+",     //TODO: Extract to `Deps.Libs`
-        "org.springframework:spring-web:+",    //TODO: Extract to `Deps.Libs`
-        "org.springframework:spring-context:+" //TODO: Extract to `Deps.Libs`
-    ).forEach(::implementation)
+            compileOnly   (Deps.Jakarta.INJECT)
+            compileOnly   (Deps.Jakarta.PERSISTENCE)
+            compileOnly   (Deps.Libs.MAPSTRUCT)
+
+            api           ("com.blazebit:blaze-persistence-core-api") //105 Kb
+            api           ("com.blazebit:blaze-persistence-entity-view-api") // 136 Kb
+
+            implementation(project(":shared"))
+            implementation(project(":time-service.api"))
+            implementation(project(":time-service.spi"))
+            implementation("com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3")
+            implementation("org.springframework:spring-tx:+")     //TODO: Extract to `Deps.Libs`
+            implementation("org.springframework:spring-web:+")    //TODO: Extract to `Deps.Libs`
+            implementation("org.springframework:spring-context:+") //TODO: Extract to `Deps.Libs`
+        }
+    }
 }
 
 idea.module.isDownloadSources = true
