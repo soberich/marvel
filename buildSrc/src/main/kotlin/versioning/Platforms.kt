@@ -8,7 +8,7 @@ object Platforms {
         //@formatter:off
         const val ARROW          = "0.11.0-SNAPSHOT"
         const val BLAZE_JPA      = "1.6.0-Alpha2"
-        const val COROUTINES     = "1.3.9"
+        const val COROUTINES     = "1.4.3"
         const val GUAVA          = "30.+"
         const val IMMUTABLES     = "2.8.9-SNAPSHOT"
         const val JACKSON        = "2.11.2"//"2.10.3"

@@ -27,7 +27,7 @@ dependencies {
             implementation("org.jetbrains.kotlinx:atomicfu:0.15.1")
             implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.3")
             //implementation("com.github.Kotlin:kotlinx.collections.immutable:master-SNAPSHOT")
-            implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:0.2.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:0.3.0")
             //implementation("com.github.Kotlin:kotlinx-io:master-SNAPSHOT")
             //implementation(Deps.Libs.COROUTINES_REACTOR)
         }
