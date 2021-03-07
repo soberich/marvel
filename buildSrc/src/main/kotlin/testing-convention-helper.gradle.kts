@@ -1,3 +1,5 @@
+import org.gradle.api.plugins.jvm.internal.DefaultJvmPluginExtension
+import org.gradle.api.plugins.jvm.internal.JvmPluginExtension
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
@@ -38,26 +40,26 @@ dependencies {
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.12")
 }
 
-jvm {
-    // Share the test report data to be aggregated for the whole project
-    createOutgoingElements("binaryTestRuntimeElements") {
-        providesAttributes {
-            documentation("test-report-data")
-        }
-        tasks.withType<Test>().configureEach {
-            artifact(binaryResultsDirectory)
-        }
-    }
-    // Share the test report data to be aggregated for the whole project
-    createOutgoingElements("coverageDataElements") {
-        providesAttributes {
-            documentation("jacoco-coverage-data")
-        }
-        tasks.withType<Test>().configureEach {
-            extensions.findByType<JacocoTaskExtension>()?.destinationFile?.run(::artifact)
-        }
-    }
-}
+//val jvm = extensions.create<JvmPluginExtension>("jvm", DefaultJvmPluginExtension::class)
+//
+//// Share the test report data to be aggregated for the whole project
+//jvm.createOutgoingElements("binaryTestRuntimeElements") {
+//    providesAttributes {
+//        documentation("test-report-data")
+//    }
+//    tasks.withType<Test>().configureEach {
+//        artifact(binaryResultsDirectory)
+//    }
+//}
+//// Share the test report data to be aggregated for the whole project
+//jvm.createOutgoingElements("coverageDataElements") {
+//    providesAttributes {
+//        documentation("jacoco-coverage-data")
+//    }
+//    tasks.withType<Test>().configureEach {
+//        extensions.findByType<JacocoTaskExtension>()?.destinationFile?.run(::artifact)
+//    }
+//}
 
 tasks.withType<Test>().configureEach {
     //@formatter:off
@@ -67,6 +69,7 @@ tasks.withType<Test>().configureEach {
     reports {
         html    .isEnabled = true
         junitXml.isEnabled = true
+        junitXml.mergeReruns.set(true)
     }
     systemProperties(
         "java.util.logging.manager" to "org.jboss.logmanager.LogManager",

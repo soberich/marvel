@@ -18,8 +18,8 @@ import org.hibernate.usertype.UserType
 class HibernateTypesContributorIntegratorProvider<T>(
     classImportIntegrator: Integrator = ClassImportIntegrator(
         ClassGraph()
-            //.filterClasspathElements { "marvel" in it } //very unrelyable filtering without knowing exact location
-            .whitelistPackages("com.example.marvel.fixme.please")
+            //.filterClasspathElements { "marvel" in it } //very unreliable filtering without knowing exact location
+            .acceptPackages("com.example.marvel.fixme.please")
             .enableAnnotationInfo()
             .removeTemporaryFilesAfterScan()
             .scan().use { result ->

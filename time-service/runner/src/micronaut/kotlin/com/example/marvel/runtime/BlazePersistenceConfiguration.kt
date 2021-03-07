@@ -2,9 +2,17 @@ package com.example.marvel.runtime
 
 import com.blazebit.persistence.Criteria
 import com.blazebit.persistence.CriteriaBuilderFactory
+import com.blazebit.persistence.view.ConfigurationProperties.MANAGED_TYPE_VALIDATION_DISABLED
 import com.blazebit.persistence.view.EntityViewManager
 import com.blazebit.persistence.view.EntityViews
-import com.example.marvel.api.*
+import com.example.marvel.api.EmployeeCreateCommand
+import com.example.marvel.api.EmployeeUpdateCommand
+import com.example.marvel.api.ProjectCreateCommand
+import com.example.marvel.api.ProjectUpdateCommand
+import com.example.marvel.api.RecordCollectionCreateCommand
+import com.example.marvel.api.RecordCollectionUpdateCommand
+import com.example.marvel.api.RecordCreateCommand
+import com.example.marvel.api.RecordUpdateCommand
 import com.example.marvel.domain.employee.EmployeeDetailedViewDefault
 import com.example.marvel.domain.employee.EmployeeListingView
 import com.example.marvel.domain.record.RecordDetailedViewDefault
@@ -59,6 +67,7 @@ class BlazePersistenceConfiguration {
         cbf: CriteriaBuilderFactory?
     ): EntityViewManager? {
         val cfg = EntityViews.createDefaultConfiguration()
+        cfg.setProperty(MANAGED_TYPE_VALIDATION_DISABLED, "true")
 
         cfg.addEntityView(EmployeeDetailedViewDefault::class.java)
         cfg.addEntityView(EmployeeListingView::class.java)
@@ -66,7 +75,6 @@ class BlazePersistenceConfiguration {
         cfg.addEntityView(RecordCollectionListingView::class.java)
         cfg.addEntityView(RecordDetailedViewDefault::class.java)
         cfg.addEntityView(RecordIdView::class.java)
-        cfg.addEntityView(RecordListingView::class.java)
         cfg.addEntityView(RecordListingView::class.java)
 
         return cfg.createEntityViewManager(cbf)

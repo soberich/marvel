@@ -1,7 +1,5 @@
 package versioning;
 
-import java.lang.String;
-
 /**
  * Project targets all maximum developer experience
  * and tries to hit as close to "how it should be done" (a.k.a. "standard") as possible.

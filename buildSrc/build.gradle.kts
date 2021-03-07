@@ -23,7 +23,7 @@ plugins {
 
 repositories {
     gradlePluginPortal()
-    jcenter()
+    mavenCentral()
     maven("https://repo.spring.io/milestone") {
         content {
             includeGroupByRegex("org\\.springframework.*")
@@ -97,14 +97,13 @@ val versionsPluginVersion : String by project
     implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"    , "+")
     implementation("org.beryx"                                         , "badass-jlink-plugin"      , jlinkPluginVersion)
     implementation("org.hibernate"                                     , "hibernate-gradle-plugin"  , hibernateVersion)
-    implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"      , "1.4.0")
+    implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"      , "1.4.10")
     implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"  , "+")
     implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin", springBootVersion)
     //implementation("se.patrikerdes"                                    , "gradle-use-latest-versions-plugin"       , "+")
 }
 
 kotlinDslPluginOptions {
-    experimentalWarning.set(false)
     jvmTarget.set(JavaVersion.current().coerceAtMost(if (KotlinVersion.CURRENT.isAtLeast(1, 4)) JavaVersion.VERSION_14 else JavaVersion.VERSION_13).toString())
 }
 
@@ -177,10 +176,10 @@ gradlePlugin {
                     register(name) {
                         id = name.substringBeforeLast("-plugin")
                         implementationClass = project.sourceSets
-                            .map(SourceSet::allSource)
+                            .map { it.allSource }
                             .flatMap(SourceDirectorySet::getSrcDirs)
                             .asSequence()
-                            .map(File::absolutePath)
+                            .map { it.absolutePath }
                             .filter { it in absolutePluginPath.toString() }
                             .map { absolutePluginPath.toString().substringAfterLast(it + File.separator) }
                             .map { it.substringBeforeLast('.') }

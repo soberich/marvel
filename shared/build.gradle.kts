@@ -8,7 +8,7 @@ plugins {
     `maven-publish`
 }
 
-repositories.jcenter()
+repositories.mavenCentral()
 
 val hibernateVersion: String by project
 

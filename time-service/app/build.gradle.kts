@@ -11,7 +11,7 @@ plugins {
     //org.hibernate.orm
 }
 
-repositories.jcenter()
+repositories.mavenCentral()
 
 dependencies {
     kotlin.sourceSets.configureEach {

@@ -1,14 +1,15 @@
 import java.nio.file.Files
 import java.nio.file.Paths
 
-enableFeaturePreview("VERSION_ORDERING_V2")
+//in Gradle 7.x this property is deprecated.
+//enableFeaturePreview("VERSION_ORDERING_V2")
 
 rootProject.name = "marvel"
 
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        jcenter()
+        mavenCentral()
         maven("https://oss.sonatype.org/content/repositories/snapshots") {
             mavenContent {
                 snapshotsOnly()

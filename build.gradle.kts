@@ -5,6 +5,8 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import org.gradle.api.plugins.ExtensionAware as EA
+import org.gradle.api.plugins.jvm.internal.DefaultJvmPluginExtension
+import org.gradle.api.plugins.jvm.internal.JvmPluginExtension
 
 plugins {
     `jvm-ecosystem`
@@ -60,7 +62,7 @@ subprojects {
                 includeModule("org.jetbrains.kotlinx", "kotlinx-io-jvm")
             }
         }
-        jcenter()
+        mavenCentral()
         maven("https://repository.jboss.org/nexus/content/repositories/public")
         maven("https://repo.spring.io/milestone")
         maven("https://kotlin.bintray.com/kotlinx")
@@ -94,46 +96,48 @@ subprojects {
     }
 }
 
-// A resolvable configuration to collect test report data
-val testReportData = jvm.createResolvableConfiguration("testReportData") {
-    requiresAttributes {
-        documentation("test-report-data")
-    }
-}
-
-// A resolvable configuration to collect JaCoCo coverage data
-val jacocoCoverageData = jvm.createResolvableConfiguration("jacocoCoverageData") {
-    requiresAttributes {
-        documentation("jacoco-coverage-data")
-    }
-}
-
-dependencies {
-    subprojects {
-        plugins.withId("testing-convention-helper") {
-            plugins.withType<JavaLibraryPlugin>().configureEach {
-                testReportData(this@dependencies.project(this@subprojects.path))
-                tasks.withType<Test>().configureEach {
-                    extensions.findByType<JacocoTaskExtension>()?.run {
-                        jacocoCoverageData(this@dependencies.project(this@subprojects.path))
-                    }
-                }
-            }
-            plugins.withType<JavaPlugin>().configureEach {
-                testReportData(this@dependencies.project(this@subprojects.path))
-                tasks.withType<Test>().configureEach {
-                    extensions.findByType<JacocoTaskExtension>()?.run {
-                        jacocoCoverageData(this@dependencies.project(this@subprojects.path))
-                    }
-                }
-            }
-        }
-    }
-}
-
-tasks.register<TestReport>("${project.name}TestReport") {
-    group = JavaBasePlugin.VERIFICATION_GROUP
-    destinationDir = file("$buildDir/reports")
-    // Use test results from testReportData configuration
-    (testResultDirs as ConfigurableFileCollection).from(testReportData)
-}
+//val jvm = extensions.getByType<JvmPluginExtension>()
+//
+//// A resolvable configuration to collect test report data
+//val testReportData = jvm.createResolvableConfiguration("testReportData") {
+//    requiresAttributes {
+//        documentation("test-report-data")
+//    }
+//}
+//
+//// A resolvable configuration to collect JaCoCo coverage data
+//val jacocoCoverageData = jvm.createResolvableConfiguration("jacocoCoverageData") {
+//    requiresAttributes {
+//        documentation("jacoco-coverage-data")
+//    }
+//}
+//
+//dependencies {
+//    subprojects {
+//        plugins.withId("testing-convention-helper") {
+//            plugins.withType<JavaLibraryPlugin>().configureEach {
+//                testReportData(this@dependencies.project(this@subprojects.path))
+//                tasks.withType<Test>().configureEach {
+//                    extensions.findByType<JacocoTaskExtension>()?.run {
+//                        jacocoCoverageData(this@dependencies.project(this@subprojects.path))
+//                    }
+//                }
+//            }
+//            plugins.withType<JavaPlugin>().configureEach {
+//                testReportData(this@dependencies.project(this@subprojects.path))
+//                tasks.withType<Test>().configureEach {
+//                    extensions.findByType<JacocoTaskExtension>()?.run {
+//                        jacocoCoverageData(this@dependencies.project(this@subprojects.path))
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//tasks.register<TestReport>("${project.name}TestReport") {
+//    group = JavaBasePlugin.VERIFICATION_GROUP
+//    destinationDir = file("$buildDir/reports")
+//    // Use test results from testReportData configuration
+//    (testResultDirs as ConfigurableFileCollection).from(testReportData)
+//}

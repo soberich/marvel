@@ -1,4 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.gradle.api.plugins.jvm.internal.DefaultJvmPluginExtension
+import org.gradle.api.plugins.jvm.internal.JvmPluginExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.run.BootRun
@@ -20,25 +22,25 @@ plugins {
     id 'io.quarkus'
 }
 
-repositories.jcenter()
+repositories.mavenCentral()
 
-jvm {
-    createJvmVariant('micronaut') {
-        distinctCapability()
-        withSourcesJar()
-        published()
-    }
-    createJvmVariant('micronautTest') {
-        distinctCapability()
-    }
-    createJvmVariant('spring') {
-        distinctCapability()
-        withSourcesJar()
-        published()
-    }
-    createJvmVariant('springTest') {
-        distinctCapability()
-    }
+def jvm = extensions.create(JvmPluginExtension, "jvm", DefaultJvmPluginExtension)
+
+jvm.createJvmVariant('micronaut') {
+    distinctCapability()
+    withSourcesJar()
+    published()
+}
+jvm.createJvmVariant('micronautTest') {
+    distinctCapability()
+}
+jvm.createJvmVariant('spring') {
+    distinctCapability()
+    withSourcesJar()
+    published()
+}
+jvm.createJvmVariant('springTest') {
+    distinctCapability()
 }
 
 configurations {
@@ -347,8 +349,10 @@ configure([
     configurations {
         kaptMicronaut.extendsFrom(configurations.annotationProcessor, configurations.kapt)
     }
+    def jvmSubproject = extensions.create(JvmPluginExtension, "jvm", DefaultJvmPluginExtension)
 
-    jvm.createJvmVariant('micronaut') {
+
+    jvmSubproject.createJvmVariant('micronaut') {
         usingSourceSet(sourceSets.main)
         distinctCapability()
         withSourcesJar()

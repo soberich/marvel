@@ -8,7 +8,7 @@ plugins {
     application
 }
 
-repositories.jcenter()
+repositories.mavenCentral()
 
 dependencies {
     arrayOf(

@@ -1,5 +1,6 @@
 // this file prevents gradle to search for it
-enableFeaturePreview("VERSION_ORDERING_V2")
+//in Gradle 7.x this property is deprecated.
+//enableFeaturePreview("VERSION_ORDERING_V2")
 
 pluginManagement {
     val ideaExtPluginVersion : String by settings
@@ -11,7 +12,7 @@ pluginManagement {
     }
     repositories {
         gradlePluginPortal()
-        jcenter()
+        mavenCentral()
         maven("https://oss.sonatype.org/content/repositories/snapshots") {
             mavenContent {
                 snapshotsOnly()

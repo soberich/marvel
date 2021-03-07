@@ -10,7 +10,7 @@ plugins {
 
 //FIXME: This project supposed to be multiplatform
 
-repositories.jcenter()
+repositories.mavenCentral()
 
 dependencies {
     kotlin.sourceSets.configureEach {

@@ -8,7 +8,7 @@ plugins {
     `maven-publish`
 }
 
-repositories.jcenter()
+repositories.mavenCentral()
 
 val arrowVersion        : String by project
 val blazeJpaVersion     : String by project
@@ -35,7 +35,7 @@ dependencies {
     api(platform("io.ktor"                          + ':' +"ktor-bom"                + ':' + ktorVersion))
     api(platform("io.micronaut"                     + ':' +"micronaut-bom"           + ':' + micronautVersion))
     //api(platform("io.micronaut.data"                + ':' +"micronaut-data-bom"      + ':' + micronautDataVersion))
-    api(platform("io.quarkus"                       + ':' +"quarkus-bom"             + ':' + quarkusVersion))
+    api(platform("io.quarkus"                       + ':' +"quarkus-universe-bom"             + ':' + quarkusVersion))
     //api(platform("io.quarkus"                       + ':' +"quarkus-universe-bom"    + ':' + quarkusVersion))
     api(platform("org.jboss.resteasy"               + ':' +"resteasy-bom"            + ':' + resteasyVersion))
     api(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))

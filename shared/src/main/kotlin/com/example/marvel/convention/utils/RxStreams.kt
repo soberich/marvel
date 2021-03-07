@@ -10,7 +10,7 @@ object RxStreams {
     @JvmStatic
     fun <T> fromCallable(callable: Callable<Stream<T>>): Observable<T> = Observable.create {
         try {
-            callable.call().forEach(it::onNext)
+            callable.call().forEach { i -> it.onNext(i!!) }
             it.onComplete()
         } catch (t: Throwable) {
             it.onError(t)
@@ -20,7 +20,7 @@ object RxStreams {
     @JvmStatic
     fun <T> fromStream(stream: Stream<T>): Observable<T> = Observable.create {
         try {
-            stream.forEach(it::onNext)
+            stream.forEach { i -> it.onNext(i!!) }
             it.onComplete()
         } catch (t: Throwable) {
             it.onError(t)

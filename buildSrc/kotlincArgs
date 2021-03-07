@@ -25,7 +25,6 @@
 -Xopt-in=kotlinx.coroutines.InternalCoroutinesApi
 -Xopt-in=kotlinx.coroutines.ObsoleteCoroutinesApi
 -Xpolymorphic-signature
--Xuse-ir
 -Xuse-mixed-named-arguments
 -XXLanguage:+FunctionalInterfaceConversion
 -XXLanguage:+ReferencesToSyntheticJavaProperties

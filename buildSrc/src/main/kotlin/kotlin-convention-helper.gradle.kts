@@ -16,6 +16,7 @@ plugins {
     `kotlin-spring`
     `kotlin-sam-with-receiver`
     //org.jetbrains.dokka
+    com.github.`ben-manes`.versions
     org.kordamp.gradle.jandex
 }
 
@@ -23,9 +24,11 @@ dependencies {
     kotlin.sourceSets.configureEach {
         dependencies {
             implementation(enforcedPlatform(kotlin("bom")))
-            implementation("org.jetbrains.kotlinx:atomicfu:0.14.4")
-            implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.2")
+            implementation("org.jetbrains.kotlinx:atomicfu:0.15.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.3")
+            //implementation("com.github.Kotlin:kotlinx.collections.immutable:master-SNAPSHOT")
             implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:0.2.0")
+            //implementation("com.github.Kotlin:kotlinx-io:master-SNAPSHOT")
             //implementation(Deps.Libs.COROUTINES_REACTOR)
         }
     }
@@ -115,5 +118,3 @@ allOpen.annotations(
     "org.springframework.transaction.annotation.Transactional"
     //`kotlin-spring`
 )
-
-
