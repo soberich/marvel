@@ -3,12 +3,13 @@
 //enableFeaturePreview("VERSION_ORDERING_V2")
 
 pluginManagement {
-    val ideaExtPluginVersion : String by settings
-    val versionsPluginVersion: String by settings
+    val ideaExtPluginVersion  : String by settings
+    val useLatestPluginVersion: String by settings
+    val versionsPluginVersion : String by settings
     plugins {
-        id("com.github.ben-manes.versions")        version versionsPluginVersion // optional
+        id("com.github.ben-manes.versions")        version versionsPluginVersion  // optional
         id("org.jetbrains.gradle.plugin.idea-ext") version ideaExtPluginVersion
-        //id("se.patrikerdes.use-latest-versions") version "0.2.14"                    // optional
+        id("se.patrikerdes.use-latest-versions")   version useLatestPluginVersion // optional
     }
     repositories {
         gradlePluginPortal()

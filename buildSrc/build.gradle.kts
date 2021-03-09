@@ -19,6 +19,7 @@ plugins {
     `project-report`                              // optional
     id("com.github.ben-manes.versions")
     id("org.jetbrains.gradle.plugin.idea-ext")
+    id("se.patrikerdes.use-latest-versions")      // optional
 }
 
 repositories {
@@ -44,15 +45,18 @@ val ideaActive = Boolean.getBoolean("idea.active")
 val CI = System.getenv("CI") != null
 
 val byteBuddyVersion      : String by project
+val dokkaVersion          : String by project
 val guavaVersion          : String by project
 val hibernateVersion      : String by project
 val ideaExtPluginVersion  : String by project
 val jlinkPluginVersion    : String by project
 val kotlinVersion         : String by project
+val log4jVersion          : String by project
 val micronautPluginVersion: String by project
 val shadowPluginVersion   : String by project
 val spotBugsPluginVersion : String by project
 val springBootVersion     : String by project
+val useLatestPluginVersion: String by project
 val versionsPluginVersion : String by project
 
 /*plugins'*/ dependencies {
@@ -78,7 +82,7 @@ val versionsPluginVersion : String by project
     implementation(kotlin("sam-with-receiver"            , kotlinVersion))
     //implementation(kotlin("serialization", kotlinVersion))
     implementation(gradleKotlinDsl()) //FOR JPS compilation  TODO: Remove
-    implementation("org.apache.logging.log4j:log4j-core:2.11.0") //FOR JPS compilation  TODO: Remove
+    implementation("org.apache.logging.log4j"                          ,"log4j-core"                ,log4jVersion) //FOR JPS compilation  TODO: Remove
     //implementation("org.jetbrains.kotlin.kapt:org.jetbrains.kotlin.kapt.gradle.plugin:$kotlinVersion") //FOR JPS compilation  TODO: Remove
     implementation("com.github.ben-manes"                              , "gradle-versions-plugin"   , versionsPluginVersion)
     implementation("com.github.jengelman.gradle.plugins"               , "shadow"                   , shadowPluginVersion)
@@ -97,10 +101,10 @@ val versionsPluginVersion : String by project
     implementation("io.swagger.core.v3"                                , "swagger-gradle-plugin"    , "+")
     implementation("org.beryx"                                         , "badass-jlink-plugin"      , jlinkPluginVersion)
     implementation("org.hibernate"                                     , "hibernate-gradle-plugin"  , hibernateVersion)
-    implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"      , "1.4.10")
+    implementation("org.jetbrains.dokka"                               , "dokka-gradle-plugin"      , dokkaVersion)
     implementation("org.sonarsource.scanner.gradle"                    , "sonarqube-gradle-plugin"  , "+")
     implementation("org.springframework.boot"                          , "spring-boot-gradle-plugin", springBootVersion)
-    //implementation("se.patrikerdes"                                    , "gradle-use-latest-versions-plugin"       , "+")
+    implementation("se.patrikerdes"                                    , "gradle-use-latest-versions-plugin", useLatestPluginVersion)
 }
 
 kotlinDslPluginOptions {
