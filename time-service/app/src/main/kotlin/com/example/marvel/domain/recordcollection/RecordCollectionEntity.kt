@@ -25,8 +25,8 @@ class RecordCollectionEntity : SimpleGeneratedIdentityOfLong() {
     @get:
     [Type(type = "yearmonth-composite")
     Columns(columns = [
-        Column(name = "year", nullable = false, updatable = false),
-        Column(name = "month", nullable = false, updatable = false)])]
+        Column(name = "\"year\"", nullable = false, updatable = false),
+        Column(name = "\"month\"", nullable = false, updatable = false)])]
     @delegate:
     [Transient]
     var yearMonth                             : YearMonth by Delegates.notNull()

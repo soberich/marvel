@@ -1,6 +1,5 @@
 package com.example.marvel.api
 
-//import arrow.core.ListK
 import java.time.YearMonth
 import javax.validation.Valid
 import javax.validation.constraints.*

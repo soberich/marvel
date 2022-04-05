@@ -1,75 +1,28 @@
 @file:Suppress("ConvertToStringTemplate")
 
-import versioning.Deps
-
 plugins {
     `java-platform`
-    org.springframework.boot apply false
+    alias(libs.plugins.spring.boot) apply false
     `maven-publish`
 }
 
 repositories.mavenCentral()
 
-val arrowVersion        : String by project
-val blazeJpaVersion     : String by project
-val coroutinesVersion   : String by project
-val guavaVersion        : String by project
-val hibernateVersion    : String by project
-val immutablesVersion   : String by project
-val jacksonVersion      : String by project
-val ktorVersion         : String by project
-val micronautVersion    : String by project
-val micronautDataVersion: String by project
-val quarkusVersion      : String by project
-val reactorVersion      : String by project
-val resteasyVersion     : String by project
-
 dependencies {
-    api(platform("io.arrow-kt"                      + ':' +"arrow-stack"             + ':' + arrowVersion))
     //FIXME: Report Gradle team that without `enforced...`  1.5.0-Alpha5 is chosen over 1.5.0-SNAPSHOT (
-    api(enforcedPlatform("com.blazebit"                     + ':' +"blaze-persistence-bom"   + ':' + blazeJpaVersion))
-    api(platform("org.jetbrains.kotlinx"            + ':' +"kotlinx-coroutines-bom"  + ':' + coroutinesVersion))
-    api(platform("com.google.guava"                 + ':' +"guava-bom"               + ':' + guavaVersion))
-    api(platform("org.immutables"                   + ':' +"bom"                     + ':' + immutablesVersion))
-    api(platform("com.fasterxml.jackson"            + ':' +"jackson-bom"             + ':' + jacksonVersion))
-    api(platform("io.ktor"                          + ':' +"ktor-bom"                + ':' + ktorVersion))
-    api(platform("io.micronaut"                     + ':' +"micronaut-bom"           + ':' + micronautVersion))
-    //api(platform("io.micronaut.data"                + ':' +"micronaut-data-bom"      + ':' + micronautDataVersion))
-    api(platform("io.quarkus"                       + ':' +"quarkus-universe-bom"             + ':' + quarkusVersion))
-    //api(platform("io.quarkus"                       + ':' +"quarkus-universe-bom"    + ':' + quarkusVersion))
-    api(platform("org.jboss.resteasy"               + ':' +"resteasy-bom"            + ':' + resteasyVersion))
+    api(enforcedPlatform(libs.blaze.jpa))
+    api(platform(libs.coroutines))
+    api(platform(libs.guava))
+    api(platform(libs.immutables))
+    api(platform(libs.jackson))
+    api(platform(libs.ktor))
+    api(platform(libs.micronaut))
+    api(platform(libs.quarkus))
+    api(platform(libs.quarkus.blaze))
     api(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
 
     constraints {
-        api(Deps.Jakarta.ACTIVATION)
-        api(Deps.Jakarta.ANNOTATION)
-        api(Deps.Jakarta.CDI)
-        api(Deps.Jakarta.CONCURRENT)
-        api(Deps.Jakarta.INJECT)
-        api(Deps.Jakarta.JAX_RS)
-        api(Deps.Jakarta.JAXB)
-        api(Deps.Jakarta.JAXB_RUNTIME)
-        api(Deps.Jakarta.JSR_305)
-        api(Deps.Jakarta.PERSISTENCE)
-        api(Deps.Jakarta.SERVLET)
-        api(Deps.Jakarta.TRANSACTION)
-        api(Deps.Jakarta.VALIDATION)
-
-        api(Deps.Javax.ACTIVATION)
-        api(Deps.Javax.ANNOTATION)
-        api(Deps.Javax.CDI)
-        api(Deps.Javax.CONCURRENT)
-        api(Deps.Javax.INJECT)
-        api(Deps.Javax.JAX_RS)
-        api(Deps.Javax.JAXB)
-        api(Deps.Javax.JAXB_RUNTIME)
-        api(Deps.Javax.JSONB)
-        api(Deps.Javax.JSR_305)
-        api(Deps.Javax.MONEY)
-        api(Deps.Javax.PERSISTENCE)
-        api(Deps.Javax.SERVLET)
-        api(Deps.Javax.TRANSACTION)
-        api(Deps.Javax.VALIDATION)
+        api(libs.bundles.ee)
     }
 }
 
@@ -82,10 +35,10 @@ publishing {
             username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
             password = project.findProperty("gpr.key")  as String? ?: System.getenv("TOKEN")
         }
-        maven("https://api.bintray.com/content/soberich/maven/com.github.soberich.marvel:$name/$version;publish=1;override=1;").credentials {
-            username = System.getenv("BINTRAY_USER")
-            password = System.getenv("BINTRAY_API_KEY")
-        }
+//        maven("https://api.bintray.com/content/soberich/maven/com.github.soberich.marvel:$name/$version;publish=1;override=1;").credentials {
+//            username = System.getenv("BINTRAY_USER")
+//            password = System.getenv("BINTRAY_API_KEY")
+//        }
     }
     publications {
         create<MavenPublication>("marvelPlatform") {
@@ -131,16 +84,16 @@ publishing {
 }
 
 tasks.withType<PublishToMavenRepository>().configureEach {
-    val odlValue: String? = System.getProperty("org.gradle.internal.publish.checksums.insecure")
+    val oldValue: String? = System.getProperty("org.gradle.internal.publish.checksums.insecure")
     doFirst {
         if ("SNAPSHOT" in version.toString())
              System.setProperty("org.gradle.internal.publish.checksums.insecure", "true")
         else System.setProperty("org.gradle.internal.publish.checksums.insecure", "false")
     }
     doLast {
-        if (odlValue != System.getProperty("org.gradle.internal.publish.checksums.insecure")) {
-            if (odlValue != null)
-                 System.setProperty("org.gradle.internal.publish.checksums.insecure", odlValue)
+        if (oldValue != System.getProperty("org.gradle.internal.publish.checksums.insecure")) {
+            if (oldValue != null)
+                 System.setProperty("org.gradle.internal.publish.checksums.insecure", oldValue)
             else System.clearProperty("org.gradle.internal.publish.checksums.insecure")
         }
     }

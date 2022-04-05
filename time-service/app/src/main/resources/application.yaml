@@ -67,7 +67,7 @@ jpa:
         event.merge.entity_copy_observer:           log
         format_sql:                                 true
         generate_statistics: &stats                 true
-        hbm2ddl.auto: &hbm2ddl                      drop-and-create
+        hbm2ddl.auto: &hbm2ddl                      create-drop
         implicit_naming_strategy: &implicit         com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
         jdbc.batch_size:                            33
         jdbc.fetch_size:                            200

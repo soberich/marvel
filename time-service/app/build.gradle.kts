@@ -1,14 +1,12 @@
-import org.hibernate.orm.tooling.gradle.EnhanceExtension
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.createAptConfigurationIfNeeded
-import versioning.Deps
 
 plugins {
     idea
     `java-library`
     `kotlin-convention-helper`
-    `testing-convention-helper`
     `maven-publish`
     //org.hibernate.orm
+    alias(libs.plugins.idea.ext)
 }
 
 repositories.mavenCentral()
@@ -19,6 +17,8 @@ dependencies {
 
             //FIXME: Kotlin plugin doen't have this new api
             val kapt = createAptConfigurationIfNeeded(project, name).name
+            val compileOnlyApiName = project.sourceSets[name].compileOnlyApiConfigurationName
+            val compileOnlyApi     = configurations.findByName(compileOnlyApiName)
 
             kapt          (platform(project(":convention")))
             compileOnly   (platform(project(":convention")))
@@ -27,14 +27,14 @@ dependencies {
 
             kapt          ("com.blazebit:blaze-persistence-entity-view-processor")
             kapt          ("com.blazebit:blaze-persistence-core-api")
-            kapt          (Deps.Jakarta.PERSISTENCE)
-            kapt          (Deps.Libs.HIBERNATE_JPAMODELGEN)
-            kapt          (Deps.Libs.MAPSTRUCT_AP)
-            kapt          (Deps.Libs.VALIDATOR_AP)
+            kapt          (libs.persistence)
+            kapt          (libs.hibernate.jpamodelgen)
+            kapt          (libs.mapstruct.ap)
+            kapt          (libs.validator.ap)
 
-            compileOnly   (Deps.Jakarta.INJECT)
-            compileOnly   (Deps.Jakarta.PERSISTENCE)
-            compileOnly   (Deps.Libs.MAPSTRUCT)
+            compileOnlyApi?.invoke(libs.inject)
+            compileOnlyApi?.invoke(libs.persistence)
+            compileOnly   (libs.mapstruct)
 
             api           ("com.blazebit:blaze-persistence-core-api") //105 Kb
             api           ("com.blazebit:blaze-persistence-entity-view-api") // 136 Kb
@@ -42,10 +42,10 @@ dependencies {
             implementation(project(":shared"))
             implementation(project(":time-service.api"))
             implementation(project(":time-service.spi"))
-            implementation("com.kumuluz.ee.rest:kumuluzee-rest-core:1.2.3")
-            implementation("org.springframework:spring-tx:+")     //TODO: Extract to `Deps.Libs`
-            implementation("org.springframework:spring-web:+")    //TODO: Extract to `Deps.Libs`
-            implementation("org.springframework:spring-context:+") //TODO: Extract to `Deps.Libs`
+            implementation("com.kumuluz.ee.rest:kumuluzee-rest-core:1.5.1")
+            implementation("org.springframework:spring-tx:[5.3,6)")
+            implementation("org.springframework:spring-web:[5.3,6)")
+            implementation("org.springframework:spring-context:[5.3,6)")
         }
     }
 }

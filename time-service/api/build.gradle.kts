@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.createAptConfigurationIfNeeded
-import versioning.Deps
 
 plugins {
     idea
@@ -28,16 +27,16 @@ dependencies {
             runtimeOnly           (platform(project(":convention")))
 
             kapt                  ("org.immutables:value")
-            kapt                  (Deps.Libs.VALIDATOR_AP)
+            kapt                  (libs.validator.ap)
 
-            //compileOnlyApi?.invoke(Deps.Libs.ARROW_ANNOTATIONS) //FIXME
+            //compileOnlyApi?.invoke(libs.arrow-annotations) //FIXME
             compileOnlyApi?.invoke("org.immutables:builder")
             compileOnlyApi?.invoke("org.immutables:value:annotations")
 
-            api                   (Deps.Jakarta.VALIDATION)
-            //api                   (Deps.Libs.ARROW_OPTICS) //FIXME
-            api                   (Deps.Libs.REACTIVE_STREAMS)
-            api                   (Deps.Libs.VALIDATOR)
+            api                   (libs.validation)
+            //api                   (libs.arrow.optics) //FIXME
+            api                   (libs.reactive.streams)
+            api                   (libs.validator)
         }
     }
 }

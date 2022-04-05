@@ -1,6 +1,6 @@
 package com.example.marvel
 
-import io.micronaut.runtime.mnRun              as runMicronautHttp
+import io.micronaut.kotlin.runtime.mnRun              as runMicronautHttp
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Contact
@@ -14,9 +14,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
         title = "Hello World",
         version = "0.0",
         description = "My API",
-        license = License(name = "Apache 2.0", url = "http://foo.bar"),
+        license = License(name = "Apache 2.0", url = "https://foo.bar"),
         contact = Contact(
-            url = "http://gigantic-server.com",
+            url = "https://gigantic-server.com",
             name = "soberich",
             email = "soberich@gigagantic-server.com")))
 @SpringBootApplication(proxyBeanMethods = false)

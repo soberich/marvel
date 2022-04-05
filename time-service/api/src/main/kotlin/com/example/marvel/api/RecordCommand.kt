@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Positive
 import javax.validation.constraints.PositiveOrZero
 
-/*@optics*/ sealed class RecordCommand {
+sealed class RecordCommand {
     //@formatter:off
     @get:
     [NotNull]

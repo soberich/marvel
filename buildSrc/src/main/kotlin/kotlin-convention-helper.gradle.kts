@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
-import versioning.Deps
+//import versioning.Deps
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.streams.asSequence
@@ -16,22 +16,22 @@ plugins {
     `kotlin-spring`
     `kotlin-sam-with-receiver`
     //org.jetbrains.dokka
-    com.github.`ben-manes`.versions
-    org.kordamp.gradle.jandex
 }
 
 dependencies {
     kotlin.sourceSets.configureEach {
         dependencies {
             implementation(enforcedPlatform(kotlin("bom")))
-            implementation("org.jetbrains.kotlinx:atomicfu:0.15.1")
-            implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.3")
+            implementation("org.jetbrains.kotlinx:atomicfu:latest.release")
+            implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:latest.integration")
             //implementation("com.github.Kotlin:kotlinx.collections.immutable:master-SNAPSHOT")
-            implementation("org.jetbrains.kotlinx:kotlinx-io-jvm:0.3.0")
-            //implementation("com.github.Kotlin:kotlinx-io:master-SNAPSHOT")
             //implementation(Deps.Libs.COROUTINES_REACTOR)
         }
     }
+}
+
+kotlin.jvmToolchain {
+    (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(16))
 }
 
 tasks {
@@ -43,22 +43,21 @@ tasks {
         }
     }
     withType<KotlinJvmCompile>().configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(if (KotlinVersion.CURRENT.isAtLeast(1, 4)) JavaVersion.VERSION_14 else JavaVersion.VERSION_13).toString()
+        kotlinOptions.jvmTarget = JavaVersion.current().coerceAtMost(JavaVersion.VERSION_16).toString()
     }
     withType<JavaCompile>().configureEach {
         options.apply {
             isFork = true
-            forkOptions.jvmArgs = listOf("--illegal-access=warn")
-            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_14).toString().toInt())
+            release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_16).toString().toInt())
             targetCompatibility = release.get().toString() //FOR JPS compilation  TODO: Remove
             Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(compilerArgs::plusAssign)
         }
     }
     withType<Test>().configureEach {
-        jvmArgs("--illegal-access=warn")
+        // jvmArgs("")
     }
     withType<JavaExec>().configureEach {
-        jvmArgs("--illegal-access=warn")
+        // jvmArgs("")
     }
 }
 
@@ -71,9 +70,9 @@ kapt {
          * `--target` (N.B. `-target` with one dash does not work!) for consistency with `--source` so it does not cause doubts on why is one set and other is not.
          * `--release` is the latest introduced and supported by Gradle version, yet, `kotlinc` seems to ignore it, again to avoid ambiguity.
          */
-        option("--source",  JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
-        option("--target",  JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
-        option("--release", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_11).toString())
+        option("--source",  JavaVersion.current().coerceAtMost(JavaVersion.VERSION_16).toString())
+        option("--target",  JavaVersion.current().coerceAtMost(JavaVersion.VERSION_16).toString())
+        option("--release", JavaVersion.current().coerceAtMost(JavaVersion.VERSION_16).toString())
         Files.lines(Paths.get("$rootDir", "buildSrc", "javacArgs")).asSequence().filterNot(String::isNullOrBlank).forEach(::option)
     }
 }

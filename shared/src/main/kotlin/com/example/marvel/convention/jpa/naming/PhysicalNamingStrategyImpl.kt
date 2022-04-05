@@ -32,7 +32,7 @@ class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
     override fun toPhysicalColumnName  (id: Identifier?, ctx: JdbcEnvironment?): Identifier? = formatIdentifier(super.toPhysicalColumnName(id, ctx))
 
     internal fun formatIdentifier(id: Identifier?, name: String? = id?.text): Identifier? = name?.run {
-        replace(CAMEL, SNAKE).toLowerCase(ENGLISH).let<String, Identifier?> {
+        replace(CAMEL, SNAKE).lowercase(ENGLISH).let<String, Identifier?> {
             return if (it != name) Identifier.toIdentifier(it, id?.isQuoted ?: false)
             else id
         }
@@ -47,7 +47,7 @@ class PhysicalNamingStrategyImpl : PhysicalNamingStrategyStandardImpl() {
         private const val _SEQ   = "_seq"
 
         val ENTITIES = """entity|Entity|Entities|entities""".toRegex()
-        val CAMEL    = """(?!^)((?:[A-Z]+(?=[A-Z]))|(?:[a-z](?=[^a-z]))|(?:(?<![0-9])[0-9]+(?=[^0-9])))([^_])""".toRegex()
+        val CAMEL    = """(?!^)([A-Z]+(?=[A-Z])|[a-z](?=[^a-z])|(?<!\d)\d+(?=\D))([^_])""".toRegex()
         val SEQ      = """.+(?<!_seq)$""".toRegex(IGNORE_CASE)
     }
 }

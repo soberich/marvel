@@ -234,7 +234,7 @@ object Inflector {
         for (delimiterChar in delimiterChars) {
             result = result.replace(delimiterChar, '_')
         }
-        return result.toLowerCase()
+        return result.lowercase()
     }
 
     /**
@@ -246,7 +246,7 @@ object Inflector {
     fun capitalize(words: String?): String? = when (val result = words?.trim { it <= ' ' }) {
         null -> null
         ""   -> ""
-        else -> if (result.length == 1) result.toUpperCase() else result.toLowerCase().capitalize()
+        else -> if (result.length == 1) result.uppercase() else result.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString() }
     }
 
     /**
@@ -325,7 +325,7 @@ object Inflector {
      * @return true if the plural and singular forms of the word are the same
      */
     fun isUncountable(word: String?): Boolean =
-        word != null && word.trim { it <= ' ' }.toLowerCase() in uncountables
+        word != null && word.trim { it <= ' ' }.lowercase() in uncountables
 
     fun addPluralize(@Language("RegExp") rule: String, replacement: String): Unit = plurals.addFirst(Rule(rule, replacement))
 
@@ -342,7 +342,7 @@ object Inflector {
     }
 
     fun addUncountable(vararg words: String) {
-        if (words.isNotEmpty()) words.mapTo(uncountables) { it.trim { it <= ' ' }.toLowerCase() }
+        if (words.isNotEmpty()) words.mapTo(uncountables) { it.trim { it <= ' ' }.lowercase() }
     }
 
     /**
@@ -435,7 +435,7 @@ object Inflector {
         val matcher = underscoreAndDotPattern.matcher(input!!)
         val sb = StringBuffer()
         while (matcher.find()) {
-            matcher.appendReplacement(sb, matcher.group(groupNumberToUppercase).toUpperCase())
+            matcher.appendReplacement(sb, matcher.group(groupNumberToUppercase).uppercase())
         }
         matcher.appendTail(sb)
         return sb.toString()

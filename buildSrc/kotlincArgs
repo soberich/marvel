@@ -1,7 +1,6 @@
 -java-parameters
 -progressive
 -version
--Xadd-light-debug=disable
 -Xallow-kotlin-package
 -Xallow-result-return-type
 -Xeffect-system

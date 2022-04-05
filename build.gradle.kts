@@ -5,13 +5,15 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import org.gradle.api.plugins.ExtensionAware as EA
-import org.gradle.api.plugins.jvm.internal.DefaultJvmPluginExtension
-import org.gradle.api.plugins.jvm.internal.JvmPluginExtension
 
 plugins {
     `jvm-ecosystem`
-    org.jetbrains.gradle.plugin.`idea-ext`
+    alias(libs.plugins.idea.ext)
+    alias(libs.plugins.versions)        apply false
+    alias(libs.plugins.latest.versions) apply false
 }
+
+val ideaActive = java.lang.Boolean.getBoolean("idea.active")
 
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS_FULL
 
@@ -20,7 +22,7 @@ val props = FileInputStream("$rootDir/buildSrc/gradle.properties").use {
 }
 
 props.stringPropertyNames()
-    .associateWith { props.getProperty(it) }
+    .associateWith(props::getProperty)
     .forEach { project.ext.set(it.key, it.value) }
 
 ((idea.project as EA).the<ProjectSettings>() as EA).configure<IdeaCompilerConfiguration> {
@@ -36,8 +38,9 @@ props.stringPropertyNames()
 
 subprojects {
     apply(plugin = "build-dashboard")
-//    apply(plugin = "dependencies-reporting-helper") //FIXME: groovy won't run on java 16
     apply(plugin = "help-tasks")
+    apply(plugin = "se.patrikerdes.use-latest-versions")
+    apply(plugin = "com.github.ben-manes.versions")
 
     description = "${name.replace('-', ' ').toUpperCase()} of Native Quarkus/Micronaut Arrow-Kt Vert.x Coroutines GRPC Kotlin-DSL app"
 
@@ -53,16 +56,8 @@ subprojects {
     }
 
     repositories {
-        gradlePluginPortal()
-        exclusiveContent {
-            forRepository {
-                maven("file://$rootDir/repo")
-            }
-            filter {
-                includeModule("org.jetbrains.kotlinx", "kotlinx-io-jvm")
-            }
-        }
         mavenCentral()
+        gradlePluginPortal()
         maven("https://repository.jboss.org/nexus/content/repositories/public")
         maven("https://repo.spring.io/milestone")
         maven("https://kotlin.bintray.com/kotlinx")
@@ -95,49 +90,3 @@ subprojects {
         }
     }
 }
-
-//val jvm = extensions.getByType<JvmPluginExtension>()
-//
-//// A resolvable configuration to collect test report data
-//val testReportData = jvm.createResolvableConfiguration("testReportData") {
-//    requiresAttributes {
-//        documentation("test-report-data")
-//    }
-//}
-//
-//// A resolvable configuration to collect JaCoCo coverage data
-//val jacocoCoverageData = jvm.createResolvableConfiguration("jacocoCoverageData") {
-//    requiresAttributes {
-//        documentation("jacoco-coverage-data")
-//    }
-//}
-//
-//dependencies {
-//    subprojects {
-//        plugins.withId("testing-convention-helper") {
-//            plugins.withType<JavaLibraryPlugin>().configureEach {
-//                testReportData(this@dependencies.project(this@subprojects.path))
-//                tasks.withType<Test>().configureEach {
-//                    extensions.findByType<JacocoTaskExtension>()?.run {
-//                        jacocoCoverageData(this@dependencies.project(this@subprojects.path))
-//                    }
-//                }
-//            }
-//            plugins.withType<JavaPlugin>().configureEach {
-//                testReportData(this@dependencies.project(this@subprojects.path))
-//                tasks.withType<Test>().configureEach {
-//                    extensions.findByType<JacocoTaskExtension>()?.run {
-//                        jacocoCoverageData(this@dependencies.project(this@subprojects.path))
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//tasks.register<TestReport>("${project.name}TestReport") {
-//    group = JavaBasePlugin.VERIFICATION_GROUP
-//    destinationDir = file("$buildDir/reports")
-//    // Use test results from testReportData configuration
-//    (testResultDirs as ConfigurableFileCollection).from(testReportData)
-//}

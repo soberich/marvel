@@ -17,7 +17,7 @@ abstract class BusinessKeyIdentityOf<out T : Serializable> : IdentifiableOf<T> {
 
     /**
      * Allows creating transient entity instances with default ctor and set them to `@ManyToOne` owning side
-     * considering they doesn't have any of
+     * considering they don't have any of
      * [javax.persistence.CascadeType.PERSIST]
      * [javax.persistence.CascadeType.MERGE]
      * [org.hibernate.annotations.CascadeType.SAVE_UPDATE]

@@ -26,7 +26,6 @@ tasks {
     withType<ScalaCompile>().configureEach {
         options.apply {
             isFork = true
-            forkOptions.jvmArgs = listOf("--illegal-access=warn")
             //FIXME: Stopped working, no idea why.
             //release.set(JavaVersion.current().coerceAtMost(JavaVersion.VERSION_12).toString().toInt())
             /*

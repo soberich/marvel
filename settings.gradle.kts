@@ -8,17 +8,13 @@ rootProject.name = "marvel"
 
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         mavenCentral()
+        gradlePluginPortal()
         maven("https://oss.sonatype.org/content/repositories/snapshots") {
             mavenContent {
                 snapshotsOnly()
             }
         }
-    }
-    plugins {
-        val quarkusVersion: String by settings
-        id("io.quarkus") version quarkusVersion
     }
     resolutionStrategy {
         eachPlugin {
@@ -29,10 +25,21 @@ pluginManagement {
     }
 }
 
+plugins {
+    `gradle-enterprise`
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+    }
+}
+
 include(
     ":convention",
     //":gatling",
-    ":legacy-openapi",
+//    ":legacy-openapi",
     ":shared"
 )
 
@@ -40,13 +47,11 @@ for (serviceDir in setOf("time-service")) {
     Files.list(Paths.get("$rootDir", serviceDir)).use {
         it.filter { Files.isDirectory(it) }
             .forEach {
-                ":${it.fileName}"
-                    .also { include(it) }
-                    .run(::project)
-                    .apply {
-                        name       = "$serviceDir.${it.fileName}"
-                        projectDir = it.toFile()
-                    }
+                val projectFolderName = ":${it.fileName}"
+                include(projectFolderName)
+                val projectDescriptor = project(projectFolderName)
+                projectDescriptor.name = "$serviceDir.${it.fileName}"
+                projectDescriptor.projectDir = it.toFile()
             }
     }
 }

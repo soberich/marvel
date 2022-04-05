@@ -1,0 +1,157 @@
+[versions]
+blaze-jpa             = "latest.release"
+coroutines            = "latest.release"
+guava                 = "31.+"
+hibernate             = "[5.6,5.7)"
+immutables            = "latest.integration"
+jackson               = "latest.release"
+jaxb                  = "[2.3,2.5)"
+junit5                = "latest.release"
+ktor                  = "latest.release"
+micronaut             = "latest.integration"
+micronaut-data        = "latest.integration"
+quarkus               = "[2.7,2.8)"
+resteasy              = "latest.integration"
+spring-boot           = "[2.5,3)"
+
+activation            = "[1.1,2)"
+annotation            = "[1.3,2)"
+cdi                   = "[2,3)"
+concurrent            = "[1.1,2)"
+hibernate-jpamodelgen = "[6,7)"
+inject                = "(0,3)"
+jax-rs                = "[2.1,2.2)"
+jsonb                 = "[1,2)"
+jsr305                = "[3,5)"
+money                 = "[1,2)"
+persistence           = "[2.2,3)"
+reactive-streams      = "[1,2)"
+servlet               = "[4,5)"
+transaction           = "[1.3,2.1)"
+validation            = "[2,3.1)"
+
+hibernate-types       = "2.+"
+jboss-log             = "2.1.4.Final"
+liquibase-gradle      = "2.0.1"
+liquibase-hib5        = "3.6"
+mapstruct             = "latest.integration"
+openapi               = "2.1.3"
+slf4j-api             = "1.7.25"
+slf4j-jboss           = "1.0.4.GA"
+validator             = "[7,8)"
+
+[libraries]
+# Plugins
+#byte-buddy-plugin             = { group = "gradle.plugin.net.bytebuddy"                        , name = "byte-buddy-gradle-plugin"          , version = "latest.release" }
+#dokka-plugin                  = { group = "org.jetbrains.dokka"                                , name = "dokka-gradle-plugin"               , version = "latest.integration" }
+#git-properties-plugin         = { group = "gradle.plugin.com.gorylenko.gradle-git-properties"  , name = "gradle-git-properties"             , version = "latest.release" }
+gradle-latest-versions-plugin = { group = "se.patrikerdes"                                     , name = "gradle-use-latest-versions-plugin" , version = "latest.integration" }
+gradle-versions-plugin        = { group = "com.github.ben-manes"                               , name = "gradle-versions-plugin"            , version = "latest.integration" }
+#hibernate-plugin              = { group = "org.hibernate"                                      , name = "hibernate-gradle-plugin"           , version = "[5.6,5.7)" }
+idea-ext-plugin               = { group = "gradle.plugin.org.jetbrains.gradle.plugin.idea-ext" , name = "gradle-idea-ext"                   , version = "latest.integration" }
+#jandex-plugin                 = { group = "org.kordamp.gradle"                                 , name = "jandex-gradle-plugin"              , version = "latest.release" }
+#jlink-plugin                  = { group = "org.beryx"                                          , name = "badass-jlink-plugin"               , version = "latest.integration" }
+micronaut-plugin              = { group = "io.micronaut.gradle"                                , name = "micronaut-gradle-plugin"           , version.ref = "micronaut" }
+shadow-plugin                 = { group = "com.github.jengelman.gradle.plugins"                , name = "shadow"                            , version = "latest.release" }
+#sonarqube-plugin              = { group = "org.sonarsource.scanner.gradle"                     , name = "sonarqube-gradle-plugin"           , version = "latest.release" }
+#spotbugs-plugin               = { group = "gradle.plugin.com.github.spotbugs.snom"             , name = "spotbugs-gradle-plugin"            , version = "latest.release" }
+spring-boot-plugin            = { group = "org.springframework.boot"                           , name = "spring-boot-gradle-plugin"         , version.ref = "spring-boot" }
+#swagger-plugin                = { group = "io.swagger.core.v3"                                 , name = "swagger-gradle-plugin"             , version = "latest.release" }
+#vaadin-plugin                 = { group = "com.vaadin"                                         , name = "vaadin-gradle-plugin"              , version = "latest.release" }
+# BOMs
+blaze-jpa        = { module = "com.blazebit:blaze-persistence-bom"                          , version.ref =  "blaze-jpa" }
+coroutines       = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom"                , version.ref =  "coroutines" }
+guava            = { module = "com.google.guava:guava-bom"                                  , version.ref =  "guava" }
+immutables       = { module = "org.immutables:bom"                                          , version.ref =  "immutables" }
+jackson          = { module = "com.fasterxml.jackson:jackson-bom"                           , version.ref =  "jackson" }
+jaxb-bom         = { module = "org.glassfish.jaxb:jaxb-bom"                                 , version.ref =  "jaxb" }
+jaxb-runtime-bom = { module = "com.sun.xml.bind:jaxb-bom"                                   , version.ref =  "jaxb" }
+junit5           = { module = "org.junit:junit-bom"                                         , version.ref =  "junit5" }
+ktor             = { module = "io.ktor:ktor-bom"                                            , version.ref =  "ktor" }
+micronaut        = { module = "io.micronaut:micronaut-bom"                                  , version.ref =  "micronaut" }
+micronaut-data   = { module = "io.micronaut.data:micronaut-data-bom"                        , version.ref =  "micronaut-data" }
+quarkus          = { module = "io.quarkus:quarkus-universe-bom"                             , version.ref =  "quarkus" }
+quarkus-blaze    = { module = "io.quarkus.platform:quarkus-blaze-persistence-bom"           , version.ref =  "quarkus" }
+resteasy         = { module = "org.jboss.resteasy:resteasy-bom"                             , version.ref =  "resteasy" }
+# Javax/Jakarta
+activation   = { module = "javax.activation:activation"                                 , version.ref = "activation" }
+annotation   = { module = "javax.annotation:javax.annotation-api"                       , version.ref = "annotation" }
+cdi          = { module = "javax.enterprise:cdi-api"                                    , version.ref = "cdi" }
+concurrent   = { module = "javax.enterprise.concurrent:javax.enterprise.concurrent-api" , version.ref = "concurrent" }
+inject       = { module = "javax.inject:javax.inject"                                   , version.ref = "inject" }
+jaxb         = { module = "javax.xml.bind:jaxb-api"                                     , version.ref = "jaxb" }
+jaxb-runtime = { module = "org.glassfish.jaxb:jaxb-runtime"                             , version.ref = "jaxb" }
+jaxrs        = { module = "javax.ws.rs:javax.ws.rs-api"                                 , version.ref = "jax-rs" }
+jsonb        = { module = "javax.json.bind:javax.json.bind-api"                         , version.ref = "jsonb" }
+jsr305       = { module = "com.google.code.findbugs:jsr305"                             , version.ref = "jsr305" }
+money        = { module = "javax.money:money-api"                                       , version.ref = "money" }
+persistence  = { module = "javax.persistence:javax.persistence-api"                     , version.ref = "persistence" }
+servlet      = { module = "javax.servlet:javax.servlet-api"                             , version.ref = "servlet" }
+transaction  = { module = "javax.transaction:javax.transaction-api"                     , version.ref = "transaction" }
+validation   = { module = "javax.validation:validation-api"                             , version.ref = "validation" }
+# Libs
+coroutines-jdk8       = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8"                    , version.ref = "coroutines" }
+coroutines-rxjava2    = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2"                     , version.ref = "coroutines" }
+hibernate             = { module = "org.hibernate:hibernate-core"                                     , version.ref = "hibernate" }
+hibernate-types       = { module = "com.vladmihalcea:hibernate-types-55"                              , version.ref = "hibernate-types" }
+hibernate-jpamodelgen = { module = "org.hibernate.orm:hibernate-jpamodelgen"                          , version.ref = "hibernate-jpamodelgen" }
+immutables-builder    = { module = "org.immutables:builder"                                           , version.ref = "immutables" }
+immutables-value      = { module = "org.immutables:value"                                             , version.ref = "immutables" }
+jboss-log             = { module = "org.jboss.logmanager:jboss-logmanager"                            , version.ref = "jboss-log" }
+liquibase-gradle      = { module = "org.liquibase:liquibase-gradle-plugin"                            , version.ref = "liquibase-gradle" }
+mapstruct             = { module = "org.mapstruct:mapstruct"                                          , version.ref = "mapstruct" }
+mapstruct-ap          = { module = "org.mapstruct:mapstruct-processor"                                , version.ref = "mapstruct" }
+openapi-jaxrs2        = { module = "io.swagger.core.v3:swagger-jaxrs2"                                , version.ref = "openapi" }
+openapi-models        = { module = "io.swagger.core.v3:swagger-models"                                , version.ref = "openapi" }
+reactive-streams      = { module = "org.reactivestreams:reactive-streams"                             , version.ref = "reactive-streams" }
+slf4j-jboss           = { module = "org.jboss.slf4j:slf4j-jboss-logmanager"                           , version.ref = "slf4j-jboss" }
+slf4j-api             = { module = "org.slf4j:slf4j-api"                                              , version.ref = "slf4j-api" }
+validator             = { module = "org.hibernate.validator:hibernate-validator"                      , version.ref = "validator" }
+validator-ap          = { module = "org.hibernate.validator:hibernate-validator-annotation-processor" , version.ref = "validator" }
+
+[bundles]
+ee = [
+    "activation",
+    "annotation",
+    "cdi",
+    "concurrent",
+    "inject",
+    "jaxb",
+    "jaxb-runtime",
+    "jaxrs",
+    "jsonb",
+    "jsr305",
+    "money",
+    "persistence",
+    "servlet",
+    "transaction",
+    "validation"
+]
+gradle-plugins = [
+    #"byte-buddy-plugin",
+    #"dokka-plugin",
+    #"git-properties-plugin",
+    "gradle-latest-versions-plugin",
+    "gradle-versions-plugin",
+    #"hibernate-plugin",
+    "idea-ext-plugin",
+    #"jandex-plugin",
+    #"jlink-plugin",
+    "micronaut-plugin",
+    "shadow-plugin",
+    #"sonarqube-plugin",
+    #"spotbugs-plugin",
+    "spring-boot-plugin",
+    #"swagger-plugin",
+    #"vaadin-plugin",
+]
+
+[plugins]
+quarkus          = { id = "io.quarkus"                             , version.ref = "quarkus" }
+micronaut        = { id = "io.micronaut.application"               , version.ref = "micronaut" }
+spring-boot      = { id = "org.springframework.boot"               , version.ref = "spring-boot" }
+idea-ext         = { id = "org.jetbrains.gradle.plugin.idea-ext"   , version = "latest.integration" }
+latest-versions  = { id = "se.patrikerdes.use-latest-versions"     , version = "latest.integration" }
+versions         = { id = "com.github.ben-manes.versions"          , version = "latest.integration" }
+byte-buddy       = { id = "net.bytebuddy.byte-buddy-gradle-plugin" , version = "latest.release" }
+shadow           = { id = "com.github.johnrengelman.shadow"        , version = "latest.release" }
